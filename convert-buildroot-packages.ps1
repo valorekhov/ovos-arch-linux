@@ -37,7 +37,15 @@ $buildTypeRegex = [regex]"`\$\(eval `\$\((cmake|python|autotools|generic)-packag
 foreach ($packageDir in $packageDirectories) {
     $packageDir
     $packageName = $packageDir.Name
-    mkdir -p "./PKGBUILDs/$packageName"
+    $dstPkgDir = "./PKGBUILDs/$packageName"
+    mkdir -p $dstPkgDir
+
+    # Check if $dstPkgDir already has a built package file *.pkg.tar.zst
+    # and if so, skip this package
+    if (Test-Path -Path "$dstPkgDir/*.pkg.tar.zst") {
+        continue
+    }
+
     $dstTemplate = ""
 
     $buildRootPkgPath = (Get-ChildItem -Path $packageDir -Filter "*.mk").FullName
