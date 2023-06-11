@@ -25,26 +25,20 @@ prepare() {
 
 build() {
     cd "$srcdir"
-
-    build_dir=$(find . -type f -name "CMakeLists.txt" -exec dirname {} \; | awk 'length < shortest || shortest == 0 { shortest=length; shortest_path=$0 } END { print shortest_path }')
-    echo "Build folder is $build_dir"
 {{build_leader}}
-    cmake -B build -S "$build_dir" {{build_opts}} \
-        -DCMAKE_BUILD_TYPE='None' -DNDEBUG=ON \
-        -DCMAKE_SKIP_INSTALL_RPATH=YES \
-        -DCMAKE_INSTALL_PREFIX='/usr' \
-        -Wno-dev
-    cmake --build build
+    autoreconf -vfi
+    ./configure --prefix=/usr "$CONF_OPTS" 
+    make
 }
 
 check() {
-    ctest --test-dir build --output-on-failure
+    cd "$srcdir"
 }
 
 package() {
     cd "$srcdir" 
     echo "Installing $pkgname to $pkgdir"
-    DESTDIR="$pkgdir" cmake --install build
+    make DESTDIR="$pkgdir" install
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

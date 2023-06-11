@@ -127,7 +127,7 @@ foreach ($packageDir in $packageDirectories) {
                     "build_opts" = if ($confOptions) {"CONF_OPTS=$confOptions"}
                     "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
                 }
-                $makeDependencies += "autotools"
+                $makeDependencies += "autoconf", "automake", "libtool"
             }
             "generic" {
                 $dstTemplate = $buildRootPkgSrc 
