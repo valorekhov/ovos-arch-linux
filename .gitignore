@@ -1,0 +1,7 @@
+/PKGBUILDs/*/src
+/PKGBUILDs/**/*.tar.gz*
+/PKGBUILDs/**/*.tar.zst*
+
+/responses
+
+.env*

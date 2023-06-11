@@ -1,0 +1,64 @@
+_gh_org={{gh_org}}
+_gh_proj={{gh_proj}}
+pkgname={{pkgname}}
+pkgver={{pkgver}}
+pkgrel=0
+pkgdesc={{pkgdesc}}
+arch=('any')
+url={{url}}
+license=({{license}})
+depends=({{depends}})
+makedepends=({{makedepends}})
+
+source=({{sources}})
+sha256sums=({{sha256sums}})
+
+prepare() {
+    cd "$srcdir"
+    for patch in ../*.patch; do
+        patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${pkgver}"
+    done
+}
+
+build() {
+    cd "$srcdir"
+
+    build_dir=$(find . -type f -name "CMakeLists.txt" -exec dirname {} \; | awk 'length < shortest || shortest == 0 { shortest=length; shortest_path=$0 } END { print shortest_path }')
+    echo "Build folder is $build_dir"
+
+    cmake -B build -S "$build_dir" {{build_leader}} \
+        -DCMAKE_BUILD_TYPE='None' -DNDEBUG=ON \
+        -DCMAKE_SKIP_INSTALL_RPATH=YES \
+        -DCMAKE_INSTALL_PREFIX='/usr' \
+        -Wno-dev
+    cmake --build build
+}
+
+check() {
+    ctest --test-dir build --output-on-failure
+}
+
+package() {
+    cd "$srcdir" 
+    echo "Installing $pkgname to $pkgdir"
+    DESTDIR="$pkgdir" cmake --install build
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+{{footer}}
+
