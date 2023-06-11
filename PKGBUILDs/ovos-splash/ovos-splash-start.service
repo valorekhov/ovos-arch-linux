@@ -1,0 +1,15 @@
+[Unit]
+Description=Starts OVOS splash boot screen
+Wants=dev-dri-card0.device
+After=dev-dri-card0.device
+DefaultDependencies=no
+RequiresMountsFor=/run
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/psplash
+RemainAfterExit=yes
+Restart=no
+
+[Install]
+WantedBy=sysinit.target

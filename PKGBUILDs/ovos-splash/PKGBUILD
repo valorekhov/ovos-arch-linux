@@ -1,0 +1,161 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-shell
+_psplash=psplash-0a902f7cd875ccf018456451be369f05fa55f962
+pkgname=ovos-splash
+pkgver='1.0'
+pkgrel=0
+pkgdesc='OpenVoiceOS splash screen:
+	  Show OVOS branded splash screens during 
+	  boot/halt process based on psplash.
+
+	  PSplash is a userspace graphical boot splash screen for
+	  mainly embedded Linux devices supporting a 16bpp or 32bpp
+	  framebuffer. It has few dependencies (just libc), supports
+	  basic images and text and handles rotation. Its visual look
+	  is configurable by basic source changes.
+
+	  Also included is a '\''client'\'' command utility for sending
+	  information to psplash such as boot progress information.
+
+	  Start the drawing process with '\''psplash -n&'\'' as early as
+	  possible. Note: psplash creates a FIFO in /tmp for
+	  communication with psplash-write.
+
+	  Usage:
+	  * Set progress bar to 50 percent:
+	    psplash-write "PROGRESS 50"
+
+	  * Display message "foobar" above progress bar:
+	    psplash-write "MSG foobar"
+
+	  * Terminate psplash:
+	    psplash-write "QUIT"
+
+	  http://git.yoctoproject.org/cgit/cgit.cgi/psplash/
+'
+arch=('any')
+url='http://yoctoproject.org/'
+license=('GPL-2.0+')
+depends=(systemd)
+makedepends=("autoconf" "automake" "libtool")
+
+source=("http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot/$_psplash.tar.gz" \
+        "ovos-splash-start.service" \
+        "ovos-splash-quit.service" \
+        "ovos-splash-systemd.service" \
+        "psplash-colors.h" \
+        "psplash-config.h" \
+        "file://$startdir/base-images/psplash-bar.png" \
+        "file://$startdir/base-images/psplash-hand.png" \
+        "file://$startdir/base-images/psplash-poky.png" \
+        )
+sha256sums=('8fc1782873a1d778ab979c79a37cd0eb762ef180fa6ff01806ff08ba3fb334a6'
+            '6a8221ef125e47a64755165f275472ae87435437512cbd6f4463ba3dfda443e1'
+            '30243f6b7623382579b5465ba5843c70aa13505ba10de05bced3a3aa4b87aacc'
+            '33fd714e379bbaa3236c774d214777de0dd81e97dbf17b872f3303ec4590770a'
+            '1ef923b2e0d6564e1986c2fb591cd37c8ca5c1e689c7fb927d93bdb2cfd6d723'
+            'ca09942092186656928738d6e775ee888b189154d6955be80c0c084e772b4b00'
+            '512ea64ba48ba860242bf0713553fa51e0c1258615c7bd193d083b5bad351ca6'
+            'fd8c1f11e7352e7beb34bb657e8fc391a91fb30c7ca5c51c9f93f76383b9ea8d'
+            '82727f1b7643c94fea0690e0d08a71c393e1d394a0e8c9475c582521dc212707')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$file" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/$_psplash"
+        fi
+    done
+
+    cp psplash-colors.h $_psplash/
+    cp psplash-config.h $_psplash/
+    cp *.png $_psplash/base-images/
+    
+}
+
+build() {
+    cd "$srcdir/$_psplash"
+
+    autoreconf -vfi
+    ./configure --prefix=/usr --with-systemd 
+    make 
+}
+
+package() {
+    cd "$srcdir/$_psplash" 
+    echo "Installing $pkgname to $pkgdir"
+    make DESTDIR="$pkgdir" install
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -D -m 644 ../ovos-splash-start.service \
+      $pkgdir/usr/lib/systemd/system/ovos-splash-start.service
+  
+    install -D -m 644 ../ovos-splash-quit.service \
+      $pkgdir/usr/lib/systemd/system/ovos-splash-quit.service
+  
+    install -D -m 644 ../ovos-splash-systemd.service \
+      $pkgdir/usr/lib/systemd/system/ovos-splash-systemd.service
+    
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # ovos-splash
+# #
+# ################################################################################
+# 
+# OVOS_SPLASH_SOURCE = psplash-0a902f7cd875ccf018456451be369f05fa55f962.tar.gz
+# OVOS_SPLASH_SITE = http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot
+# OVOS_SPLASH_LICENSE = GPL-2.0+
+# OVOS_SPLASH_LICENSE_FILES = COPYING
+# OVOS_SPLASH_AUTORECONF = YES
+# 
+# ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+# OVOS_SPLASH_DEPENDENCIES += systemd
+# OVOS_SPLASH_CONF_OPTS += --with-systemd
+# else
+# OVOS_SPLASH_CONF_OPTS += --without-systemd
+# endif
+# 
+# define OVOS_SPLASH_INSTALL_INIT_SYSTEMD
+# 	$(INSTALL) -D -m 644 $(BR2_EXTERNAL_OPENVOICEOS_PATH)/package/ovos-splash/ovos-splash-start.service \
+# 		$(TARGET_DIR)/usr/lib/systemd/system/ovos-splash-start.service
+# 
+# 	$(INSTALL) -D -m 644 $(BR2_EXTERNAL_OPENVOICEOS_PATH)/package/ovos-splash/ovos-splash-quit.service \
+# 		$(TARGET_DIR)/usr/lib/systemd/system/ovos-splash-quit.service
+# 
+# 	$(INSTALL) -D -m 644 $(BR2_EXTERNAL_OPENVOICEOS_PATH)/package/ovos-splash/ovos-splash-systemd.service \
+#                 $(TARGET_DIR)/usr/lib/systemd/system/ovos-splash-systemd.service
+# endef
+# 
+# define OVOS_SPLASH_CHANGE_IMAGE
+# 	cp $(BR2_EXTERNAL_OPENVOICEOS_PATH)/package/ovos-splash/psplash-colors.h $(@D)
+# 	cp $(BR2_EXTERNAL_OPENVOICEOS_PATH)/package/ovos-splash/psplash-config.h $(@D)
+# 	cp $(BR2_EXTERNAL_OPENVOICEOS_PATH)/package/ovos-splash/base-images/* $(@D)/base-images/
+# endef
+# 
+# OVOS_SPLASH_PRE_CONFIGURE_HOOKS += OVOS_SPLASH_CHANGE_IMAGE
+# 
+# $(eval $(autotools-package))
+# 
+
+
+

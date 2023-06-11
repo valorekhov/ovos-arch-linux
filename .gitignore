@@ -1,4 +1,5 @@
 /PKGBUILDs/*/src
+/PKGBUILDs/*/pkg
 /PKGBUILDs/**/*.tar.gz*
 /PKGBUILDs/**/*.tar.zst*
 
