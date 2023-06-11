@@ -1,0 +1,59 @@
+_gh_org=OpenVoiceOS
+_gh_proj=OVOS-Dashboard
+pkgname=ovos-dashboard
+pkgver='0e311a5ca9aeaa19bcc8a3aec83fb254dc30c152'
+pkgrel=0
+pkgdesc='OpenVoiceOS Dashboard Application'
+arch=('any')
+url='https://github.com/OpenVoiceOS/OVOS-Dashboard'
+license=('')
+depends=()
+makedepends=()
+
+source=(https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz \
+   0001-Run-on-port-5005.patch \
+   ovos-dashboard@.service)
+sha256sums=(
+    'd59fa2af8497a09272a2958727eab41e38c87e2c7e93dc14135ff921438efee0'
+   #0001-Run-on-port-5005.patch \
+   '015A852BE370F82528833340679B946370A55FD713B0A4EE470D1201CE2578DA' \
+   #ovos-dashboard@.service \
+   '0AD6AF96A2E2FCF37FA2390B7E7577C96E4990A8C49D99C7687B3D5C5410563D')
+
+prepare() {
+    cd "$srcdir"
+    for patch in *.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_gh_proj}-${pkgver}"
+        fi
+    done
+}
+
+build() {
+    cd "$srcdir"
+}
+
+package() {
+    cd "$srcdir" 
+    echo "Installing $pkgname to $pkgdir"
+
+    OVOS_DASHBOARD_LOCATION="usr/local/share/ovos-dashboard"
+    mkdir -p "${pkgdir}/${OVOS_DASHBOARD_LOCATION}"
+    cp -dpfr "$srcdir/$_gh_proj-$pkgver"/* "${pkgdir}/${OVOS_DASHBOARD_LOCATION}"
+
+    mkdir -p "${pkgdir}/home/mycroft/.config/systemd/user"
+    cp -dpfr "ovos-dashboard@.service" \
+        "${pkgdir}/home/mycroft/.config/systemd/user/ovos-dashboard@.service"
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
