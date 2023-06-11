@@ -82,6 +82,10 @@ build() {
     make 
 }
 
+check() {
+    cd "$srcdir"
+}
+
 package() {
     cd "$srcdir/$_psplash" 
     echo "Installing $pkgname to $pkgdir"
