@@ -25,8 +25,8 @@ build() {
 
     build_dir=$(find . -type f -name "CMakeLists.txt" -exec dirname {} \; | awk 'length < shortest || shortest == 0 { shortest=length; shortest_path=$0 } END { print shortest_path }')
     echo "Build folder is $build_dir"
-
-    cmake -B build -S "$build_dir" {{build_leader}} \
+{{build_leader}}
+    cmake -B build -S "$build_dir" {{build_opts}} \
         -DCMAKE_BUILD_TYPE='None' -DNDEBUG=ON \
         -DCMAKE_SKIP_INSTALL_RPATH=YES \
         -DCMAKE_INSTALL_PREFIX='/usr' \

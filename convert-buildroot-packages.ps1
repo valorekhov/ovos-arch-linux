@@ -1,5 +1,11 @@
 Import-Module ./makefile-parser.ps1
 
+function Get-BuildrootProject([hashtable]$properties) {
+    $key = $properties.Keys | Where-Object{ $_.EndsWith("_SITE")}    
+    if ($key) {$key.Substring(0,  $key.Length - "_SITE".Length)} else {$null}
+}
+
+
 function Get-Property([hashtable]$properties, [string]$name) {
     $key = $properties.Keys | Where-Object{ $_.EndsWith("_" + $name)}    
     if ($key) {$properties[$key]} else {$null}
@@ -25,28 +31,40 @@ $packagePrefix = "ovos"
 $rootPath = "../ovos-buildroot/buildroot-external/package"
 
 $packageDirectories = Get-ChildItem -Path $rootPath -Directory -Filter "$packagePrefix*"
-#$buildScriptTemplate = Get-Content "templates/build.sh" -Raw
 
-$buildTypeRegex = [regex]"`\$\(eval `\$\((cmake|python|automake)-package\)\)"
+$buildTypeRegex = [regex]"`\$\(eval `\$\((cmake|python|autotools|generic)-package\)\)"
 
 foreach ($packageDir in $packageDirectories) {
-    $packageDir.FullName
+    $packageDir
     $packageName = $packageDir.Name
+    mkdir -p "./PKGBUILDs/$packageName"
+    $dstTemplate = ""
 
-    $buildRootPkgPath = (Get-ChildItem -Path $packageDir.FullName -Filter "*.mk").FullName
-    $buildRootHashPath = (Get-ChildItem -Path $packageDir.FullName -Filter "*.hash").FullName
-    $buildRootConfigPath = (Get-ChildItem -Path $packageDir.FullName -Filter "Config.in").FullName
+    $buildRootPkgPath = (Get-ChildItem -Path $packageDir -Filter "*.mk").FullName
+    $buildRootHashPath = (Get-ChildItem -Path $packageDir -Filter "*.hash").FullName
+    $buildRootConfigPath = (Get-ChildItem -Path $packageDir -Filter "Config.in").FullName
     $parsed = Parse-MakeFile -FilePath $buildRootPkgPath
     # $parsedConfig = Parse-MakeFile -FilePath $buildRootConfigPath
 
     $buildRootPkgSrc = Get-Content -Path $buildRootPkgPath -Raw
+    $buildRootPkgLines = Get-Content -Path $buildRootPkgPath
     $buildRootPkgHash = if ($buildRootHashPath) {Get-Content -Path $buildRootHashPath} 
 
-    Copy-Item -Path $packageDir -Destination "./PKGBUILDs/$packageName" `
-        -Exclude "*.patch", "*.mk", "*.hash", "*.in" -Recurse -Force -ErrorAction SilentlyContinue
+    $buildRootProject = Get-BuildrootProject -properties $parsed
 
-    Copy-Item -Path "$packageDir/*.patch" -Destination "./PKGBUILDs/$packageName" -Force -ErrorAction SilentlyContinue
-    $patches = Get-ChildItem -Path $packageDir.FullName -Filter "*.patch"
+    $exclude = @("VERSION", "SITE", "LICENSE", "SOURCE", "DEPENDENCIES", "INSTALL_STAGING") `
+                    | ForEach-Object { $buildRootProject + "_" + $_ } `
+                    | Join-String -Separator "|"
+    $buildSteps = $buildRootPkgLines `
+                    | Where-Object { -not ($_.StartsWith("#") -or $_.Contains("`$(eval")) }
+                    | Where-Object { $_ -notmatch "^\s*($exclude)" }
+
+    Copy-Item -Path "$packageDir/*" -Destination "./PKGBUILDs/$packageName/" `
+        -Exclude "*.patch", "*.mk", "*.hash", "*.in" -Recurse -Force
+
+    Copy-Item -Path "$packageDir/*.patch" -Destination "./PKGBUILDs/$packageName/" 
+    $patches = Get-ChildItem -Path $packageDir -Filter "*.patch" -Force
+
     $sha256sums = @()
 
     if ($buildRootPkgHash){
@@ -99,13 +117,27 @@ foreach ($packageDir in $packageDirectories) {
         switch ($buildType) {
             "cmake" { 
                 $dstTemplate = Set-Template -template (Get-Content "./templates/cmake/PKGBUILD" -Raw) -properties @{
-                    "build_leader" = if ($confOptions) {"CONF_OPTS=$confOptions"}
+                    "build_opts" = if ($confOptions) {"CONF_OPTS=$confOptions"}
+                    "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
                 }
-
                 $makeDependencies += "cmake"
              }
-            Default {}
+            "autotools" {
+                $dstTemplate = Set-Template -template (Get-Content "./templates/autotools/PKGBUILD" -Raw) -properties @{
+                    "build_opts" = if ($confOptions) {"CONF_OPTS=$confOptions"}
+                    "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
+                }
+                $makeDependencies += "autotools"
+            }
+            "generic" {
+                $dstTemplate = $buildRootPkgSrc 
+            }
+            Default {
+                $dstTemplate = $buildRootPkgSrc 
+            }
         }
+    } else {
+        $dstTemplate = $buildRootPkgSrc 
     }
         
     $PKGBUILD = Set-Template -template $dstTemplate -properties @{
@@ -120,11 +152,8 @@ foreach ($packageDir in $packageDirectories) {
         "sha256sums" = $sha256sums | Join-String  -Separator " \"
         "depends" = $dependencies
         "makedepends" = $makeDependencies
-        "build" = $buildScript
-        "package" = $packageScript
         "footer" = "`n" + (Split-NewLines -str $buildRootPkgSrc -repl "`n# ") + "`n"
     }
 
-    mkdir -p "./PKGBUILDs/$packageName"
     $PKGBUILD | Set-Content -Path "./PKGBUILDs/$packageName/PKGBUILD"
 }
