@@ -62,7 +62,7 @@ sha256sums=('8fc1782873a1d778ab979c79a37cd0eb762ef180fa6ff01806ff08ba3fb334a6'
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
-        if [ -f "$file" ]; then
+        if [ -f "$patch" ]; then
           echo "Applying patch $patch"
           patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/$_psplash"
         fi

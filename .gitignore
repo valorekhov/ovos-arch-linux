@@ -3,6 +3,8 @@
 /PKGBUILDs/**/*.tar.gz*
 /PKGBUILDs/**/*.tar.zst*
 
+*-gpt.ps1
 /responses
+/prompts
 
 .env*

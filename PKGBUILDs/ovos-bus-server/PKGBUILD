@@ -21,9 +21,9 @@ sha256sums=(
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
-        if [ -f "$file" ]; then
+        if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/$_psplash"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${pkgver}"
         fi
     done
 }
