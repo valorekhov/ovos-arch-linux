@@ -35,7 +35,6 @@ $packageDirectories = Get-ChildItem -Path $rootPath -Directory -Filter "$package
 $buildTypeRegex = [regex]"`\$\(eval `\$\((cmake|python|autotools|generic)-package\)\)"
 
 foreach ($packageDir in $packageDirectories) {
-    $packageDir
     $packageName = $packageDir.Name
     $dstPkgDir = "./PKGBUILDs/$packageName"
     mkdir -p $dstPkgDir
@@ -45,7 +44,7 @@ foreach ($packageDir in $packageDirectories) {
     if (Test-Path -Path "$dstPkgDir/*.pkg.tar.zst") {
         continue
     }
-
+    $packageDir.FullName
     $dstTemplate = ""
 
     $buildRootPkgPath = (Get-ChildItem -Path $packageDir -Filter "*.mk").FullName
@@ -69,6 +68,7 @@ foreach ($packageDir in $packageDirectories) {
 
     Copy-Item -Path "$packageDir/*" -Destination "./PKGBUILDs/$packageName/" `
         -Exclude "*.patch", "*.mk", "*.hash", "*.in" -Recurse -Force
+    $extraSources = Get-ChildItem -Path $packageDir -Exclude "*.patch", "*.mk", "*.hash", "*.in" -Force
 
     Copy-Item -Path "$packageDir/*.patch" -Destination "./PKGBUILDs/$packageName/" 
     $patches = Get-ChildItem -Path $packageDir -Filter "*.patch" -Force
@@ -110,13 +110,32 @@ foreach ($packageDir in $packageDirectories) {
         if ($file.Contains("_VERSION")){
             $file = "archive/`$pkgver.tar.gz"
         }
-        $sources = @( Quote-String https://github.com/`$_gh_org/`$_gh_proj/$file -char "`"" )
+        $sources = @( Quote-String "https://github.com/`$_gh_org/`$_gh_proj/$file" -char "`"" )
+    } elseif ($site.StartsWith("http")) {
+        $gitHubOrg = ""
+        $gitHubProj = ""
+        $url = $site
+        if ($site.StartsWith("https://github.com")){
+            $arr = $site.Split("/")
+            $gitHubOrg = $arr[3]
+            $gitHubProj = $arr[4]
+            $src = "https://github.com/`$_gh_org/`$_gh_proj/archive/`$pkgver.tar.gz"
+        } else {
+            $src = $site
+        }
+        $sources = @( $src )
     }
 
     foreach($patch in $patches){
         $sha256sums += "`n   #$($patch.Name)" 
-        $sha256sums += "`n   $(($patch | Get-FileHash -Algorithm SHA256).Hash)"
+        $sha256sums += "`n   '$(($patch | Get-FileHash -Algorithm SHA256).Hash)'"
         $sources += "`n   $($patch.Name)" 
+    }
+
+    foreach($extraSource in $extraSources){
+        $sha256sums += "`n   #$($extraSource.Name)" 
+        $sha256sums += "`n   '$(($extraSource | Get-FileHash -Algorithm SHA256).Hash)'"
+        $sources += "`n   $($extraSource.Name)" 
     }
 
     $evalMatches = $buildTypeRegex.Matches($buildRootPkgSrc)
@@ -138,7 +157,9 @@ foreach ($packageDir in $packageDirectories) {
                 $makeDependencies += "autoconf", "automake", "libtool"
             }
             "generic" {
-                $dstTemplate = $buildRootPkgSrc 
+                $dstTemplate = Set-Template -template (Get-Content "./templates/generic/PKGBUILD" -Raw) -properties @{
+                    "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
+                }
             }
             Default {
                 $dstTemplate = $buildRootPkgSrc 
