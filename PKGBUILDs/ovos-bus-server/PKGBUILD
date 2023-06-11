@@ -1,0 +1,64 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-bus-server
+pkgname=ovos-bus-server
+pkgver='6390bb787fad4660106577891ada6fa935b662d7'
+pkgrel=0
+pkgdesc='alternative ovos bus service (websocket server) in C++'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-bus-server/'
+license=('Apache License 2.0')
+depends=()
+makedepends=(pkgconf cmake)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz" \
+   0001-Make-package-installable.patch)
+sha256sums=(
+   #ovos-bus-server-6390bb787fad4660106577891ada6fa935b662d7.tar.gz \
+   2352676a4c1726d2febe7a39c920d5b8b26a5256913039c5e69beff5e5469d3e \
+   #0001-Make-package-installable.patch \
+   BBD1F91A15BA6F40358D618168D64547B1FAC5F9AA53FEA64BA7A2D0A0948B00)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$file" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/$_psplash"
+        fi
+    done
+}
+
+build() {
+    cd "$srcdir"
+
+    build_dir=$(find . -type f -name "CMakeLists.txt" -exec dirname {} \; | awk 'length < shortest || shortest == 0 { shortest=length; shortest_path=$0 } END { print shortest_path }')
+    echo "Build folder is $build_dir"
+     
+    cmake -B build -S "$build_dir"  \
+        -DCMAKE_BUILD_TYPE='None' -DNDEBUG=ON \
+        -DCMAKE_SKIP_INSTALL_RPATH=YES \
+        -DCMAKE_INSTALL_PREFIX='/usr' \
+        -Wno-dev
+    cmake --build build
+}
+
+check() {
+    ctest --test-dir build --output-on-failure
+}
+
+package() {
+    cd "$srcdir" 
+    echo "Installing $pkgname to $pkgdir"
+    DESTDIR="$pkgdir" cmake --install build
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
