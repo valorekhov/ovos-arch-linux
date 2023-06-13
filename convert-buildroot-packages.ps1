@@ -1,3 +1,7 @@
+param(
+    [switch]$Force = $false
+)
+
 Import-Module ./makefile-parser.ps1
 
 function Get-BuildrootProject([hashtable]$properties) {
@@ -44,11 +48,23 @@ foreach ($packageDir in $packageDirectories) {
 
     # Check if $dstPkgDir already has a built package file *.pkg.tar.zst
     # and if so, skip this package
-    if (Test-Path -Path "$dstPkgDir/*.pkg.tar.zst") {
-        continue
+    if ((Test-Path -Path "$dstPkgDir/*.pkg.tar.zst") -or (Test-Path -Path "$dstPkgDir/.pkgignore")) {
+        if (-not $Force){
+            continue
+        }
     }
     $packageDir.FullName
     $dstTemplate = ""
+    $_name = ""
+    $_version = ""
+
+    if (Test-Path -Path "$dstPkgDir/PKGBUILD") {
+        $dstTemplate = Get-Content -Path "$dstPkgDir/PKGBUILD" 
+        # Extract _name and pkgver values from existing PKGBUILD using regex
+        $_name = $dstTemplate | Where-Object{ $_.Trim().StartsWith("_name=") } | ForEach-Object{ $_.Split("=")[1].Trim() }
+        $_version = $dstTemplate | Where-Object{ $_.Trim().StartsWith("pkgver=") } | ForEach-Object{ $_.Split("=")[1].Trim() }
+        Write-Host "Found existing PKGBUILD for $_name version $_version"
+    }
 
     $buildRootPkgPath = (Get-ChildItem -Path $packageDir -Filter "*.mk").FullName
     $buildRootHashPath = (Get-ChildItem -Path $packageDir -Filter "*.hash").FullName
@@ -92,6 +108,7 @@ foreach ($packageDir in $packageDirectories) {
     $site = Get-Property -properties $parsed -name "SITE"
     $confOptions = Get-Property -properties $parsed -name "CONF_OPTS"
     $dependencies = Get-Property -properties $parsed -name "DEPENDENCIES" -split "\s+"
+    $conflicts = @()
     $makeDependencies = @()
 
     # In buildroot, dependencies prefixed with "host-" can be presumed to be build dependencies
@@ -170,7 +187,10 @@ foreach ($packageDir in $packageDirectories) {
                 $makeDependencies += "python-build", "python-installer", "python-wheel"
                     
                 $dstTemplate = Set-Template -template (Get-Content "./templates/python/PKGBUILD" -Raw) -properties @{
-                    "_name" = if ($gitHubProj) {$gitHubProj} else {$packageName.Substring("python-".Length)}
+                    "_name" = if ($_name) { $_name } else {
+                        if ($gitHubProj) {$gitHubProj} else {$packageName.Substring("python-".Length)}
+                    }
+                    "_pkgver" = if ($_version){ $_version } else { $version }
                 }
             }
             Default {
@@ -216,6 +236,7 @@ foreach ($packageDir in $packageDirectories) {
             "sources" = $sources | Join-String  -Separator " \"
             "sha256sums" = $sha256sums | Join-String  -Separator " \"
             "depends" = $dependencies
+            "conflicts" = $conflicts
             "makedepends" = $makeDependencies
             "footer" = "`n" + (Split-NewLines -str $buildRootPkgSrc -repl "`n# ") + "`n"
         }

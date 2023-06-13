@@ -3,13 +3,14 @@ _gh_proj={{gh_proj}}
 pkgname={{pkgname}}
 _name={{_name}}
 _base_ver={{pkgver}}
-pkgver='1.0'
+pkgver={{_pkgver}}
 pkgrel=1
 pkgdesc={{pkgdesc}}
 arch=('any')
 url={{url}}
 license=({{license}})
 depends=({{depends}})
+conflicts=({{conflicts}})
 makedepends=({{makedepends}})
 
 source=({{sources}})
