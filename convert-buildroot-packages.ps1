@@ -276,25 +276,40 @@ foreach ($packageDir in $packageDirectories) {
         $requirements = python -c "import os; import json; import requirements; print(json.dumps([{'name': r.name, 'specs': r.specs} for r in requirements.parse(open('$requirementsPath', 'r'))]))" `
                             | ConvertFrom-Json
 
-        $dependencies += $requirements | Sort-Object -Property "name" | ForEach-Object {
-            # iterate over the specs array and pick one that is either >= or <=,
-            # absent that, pick the ~=
-            $versions = $_.specs | Foreach-Object {
-                @{
-                    "op" = $_[0]
-                    "ver" = $_[1]
+        $requirements = @($requirements | Sort-Object -Property "name" | ForEach-Object {
+            @{ 
+                "name" = $_.name
+                "specs" = $_.specs | Foreach-Object {
+                    @{
+                        "op" = $_[0]
+                        "ver" = $_[1]
+                    }
                 }
-            } 
-            | Sort-Object -Property op
-            | ForEach-Object { $_.op + $_.ver }
+            }
+        })
+
+        $dependencies += $requirements | ForEach-Object {
+            $versions = @($_.specs | ForEach-Object { $_.op + $_.ver })
             $ver = $versions
                 | Where-Object { $_.StartsWith(">")}
-                |  Select-Object -First 1
-            if ($ver) {" 'python-$($_.name)$ver' #$($versions | Join-String -Separator ","))" }
+                | Sort-Object -Descending
+                | Select-Object -First 1
+            if ($ver -and $versions.Count -gt 1) {" 'python-$($_.name)$ver' #$($versions | Join-String -Separator ",")" }
                 else {" 'python-$($_.name)$ver'"}
         }
         $dependencies = $dependencies | Join-String -Separator " \`n"
         $dependencies += " \`n"
+
+        $conflicts += $requirements | Where-Object {$_.specs | Where-Object {$_.op.StartsWith("<") } } | ForEach-Object {
+            $ver = $_.specs
+                | Where-Object { $_.op.StartsWith("<")}
+                | Sort-Object -Property "ver" -Descending
+                | ForEach-Object { ">=" + $_.ver }
+                | Select-Object -First 1
+            " 'python-$($_.name)$ver'"
+        }
+        $conflicts = $conflicts | Join-String -Separator " \`n"
+
         Pop-Location
         Save-PKGBUILD
     }
