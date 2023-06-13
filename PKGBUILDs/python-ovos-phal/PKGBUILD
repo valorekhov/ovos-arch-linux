@@ -1,9 +1,9 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos_PHAL
 pkgname=python-ovos-phal
-_name=ovos_PHAL
+_name=ovos-PHAL
 _base_ver='b03fa1e3ba1202a34a755bb8979e0380419a02b3'
-pkgver='1.0'
+pkgver=0.0.5a6
 pkgrel=1
 pkgdesc='OVOS-PHAL'
 arch=('any')
@@ -62,7 +62,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

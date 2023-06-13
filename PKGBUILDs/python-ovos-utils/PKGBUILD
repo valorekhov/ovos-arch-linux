@@ -1,9 +1,9 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos_utils
 pkgname=python-ovos-utils
-_name=ovos_utils
+_name=ovos-utils
 _base_ver='5e43850e138150247da5d151ed4bd2e65a6bb455'
-pkgver='1.0'
+pkgver=0.0.33a8
 pkgrel=1
 pkgdesc='collection of simple utilities for use
 across the mycroft ecosystem'
@@ -59,7 +59,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then
