@@ -1,0 +1,95 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-stt-plugin-vosk
+pkgname=python-ovos-stt-plugin-vosk
+_name=ovos-stt-plugin-vosk
+_base_ver='3bde4c117bf76ceb5645eff8cf534157f0e4e00d'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='OVOS STT plugin for Vosk'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-stt-plugin-vosk/'
+license=('')
+depends=(python \
+ 'python-ovos_skill_installer' \
+ 'python-ovos-plugin-manager>=0.0.1' #>=0.0.1) \
+ 'python-SpeechRecognition>=3.8.1' #>=3.8.1) \
+ 'python-vosk' \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-stt-plugin-vosk-3bde4c117bf76ceb5645eff8cf534157f0e4e00d.tar.gz \
+   08352ad93dd6840d96f21e7b13c51321812d5d40989695a87c44272313e2066b)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-stt-plugin-vosk
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_STT_PLUGIN_VOSK_VERSION = 3bde4c117bf76ceb5645eff8cf534157f0e4e00d
+# PYTHON_OVOS_STT_PLUGIN_VOSK_SITE = $(call github,OpenVoiceOS,ovos-stt-plugin-vosk,$(PYTHON_OVOS_STT_PLUGIN_VOSK_VERSION))
+# PYTHON_OVOS_STT_PLUGIN_VOSK_SETUP_TYPE = setuptools
+# PYTHON_OVOS_STT_PLUGIN_VOSK_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

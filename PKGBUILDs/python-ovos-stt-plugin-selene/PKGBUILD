@@ -1,0 +1,95 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-stt-plugin-selene
+pkgname=python-ovos-stt-plugin-selene
+_name=ovos-stt-plugin-selene
+_base_ver='549f8583e706c44234257fcc39fa0f454c1e37b3'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='OVOS STT plugin for Mycroft A.I. it'\''s selene backend'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-stt-plugin-selene/'
+license=('')
+depends=(python \
+ 'python-ovos_utils' \
+ 'python-ovos-backend-client' \
+ 'python-ovos-plugin-manager' \
+ 'python-requests' \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-stt-plugin-selene-549f8583e706c44234257fcc39fa0f454c1e37b3.tar.gz \
+   05da48377aa4fcc752260a16af17cc7a467f7d1dac4e1e910d1bb6f70731d992)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-stt-plugin-selene
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_STT_PLUGIN_SELENE_VERSION = 549f8583e706c44234257fcc39fa0f454c1e37b3
+# PYTHON_OVOS_STT_PLUGIN_SELENE_SITE = $(call github,OpenVoiceOS,ovos-stt-plugin-selene,$(PYTHON_OVOS_STT_PLUGIN_SELENE_VERSION))
+# PYTHON_OVOS_STT_PLUGIN_SELENE_SETUP_TYPE = setuptools
+# PYTHON_OVOS_STT_PLUGIN_SELENE_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

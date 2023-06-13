@@ -1,0 +1,95 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-ocp-rss-plugin
+pkgname=python-ovos-ocp-rss-plugin
+_name=ovos-ocp-rss-plugin
+_base_ver='3875c176609e29c925940366a8bafda0fb831ab7'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='
+'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-ocp-rss-plugin/'
+license=('')
+depends=(python \
+ 'python-feedparser' \
+ 'python-ovos_plugin_common_play' \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-ocp-rss-plugin-3875c176609e29c925940366a8bafda0fb831ab7.tar.gz \
+   34505d50989dc5d239efe45ba834e394016ac450f6da6348ae169c14f964a6a0)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-ocp-rss-plugin
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_OCP_RSS_PLUGIN_VERSION = 3875c176609e29c925940366a8bafda0fb831ab7
+# PYTHON_OVOS_OCP_RSS_PLUGIN_SITE = $(call github,OpenVoiceOS,ovos-ocp-rss-plugin,$(PYTHON_OVOS_OCP_RSS_PLUGIN_VERSION))
+# PYTHON_OVOS_OCP_RSS_PLUGIN_SETUP_TYPE = setuptools
+# PYTHON_OVOS_OCP_RSS_PLUGIN_LICENSE_FILE = LICENSE
+# PYTHON_OVOS_OCP_RSS_PLUGIN_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

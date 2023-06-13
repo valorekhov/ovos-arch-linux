@@ -1,0 +1,91 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-PHAL-plugin-mk1
+pkgname=python-ovos-phal-plugin-mk1
+_name=ovos-PHAL-plugin-mk1
+_base_ver='e8aa4f20f2a10792ad5c1cfa47719ab46a0117c4'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='OVOS-PHAL Mark-1'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk1/'
+license=('')
+depends=(python \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-phal-plugin-mk1-e8aa4f20f2a10792ad5c1cfa47719ab46a0117c4.tar.gz \
+   7e2147ccaeab487cf65dbc3470ede0c4cbbcb12136ef940652c72131caa9cd55)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-phal-plugin-mk1
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_PHAL_PLUGIN_MK1_VERSION = e8aa4f20f2a10792ad5c1cfa47719ab46a0117c4
+# PYTHON_OVOS_PHAL_PLUGIN_MK1_SITE = $(call github,OpenVoiceOS,ovos-PHAL-plugin-mk1,$(PYTHON_OVOS_PHAL_PLUGIN_MK1_VERSION))
+# PYTHON_OVOS_PHAL_PLUGIN_MK1_SETUP_TYPE = setuptools
+# PYTHON_OVOS_PHAL_PLUGIN_MK1_LICENSE_FILES = LICENSE
+# 
+# $(eval $(python-package))
+# 
+
+
+

@@ -1,0 +1,91 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-PHAL-plugin-respeaker-2mic
+pkgname=python-ovos-phal-plugin-respeaker-2mic
+_name=ovos-PHAL-plugin-respeaker-2mic
+_base_ver='d8d2e2197b71332f8e6e88f6ccca8689ddd2ac8d'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='OVOS-PHAL ReSpeaker 2mic'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-respeaker-2mic/'
+license=('')
+depends=(python \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-phal-plugin-respeaker-2mic-d8d2e2197b71332f8e6e88f6ccca8689ddd2ac8d.tar.gz \
+   c330ab24cb57fec00b4d3becd76dd930250f2149a1b006c195bd21912354c289)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-phal-plugin-respeaker-2mic
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_PHAL_PLUGIN_RESPEAKER_2MIC_VERSION = d8d2e2197b71332f8e6e88f6ccca8689ddd2ac8d
+# PYTHON_OVOS_PHAL_PLUGIN_RESPEAKER_2MIC_SITE = $(call github,OpenVoiceOS,ovos-PHAL-plugin-respeaker-2mic,$(PYTHON_OVOS_PHAL_PLUGIN_RESPEAKER_2MIC_VERSION))
+# PYTHON_OVOS_PHAL_PLUGIN_RESPEAKER_2MIC_SETUP_TYPE = setuptools
+# PYTHON_OVOS_PHAL_PLUGIN_RESPEAKER_2MIC_LICENSE_FILES = LICENSE
+# 
+# $(eval $(python-package))
+# 
+
+
+

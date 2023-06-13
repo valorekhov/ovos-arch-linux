@@ -1,0 +1,105 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-personal-backend
+pkgname=python-ovos-personal-backend
+_name=ovos-personal-backend
+_base_ver='5029f4bd5a97fafd47590ca35757f579e64f53d4'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='Personal mycroft backend alternative to mycroft.home,
+written in flask'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-personal-backend/'
+license=('')
+depends=(python \
+ 'python-Flask>=0.12' #>=0.12) \
+ 'python-Flask-SQLAlchemy' \
+ 'python-geocoder' \
+ 'python-json_database' \
+ 'python-oauthlib' \
+ 'python-ovos-plugin-manager>=0.0.23a3' #>=0.0.23a3) \
+ 'python-ovos-stt-plugin-server' \
+ 'python-ovos-utils>=0.0.25a7' #>=0.0.25a7) \
+ 'python-pyOpenSSL' \
+ 'python-requests>=2.26.0' #>=2.26.0) \
+ 'python-requests_cache' \
+ 'python-sqlalchemy-json' \
+ 'python-timezonefinder' \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-personal-backend-5029f4bd5a97fafd47590ca35757f579e64f53d4.tar.gz \
+   5c7ee4704de3fc27497b666f481fbdc015334336ead73ac2a96de2d2ec8d0dd2)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-personal-backend
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_PERSONAL_BACKEND_VERSION = 5029f4bd5a97fafd47590ca35757f579e64f53d4
+# PYTHON_OVOS_PERSONAL_BACKEND_SITE = $(call github,OpenVoiceOS,ovos-personal-backend,$(PYTHON_OVOS_PERSONAL_BACKEND_VERSION))
+# PYTHON_OVOS_PERSONAL_BACKEND_SETUP_TYPE = setuptools
+# PYTHON_OVOS_PERSONAL_BACKEND_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

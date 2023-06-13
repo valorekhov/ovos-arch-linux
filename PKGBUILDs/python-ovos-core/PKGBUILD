@@ -1,0 +1,107 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-core
+pkgname=python-ovos-core
+_name=ovos-core
+_base_ver='e4cabf257c278e183d5c77aaaa3c920028e4f51f'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='OVOS-core is a backwards-compatible descendant of
+Mycroft-core, the central component of Mycroft'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-core/'
+license=('')
+depends=(python \
+ 'python-adapt-parser>=1.0.0' #<2.0.0,>=1.0.0) \
+ 'python-combo-lock>=0.2.2' #<0.3,>=0.2.2) \
+ 'python-ovos_backend_client>=0.0.6' #<0.1.0,>=0.0.6) \
+ 'python-ovos_bus_client>=0.0.4a3' #<0.1.0,>=0.0.4a3) \
+ 'python-ovos_workshop>=0.0.12a17' #<0.1.0,>=0.0.12a17) \
+ 'python-ovos-classifiers>=0.0.0a3' #<0.1.0,>=0.0.0a3) \
+ 'python-ovos-config>=0.0.8' #>=0.0.8,~=0.0) \
+ 'python-ovos-lingua-franca>=0.4.7' #>=0.4.7) \
+ 'python-ovos-plugin-manager>=0.0.23a9' #<0.1.0,>=0.0.23a9) \
+ 'python-ovos-utils>=0.0.33a5' #<0.1.0,>=0.0.33a5) \
+ 'python-padacioso' \
+ 'python-python-dateutil>=2.6' #<3.0,>=2.6) \
+ 'python-requests>=2.26' #<3.0,>=2.26) \
+ 'python-watchdog>=2.1' #<3.0,>=2.1) \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-core-e4cabf257c278e183d5c77aaaa3c920028e4f51f.tar.gz \
+   75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-core
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_CORE_VERSION = e4cabf257c278e183d5c77aaaa3c920028e4f51f
+# PYTHON_OVOS_CORE_SITE = $(call github,OpenVoiceOS,ovos-core,$(PYTHON_OVOS_CORE_VERSION))
+# PYTHON_OVOS_CORE_SETUP_TYPE = setuptools
+# PYTHON_OVOS_CORE_LICENSE_FILES = LICENSE
+# PYTHON_OVOS_CORE_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

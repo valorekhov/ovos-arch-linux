@@ -1,0 +1,100 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-ocp-audio-plugin
+pkgname=python-ovos-ocp-audio-plugin
+_name=ovos-ocp-audio-plugin
+_base_ver='31701ded43a4f7ff6c02833d6aaf1bc0740257fc'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='OVOS GUI mediaplayer plugin'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin/'
+license=('')
+depends=(python \
+ 'python-dbus-next' \
+ 'python-ovos_audio_plugin_simple' \
+ 'python-ovos_workshop>=0.0.11' #<0.1.0,>=0.0.11) \
+ 'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3) \
+ 'python-ovos-ocp-files-plugin' \
+ 'python-ovos-plugin-manager>=0.0.22' #<0.1.0,>=0.0.22) \
+ 'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32) \
+ 'python-padacioso>=0.1.1' #>=0.1.1,~=0.1) \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-ocp-audio-plugin-31701ded43a4f7ff6c02833d6aaf1bc0740257fc.tar.gz \
+   d5f695b5d6533fb51d81b5c11e2a6731341d1d8d9f4933713905b81d99bf64a5)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-ocp-audio-plugin
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_OCP_AUDIO_PLUGIN_VERSION = 31701ded43a4f7ff6c02833d6aaf1bc0740257fc
+# PYTHON_OVOS_OCP_AUDIO_PLUGIN_SITE = $(call github,OpenVoiceOS,ovos-ocp-audio-plugin,$(PYTHON_OVOS_OCP_AUDIO_PLUGIN_VERSION))
+# PYTHON_OVOS_OCP_AUDIO_PLUGIN_SETUP_TYPE = setuptools
+# PYTHON_OVOS_OCP_AUDIO_PLUGIN_LICENSE_FILES = LICENSE
+# PYTHON_OVOS_OCP_AUDIO_PLUGIN_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

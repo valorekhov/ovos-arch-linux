@@ -1,0 +1,98 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-PHAL-plugin-oauth
+pkgname=python-ovos-phal-plugin-oauth
+_name=ovos-PHAL-plugin-oauth
+_base_ver='5cdc431cf1d4001a0c02176708d014fa627cbc04'
+pkgver='1.0'
+pkgrel=1
+pkgdesc='PHAL OAuth Plugin'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-oauth/'
+license=('')
+depends=(python \
+ 'python-Flask>=0.12' #>=0.12) \
+ 'python-oauthlib' \
+ 'python-ovos-backend-client' \
+ 'python-ovos-utils>=0.0.26' #>=0.0.26,~=0.0) \
+ 'python-pillow' \
+ 'python-qrcode' \
+)
+makedepends=(python-build python-installer python-wheel)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #python-ovos-phal-plugin-oauth-5cdc431cf1d4001a0c02176708d014fa627cbc04.tar.gz \
+   d338341d9f87998e71addb8f4da6b6a537e91406c1daa7b39b2196751b172b1a)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_base_ver"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_base_ver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_base_ver"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_base_ver"
+
+    echo "Installing $pkgname to $pkgdir"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # python-ovos-phal-plugin-oauth
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_PHAL_PLUGIN_OAUTH_VERSION = 5cdc431cf1d4001a0c02176708d014fa627cbc04
+# PYTHON_OVOS_PHAL_PLUGIN_OAUTH_SITE = $(call github,OpenVoiceOS,ovos-PHAL-plugin-oauth,$(PYTHON_OVOS_PHAL_PLUGIN_OAUTH_VERSION))
+# PYTHON_OVOS_PHAL_PLUGIN_OAUTH_SETUP_TYPE = setuptools
+# PYTHON_OVOS_PHAL_PLUGIN_OAUTH_LICENSE_FILES = LICENSE
+# PYTHON_OVOS_PHAL_PLUGIN_OAUTH_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+
