@@ -3,7 +3,7 @@ _gh_proj=OVOS-workshop
 pkgname=python-ovos-workshop
 _name=OVOS-workshop
 _base_ver='13cab11cb79146dd1b4666a44eaa62c3be0224c4'
-pkgver='1.0'
+pkgver=0.0.12a27
 pkgrel=1
 pkgdesc='frameworks, templates and patches for the
 mycroft universe'

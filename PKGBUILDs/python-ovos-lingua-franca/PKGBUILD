@@ -3,7 +3,7 @@ _gh_proj=ovos-lingua-franca
 pkgname=python-ovos-lingua-franca
 _name=ovos-lingua-franca
 _base_ver='282db576c4cd0c8212eaf00ad303f0653ea0e0ed'
-pkgver='1.0'
+pkgver=0.4.8a1
 pkgrel=1
 pkgdesc='OpenVoiceOS'\''s multilingual text parsing and formatting library.
 This project has been forked from mycroft-core, it replaces it!'

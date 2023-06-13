@@ -3,7 +3,7 @@ _gh_proj=ovos-ocp-bandcamp-plugin
 pkgname=python-ovos-ocp-bandcamp-plugin
 _name=ovos-ocp-bandcamp-plugin
 _base_ver='d619878659a87fc6a383444164aa8dcfe384d0c4'
-pkgver='1.0'
+pkgver=0.0.2
 pkgrel=1
 pkgdesc='
 '

@@ -3,7 +3,7 @@ _gh_proj=ovos_skill_manager
 pkgname=python-ovos-skill-manager
 _name=ovos_skill_manager
 _base_ver='1a749aed214b4274097b8fcea5ca2984f76b000d'
-pkgver='1.0'
+pkgver=0.0.13a2
 pkgrel=1
 pkgdesc='Skill installer for OVOS. Install skills from any appstore!
 

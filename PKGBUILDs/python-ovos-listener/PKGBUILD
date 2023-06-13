@@ -3,7 +3,7 @@ _gh_proj=ovos-listener
 pkgname=python-ovos-listener
 _name=ovos-listener
 _base_ver='2d6ba2b6dbfae1c48c1833079d4aa94fa5cf6af5'
-pkgver='1.0'
+pkgver=0.0.2a12
 pkgrel=1
 pkgdesc='The "ears" of the OVOS assistant!
 

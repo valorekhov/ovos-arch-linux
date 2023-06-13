@@ -3,7 +3,7 @@ _gh_proj=ovos-core
 pkgname=python-ovos-core
 _name=ovos-core
 _base_ver='e4cabf257c278e183d5c77aaaa3c920028e4f51f'
-pkgver='1.0'
+pkgver=0.0.8a21
 pkgrel=1
 pkgdesc='OVOS-core is a backwards-compatible descendant of
 Mycroft-core, the central component of Mycroft'

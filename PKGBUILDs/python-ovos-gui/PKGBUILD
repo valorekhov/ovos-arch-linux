@@ -3,7 +3,7 @@ _gh_proj=ovos-gui
 pkgname=python-ovos-gui
 _name=ovos-gui
 _base_ver='502dec01d0055c54998280ffaa76d5f54961173f'
-pkgver='1.0'
+pkgver=0.0.3a2
 pkgrel=1
 pkgdesc='GUI messagebus service, manages GUI state
 and implements the gui protocol'

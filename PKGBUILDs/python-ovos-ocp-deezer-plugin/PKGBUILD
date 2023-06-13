@@ -3,7 +3,7 @@ _gh_proj=ovos-ocp-deezer-plugin
 pkgname=python-ovos-ocp-deezer-plugin
 _name=ovos-ocp-deezer-plugin
 _base_ver='67d1ee8e6df4333c19e838c1ef248f871d47533f'
-pkgver='1.0'
+pkgver=0.0.2
 pkgrel=1
 pkgdesc='
 '

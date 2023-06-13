@@ -3,7 +3,7 @@ _gh_proj=ovos-personal-backend
 pkgname=python-ovos-personal-backend
 _name=ovos-personal-backend
 _base_ver='5029f4bd5a97fafd47590ca35757f579e64f53d4'
-pkgver='1.0'
+pkgver=0.2.0a5
 pkgrel=1
 pkgdesc='Personal mycroft backend alternative to mycroft.home,
 written in flask'

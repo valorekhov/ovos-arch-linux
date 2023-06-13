@@ -3,7 +3,7 @@ _gh_proj=ovos-ocp-news-plugin
 pkgname=python-ovos-ocp-news-plugin
 _name=ovos-ocp-news-plugin
 _base_ver='2927b18638429249f80f320c56493d43899009f1'
-pkgver='1.0'
+pkgver=0.0.4
 pkgrel=1
 pkgdesc='
 '

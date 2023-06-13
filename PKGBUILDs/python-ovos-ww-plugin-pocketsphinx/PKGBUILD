@@ -3,7 +3,7 @@ _gh_proj=ovos-ww-plugin-pocketsphinx
 pkgname=python-ovos-ww-plugin-pocketsphinx
 _name=ovos-ww-plugin-pocketsphinx
 _base_ver='06183f4cf51e94cf0fd76cdb3f134789d787330a'
-pkgver='1.0'
+pkgver=0.1.4
 pkgrel=1
 pkgdesc='This adds a plugin for pocketsphinx, this is the
 fallback mycroft wake word engine and is supported

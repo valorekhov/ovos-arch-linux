@@ -3,7 +3,7 @@ _gh_proj=ovos-ocp-rss-plugin
 pkgname=python-ovos-ocp-rss-plugin
 _name=ovos-ocp-rss-plugin
 _base_ver='3875c176609e29c925940366a8bafda0fb831ab7'
-pkgver='1.0'
+pkgver=0.0.3
 pkgrel=1
 pkgdesc='
 '

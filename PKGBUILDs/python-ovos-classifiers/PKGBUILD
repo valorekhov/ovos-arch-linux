@@ -3,7 +3,7 @@ _gh_proj=ovos-classifiers
 pkgname=python-ovos-classifiers
 _name=ovos-classifiers
 _base_ver='6010ddf63294f3b9e5ff3397b45a7201ddcc353f'
-pkgver='1.0'
+pkgver=0.0.0a13
 pkgrel=1
 pkgdesc='provide baseline feature extraction pipelines suited for each task
 

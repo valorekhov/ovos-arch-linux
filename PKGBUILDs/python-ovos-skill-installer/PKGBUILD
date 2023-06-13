@@ -3,7 +3,7 @@ _gh_proj=ovos_skill_installer
 pkgname=python-ovos-skill-installer
 _name=ovos_skill_installer
 _base_ver='c222dcf46ad36ed3c07ce824f59d123e3abec3dc'
-pkgver='1.0'
+pkgver=0.0.5
 pkgrel=1
 pkgdesc='Skills can be installed from github branches or
 releases, from .zip or .tar.gz urls

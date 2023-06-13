@@ -3,7 +3,7 @@ _gh_proj=ovos-plugin-manager
 pkgname=python-ovos-plugin-manager
 _name=ovos-plugin-manager
 _base_ver='7eba4f0911e68aed315ec9029727ac052d363b95'
-pkgver='1.0'
+pkgver=0.0.23a18
 pkgrel=1
 pkgdesc='OPM can be used to search, install, load
 and create plugins for the OpenVoiceOS ecosystem!'

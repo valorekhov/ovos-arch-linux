@@ -3,7 +3,7 @@ _gh_proj=ovos-ocp-youtube-plugin
 pkgname=python-ovos-ocp-youtube-plugin
 _name=ovos-ocp-youtube-plugin
 _base_ver='df6bfd8ccc3e178cfc5284c92932196883581dac'
-pkgver='1.0'
+pkgver=0.0.2a1
 pkgrel=1
 pkgdesc='
 '

@@ -3,7 +3,7 @@ _gh_proj=ovos-ocp-m3u-plugin
 pkgname=python-ovos-ocp-m3u-plugin
 _name=ovos-ocp-m3u-plugin
 _base_ver='d2571ac1c2870501f0940dc3dcdb35b402300e9e'
-pkgver='1.0'
+pkgver=0.0.2a1
 pkgrel=1
 pkgdesc='
 '

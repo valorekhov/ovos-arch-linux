@@ -3,7 +3,7 @@ _gh_proj=ovos-backend-client
 pkgname=python-ovos-backend-client
 _name=ovos-backend-client
 _base_ver='1a746cee2fca3051415b51460a8a8f6897ee61da'
-pkgver='1.0'
+pkgver=0.0.7a6
 pkgrel=1
 pkgdesc='Unofficial python api for interaction with
 ovos-local-backend'
