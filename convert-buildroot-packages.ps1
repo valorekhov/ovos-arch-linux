@@ -27,7 +27,10 @@ function Split-NewLines([string]$str, [string]$repl){
     return $str.Replace("`n", $repl)
 }
 
-$packagePrefix = "ovos"
+$rootDir = Get-Location
+
+# TODO: prefixes: python-mycroft, python-neon, skill
+$packagePrefix = "python-ovos"
 $rootPath = "../ovos-buildroot/buildroot-external/package"
 
 $packageDirectories = Get-ChildItem -Path $rootPath -Directory -Filter "$packagePrefix*"
@@ -51,7 +54,6 @@ foreach ($packageDir in $packageDirectories) {
     $buildRootHashPath = (Get-ChildItem -Path $packageDir -Filter "*.hash").FullName
     $buildRootConfigPath = (Get-ChildItem -Path $packageDir -Filter "Config.in").FullName
     $parsed = Parse-MakeFile -FilePath $buildRootPkgPath
-    # $parsedConfig = Parse-MakeFile -FilePath $buildRootConfigPath
 
     $buildRootPkgSrc = Get-Content -Path $buildRootPkgPath -Raw
     $buildRootPkgLines = Get-Content -Path $buildRootPkgPath
@@ -140,7 +142,7 @@ foreach ($packageDir in $packageDirectories) {
 
     $evalMatches = $buildTypeRegex.Matches($buildRootPkgSrc)
     if ($evalMatches.Count -gt 0){
-        $buildType = $evalMatches[0].Groups[1]
+        $buildType = $evalMatches[0].Groups[1].Value
         switch ($buildType) {
             "cmake" { 
                 $dstTemplate = Set-Template -template (Get-Content "./templates/cmake/PKGBUILD" -Raw) -properties @{
@@ -161,28 +163,119 @@ foreach ($packageDir in $packageDirectories) {
                     "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
                 }
             }
+            "python" {
+                $dependencies = @("python")   
+                #iterate over sources and replace $pkgver with $_base_ver
+                $sources = @($sources | ForEach-Object { $_ -replace "pkgver", "_base_ver" })         
+                $makeDependencies += "python-build", "python-installer", "python-wheel"
+                    
+                $dstTemplate = Set-Template -template (Get-Content "./templates/python/PKGBUILD" -Raw) -properties @{
+                    "_name" = if ($gitHubProj) {$gitHubProj} else {$packageName.Substring("python-".Length)}
+                }
+            }
             Default {
                 $dstTemplate = $buildRootPkgSrc 
+                $buildType = ""
             }
         }
     } else {
         $dstTemplate = $buildRootPkgSrc 
     }
-        
-    $PKGBUILD = Set-Template -template $dstTemplate -properties @{
-        "gh_org" = $gitHubOrg
-        "gh_proj" = $gitHubProj
-        "license" = Quote-String -str (Get-Property -properties $parsed -name "LICENSE")
-        "pkgname" = $packageName
-        "pkgver" = Quote-String $version
-        "pkgdesc" = Quote-String -str (Get-Content -Path $buildRootConfigPath -Raw) 
-        "url" =  Quote-String $url
-        "sources" = $sources | Join-String  -Separator " \"
-        "sha256sums" = $sha256sums | Join-String  -Separator " \"
-        "depends" = $dependencies
-        "makedepends" = $makeDependencies
-        "footer" = "`n" + (Split-NewLines -str $buildRootPkgSrc -repl "`n# ") + "`n"
-    }
 
-    $PKGBUILD | Set-Content -Path "./PKGBUILDs/$packageName/PKGBUILD"
+    $brConfig = Get-Content -Path $buildRootConfigPath
+    $found = $false
+    $description = @()
+    foreach($line in $brConfig){
+        if ($line.TrimStart().Equals("help")){
+            $found = $true
+            continue
+        }
+        if (-not $found){
+            continue
+        }
+        $line = $line.Trim()
+        if ($line.StartsWith("https://")){
+            continue
+        }
+        $description += $line
+    }
+    #check if the last line in $description is empty and remove it
+    if ($description[$description.Length - 1].Trim().Length -eq 0){
+        $description = $description[0..($description.Length - 2)]
+    }
+        
+    function Save-PKGBUILD {
+        $PKGBUILD = Set-Template -template $dstTemplate -properties @{
+            "gh_org" = $gitHubOrg
+            "gh_proj" = $gitHubProj
+            "license" = Quote-String -str (Get-Property -properties $parsed -name "LICENSE")
+            "pkgname" = $packageName
+            "pkgver" = Quote-String $version
+            "pkgdesc" = Quote-String -str ($description | Join-String -Separator "`n") 
+            "url" =  Quote-String $url
+            "sources" = $sources | Join-String  -Separator " \"
+            "sha256sums" = $sha256sums | Join-String  -Separator " \"
+            "depends" = $dependencies
+            "makedepends" = $makeDependencies
+            "footer" = "`n" + (Split-NewLines -str $buildRootPkgSrc -repl "`n# ") + "`n"
+        }
+        $PKGBUILD | Set-Content -Path "$rootDir/PKGBUILDs/$packageName/PKGBUILD"
+    }
+    Save-PKGBUILD
+
+    if ($buildType -eq "python"){
+        Push-Location "."
+        Set-Location "$rootDir/PKGBUILDs/$packageName"
+
+        # call makepkg to install & unpack sources only
+        Write-Host "Building $packageName"
+        $makepkgOutput = makepkg -o
+        if ($makepkgOutput -match "==> ERROR: A failure occurred in build()."){
+            Write-Error "Failed to build $packageName"
+            Write-Error $makepkgOutput
+            Pop-Location
+            continue
+        }
+        
+        # find the first folder under src/ which ends with "-$version"
+        Set-Location (Get-ChildItem -Path "src" -Directory -Filter "*-$version" | Select-Object -First 1)
+
+        # Change to the src directory and locate the folder with requirements.txt
+        # After that, use python to parse the requirements.txt and
+        # return them into a powershell array
+        # requires pip install requirements-parser
+        
+        # check whether requirements/requirements.txt exists
+
+        if (Test-Path "./requirements/requirements.txt"){
+            $requirementsPath = "./requirements/requirements.txt"
+        } else {
+            $requirementsPath = "./requirements.txt"
+        }
+        $requirements = python -c "import os; import json; import requirements; print(json.dumps([{'name': r.name, 'specs': r.specs} for r in requirements.parse(open('$requirementsPath', 'r'))]))" `
+                            | ConvertFrom-Json
+
+        $dependencies += $requirements | Sort-Object -Property "name" | ForEach-Object {
+            # iterate over the specs array and pick one that is either >= or <=,
+            # absent that, pick the ~=
+            $versions = $_.specs | Foreach-Object {
+                @{
+                    "op" = $_[0]
+                    "ver" = $_[1]
+                }
+            } 
+            | Sort-Object -Property op
+            | ForEach-Object { $_.op + $_.ver }
+            $ver = $versions
+                | Where-Object { $_.StartsWith(">")}
+                |  Select-Object -First 1
+            if ($ver) {" 'python-$($_.name)$ver' #$($versions | Join-String -Separator ","))" }
+                else {" 'python-$($_.name)$ver'"}
+        }
+        $dependencies = $dependencies | Join-String -Separator " \`n"
+        $dependencies += " \`n"
+        Pop-Location
+        Save-PKGBUILD
+    }
+    # break
 }
