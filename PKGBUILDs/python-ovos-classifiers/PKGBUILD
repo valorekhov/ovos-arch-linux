@@ -25,8 +25,9 @@ depends=(python \
  'python-joblib' \
  'python-nltk' \
  'python-ovos-utils' \
- 'python-python-dateutil>=2.8.2' #>=2.8.2) \
+ 'python-dateutil>=2.8.2' \
 )
+conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -68,7 +69,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

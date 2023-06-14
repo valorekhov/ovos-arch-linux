@@ -288,14 +288,21 @@ foreach ($packageDir in $packageDirectories) {
             }
         })
 
+        function Get-PythonPackageName([string]$name){
+            if (-not $name.StartsWith("python-")){
+                return "python-" + $name
+            }
+            $name
+        }
+
         $dependencies += $requirements | ForEach-Object {
             $versions = @($_.specs | ForEach-Object { $_.op + $_.ver })
             $ver = $versions
                 | Where-Object { $_.StartsWith(">")}
                 | Sort-Object -Descending
                 | Select-Object -First 1
-            if ($ver -and $versions.Count -gt 1) {" 'python-$($_.name)$ver' #$($versions | Join-String -Separator ",")" }
-                else {" 'python-$($_.name)$ver'"}
+            if ($ver -and $versions.Count -gt 1) {" '$(Get-PythonPackageName $_.name)$ver' #$($versions | Join-String -Separator ",")" }
+                else {" '$(Get-PythonPackageName $_.name)$ver'"}
         }
         $dependencies = $dependencies | Join-String -Separator " \`n"
         $dependencies += " \`n"
@@ -306,7 +313,7 @@ foreach ($packageDir in $packageDirectories) {
                 | Sort-Object -Property "ver" -Descending
                 | ForEach-Object { ">=" + $_.ver }
                 | Select-Object -First 1
-            " 'python-$($_.name)$ver'"
+            " '$(Get-PythonPackageName $_.name)$ver'"
         }
         $conflicts = $conflicts | Join-String -Separator " \`n"
 

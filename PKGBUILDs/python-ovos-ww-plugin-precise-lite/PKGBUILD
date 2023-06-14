@@ -10,10 +10,11 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/'
 license=('')
 depends=(python \
- 'python-ovos-plugin-manager>=0.0.4' #>=0.0.4) \
- 'python-ovos-utils>=0.0.14' #>=0.0.14) \
- 'python-precise_lite_runner>=0.4.1' #>=0.4.1,~=0.4) \
+ 'python-ovos-plugin-manager>=0.0.4' \
+ 'python-ovos-utils>=0.0.14' \
+ 'python-precise_lite_runner>=0.4.1' #>=0.4.1,~=0.4 \
 )
+conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -55,7 +56,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

@@ -12,11 +12,13 @@ license=('')
 depends=(python \
  'python-combo_lock' \
  'python-ovos-utils' \
- 'python-python-dateutil' \
- 'python-PyYAML>=5.4.0' #<7.0.0,>=5.4.0) \
+ 'python-dateutil' \
+ 'python-PyYAML>=5.4.0' #<7.0.0,>=5.4.0 \
  'python-rich-click' \
  'python-watchdog' \
 )
+conflicts=( 'python-ovos-utils>=0.1.0' \
+ 'python-PyYAML>=7.0.0')
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -58,7 +60,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

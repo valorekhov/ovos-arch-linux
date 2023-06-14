@@ -11,13 +11,17 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/OVOS-workshop/'
 license=('')
 depends=(python \
- 'python-ovos_backend_client>=0.0.6' #<0.1.0,>=0.0.6) \
- 'python-ovos_config>=0.0.4' #<0.1.0,>=0.0.4) \
- 'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3) \
- 'python-ovos-lingua-franca>=0.4.6' #>=0.4.6,~=0.4) \
- 'python-ovos-utils>=0.0.33a7' #<0.1.0,>=0.0.33a7) \
+ 'python-ovos_backend_client>=0.0.6' #<0.1.0,>=0.0.6 \
+ 'python-ovos_config>=0.0.4' #<0.1.0,>=0.0.4 \
+ 'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
+ 'python-ovos-lingua-franca>=0.4.6' #>=0.4.6,~=0.4 \
+ 'python-ovos-utils>=0.0.33a7' #<0.1.0,>=0.0.33a7 \
  'python-rapidfuzz' \
 )
+conflicts=( 'python-ovos_backend_client>=0.1.0' \
+ 'python-ovos_config>=0.1.0' \
+ 'python-ovos-bus-client>=0.1.0' \
+ 'python-ovos-utils>=0.1.0')
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -59,7 +63,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

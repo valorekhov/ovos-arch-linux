@@ -16,11 +16,13 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-bus-client/'
 license=('Apache-2.0')
 depends=(python \
- 'python-ovos-config<0.1.0' #<0.1.0,>=0.0.8) \
- 'python-ovos-utils<0.1.0' #<0.1.0,>=0.0.32) \
- 'python-websocket-client>=0.54.0' #>=0.54.0) \
- 'python-pyee<9.0.0' #<9.0.0,>=8.1.0) \
+ 'python-ovos-config>=0.0.8' #<0.1.0,>=0.0.8 \
+ 'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
+ 'python-pyee>=8.1.0' \
+ 'python-websocket-client>=0.54.0' \
 )
+conflicts=( 'python-ovos-config>=0.1.0' \
+ 'python-ovos-utils>=0.1.0')
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
@@ -65,7 +67,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

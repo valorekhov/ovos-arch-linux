@@ -12,8 +12,9 @@ license=('')
 depends=(python \
  'python-mycroft-messagebus-client' \
  'python-ovos_utils' \
- 'python-ovos-plugin-manager>=0.0.1' #>=0.0.1) \
+ 'python-ovos-plugin-manager>=0.0.1' \
 )
+conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")

@@ -18,6 +18,7 @@ depends=(python \
  'python-requests' \
  'python-watchdog' \
 )
+conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")

@@ -18,18 +18,19 @@ license=('')
 depends=(python \
  'python-bs4' \
  'python-click' \
- 'python-click-default-group>=1.2.2' #>=1.2.2) \
+ 'python-click-default-group>=1.2.2' \
  'python-combo-lock' \
  'python-json_database' \
- 'python-ovos_config>=0.0.3' #>=0.0.3,~=0.0) \
- 'python-ovos_skill_installer>=0.0.5' #>=0.0.5) \
+ 'python-ovos_config>=0.0.3' #>=0.0.3,~=0.0 \
+ 'python-ovos_skill_installer>=0.0.5' \
  'python-ovos_utils' \
  'python-packaging' \
- 'python-pako>=0.2.3' #>=0.2.3) \
+ 'python-pako>=0.2.3' \
  'python-PyYAML' \
  'python-requests' \
  'python-requests-cache' \
 )
+conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -71,7 +72,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

@@ -11,8 +11,9 @@ url='https://github.com/OpenVoiceOS/ovos-vlc-plugin/'
 license=('')
 depends=(python \
  'python-ovos-plugin-manager' \
- 'python-python-vlc>=1.1.2' #>=1.1.2) \
+ 'python-vlc>=1.1.2' \
 )
+conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -54,7 +55,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

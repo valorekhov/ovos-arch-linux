@@ -12,17 +12,18 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-audio/'
 license=('')
 depends=(python \
- 'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0) \
- 'python-ovos-bus-client>=0.0.3a4' #>=0.0.3a4,~=0.0) \
- 'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0) \
- 'python-ovos-plugin-manager>=0.0.23a4' #>=0.0.23a4,~=0.0) \
- 'python-ovos_plugin_common_play>=0.0.5a3' #>=0.0.5a3,~=0.0) \
- 'python-ovos-tts-plugin-mimic3-server' \
- 'python-ovos-ocp-m3u-plugin' \
- 'python-ovos-ocp-rss-plugin' \
+ 'python-ovos_plugin_common_play>=0.0.5a3' #>=0.0.5a3,~=0.0 \
+ 'python-ovos-bus-client>=0.0.3a4' #>=0.0.3a4,~=0.0 \
+ 'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
  'python-ovos-ocp-files-plugin' \
+ 'python-ovos-ocp-m3u-plugin' \
  'python-ovos-ocp-news-plugin' \
+ 'python-ovos-ocp-rss-plugin' \
+ 'python-ovos-plugin-manager>=0.0.23a4' #>=0.0.23a4,~=0.0 \
+ 'python-ovos-tts-plugin-mimic3-server' \
+ 'python-ovos-utils>=0.0.31a3' #~=0.0,>=0.0.31a3 \
 )
+conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -35,7 +36,7 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
         fi
     done
 }
@@ -47,7 +48,6 @@ pkgver(){
 
 build() {
     cd "$_name-$_base_ver"
-
     python -m build --wheel --no-isolation
 }
 
@@ -65,7 +65,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then

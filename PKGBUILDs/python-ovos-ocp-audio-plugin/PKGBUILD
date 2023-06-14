@@ -12,13 +12,17 @@ license=('')
 depends=(python \
  'python-dbus-next' \
  'python-ovos_audio_plugin_simple' \
- 'python-ovos_workshop>=0.0.11' #<0.1.0,>=0.0.11) \
- 'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3) \
+ 'python-ovos_workshop>=0.0.11' #<0.1.0,>=0.0.11 \
+ 'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
  'python-ovos-ocp-files-plugin' \
- 'python-ovos-plugin-manager>=0.0.22' #<0.1.0,>=0.0.22) \
- 'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32) \
- 'python-padacioso>=0.1.1' #>=0.1.1,~=0.1) \
+ 'python-ovos-plugin-manager>=0.0.22' #>=0.0.22,<0.1.0 \
+ 'python-ovos-utils>=0.0.32' #>=0.0.32,<0.1.0 \
+ 'python-padacioso>=0.1.1' #~=0.1,>=0.1.1 \
 )
+conflicts=( 'python-ovos_workshop>=0.1.0' \
+ 'python-ovos-bus-client>=0.1.0' \
+ 'python-ovos-plugin-manager>=0.1.0' \
+ 'python-ovos-utils>=0.1.0')
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
@@ -60,7 +64,8 @@ package() {
     cd "$_name-$_base_ver"
 
     echo "Installing $pkgname to $pkgdir"
-    python -m installer --destdir="$pkgdir" dist/*.whl
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
 
     # Optional: Copy documentation files
     if [ -d "$srcdir/$pkgname/docs" ]; then
