@@ -42,7 +42,6 @@ $packageDirectories = Get-ChildItem -Path $rootPath -Directory -Filter "$package
 $buildTypeRegex = [regex]"`\$\(eval `\$\((cmake|python|autotools|generic)-package\)\)"
 
 $packageMap = Get-ParsedConfig -Path "./package-map.txt"
-$packageMap
 $existingPkgDirs = Get-ChildItem -Path "./PKGBUILDs/" -Directory 
 $knownPackages = @{}
 $packageMap.Values | ForEach-Object { $knownPackages[$_] = $true }
@@ -299,7 +298,7 @@ foreach ($packageDir in $packageDirectories) {
 
         function Get-PythonPackageName([string]$name){
             if ($packageMap.ContainsKey("pip:$name")){
-                return $packageMap[$name]
+                return $packageMap["pip:$name"]
             }
             $name = $name.Replace("_", "-")
             if (-not $name.StartsWith("python-")){
@@ -320,7 +319,7 @@ foreach ($packageDir in $packageDirectories) {
             # declare __packageName and __mod as local variables to the scope of this code block
             $__packageName = Get-PythonPackageName $_.name
             $__mod = ""
-            if (-not $knownPackages.Contains($__packageName)){
+            if (-not $knownPackages.ContainsKey($__packageName)){
                 $__mod = "# "
             }
             if ($ver -and $versions.Count -gt 1) {"$__mod '$__packageName$ver' #$($versions | Join-String -Separator ",")" }
