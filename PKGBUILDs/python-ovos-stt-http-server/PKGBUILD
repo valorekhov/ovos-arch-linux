@@ -11,10 +11,10 @@ url='https://github.com/OpenVoiceOS/ovos-stt-http-server/'
 license=('')
 depends=(python \
  'python-fastapi' \
- 'python-gradio' \
+ # TODO: 'python-gradio' \
  'python-ovos-plugin-manager' \
  'python-ovos-utils' \
- 'python-uvicorn' \
+ # TODO: 'python-uvicorn' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

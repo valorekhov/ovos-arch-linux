@@ -10,8 +10,8 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-configuration-provider/'
 license=('')
 depends=(python \
- 'python-mycroft-messagebus-client' \
- 'python-ovos_utils' \
+ # TODO: 'python-mycroft-messagebus-client' \
+ 'python-ovos-utils' \
  'python-ovos-config' \
  'python-ovos-plugin-manager>=0.0.1' \
 )

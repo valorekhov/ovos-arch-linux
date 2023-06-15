@@ -3,33 +3,10 @@ param(
 )
 Import-Module ./config-parser.ps1
 Import-Module ./makefile-parser.ps1
-
-function Get-BuildrootProject([hashtable]$properties) {
-    $key = $properties.Keys | Where-Object{ $_.EndsWith("_SITE")}    
-    if ($key) {$key.Substring(0,  $key.Length - "_SITE".Length)} else {$null}
-}
+Import-Module ./utils.ps1
 
 
-function Get-Property([hashtable]$properties, [string]$name) {
-    $key = $properties.Keys | Where-Object{ $_.EndsWith("_" + $name)}    
-    if ($key) {$properties[$key]} else {$null}
-}
 
-function Set-Template([string]$template, [hashtable]$properties){
-    $ret = $template
-    foreach($key in $properties.Keys){
-        $ret = $ret.Replace("{{$key}}", $properties[$key])
-    }
-    $ret
-}
-
-function Quote-String([string]$str, [string]$char = "`'", [string]$replace = "`'\`'`'"){
-    $char + $str.Replace($char, $replace) + $char
-}
-
-function Split-NewLines([string]$str, [string]$repl){
-    return $str.Replace("`n", $repl)
-}
 
 $rootDir = Get-Location
 
@@ -316,11 +293,14 @@ foreach ($packageDir in $packageDirectories) {
                 | Where-Object { $_.StartsWith(">")}
                 | Sort-Object -Descending
                 | Select-Object -First 1
-            # declare __packageName and __mod as local variables to the scope of this code block
             $__packageName = Get-PythonPackageName $_.name
             $__mod = ""
+            $__packageInRepos = Find-PackageInRepositories $__packageName
+            if ($__packageInRepos -and -not $knownPackages.ContainsKey($__packageName)){
+                $knownPackages[$__packageName] = $true
+            }
             if (-not $knownPackages.ContainsKey($__packageName)){
-                $__mod = "# "
+                $__mod = " # TODO:"
             }
             if ($ver -and $versions.Count -gt 1) {"$__mod '$__packageName$ver' #$($versions | Join-String -Separator ",")" }
                 else {"$__mod '$__packageName$ver'"}

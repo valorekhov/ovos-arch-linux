@@ -11,7 +11,7 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-plugin-chromium/'
 license=('')
 depends=(python \
- 'python-ovos_utils>=0.0.8a3' \
+ 'python-ovos-utils>=0.0.8a3' \
  'python-ovos-plugin-manager>=0.0.1a7' \
  'python-requests' \
 )

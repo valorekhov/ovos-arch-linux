@@ -10,11 +10,11 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-config-assistant/'
 license=('')
 depends=(python \
- 'python-cutecharts' \
+ # TODO: 'python-cutecharts' \
  'python-oauthlib' \
- 'python-ovos_backend_client' \
- 'python-ovos_utils' \
- 'python-pywebio' \
+ 'python-ovos-backend-client' \
+ 'python-ovos-utils' \
+ # TODO: 'python-pywebio' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

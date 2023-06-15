@@ -10,7 +10,7 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-messagebus/'
 license=('')
 depends=(python \
- 'python-ovos-config>=0.0.8a2' #~=0.0,>=0.0.8a2 \
+ 'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
  'python-ovos-utils>=0.0.31a3' #~=0.0,>=0.0.31a3 \
  'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
 )

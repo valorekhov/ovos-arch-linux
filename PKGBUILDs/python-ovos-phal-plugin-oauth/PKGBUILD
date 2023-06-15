@@ -13,7 +13,7 @@ depends=(python \
  'python-Flask>=0.12' \
  'python-oauthlib' \
  'python-ovos-backend-client' \
- 'python-ovos-utils>=0.0.26' #~=0.0,>=0.0.26 \
+ 'python-ovos-utils>=0.0.26' #>=0.0.26,~=0.0 \
  'python-pillow' \
  'python-qrcode' \
 )

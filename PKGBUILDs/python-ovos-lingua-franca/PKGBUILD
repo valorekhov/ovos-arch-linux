@@ -12,7 +12,7 @@ url='https://github.com/OpenVoiceOS/ovos-lingua-franca/'
 license=('Apache-2.0')
 depends=(python \
  'python-dateutil' \
- 'python-quebra_frases' \
+ # TODO: 'python-quebra-frases' \
  'python-rapidfuzz' \
  'python-webcolors' \
 )

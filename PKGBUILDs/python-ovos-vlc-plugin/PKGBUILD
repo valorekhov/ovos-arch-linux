@@ -11,7 +11,7 @@ url='https://github.com/OpenVoiceOS/ovos-vlc-plugin/'
 license=('')
 depends=(python \
  'python-ovos-plugin-manager' \
- 'python-vlc>=1.1.2' \
+ # TODO: 'python-vlc>=1.1.2' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

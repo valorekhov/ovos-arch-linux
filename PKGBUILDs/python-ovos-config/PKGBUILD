@@ -10,11 +10,11 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-config/'
 license=('')
 depends=(python \
- 'python-combo_lock' \
+ # TODO: 'python-combo-lock' \
  'python-ovos-utils' \
  'python-dateutil' \
  'python-PyYAML>=5.4.0' #<7.0.0,>=5.4.0 \
- 'python-rich-click' \
+ # TODO: 'python-rich-click' \
  'python-watchdog' \
 )
 conflicts=( 'python-ovos-utils>=0.1.0' \

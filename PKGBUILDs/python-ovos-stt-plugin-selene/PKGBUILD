@@ -10,7 +10,7 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-plugin-selene/'
 license=('')
 depends=(python \
- 'python-ovos_utils' \
+ 'python-ovos-utils' \
  'python-ovos-backend-client' \
  'python-ovos-plugin-manager' \
  'python-requests' \

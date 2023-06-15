@@ -12,7 +12,7 @@ url='https://github.com/OpenVoiceOS/ovos-ocp-news-plugin/'
 license=('')
 depends=(python \
  'python-beautifulsoup4' \
- 'python-ovos_plugin_common_play' \
+ # TODO: 'python-ovos-plugin-common-play' \
  'python-ovos-ocp-m3u-plugin>=0.0.1' \
  'python-ovos-ocp-rss-plugin>=0.0.2' \
  'python-pytz' \

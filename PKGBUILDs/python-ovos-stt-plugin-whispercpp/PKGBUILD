@@ -12,7 +12,7 @@ license=('')
 depends=(python \
  'python-ovos-plugin-manager>=0.0.1' \
  'python-requests' \
- 'python-SpeechRecognition>=3.8.1' \
+ # TODO: 'python-SpeechRecognition>=3.8.1' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

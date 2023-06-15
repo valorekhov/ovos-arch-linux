@@ -11,8 +11,8 @@ url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk2/'
 license=('')
 depends=(python \
  'python-ovos-plugin-manager' \
- 'python-RPi.GPIO' \
- 'python-smbus2' \
+ # TODO: 'python-RPi.GPIO' \
+ # TODO: 'python-smbus2' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

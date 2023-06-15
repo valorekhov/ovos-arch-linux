@@ -12,9 +12,9 @@ license=('')
 depends=(python \
  'python-attrs>=18.2' \
  'python-bidict' \
- 'python-bitstruct>=6.0' \
+ # TODO: 'python-bitstruct>=6.0' \
  'python-more-itertools>=4.0' \
- 'python-pprintpp' \
+ # TODO: 'python-pprintpp' \
  'python-wrapt' \
 )
 conflicts=()

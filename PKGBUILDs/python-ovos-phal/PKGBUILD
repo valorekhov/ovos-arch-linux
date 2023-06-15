@@ -10,16 +10,16 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_PHAL/'
 license=('')
 depends=(python \
- 'python-ovos_workshop>=0.0.12a3' #~=0.0,>=0.0.12a3 \
- 'python-ovos-bus-client>=0.0.3a16' #~=0.0,>=0.0.3a16 \
- 'python-ovos-config>=0.0.8a3' #~=0.0,>=0.0.8a3 \
- 'python-ovos-phal-plugin-connectivity-events>=0.0.1' #~=0.0,>=0.0.1 \
- 'python-ovos-phal-plugin-ipgeo>=0.0.1' #~=0.0,>=0.0.1 \
- 'python-ovos-PHAL-plugin-network-manager>=1.0.0' #>=1.0.0,~=1.0 \
- 'python-ovos-PHAL-plugin-oauth>=0.0.1' #~=0.0,>=0.0.1 \
- 'python-ovos-PHAL-plugin-system>=0.0.1' #~=0.0,>=0.0.1 \
- 'python-ovos-plugin-manager>=0.0.23a5' #~=0.0,>=0.0.23a5 \
- 'python-ovos-utils>=0.0.31a6' #~=0.0,>=0.0.31a6 \
+ 'python-ovos-workshop>=0.0.12a3' #>=0.0.12a3,~=0.0 \
+ 'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
+ 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
+ 'python-ovos-phal-plugin-connectivity-events>=0.0.1' #>=0.0.1,~=0.0 \
+ 'python-ovos-phal-plugin-ipgeo>=0.0.1' #>=0.0.1,~=0.0 \
+ 'python-ovos-PHAL-plugin-network-manager>=1.0.0' #~=1.0,>=1.0.0 \
+ 'python-ovos-PHAL-plugin-oauth>=0.0.1' #>=0.0.1,~=0.0 \
+ 'python-ovos-PHAL-plugin-system>=0.0.1' #>=0.0.1,~=0.0 \
+ 'python-ovos-plugin-manager>=0.0.23a5' #>=0.0.23a5,~=0.0 \
+ 'python-ovos-utils>=0.0.31a6' #>=0.0.31a6,~=0.0 \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

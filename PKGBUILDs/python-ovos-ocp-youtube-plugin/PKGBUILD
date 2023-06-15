@@ -11,9 +11,9 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-youtube-plugin/'
 license=('')
 depends=(python \
- 'python-ovos_plugin_common_play' \
- 'python-tutubo' \
- 'python-yt-dlp' \
+ # TODO: 'python-ovos-plugin-common-play' \
+ # TODO: 'python-tutubo' \
+ # TODO: 'python-yt-dlp' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

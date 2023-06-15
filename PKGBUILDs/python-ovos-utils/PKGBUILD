@@ -11,8 +11,8 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_utils/'
 license=('')
 depends=(python \
- 'python-json_database' \
- 'python-kthread' \
+ 'python-json-database' \
+ # TODO: 'python-kthread' \
  'python-pexpect' \
  'python-pyee' \
  'python-requests' \

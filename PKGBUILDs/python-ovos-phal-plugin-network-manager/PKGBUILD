@@ -11,8 +11,8 @@ url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/'
 license=('')
 depends=(python \
  'python-dbus-next' \
- 'python-mycroft-messagebus-client' \
- 'python-ovos_utils' \
+ # TODO: 'python-mycroft-messagebus-client' \
+ 'python-ovos-utils' \
  'python-ovos-plugin-manager>=0.0.1' \
 )
 conflicts=()
