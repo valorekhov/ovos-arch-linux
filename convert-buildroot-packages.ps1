@@ -1,7 +1,7 @@
 param(
     [switch]$Force = $false
 )
-
+Import-Module ./config-parser.ps1
 Import-Module ./makefile-parser.ps1
 
 function Get-BuildrootProject([hashtable]$properties) {
@@ -40,6 +40,15 @@ $rootPath = "../ovos-buildroot/buildroot-external/package"
 $packageDirectories = Get-ChildItem -Path $rootPath -Directory -Filter "$packagePrefix*"
 
 $buildTypeRegex = [regex]"`\$\(eval `\$\((cmake|python|autotools|generic)-package\)\)"
+
+$packageMap = Get-ParsedConfig -Path "./package-map.txt"
+$packageMap
+$existingPkgDirs = Get-ChildItem -Path "./PKGBUILDs/" -Directory 
+$knownPackages = @{}
+$packageMap.Values | ForEach-Object { $knownPackages[$_] = $true }
+foreach ($existingPkgDir in $existingPkgDirs) {
+    $knownPackages[$existingPkgDir.Name] = $existingPkgDir.FullName
+}
 
 foreach ($packageDir in $packageDirectories) {
     $packageName = $packageDir.Name
@@ -289,8 +298,15 @@ foreach ($packageDir in $packageDirectories) {
         })
 
         function Get-PythonPackageName([string]$name){
+            if ($packageMap.ContainsKey("pip:$name")){
+                return $packageMap[$name]
+            }
+            $name = $name.Replace("_", "-")
             if (-not $name.StartsWith("python-")){
-                return "python-" + $name
+                $name = "python-$name"
+            }
+            if ($packageMap.ContainsKey($name)){
+                return $packageMap[$name]
             }
             $name
         }
@@ -301,8 +317,14 @@ foreach ($packageDir in $packageDirectories) {
                 | Where-Object { $_.StartsWith(">")}
                 | Sort-Object -Descending
                 | Select-Object -First 1
-            if ($ver -and $versions.Count -gt 1) {" '$(Get-PythonPackageName $_.name)$ver' #$($versions | Join-String -Separator ",")" }
-                else {" '$(Get-PythonPackageName $_.name)$ver'"}
+            # declare __packageName and __mod as local variables to the scope of this code block
+            $__packageName = Get-PythonPackageName $_.name
+            $__mod = ""
+            if (-not $knownPackages.Contains($__packageName)){
+                $__mod = "# "
+            }
+            if ($ver -and $versions.Count -gt 1) {"$__mod '$__packageName$ver' #$($versions | Join-String -Separator ",")" }
+                else {"$__mod '$__packageName$ver'"}
         }
         $dependencies = $dependencies | Join-String -Separator " \`n"
         $dependencies += " \`n"
