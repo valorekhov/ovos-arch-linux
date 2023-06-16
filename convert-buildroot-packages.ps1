@@ -1,7 +1,7 @@
 param(
     [switch]$Force = $false
 )
-Import-Module ./config-parser.ps1
+Import-Module ./config-parser.psm1
 Import-Module ./makefile-parser.ps1
 Import-Module ./utils.ps1
 
