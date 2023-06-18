@@ -1,2 +1,4 @@
 pip:json_database=python-json-database
 pip:PyYAML=python-yaml
+pip:PyAudio=python-pyaudio
+pip:SpeechRecognition=python-speechrecognition
