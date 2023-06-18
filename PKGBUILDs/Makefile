@@ -40,7 +40,6 @@ PACKAGES := ovos-bus-server \
 	python-ovos-phal-plugin-gpsd \
 	python-ovos-phal-plugin-gui-network-client \
 	python-ovos-phal-plugin-homeassistant \
-	python-ovos-phal-plugin-ipc2bus \
 	python-ovos-phal-plugin-ipgeo \
 	python-ovos-phal-plugin-mk1 \
 	python-ovos-phal-plugin-mk2 \
@@ -316,12 +315,6 @@ python-ovos-phal-plugin-homeassistant: python-ovos-config python-ovos-phal-plugi
 python-ovos-phal-plugin-homeassistant-%.pkg.tar.zst:
 	@echo 'Building python-ovos-phal-plugin-homeassistant'
 	@cd 'python-ovos-phal-plugin-homeassistant' && $(RUN_MAKEPKG)
-
-# python-ovos-phal-plugin-ipc2bus
-python-ovos-phal-plugin-ipc2bus:  python-ovos-phal-plugin-ipc2bus-%.pkg.tar.zst
-python-ovos-phal-plugin-ipc2bus-%.pkg.tar.zst:
-	@echo 'Building python-ovos-phal-plugin-ipc2bus'
-	@cd 'python-ovos-phal-plugin-ipc2bus' && $(RUN_MAKEPKG)
 
 # python-ovos-phal-plugin-ipgeo
 python-ovos-phal-plugin-ipgeo: python-ovos-plugin-manager python-ovos-phal-plugin-ipgeo-%.pkg.tar.zst

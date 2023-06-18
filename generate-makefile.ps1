@@ -9,6 +9,7 @@ function Get-SrcInfos([System.IO.FileInfo[]]$pkgBuilds){
 }
 
 $pkgbuilds = Get-ChildItem -Path "./PKGBUILDs/*/PKGBUILD" -Recurse
+    | Where-Object { -not (Test-Path "$($_.Directory)/.pkgignore" -PathType Leaf) }
 
 $deps = @{}
 if (-not (Test-Path "$PSScriptRoot/.srcinfo.json")){
