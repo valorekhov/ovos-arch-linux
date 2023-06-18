@@ -1,1 +1,2 @@
 pip:json_database=python-json-database
+pip:PyYAML=python-yaml

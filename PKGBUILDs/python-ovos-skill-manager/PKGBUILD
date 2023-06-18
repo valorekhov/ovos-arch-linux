@@ -21,12 +21,12 @@ depends=(python \
  'python-click-default-group>=1.2.2' \
  # TODO: 'python-combo-lock' \
  'python-json-database' \
- 'python-ovos-config>=0.0.3' #~=0.0,>=0.0.3 \
+ 'python-ovos-config>=0.0.3' #>=0.0.3,~=0.0 \
  'python-ovos-skill-installer>=0.0.5' \
  'python-ovos-utils' \
  'python-packaging' \
  # TODO: 'python-pako>=0.2.3' \
- 'python-PyYAML' \
+ 'python-yaml' \
  'python-requests' \
  # TODO: 'python-requests-cache' \
 )

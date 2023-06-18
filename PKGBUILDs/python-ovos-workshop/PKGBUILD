@@ -11,10 +11,10 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/OVOS-workshop/'
 license=('')
 depends=(python \
- 'python-ovos-backend-client>=0.0.6' #>=0.0.6,<0.1.0 \
- 'python-ovos-config>=0.0.4' #>=0.0.4,<0.1.0 \
+ 'python-ovos-backend-client>=0.0.6' #<0.1.0,>=0.0.6 \
+ 'python-ovos-config>=0.0.4' #<0.1.0,>=0.0.4 \
  'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
- 'python-ovos-lingua-franca>=0.4.6' #~=0.4,>=0.4.6 \
+ 'python-ovos-lingua-franca>=0.4.6' #>=0.4.6,~=0.4 \
  'python-ovos-utils>=0.0.33a7' #<0.1.0,>=0.0.33a7 \
  'python-rapidfuzz' \
 )

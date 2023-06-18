@@ -300,7 +300,7 @@ try{
                 if (-not $knownPackages.ContainsKey($__packageName)){
                     $__mod = " # TODO:"
                 }
-                if ($ver -and $versions.Count -gt 1) {"$__mod '$__packageName$ver' #$($versions | Join-String -Separator ",")" }
+                if ($ver -and $versions.Count -gt 1) {"$__mod '$__packageName$ver' #$($versions | Sort-Object | Join-String -Separator ",")" }
                     else {"$__mod '$__packageName$ver'"}
             }
             $dependencies = $dependencies | Join-String -Separator " \`n"
