@@ -1,7 +1,7 @@
 ## A module for parsing Makefiles (.mk) format
 ##
 
-function Parse-MakeFile {
+function ConvertFrom-MakeFile {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0)]

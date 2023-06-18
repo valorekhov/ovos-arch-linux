@@ -10,7 +10,7 @@ function Get-ParsedConfigFromString([string]$text){
 
 function Get-ConfigFromLines([string[]]$lines) {
     # TODO: Use PSObject instead of hashtable
-    $config = New-Object psobject
+    $config = @{}
     foreach($line in $lines){
         if($line -match '^\s*#'){
             continue
@@ -18,14 +18,14 @@ function Get-ConfigFromLines([string[]]$lines) {
         if($line -match '^\s*(?<key>[^=]+)\s*=\s*(?<value>.*)\s*$'){
             $key = $matches['key'].Trim()
             $value = $matches['value'].Trim()
-            if (Get-Member -InputObject $config -Name $key -ErrorAction SilentlyContinue){
+            if ($config[$key]){
                 # Check if existing value is an array, if not, convert it to an array
-                if ($config.$key -isnot [array]){
-                    $config.$key = @($config.$key)
+                if ($config[$key] -isnot [array]){
+                    $config[$key] = @($config[$key])
                 } 
-                $config.$key += $value
+                $config[$key] += $value
             } else {
-                Add-Member -InputObject $config -MemberType NoteProperty -Name $key -Value $value
+                $config[$key] = $value
             }
         }
     }

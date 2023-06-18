@@ -43,7 +43,7 @@ function Set-Template([string]$template, [hashtable]$properties){
     $ret
 }
 
-function Quote-String([string]$str, [string]$char = "`'", [string]$replace = "`'\`'`'"){
+function Format-QuotedString([string]$str, [string]$char = "`'", [string]$replace = "`'\`'`'"){
     $char + $str.Replace($char, $replace) + $char
 }
 
