@@ -25,9 +25,10 @@ foreach($srcInfo in $srcInfos){
 }
 
 function New-Makefile([string]$dir, $deps){
-    # Iterate deps, generate Makefile
-    Set-Content -Path "$dir/Makefile" -Value ".PHONY: all clean`nRUN_MAKEPKG := makepkg --syncdeps --noconfirm`n"
     $sorted = $deps.Keys | Sort-Object
+    $all = $sorted -join " \`n`t"
+    Set-Content -Path "$dir/Makefile" -Value ".PHONY: all clean`nRUN_MAKEPKG := makepkg --syncdeps --noconfirm --force --install`nPACKAGES := $all`n"
+
     $sorted | ForEach-Object {
         $key = $_
         $depends = $deps[$key]
@@ -36,9 +37,10 @@ function New-Makefile([string]$dir, $deps){
                  "`n$($targetName):`n`t@echo 'Building $key'`n`t@cd '$key' && `$(RUN_MAKEPKG)`n" `
                 | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
     }
-    "all: `$(wildcard)`n" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
+    "all: `$(PACKAGES)`n" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
 
-    "clean:`n`t@rm -rf ./*/pkg ./*/src ./*/src/*.pkg.tar*`n`nuninstall:`n`t@sudo pacman -Rcns --noconfirm `$(wildcard *)" `
+    "clean:`n`t@rm -rf ./*/pkg ./*/src ./*/src/*.pkg.tar*" `
+        + "`n`nuninstall:`n`t@pacman -Qq | sort | comm -12 - <(echo `"`$(PACKAGES)`" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm" `
         | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
 }
 
