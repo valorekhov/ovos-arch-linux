@@ -1,0 +1,24 @@
+pkgbase='python-json-database'
+pkgname=('python-json-database')
+_module='json-database'
+pkgver='0.7.0'
+pkgrel=1
+pkgdesc="searchable json database with persistence"
+url="https://github.com/OpenJarbas/json_database"
+depends=('python')
+makedepends=('python-setuptools')
+license=('MIT')
+arch=('any')
+source=("https://files.pythonhosted.org/packages/source/${_module::1}/$_module/${_module/-/_}-$pkgver.tar.gz")
+sha256sums=('05fc330c48454c68cedb4ebb56039e0be1bdb78a3c15af4d83f6488e23ab67f4')
+
+build() {
+    cd "${srcdir}/json_database-${pkgver}"
+    python setup.py build
+}
+
+package() {
+    depends+=()
+    cd "${srcdir}/json_database-${pkgver}"
+    python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+}

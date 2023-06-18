@@ -3,6 +3,11 @@
 /PKGBUILDs/**/*.tar.gz*
 /PKGBUILDs/**/*.tar.zst*
 
+/PKGBUILDs-extras/*/src
+/PKGBUILDs-extras/*/pkg
+/PKGBUILDs-extras/**/*.tar.gz*
+/PKGBUILDs-extras/**/*.tar.zst*
+
 *-gpt.ps1
 /responses
 /prompts
