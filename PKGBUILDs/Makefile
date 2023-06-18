@@ -246,7 +246,7 @@ python-ovos-personal-backend-%.pkg.tar.zst:
 	@cd 'python-ovos-personal-backend' && $(RUN_MAKEPKG)
 
 # python-ovos-phal
-python-ovos-phal: python-ovos-workshop python-ovos-bus-client python-ovos-config python-ovos-phal-plugin-connectivity-events python-ovos-phal-plugin-ipgeo python-ovos-PHAL-plugin-network-manager python-ovos-PHAL-plugin-oauth python-ovos-PHAL-plugin-system python-ovos-plugin-manager python-ovos-utils python-ovos-phal-%.pkg.tar.zst
+python-ovos-phal: python-ovos-workshop python-ovos-bus-client python-ovos-config python-ovos-phal-plugin-connectivity-events python-ovos-phal-plugin-ipgeo python-ovos-phal-plugin-network-manager python-ovos-phal-plugin-oauth python-ovos-phal-plugin-system python-ovos-plugin-manager python-ovos-utils python-ovos-phal-%.pkg.tar.zst
 python-ovos-phal-%.pkg.tar.zst:
 	@echo 'Building python-ovos-phal'
 	@cd 'python-ovos-phal' && $(RUN_MAKEPKG)
@@ -312,7 +312,7 @@ python-ovos-phal-plugin-gui-network-client-%.pkg.tar.zst:
 	@cd 'python-ovos-phal-plugin-gui-network-client' && $(RUN_MAKEPKG)
 
 # python-ovos-phal-plugin-homeassistant
-python-ovos-phal-plugin-homeassistant: python-ovos-config python-ovos-PHAL-plugin-oauth python-ovos-plugin-manager python-ovos-utils python-ovos-phal-plugin-homeassistant-%.pkg.tar.zst
+python-ovos-phal-plugin-homeassistant: python-ovos-config python-ovos-phal-plugin-oauth python-ovos-plugin-manager python-ovos-utils python-ovos-phal-plugin-homeassistant-%.pkg.tar.zst
 python-ovos-phal-plugin-homeassistant-%.pkg.tar.zst:
 	@echo 'Building python-ovos-phal-plugin-homeassistant'
 	@cd 'python-ovos-phal-plugin-homeassistant' && $(RUN_MAKEPKG)
