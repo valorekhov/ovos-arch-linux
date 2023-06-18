@@ -31,13 +31,14 @@ function New-Makefile([string]$dir, $deps){
     $sorted | ForEach-Object {
         $key = $_
         $depends = $deps[$key]
-        "$($key): $($depends -join ' ')`n`t@echo 'Building $@'`n`t@cd $@ && `$(RUN_MAKEPKG)`n" `
+        $targetName = "$key-%.pkg.tar.zst"
+        "# $($key)`n$($key): $($depends -join ' ') $targetName" + `
+                 "`n$($targetName):`n`t@echo 'Building $key'`n`t@cd '$key' && `$(RUN_MAKEPKG)`n" `
                 | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
     }
-    $all = $sorted -join " \`n`t"
-    "all: $all`n" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
+    "all: `$(wildcard)`n" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
 
-    "clean:`n`t@rm -rf ./*/pkg ./*/src`n" `
+    "clean:`n`t@rm -rf ./*/pkg ./*/src ./*/src/*.pkg.tar*`n`nuninstall:`n`t@sudo pacman -Rcns --noconfirm `$(wildcard *)" `
         | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
 }
 
