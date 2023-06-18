@@ -13,7 +13,7 @@ depends=(python \
  # TODO: 'python-mycroft-messagebus-client' \
  # TODO: 'python-nested-lookup' \
  'python-ovos-config' \
- 'python-ovos-PHAL-plugin-oauth' \
+ 'python-ovos-phal-plugin-oauth' \
  'python-ovos-plugin-manager' \
  'python-ovos-utils' \
  # TODO: 'python-pytube' \

@@ -275,7 +275,7 @@ try{
                 if ($packageMap.ContainsKey("pip:$name")){
                     return $packageMap["pip:$name"]
                 }
-                $name = $name.Replace("_", "-")
+                $name = $name.Replace("_", "-").ToLowerInvariant()
                 if (-not $name.StartsWith("python-")){
                     $name = "python-$name"
                 }

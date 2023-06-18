@@ -11,7 +11,7 @@ url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk2/'
 license=('')
 depends=(python \
  'python-ovos-plugin-manager' \
- # TODO: 'python-RPi.GPIO' \
+ # TODO: 'python-rpi.gpio' \
  # TODO: 'python-smbus2' \
 )
 conflicts=()

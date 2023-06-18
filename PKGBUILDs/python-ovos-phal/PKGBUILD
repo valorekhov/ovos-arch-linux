@@ -15,9 +15,9 @@ depends=(python \
  'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
  'python-ovos-phal-plugin-connectivity-events>=0.0.1' #>=0.0.1,~=0.0 \
  'python-ovos-phal-plugin-ipgeo>=0.0.1' #>=0.0.1,~=0.0 \
- 'python-ovos-PHAL-plugin-network-manager>=1.0.0' #>=1.0.0,~=1.0 \
- 'python-ovos-PHAL-plugin-oauth>=0.0.1' #>=0.0.1,~=0.0 \
- 'python-ovos-PHAL-plugin-system>=0.0.1' #>=0.0.1,~=0.0 \
+ 'python-ovos-phal-plugin-network-manager>=1.0.0' #>=1.0.0,~=1.0 \
+ 'python-ovos-phal-plugin-oauth>=0.0.1' #>=0.0.1,~=0.0 \
+ 'python-ovos-phal-plugin-system>=0.0.1' #>=0.0.1,~=0.0 \
  'python-ovos-plugin-manager>=0.0.23a5' #>=0.0.23a5,~=0.0 \
  'python-ovos-utils>=0.0.31a6' #>=0.0.31a6,~=0.0 \
 )
