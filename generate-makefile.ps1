@@ -13,7 +13,12 @@ $pkgbuilds = Get-ChildItem -Path "./PKGBUILDs/*/PKGBUILD" -Recurse
 $deps = @{}
 if (-not (Test-Path "$PSScriptRoot/.srcinfo.json")){
     Write-Host "Generating .srcinfo cache. This may take a while."
-    Get-SrcInfos $pkgbuilds | ConvertTo-Json | Set-Content "$PSScriptRoot/.srcinfo.json"
+    Push-Location
+    try{
+        Get-SrcInfos $pkgbuilds | ConvertTo-Json | Set-Content "$PSScriptRoot/.srcinfo.json"
+    } finally {
+        Pop-Location
+    }
 }
 $srcInfos = Get-Content "$PSScriptRoot/.srcinfo.json" | ConvertFrom-Json 
 $knownPackages = $pkgbuilds | ForEach-Object { $_.Directory.Name }
