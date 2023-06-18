@@ -12,7 +12,7 @@ license=('')
 depends=(python \
  'python-ovos-skill-installer' \
  'python-ovos-plugin-manager>=0.0.1' \
- # TODO: 'python-SpeechRecognition>=3.8.1' \
+ 'python-speechrecognition>=3.8.1' \
  # TODO: 'python-vosk' \
 )
 conflicts=()
