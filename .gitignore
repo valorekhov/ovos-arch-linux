@@ -1,12 +1,10 @@
 /PKGBUILDs/*/src
 /PKGBUILDs/*/pkg
-/PKGBUILDs/**/*.tar.gz*
-/PKGBUILDs/**/*.tar.zst*
+/PKGBUILDs/**/*.tar.*
 
 /PKGBUILDs-extras/*/src
 /PKGBUILDs-extras/*/pkg
-/PKGBUILDs-extras/**/*.tar.gz*
-/PKGBUILDs-extras/**/*.tar.zst*
+/PKGBUILDs-extras/**/*.tar.*
 
 *-gpt.ps1
 /responses

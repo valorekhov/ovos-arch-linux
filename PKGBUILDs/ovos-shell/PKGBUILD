@@ -3,15 +3,15 @@ _gh_proj=ovos-shell
 pkgname=ovos-shell
 pkgver='0f3335b0aa3a806b130a6a79299d79c75bc12c0e'
 pkgrel=0
-pkgdesc='OpenVoiceOS Shell:
+pkgdesc='OpenVoiceOS Shell on EGLFS:
 	  This is a minimal shell which is intended 
 	  to run on low power hardware either as "single 
 	  application" on a minimal wayland server or 
 	  with eglfs backend.'
-arch=('any')
+arch=('amd64' 'aarch64' 'armv7h')
 url='https://github.com/OpenVoiceOS/ovos-shell/'
 license=('Apache License 2.0')
-depends=(kio kio-extras plasma-framework qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base)
+depends=(mycroft-gui kio kio-extras plasma-framework qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base)
 optdepends=('qt5-lottie: QT5 animation support')
 makedepends=(pkgconf cmake extra-cmake-modules)
 

@@ -1,0 +1,22 @@
+[Unit]
+Description=OVOS-Shell standalone 
+After=remote-fs.target systemd-user-sessions.service network-online.target nss-lookup.target sound.target bluetooth.target polkit.service upower.service
+Wants=network-online.target polkit.service upower.service
+Conflicts=getty@tty1.service
+
+[Service]
+User=ovos
+Group=ovos
+WorkingDirectory=/home/ovos
+EnvironmentFile=-/home/ovos/.config/ovos-shell/.env
+PAMName=login
+TTYPath=/dev/tty1
+ExecStartPre=-/usr/bin/kbuildsycoca5
+ExecStart=/usr/bin/ovos-shell
+# ExecStop=/usr/bin/killall --user ovos --exact --wait ovos.bin
+Restart=on-failure
+StandardInput=tty
+StandardOutput=journal
+
+[Install]
+Alias=display-manager.service

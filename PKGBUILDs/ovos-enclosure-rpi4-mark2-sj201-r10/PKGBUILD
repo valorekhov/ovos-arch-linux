@@ -1,0 +1,30 @@
+pkgname=ovos-enclosure-rpi4-mark2-sj201-r10
+pkgver='1.0.0'
+pkgrel=1
+pkgdesc='Supporting assets for the Raspberry PI4 -based Mycroft Mark2 production Revision 10 HAT. Specifically the PWM Fan'
+arch=('any')
+url='https://github.com/OpenVoiceOS/'
+license=('Apache License 2.0')
+depends=()
+optdepends=()
+makedepends=(dtc)
+
+source=("sj201-rev10-pwm-fan-overlay.dts" "register-sj201-rev10-pwm-fan-overlay.install")
+sha256sums=('f4b83816f0f55fe17a3f7852713bed87fdf98f60db4b1bc805b34a6043b4ab9f'
+            '2fbdb05aea76e24207bb9bcd046e524da0ce6881e2685f32ac7bcc87fec719a1')
+
+build() {
+    cd "$srcdir"
+    mkdir -p "build"
+    dtc -@ -Hepapr -I dts -O dtb -o build/sj201-rev10-pwm-fan.dtbo sj201-rev10-pwm-fan-overlay.dts
+}
+
+package() {
+    cd "$srcdir"
+
+    mkdir -p "$pkgdir/boot/overlays"
+    install -Dm644 "./build/sj201-rev10-pwm-fan.dtbo" "$pkgdir/boot/overlays"
+}
+
+# Install script for the target system
+install=register-sj201-rev10-pwm-fan-overlay.install

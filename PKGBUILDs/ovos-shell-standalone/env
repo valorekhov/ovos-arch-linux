@@ -1,0 +1,15 @@
+QT_QPA_PLATFORM=eglfs
+QT_QPA_EGLFS_KMS_ATOMIC=1
+QT_QPA_PLATFORMTHEME=qt5ct
+QT_PLUGIN_PATH=/usr/lib/qt/plugins:/usr/lib/kf5
+QT_LOGGING_RULES='*.debug=false'
+QT_FILE_SELECTORS=ovos
+QT_FONT_DPI=120
+QT_IM_MODULE=qtvirtualkeyboard
+QT_QUICK_CONTROLS_STYLE=OpenVoiceStyle
+XDG_RUNTIME_DIR=/run/user/1000
+XDG_DATA_DIRS=/usr/share:/usr/local/share:$XDG_DATA_DIRS
+XDG_CURRENT_DESKTOP=kde
+LD_LIBRARY_PATH=/usr/lib
+LIBEXEC_PATH=/libexec:/usr/libexec:/usr/lib/libexec
+QML2_IMPORT_PATH=/usr/lib/qt/qml

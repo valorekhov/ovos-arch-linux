@@ -1,0 +1,33 @@
+pkgname=ovos-enclosure-rpi4-mark2
+pkgver='1.0.0'
+pkgrel=1
+pkgdesc='Supporting assets for the Raspberry PI4 -based Mycroft Mark2 Revisions 6 and 10 HATs'
+arch=('any')
+url='https://github.com/OpenVoiceOS/'
+license=('Apache License 2.0')
+depends=()
+optdepends=()
+makedepends=(dtc)
+
+source=("xvf3510.dtbo" \
+        "sj201-buttons-overlay.dts" \
+        "register-sj201-overlays.install")
+sha256sums=('213ac1919151453977accc49cb64d6b54d5c234c17cd4d6823d6482c1ff4778a'
+            'b7cf09d6d7c0e719dc96f1ae6832ce22c060d2ccb69530111ca390bd39976d71'
+            '88f5ebf8b7e36c73beca90027fe7d44af693db1ce329b62e0760e87ca03b6e58')
+
+build() {
+    cd "$srcdir"
+    mkdir -p "build"
+    dtc -@ -Hepapr -I dts -O dtb -o build/sj201-buttons.dtbo sj201-buttons-overlay.dts
+}
+
+package() {
+    cd "$srcdir"
+
+    mkdir -p "$pkgdir/boot/overlays"
+    install -Dm644 "./build/sj201-buttons.dtbo" "$pkgdir/boot/overlays"
+    install -Dm644 "./xvf3510.dtbo" "$pkgdir/boot/overlays"
+}
+
+install=register-sj201-overlays.install
