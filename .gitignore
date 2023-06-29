@@ -2,9 +2,9 @@
 /PKGBUILDs/*/pkg
 /PKGBUILDs/**/*.tar.*
 
-/PKGBUILDs-extras/*/src
-/PKGBUILDs-extras/*/pkg
-/PKGBUILDs-extras/**/*.tar.*
+/PKGBUILDs-extra/*/src
+/PKGBUILDs-extra/*/pkg
+/PKGBUILDs-extra/**/*.tar.*
 
 *-gpt.ps1
 /responses
@@ -13,3 +13,4 @@
 .env*
 .known-repo-packages
 .srcinfo.json
+ArchLinuxARM-*.tar*
