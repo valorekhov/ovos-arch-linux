@@ -1,0 +1,15 @@
+pkgbase = python-ovos-phal-plugin-gpsd
+	pkgdesc = OVOS-PHAL GPS Deamon
+	pkgver = 0.0.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-gpsd/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-gpsd/archive/a5859a89dddd5fd2c889a1464fbcab29943f2df0.tar.gz
+	sha256sums = 09faaf969c5d3cbd99dffb9d9a038f8b3a30768bf0cb8aba5e8a2b5388f6767a
+
+pkgname = python-ovos-phal-plugin-gpsd

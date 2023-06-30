@@ -1,0 +1,18 @@
+pkgbase = python-ovos-phal-plugin-system
+	pkgdesc = OVOS-PHAL System events
+	pkgver = 0.0.4a2
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-system/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-config>=0.0.5
+	depends = python-ovos-plugin-manager
+	depends = python-ovos-utils>=0.0.30
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-system/archive/6bd785611cd2e266d1cbec395c29a51525dd6d13.tar.gz
+	sha256sums = 782f43c5610c4855fa6a538e890f7979e47855cb8d4847a47ac0568930017855
+
+pkgname = python-ovos-phal-plugin-system

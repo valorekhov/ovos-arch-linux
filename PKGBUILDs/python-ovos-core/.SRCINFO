@@ -1,0 +1,40 @@
+pkgbase = python-ovos-core
+	pkgdesc = OVOS-core is a backwards-compatible descendant of Mycroft-core, the central component of Mycroft
+	pkgver = 0.0.8a21
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-core/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-adapt-parser>=1.0.0
+	depends = python-combo-lock>=0.2.2
+	depends = python-ovos-backend-client>=0.0.6
+	depends = python-ovos-bus-client>=0.0.4a3
+	depends = python-ovos-workshop>=0.0.12a17
+	depends = python-ovos-classifiers>=0.0.0a3
+	depends = python-ovos-config>=0.0.8
+	depends = python-ovos-lingua-franca>=0.4.7
+	depends = python-ovos-plugin-manager>=0.0.23a9
+	depends = python-ovos-utils>=0.0.33a5
+	depends = python-padacioso
+	depends = python-dateutil>=2.6
+	depends = python-requests>=2.26
+	depends = python-watchdog>=2.1
+	conflicts = python-adapt-parser>=2.0.0
+	conflicts = python-combo-lock>=0.3
+	conflicts = python-ovos-backend-client>=0.1.0
+	conflicts = python-ovos-bus-client>=0.1.0
+	conflicts = python-ovos-workshop>=0.1.0
+	conflicts = python-ovos-classifiers>=0.1.0
+	conflicts = python-ovos-plugin-manager>=0.1.0
+	conflicts = python-ovos-utils>=0.1.0
+	conflicts = python-dateutil>=3.0
+	conflicts = python-requests>=3.0
+	conflicts = python-watchdog>=3.0
+	source = https://github.com/OpenVoiceOS/ovos-core/archive/e4cabf257c278e183d5c77aaaa3c920028e4f51f.tar.gz
+	sha256sums = 75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff
+
+pkgname = python-ovos-core

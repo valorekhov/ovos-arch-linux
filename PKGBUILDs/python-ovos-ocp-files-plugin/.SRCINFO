@@ -1,0 +1,23 @@
+pkgbase = python-ovos-ocp-files-plugin
+	pkgdesc = A library for reading and, in the future, writing audio metadata.
+	pkgver = 0.13.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-ocp-files-plugin/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-attrs>=18.2
+	depends = python-bidict
+	depends = python-bitstruct>=6.0
+	depends = python-more-itertools>=4.0
+	depends = python-pprintpp
+	depends = python-wrapt
+	source = https://github.com/OpenVoiceOS/ovos-ocp-files-plugin/archive/6a3a9426dfff9666ebb0026519a4bcaae609086b.tar.gz
+	source = 0001-Loosen-requirements.patch
+	sha256sums = ef4ee635d57477d03e9e36bd1f23eda69bee60730149d34d24bd370e17e8e496
+	sha256sums = 5399E1236C38EAC6CC071E3A342340FA6D5530B82F41EC67936B820A764AA783
+
+pkgname = python-ovos-ocp-files-plugin

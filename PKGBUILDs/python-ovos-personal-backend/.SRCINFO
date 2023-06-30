@@ -1,0 +1,28 @@
+pkgbase = python-ovos-personal-backend
+	pkgdesc = Personal mycroft backend alternative to mycroft.home, written in flask
+	pkgver = 0.2.0a5
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-personal-backend/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-flask>=0.12
+	depends = python-flask-sqlalchemy
+	depends = python-geocoder
+	depends = python-json-database
+	depends = python-oauthlib
+	depends = python-ovos-plugin-manager>=0.0.23a3
+	depends = python-ovos-stt-plugin-server
+	depends = python-ovos-utils>=0.0.25a7
+	depends = python-pyopenssl
+	depends = python-requests>=2.26.0
+	depends = python-requests-cache
+	depends = python-sqlalchemy-json
+	depends = python-timezonefinder
+	source = https://github.com/OpenVoiceOS/ovos-personal-backend/archive/5029f4bd5a97fafd47590ca35757f579e64f53d4.tar.gz
+	sha256sums = 5c7ee4704de3fc27497b666f481fbdc015334336ead73ac2a96de2d2ec8d0dd2
+
+pkgname = python-ovos-personal-backend

@@ -1,0 +1,18 @@
+pkgbase = python-ovos-backend-manager
+	pkgdesc = A simple web UI for personal backend, powered by PyWebIO
+	pkgver = 0.0.1a1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-backend-manager/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-cutecharts
+	depends = python-ovos-local-backend>=0.1.5a2
+	depends = python-pywebio
+	source = https://github.com/OpenVoiceOS/ovos-backend-manager/archive/31d8fdd3b1eddcfdbfc53a60fe2a7769f8c241a9.tar.gz
+	sha256sums = c249c6add33b3a0d46eec25695f29804bb6b7b5cde8a87ed4564ea0b245ccd96
+
+pkgname = python-ovos-backend-manager

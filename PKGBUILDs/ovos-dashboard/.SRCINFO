@@ -1,0 +1,17 @@
+pkgbase = ovos-dashboard
+	pkgdesc = OpenVoiceOS Dashboard Application
+	pkgver = 0e311a5ca9aeaa19bcc8a3aec83fb254dc30c152
+	pkgrel = 0
+	url = https://github.com/OpenVoiceOS/OVOS-Dashboard
+	arch = amd64
+	arch = aarch64
+	arch = armv7h
+	license = 
+	source = https://github.com/OpenVoiceOS/OVOS-Dashboard/archive/0e311a5ca9aeaa19bcc8a3aec83fb254dc30c152.tar.gz
+	source = 0001-Run-on-port-5005.patch
+	source = ovos-dashboard@.service
+	sha256sums = d59fa2af8497a09272a2958727eab41e38c87e2c7e93dc14135ff921438efee0
+	sha256sums = 015A852BE370F82528833340679B946370A55FD713B0A4EE470D1201CE2578DA
+	sha256sums = 0AD6AF96A2E2FCF37FA2390B7E7577C96E4990A8C49D99C7687B3D5C5410563D
+
+pkgname = ovos-dashboard

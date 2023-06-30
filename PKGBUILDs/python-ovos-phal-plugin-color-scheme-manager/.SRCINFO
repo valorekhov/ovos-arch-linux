@@ -1,0 +1,18 @@
+pkgbase = python-ovos-phal-plugin-color-scheme-manager
+	pkgdesc = OVOS Shell ColorScheme Manager Plugin for OVOS PHAL
+	pkgver = 1.0.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-color-scheme-manager/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-mycroft-messagebus-client
+	depends = python-ovos-utils
+	depends = python-ovos-plugin-manager>=0.0.1
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-color-scheme-manager/archive/dd8fa31e681b3cee03874790b376384aaa2ab2ef.tar.gz
+	sha256sums = 80b107c5a5e9ce008435427fc1b8720077269c72d0c32416f84ef35425584aaa
+
+pkgname = python-ovos-phal-plugin-color-scheme-manager

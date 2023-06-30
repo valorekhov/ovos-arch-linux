@@ -1,0 +1,17 @@
+pkgbase = python-ovos-vad-plugin-webrtcvad
+	pkgdesc = ovos plugin for voice activity detection using webrtcvad
+	pkgver = 0.0.2
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-vad-plugin-webrtcvad/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-plugin-manager>=0.0.11
+	depends = python-webrtcvad
+	source = https://github.com/OpenVoiceOS/ovos-vad-plugin-webrtcvad/archive/e08ad05426f3742f74f17f182ced7255c3a580f9.tar.gz
+	sha256sums = f0fecbf703e79e38d6ff7c0478da392d679dc771c9a5f3086508cb12d8bdd729
+
+pkgname = python-ovos-vad-plugin-webrtcvad

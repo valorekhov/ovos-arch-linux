@@ -1,0 +1,23 @@
+pkgbase = python-ovos-plugin-manager
+	pkgdesc = OPM can be used to search, install, load and create plugins for the OpenVoiceOS ecosystem!
+	pkgver = 0.0.23a18
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-plugin-manager/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-combo-lock
+	depends = python-importlib-metadata
+	depends = python-langcodes
+	depends = python-ovos-bus-client>=0.0.3a16
+	depends = python-ovos-config>=0.0.8a3
+	depends = python-ovos-utils>=0.0.31a6
+	depends = python-quebra-frases
+	depends = python-requests
+	source = https://github.com/OpenVoiceOS/ovos-plugin-manager/archive/7eba4f0911e68aed315ec9029727ac052d363b95.tar.gz
+	sha256sums = 2642bdde9eff11333d60c8097ced046e4d5c16121e60ffff92adc9ac26995f96
+
+pkgname = python-ovos-plugin-manager

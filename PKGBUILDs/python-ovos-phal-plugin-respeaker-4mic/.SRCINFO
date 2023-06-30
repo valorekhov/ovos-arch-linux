@@ -1,0 +1,17 @@
+pkgbase = python-ovos-phal-plugin-respeaker-4mic
+	pkgdesc = OVOS-PHAL ReSpeaker 4mic
+	pkgver = 0.0.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-respeaker-4mic/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-respeaker-4mic/archive/0f54c45b1d7e1d461053dfd617522ee4e59a80ba.tar.gz
+	source = 0001-Loosen-some-requirements.patch
+	sha256sums = 9a393d929d16d929ea716b3b1f2d92288a839cd700b6f5ec33607b4a71bb9f2a
+	sha256sums = 7C0C3295FCFD27BCD1E9166CD3096E63BA23090CC477067F930FF801A9AAEE92
+
+pkgname = python-ovos-phal-plugin-respeaker-4mic

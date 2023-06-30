@@ -1,0 +1,17 @@
+pkgbase = python-ovos-backend-client
+	pkgdesc = Unofficial python api for interaction with ovos-local-backend
+	pkgver = 0.0.7a6
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-backend-client/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-json-database
+	depends = python-ovos-utils>=0.0.25a7
+	source = https://github.com/OpenVoiceOS/ovos-backend-client/archive/1a746cee2fca3051415b51460a8a8f6897ee61da.tar.gz
+	sha256sums = dedf51d425346eb650f070da7416e66f67bae6c4a4048fe56e4e409f87cbc553
+
+pkgname = python-ovos-backend-client

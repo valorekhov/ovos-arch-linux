@@ -1,0 +1,18 @@
+pkgbase = python-ovos-messagebus
+	pkgdesc = messagebus service, the nervous system of OpenVoiceOS
+	pkgver = 0.0.3a1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-messagebus/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-config>=0.0.8a2
+	depends = python-ovos-utils>=0.0.31a3
+	depends = python-tornado>=6.0.3
+	source = https://github.com/OpenVoiceOS/ovos-messagebus/archive/034ef0b14aeab33152fc97b3fea0e445051a828a.tar.gz
+	sha256sums = 49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58
+
+pkgname = python-ovos-messagebus

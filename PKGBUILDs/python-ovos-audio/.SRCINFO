@@ -1,0 +1,25 @@
+pkgbase = python-ovos-audio
+	pkgdesc = The "mouth" of the OVOS assistant! Handles TTS generation and audio playback
+	pkgver = 0.0.2a13
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-audio/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-plugin-common-play>=0.0.5a3
+	depends = python-ovos-bus-client>=0.0.3a4
+	depends = python-ovos-config>=0.0.8a2
+	depends = python-ovos-ocp-files-plugin
+	depends = python-ovos-ocp-m3u-plugin
+	depends = python-ovos-ocp-news-plugin
+	depends = python-ovos-ocp-rss-plugin
+	depends = python-ovos-plugin-manager>=0.0.23a4
+	depends = python-ovos-tts-plugin-mimic3-server
+	depends = python-ovos-utils>=0.0.31a3
+	source = https://github.com/OpenVoiceOS/ovos-audio/archive/3903c8cbb0072fc03a260020b5ef4e6e6b823377.tar.gz
+	sha256sums = 7a1ce7e28771833aac072cc2037f689e49074768b11ffc99a9a50169ce1becc2
+
+pkgname = python-ovos-audio

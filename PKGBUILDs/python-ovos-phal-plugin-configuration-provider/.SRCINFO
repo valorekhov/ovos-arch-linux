@@ -1,0 +1,19 @@
+pkgbase = python-ovos-phal-plugin-configuration-provider
+	pkgdesc = PHAL plugin to provide configuration in displayable GUI format
+	pkgver = 1.0.1a1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-configuration-provider/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-mycroft-messagebus-client
+	depends = python-ovos-utils
+	depends = python-ovos-config
+	depends = python-ovos-plugin-manager>=0.0.1
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-configuration-provider/archive/ef33111a00d249080f3c21edaac5ea7bf1340a6e.tar.gz
+	sha256sums = 85f8404ecb56a1d7db3ce3c653223f356a16aed58e45670bfd03b4da5cceaedb
+
+pkgname = python-ovos-phal-plugin-configuration-provider

@@ -1,0 +1,17 @@
+pkgbase = ovos-bus-server
+	pkgdesc = alternative ovos bus service (websocket server) in C++
+	pkgver = 6390bb787fad4660106577891ada6fa935b662d7
+	pkgrel = 0
+	url = https://github.com/OpenVoiceOS/ovos-bus-server/
+	arch = amd64
+	arch = aarch64
+	arch = armv7h
+	license = Apache License 2.0
+	makedepends = pkgconf
+	makedepends = cmake
+	source = https://github.com/OpenVoiceOS/ovos-bus-server/archive/6390bb787fad4660106577891ada6fa935b662d7.tar.gz
+	source = 0001-Make-package-installable.patch
+	sha256sums = 2352676a4c1726d2febe7a39c920d5b8b26a5256913039c5e69beff5e5469d3e
+	sha256sums = BBD1F91A15BA6F40358D618168D64547B1FAC5F9AA53FEA64BA7A2D0A0948B00
+
+pkgname = ovos-bus-server

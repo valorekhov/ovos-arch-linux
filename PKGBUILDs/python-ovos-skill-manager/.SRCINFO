@@ -1,0 +1,28 @@
+pkgbase = python-ovos-skill-manager
+	pkgdesc = Skill installer for OVOS. Install skills from any appstore! The mycroft-skills-manager alternative that is not vendor locked, this means you must use it responsibly! Do not install random skills, different appstores have different policies!
+	pkgver = 0.0.13a2
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos_skill_manager/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-bs4
+	depends = python-click
+	depends = python-click-default-group>=1.2.2
+	depends = python-combo-lock
+	depends = python-json-database
+	depends = python-ovos-config>=0.0.3
+	depends = python-ovos-skill-installer>=0.0.5
+	depends = python-ovos-utils
+	depends = python-packaging
+	depends = python-pako>=0.2.3
+	depends = python-yaml
+	depends = python-requests
+	depends = python-requests-cache
+	source = https://github.com/OpenVoiceOS/ovos_skill_manager/archive/1a749aed214b4274097b8fcea5ca2984f76b000d.tar.gz
+	sha256sums = 9d90f42a8b70aeeda69ec42b3086a76a3011a8064c0acc6653624f83b4884dac
+
+pkgname = python-ovos-skill-manager

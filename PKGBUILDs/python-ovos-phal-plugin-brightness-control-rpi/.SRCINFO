@@ -1,0 +1,18 @@
+pkgbase = python-ovos-phal-plugin-brightness-control-rpi
+	pkgdesc = OVOS PHAL BRIGHTNESS CONTROL PLUGIN FOR RPI
+	pkgver = 1.0.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-brightness-control-rpi/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-mycroft-messagebus-client
+	depends = python-ovos-utils
+	depends = python-ovos-plugin-manager>=0.0.1
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-brightness-control-rpi/archive/ca22f4591864ed96c6eba92251a905d4a6e4e010.tar.gz
+	sha256sums = 3b55a437f74c904dc1574e4cf7e7497abc6fc4ddecdbb365633c7c7e1bc65e40
+
+pkgname = python-ovos-phal-plugin-brightness-control-rpi

@@ -1,0 +1,18 @@
+pkgbase = python-ovos-stt-plugin-chromium
+	pkgdesc = A stt plugin for mycroft using the google chrome browser api.
+	pkgver = 0.1.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-chromium/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-utils>=0.0.8a3
+	depends = python-ovos-plugin-manager>=0.0.1a7
+	depends = python-requests
+	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-chromium/archive/f2ae0d54b962ddb3ee33f8178c367f1d4d8e6118.tar.gz
+	sha256sums = 4e2fe50d1f1b1dfdb0fdaa18c5ce3ee03346f8a4697706b13300cb4d064961d1
+
+pkgname = python-ovos-stt-plugin-chromium

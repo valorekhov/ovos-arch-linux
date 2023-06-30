@@ -1,0 +1,17 @@
+pkgbase = python-ovos-cli-client
+	pkgdesc = mycroft-core cli client extracted into a standalone component
+	pkgver = 0.0.1a1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos_cli_client/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-utils>=0.0.31a6
+	depends = python-ovos-bus-client>=0.0.3a4
+	source = https://github.com/OpenVoiceOS/ovos_cli_client/archive/e7c1b5c6b471822a237d6367c4b1b4d3fcf284a7.tar.gz
+	sha256sums = 3e1c88d2db6c804955d2e641acabfd05eb60f1e82d78ca619e0c4090e17124f8
+
+pkgname = python-ovos-cli-client

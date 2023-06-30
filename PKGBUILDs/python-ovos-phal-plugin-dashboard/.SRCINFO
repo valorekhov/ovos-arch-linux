@@ -1,0 +1,16 @@
+pkgbase = python-ovos-phal-plugin-dashboard
+	pkgdesc = OVOS-PHAL Dashboard
+	pkgver = 0.0.2a3
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-dashboard/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-plugin-manager
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-dashboard/archive/4ab48f75c577218acf11b6e5f4dbe54300b63567.tar.gz
+	sha256sums = 622e2b2215613f9337608b582c57c82758ad15aea91d16072750ea928c2a464b
+
+pkgname = python-ovos-phal-plugin-dashboard

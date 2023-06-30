@@ -1,0 +1,20 @@
+pkgbase = python-ovos-config-assistant
+	pkgdesc = ovos config assistant library
+	pkgver = 0.0.0a3
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-config-assistant/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-cutecharts
+	depends = python-oauthlib
+	depends = python-ovos-backend-client
+	depends = python-ovos-utils
+	depends = python-pywebio
+	source = https://github.com/OpenVoiceOS/ovos-config-assistant/archive/fd2ac813342fbb3440b9337a310e46ad8603b56b.tar.gz
+	sha256sums = 335f04d5d1a15ff65634a3df674b2d83844d18323ebaea3f5c2a4515bf4d5f32
+
+pkgname = python-ovos-config-assistant

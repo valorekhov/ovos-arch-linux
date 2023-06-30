@@ -1,0 +1,19 @@
+pkgbase = python-ovos-lingua-franca
+	pkgdesc = OpenVoiceOS's multilingual text parsing and formatting library. This project has been forked from mycroft-core, it replaces it!
+	pkgver = 0.4.8a1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-lingua-franca/
+	arch = any
+	license = Apache-2.0
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-dateutil
+	depends = python-quebra-frases
+	depends = python-rapidfuzz
+	depends = python-webcolors
+	source = https://github.com/OpenVoiceOS/ovos-lingua-franca/archive/282db576c4cd0c8212eaf00ad303f0653ea0e0ed.tar.gz
+	sha256sums = c301b8624d87cac5a6e44b6d211771347f94d4f4a408ff92386c8ba9099e3a16
+
+pkgname = python-ovos-lingua-franca

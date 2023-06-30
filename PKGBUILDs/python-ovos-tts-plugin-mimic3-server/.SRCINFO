@@ -1,0 +1,18 @@
+pkgbase = python-ovos-tts-plugin-mimic3-server
+	pkgdesc = OVOS Server TTS plugin for Mimic3
+	pkgver = 0.0.0a11
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic3-server/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-plugin-manager>=0.0.1
+	depends = python-ovos-utils>=0.0.14
+	depends = python-requests
+	source = https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic3-server/archive/9a31cc1505d7c1520ff6d885b3b443077611f478.tar.gz
+	sha256sums = e4fbbfc8ef15d6987db4c7a9e40d03dec345761eed40fb4d1746bb3c8df23382
+
+pkgname = python-ovos-tts-plugin-mimic3-server

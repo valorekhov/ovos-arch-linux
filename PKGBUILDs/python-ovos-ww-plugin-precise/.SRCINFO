@@ -1,0 +1,19 @@
+pkgbase = python-ovos-ww-plugin-precise
+	pkgdesc = This adds a plugin for precise, this is the official mycroft wake word engine and is supported out of the box by core
+	pkgver = 0.1.2
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-ww-plugin-precise/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-plugin-manager>=0.0.1
+	depends = python-ovos-utils>=0.0.14
+	depends = python-petact>=0.1.2
+	depends = python-precise-runner>=0.2.1
+	source = https://github.com/OpenVoiceOS/ovos-ww-plugin-precise/archive/4f6d460a146a02e33795d401c6de1a83701d762f.tar.gz
+	sha256sums = f37dde090d95af8034555fda266cbd80f30b533f0fbf3f52d512724cca9a0266
+
+pkgname = python-ovos-ww-plugin-precise

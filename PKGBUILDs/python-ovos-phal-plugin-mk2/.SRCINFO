@@ -1,0 +1,18 @@
+pkgbase = python-ovos-phal-plugin-mk2
+	pkgdesc = OVOS-PHAL Mark-2
+	pkgver = 0.0.1a3
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk2/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-plugin-manager
+	depends = python-rpi.gpio
+	depends = python-smbus2
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk2/archive/e71e4bff6480b81b604d29c15f078c2187174d93.tar.gz
+	sha256sums = 43b8e9e772efaaaa083a7e7ff6a3977cc974bac909dfec5cc5f00f0360d19a6b
+
+pkgname = python-ovos-phal-plugin-mk2

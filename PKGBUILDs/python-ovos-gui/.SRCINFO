@@ -1,0 +1,20 @@
+pkgbase = python-ovos-gui
+	pkgdesc = GUI messagebus service, manages GUI state and implements the gui protocol
+	pkgver = 0.0.3a2
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-gui/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-ovos-backend-client
+	depends = python-ovos-bus-client>=0.0.4a5
+	depends = python-ovos-config>=0.0.8a3
+	depends = python-ovos-utils>=0.0.31a5
+	depends = python-tornado>=6.0.3
+	source = https://github.com/OpenVoiceOS/ovos-gui/archive/502dec01d0055c54998280ffaa76d5f54961173f.tar.gz
+	sha256sums = 09488c55a2617bf3d2807a84c4f2a8f636ce1b8a547a0ce5c685bba3f8742e96
+
+pkgname = python-ovos-gui

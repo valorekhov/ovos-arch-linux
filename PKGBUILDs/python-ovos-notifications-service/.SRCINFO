@@ -1,0 +1,17 @@
+pkgbase = python-ovos-notifications-service
+	pkgdesc = Notifications API Daemon Service
+	pkgver = 0.0.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos_notifications_service/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	depends = python-mycroft-messagebus-client
+	depends = python-ovos-utils
+	source = https://github.com/OpenVoiceOS/ovos_notifications_service/archive/dc3f0572feab449dfc7dae51b4f11dc98d8464e6.tar.gz
+	sha256sums = 786153ddb651d2fd3ed831dd27a29f4505e615957819e41d217e476c228a7836
+
+pkgname = python-ovos-notifications-service
