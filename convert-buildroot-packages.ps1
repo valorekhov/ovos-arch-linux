@@ -22,6 +22,10 @@ $packageMap.Values | ForEach-Object { $knownPackages[$_] = $true }
 foreach ($existingPkgDir in $existingPkgDirs) {
     $knownPackages[$existingPkgDir.Name] = $existingPkgDir.FullName
 }
+foreach ($existingPkgDir in (Get-ChildItem -Path "./PKGBUILDs-extra/" -Directory)) {
+    $existingPkgDir.Name
+    $knownPackages[$existingPkgDir.Name] = $existingPkgDir.FullName
+}
 Push-Location
 try{
     foreach ($packageDir in $packageDirectories) {
@@ -287,21 +291,21 @@ try{
 
             $dependencies += $requirements | ForEach-Object {
                 $versions = @($_.specs | ForEach-Object { $_.op + $_.ver })
+                $__moduleName = $_.name
                 $ver = $versions
                     | Where-Object { $_.StartsWith(">")}
                     | Sort-Object -Descending
                     | Select-Object -First 1
-                $__packageName = Get-PythonPackageName $_.name
-                $__mod = ""
+                $__packageName = Get-PythonPackageName $__moduleName
                 $__packageInRepos = Find-PackageInRepositories $__packageName
                 if ($__packageInRepos -and -not $knownPackages.ContainsKey($__packageName)){
                     $knownPackages[$__packageName] = $true
                 }
                 if (-not $knownPackages.ContainsKey($__packageName)){
-                    $__mod = " # TODO:"
+                    pypi2pkgbuild.py --no-install -b "$rootDir/PKGBUILDs-extra" -n $__packageName $__moduleName | Out-Null
                 }
-                if ($ver -and $versions.Count -gt 1) {"$__mod '$__packageName$ver' #$($versions | Sort-Object | Join-String -Separator ",")" }
-                    else {"$__mod '$__packageName$ver'"}
+                if ($ver -and $versions.Count -gt 1) {"'$__packageName$ver' #$($versions | Sort-Object | Join-String -Separator ",")" }
+                    else {"'$__packageName$ver'"}
             }
             $dependencies = $dependencies | Join-String -Separator " \`n"
             $dependencies += " \`n"

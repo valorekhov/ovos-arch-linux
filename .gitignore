@@ -5,6 +5,7 @@
 /PKGBUILDs-extra/*/src
 /PKGBUILDs-extra/*/pkg
 /PKGBUILDs-extra/**/*.tar.*
+/PKGBUILDs-extra/**/*.whl
 
 *-gpt.ps1
 /responses
