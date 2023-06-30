@@ -8,7 +8,7 @@ pkgdesc='OpenVoiceOS Shell on EGLFS:
 	  to run on low power hardware either as "single 
 	  application" on a minimal wayland server or 
 	  with eglfs backend.'
-arch=('amd64' 'aarch64' 'armv7h')
+arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/OpenVoiceOS/ovos-shell/'
 license=('Apache License 2.0')
 depends=(mycroft-gui kio kio-extras plasma-framework qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base)

@@ -33,7 +33,7 @@ pkgdesc='OpenVoiceOS splash screen:
 
 	  http://git.yoctoproject.org/cgit/cgit.cgi/psplash/
 '
-arch=('amd64' 'aarch64' 'armv7h')
+arch=('x86_64' 'aarch64' 'armv7h')
 url='http://yoctoproject.org/'
 license=('GPL-2.0+')
 depends=(systemd)
