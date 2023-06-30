@@ -10,12 +10,12 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-files-plugin/'
 license=('')
 depends=(python \
- 'python-attrs>=18.2' \
- 'python-bidict' \
- # TODO: 'python-bitstruct>=6.0' \
- 'python-more-itertools>=4.0' \
- # TODO: 'python-pprintpp' \
- 'python-wrapt' \
+'python-attrs>=18.2' \
+'python-bidict' \
+'python-bitstruct>=6.0' \
+'python-more-itertools>=4.0' \
+'python-pprintpp' \
+'python-wrapt' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

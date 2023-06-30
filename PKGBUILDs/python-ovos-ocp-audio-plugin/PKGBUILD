@@ -10,14 +10,14 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin/'
 license=('')
 depends=(python \
- 'python-dbus-next' \
- 'python-ovos-audio-plugin-simple' \
- 'python-ovos-workshop>=0.0.11' #<0.1.0,>=0.0.11 \
- 'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
- 'python-ovos-ocp-files-plugin' \
- 'python-ovos-plugin-manager>=0.0.22' #<0.1.0,>=0.0.22 \
- 'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
- # TODO: 'python-padacioso>=0.1.1' #>=0.1.1,~=0.1 \
+'python-dbus-next' \
+'python-ovos-audio-plugin-simple' \
+'python-ovos-workshop>=0.0.11' #<0.1.0,>=0.0.11 \
+'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
+'python-ovos-ocp-files-plugin' \
+'python-ovos-plugin-manager>=0.0.22' #<0.1.0,>=0.0.22 \
+'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
+'python-padacioso>=0.1.1' #>=0.1.1,~=0.1 \
 )
 conflicts=( 'python-ovos-workshop>=0.1.0' \
  'python-ovos-bus-client>=0.1.0' \

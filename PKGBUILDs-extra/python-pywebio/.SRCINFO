@@ -1,0 +1,18 @@
+pkgbase = python-pywebio
+	pkgdesc = Python port of Browserscope's user agent parser
+	pkgver = 0.16.1
+	pkgrel = 00
+	url = https://github.com/ua-parser/uap-python
+	arch = any
+	license = Apache
+	depends = python
+	depends = python-yaml
+	noextract = ua_parser-0.16.1-py2.py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/1d/a1/14599c932e84efc4fed079768f87bde304708d39b74c175c8b9ed5e10a9c/ua_parser-0.16.1-py2.py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 047a0eaeb724bc9683f2b355bfa5f0c8
+	md5sums = 3b83ef96387f14655fc854ddc3c6bd57
+
+pkgname = python-pywebio

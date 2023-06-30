@@ -1,0 +1,17 @@
+pkgbase = python-smbus2
+	pkgdesc = smbus2 is a drop-in replacement for smbus-cffi/smbus-python in pure Python
+	pkgver = 0.4.2
+	pkgrel = 00
+	url = https://github.com/kplindegaard/smbus2
+	arch = any
+	license = MIT
+	depends = python
+	noextract = smbus2-0.4.2-py2.py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/71/2f/73aad66cdee8d4b94068bbc80164aa6a24b3f83541de7b04974438fd70e6/smbus2-0.4.2-py2.py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 9a5d9f71fbbcd30cbfc5b9ac8a22949e
+	md5sums = 2a3eca2de44816126b3c6f33811a9fba
+
+pkgname = python-smbus2

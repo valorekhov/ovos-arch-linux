@@ -10,10 +10,10 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/'
 license=('')
 depends=(python \
- 'python-dbus-next' \
- # TODO: 'python-mycroft-messagebus-client' \
- 'python-ovos-utils' \
- 'python-ovos-plugin-manager>=0.0.1' \
+'python-dbus-next' \
+'python-mycroft-messagebus-client' \
+'python-ovos-utils' \
+'python-ovos-plugin-manager>=0.0.1' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

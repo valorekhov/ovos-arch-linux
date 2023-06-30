@@ -1,0 +1,17 @@
+pkgbase = python-gradio
+	pkgdesc = File support for asyncio.
+	pkgver = 23.1.0
+	pkgrel = 00
+	url = https://github.com/Tinche/aiofiles
+	arch = any
+	license = Apache
+	depends = python
+	noextract = aiofiles-23.1.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/a8/76/635aa4f210d46ca105bfedd42d41f649b91d3e58422912726fc5e7965442/aiofiles-23.1.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = b47ce0f79821dcbc185ab303fe4aaeae
+	md5sums = d2794c0df5b907fdace235a619d80314
+
+pkgname = python-gradio

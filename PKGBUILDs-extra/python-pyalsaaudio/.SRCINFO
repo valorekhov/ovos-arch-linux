@@ -1,0 +1,17 @@
+pkgbase = python-pyalsaaudio
+	pkgdesc = ALSA bindings
+	pkgver = 0.10.0
+	pkgrel = 00
+	url = http://larsimmisch.github.io/pyalsaaudio/
+	arch = x86_64
+	license = PSF
+	depends = python
+	depends = alsa-lib
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/e5/f0/411140b1c2d8eea8531233f39103e7ebda560030493e298be6439ce36936/pyalsaaudio-0.10.0.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 720b2e1a47a5fdb587ea1b4eabbd23e6
+	md5sums = 1a3b161aa0fcec32a0c8907a2219ad9d
+
+pkgname = python-pyalsaaudio

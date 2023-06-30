@@ -10,9 +10,9 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-system/'
 license=('')
 depends=(python \
- 'python-ovos-config>=0.0.5' #>=0.0.5,~=0.0 \
- 'python-ovos-plugin-manager' \
- 'python-ovos-utils>=0.0.30' #>=0.0.30,~=0.0 \
+'python-ovos-config>=0.0.5' #>=0.0.5,~=0.0 \
+'python-ovos-plugin-manager' \
+'python-ovos-utils>=0.0.30' #>=0.0.30,~=0.0 \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

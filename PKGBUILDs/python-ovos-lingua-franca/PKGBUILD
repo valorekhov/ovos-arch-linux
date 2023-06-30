@@ -11,10 +11,10 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-lingua-franca/'
 license=('Apache-2.0')
 depends=(python \
- 'python-dateutil' \
- # TODO: 'python-quebra-frases' \
- 'python-rapidfuzz' \
- 'python-webcolors' \
+'python-dateutil' \
+'python-quebra-frases' \
+'python-rapidfuzz' \
+'python-webcolors' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

@@ -10,9 +10,9 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-backend-manager/'
 license=('')
 depends=(python \
- # TODO: 'python-cutecharts' \
- # TODO: 'python-ovos-local-backend>=0.1.5a2' \
- # TODO: 'python-pywebio' \
+'python-cutecharts' \
+'python-ovos-local-backend>=0.1.5a2' \
+'python-pywebio' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

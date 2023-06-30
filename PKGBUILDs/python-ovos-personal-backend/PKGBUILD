@@ -11,19 +11,19 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-personal-backend/'
 license=('')
 depends=(python \
- 'python-flask>=0.12' \
- 'python-flask-sqlalchemy' \
- 'python-geocoder' \
- 'python-json-database' \
- 'python-oauthlib' \
- 'python-ovos-plugin-manager>=0.0.23a3' \
- 'python-ovos-stt-plugin-server' \
- 'python-ovos-utils>=0.0.25a7' \
- 'python-pyopenssl' \
- 'python-requests>=2.26.0' \
- # TODO: 'python-requests-cache' \
- # TODO: 'python-sqlalchemy-json' \
- # TODO: 'python-timezonefinder' \
+'python-flask>=0.12' \
+'python-flask-sqlalchemy' \
+'python-geocoder' \
+'python-json-database' \
+'python-oauthlib' \
+'python-ovos-plugin-manager>=0.0.23a3' \
+'python-ovos-stt-plugin-server' \
+'python-ovos-utils>=0.0.25a7' \
+'python-pyopenssl' \
+'python-requests>=2.26.0' \
+'python-requests-cache' \
+'python-sqlalchemy-json' \
+'python-timezonefinder' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

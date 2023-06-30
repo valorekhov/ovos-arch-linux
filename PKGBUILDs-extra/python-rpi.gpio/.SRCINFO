@@ -1,0 +1,16 @@
+pkgbase = python-rpi.gpio
+	pkgdesc = A module to control Raspberry Pi GPIO channels
+	pkgver = 0.7.1
+	pkgrel = 00
+	url = http://sourceforge.net/projects/raspberry-gpio-python/
+	arch = x86_64
+	license = MIT
+	depends = python
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/c4/0f/10b524a12b3445af1c607c27b2f5ed122ef55756e29942900e5c950735f2/RPi.GPIO-0.7.1.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 22704930a4e674a3d35342bde6d69fe5
+	md5sums = 3ddc9ea27f7286b3d3de7cbf734ffd09
+
+pkgname = python-rpi.gpio

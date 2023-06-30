@@ -1,0 +1,18 @@
+pkgbase = python-pprintpp
+	pkgdesc = A drop-in replacement for pprint that's actually pretty
+	pkgver = 0.4.0
+	pkgrel = 00
+	url = https://github.com/wolever/pprintpp
+	arch = any
+	license = BSD
+	depends = python
+	depends = python-numpy
+	noextract = pprintpp-0.4.0-py2.py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/4e/d1/e4ed95fdd3ef13b78630280d9e9e240aeb65cc7c544ec57106149c3942fb/pprintpp-0.4.0-py2.py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 6c96b17612b15f7bd78fdb8cc498a6f9
+	md5sums = e9fee0f9e7ccfa1d7f39e3cbad7cd518
+
+pkgname = python-pprintpp

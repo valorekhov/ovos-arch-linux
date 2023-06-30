@@ -1,0 +1,19 @@
+pkgbase = python-sqlalchemy-json
+	pkgdesc = JSON type with nested change tracking for SQLAlchemy
+	pkgver = 0.5.0
+	pkgrel = 00
+	url = https://github.com/edelooff/sqlalchemy-json
+	arch = any
+	license = BSD
+	depends = python
+	depends = python-six
+	depends = python-sqlalchemy1.3
+	depends = python-sqlalchemy
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/8e/cc/9fcde4f5739de1499179dde18d1734f42d1bb5bc9c7188e582d96b53ebeb/sqlalchemy-json-0.5.0.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 185c8eaf2dbfbebb1f0f6abf7d2a3206
+	md5sums = eff24692062965b9a5b626de901e0c3b
+
+pkgname = python-sqlalchemy-json

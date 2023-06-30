@@ -1,0 +1,18 @@
+pkgbase = python-youtube-search
+	pkgdesc = Perform YouTube video searches without the API
+	pkgver = 2.1.2
+	pkgrel = 00
+	url = https://github.com/joetats/youtube_search
+	arch = any
+	license = MIT
+	depends = python
+	depends = python-requests
+	noextract = youtube_search-2.1.2-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/00/4e/548b906dd72bb51f700feb4f2200de3e0c64b34509d3173afb196ad7f1b9/youtube_search-2.1.2-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 8bbeb3fb37d9dc2decfdc14a48f47e4a
+	md5sums = a3a1cac81fc7c36023f5832faee69e9b
+
+pkgname = python-youtube-search

@@ -1,0 +1,18 @@
+pkgbase = python-cutecharts
+	pkgdesc = Hand drawing style charts library for Python.
+	pkgver = 1.2.0
+	pkgrel = 00
+	url = https://github.com/chenjiandongx/cutecharts
+	arch = any
+	license = MIT
+	depends = python
+	depends = python-jinja
+	noextract = cutecharts-1.2.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/0e/e9/2269dc5450fca39d7dfacdf04faca176c4669eab9f2d9453d93405aaf070/cutecharts-1.2.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 6145ca4bab582f1916f56a9995261744
+	md5sums = 0ffe59e78f324eaa1e539359462c9c0e
+
+pkgname = python-cutecharts

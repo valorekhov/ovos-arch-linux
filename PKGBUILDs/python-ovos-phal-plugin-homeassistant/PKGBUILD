@@ -10,15 +10,15 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-homeassistant/'
 license=('')
 depends=(python \
- # TODO: 'python-mycroft-messagebus-client' \
- # TODO: 'python-nested-lookup' \
- 'python-ovos-config' \
- 'python-ovos-phal-plugin-oauth' \
- 'python-ovos-plugin-manager' \
- 'python-ovos-utils' \
- # TODO: 'python-pytube' \
- 'python-websockets' \
- # TODO: 'python-youtube-search' \
+'python-mycroft-messagebus-client' \
+'python-nested-lookup' \
+'python-ovos-config' \
+'python-ovos-phal-plugin-oauth' \
+'python-ovos-plugin-manager' \
+'python-ovos-utils' \
+'python-pytube' \
+'python-websockets' \
+'python-youtube-search' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

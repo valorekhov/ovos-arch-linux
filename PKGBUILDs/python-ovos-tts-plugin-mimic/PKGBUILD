@@ -10,7 +10,7 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic/'
 license=('')
 depends=(python \
- 'python-ovos-plugin-manager>=0.0.5' \
+'python-ovos-plugin-manager>=0.0.5' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

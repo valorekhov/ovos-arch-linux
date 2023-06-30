@@ -1,0 +1,18 @@
+pkgbase = python-adapt-parser
+	pkgdesc = A text-to-intent parsing framework.
+	pkgver = 1.0.0
+	pkgrel = 00
+	url = https://github.com/MycroftAI/adapt
+	arch = any
+	license = Apache
+	depends = python
+	depends = python-six
+	noextract = adapt_parser-1.0.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/13/c0/9f3c286511554628eaacc7080ec69f30e8b2a5e3e078b37c4ed7703924b2/adapt_parser-1.0.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = ef7f3bb8cd764567fecb351f4bacc41c
+	md5sums = a5c534c0b0d5eb7b11a937c909109c2c
+
+pkgname = python-adapt-parser

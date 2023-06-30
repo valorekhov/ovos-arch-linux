@@ -1,0 +1,16 @@
+pkgbase = python-quebra-frases
+	pkgdesc = quebra_frases chunks strings into byte sized pieces
+	pkgver = 0.3.7
+	pkgrel = 00
+	url = https://github.com/OpenJarbas/quebra_frases
+	arch = any
+	license = custom:apache-2.0
+	depends = python
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/04/8f/dcc0beeb6e164f44e03d1501b70733a1d7f069c9d59354911537d84b71e6/quebra_frases-0.3.7.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 2a06b3ea100efacf1345d547982af60d
+	md5sums = 86d3f3a95c324c9479bd8986968f4327
+
+pkgname = python-quebra-frases

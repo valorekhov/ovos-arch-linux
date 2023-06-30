@@ -1,0 +1,17 @@
+pkgbase = python-vlc
+	pkgdesc = VLC bindings for python.
+	pkgver = 3.0.18122
+	pkgrel = 00
+	url = http://wiki.videolan.org/PythonBinding
+	arch = any
+	license = LGPL2.1
+	depends = python
+	noextract = python_vlc-3.0.18122-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/0e/eb/f7ecdfd403a7fa73eb19b152e17858db229280bb43f684a9eb93ec4f178a/python_vlc-3.0.18122-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 3852223a9c2cc7e2dc1ceaaa6ffabd46
+	md5sums = 4fbd65380cdd255951079008b364516c
+
+pkgname = python-vlc

@@ -16,10 +16,10 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-bus-client/'
 license=('Apache-2.0')
 depends=(python \
- 'python-ovos-config>=0.0.8' #<0.1.0,>=0.0.8 \
- 'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
- 'python-pyee>=8.1.0' \
- 'python-websocket-client>=0.54.0' \
+'python-ovos-config>=0.0.8' #<0.1.0,>=0.0.8 \
+'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
+'python-pyee>=8.1.0' \
+'python-websocket-client>=0.54.0' \
 )
 conflicts=( 'python-ovos-config>=0.1.0' \
  'python-ovos-utils>=0.1.0')

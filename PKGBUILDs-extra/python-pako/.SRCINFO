@@ -1,0 +1,18 @@
+pkgbase = python-pako
+	pkgdesc = The universal package manager library
+	pkgver = 0.3.1
+	pkgrel = 00
+	url = https://github.com/MycroftAI/pako
+	arch = any
+	license = Apache
+	depends = python
+	depends = python-appdirs
+	noextract = pako-0.3.1-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/b0/f7/27f2f671e2ac66871776d12b7f79083e3206aee7341b0bcda12458287bcb/pako-0.3.1-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = a3beb78fcc9121d70eb9de067e723a49
+	md5sums = e23fadd6ceef8c618fc1c65191d846fa
+
+pkgname = python-pako

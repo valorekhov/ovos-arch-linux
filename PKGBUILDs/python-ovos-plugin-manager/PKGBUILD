@@ -11,14 +11,14 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-plugin-manager/'
 license=('')
 depends=(python \
- # TODO: 'python-combo-lock' \
- 'python-importlib-metadata' \
- # TODO: 'python-langcodes' \
- 'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
- 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
- 'python-ovos-utils>=0.0.31a6' #>=0.0.31a6,~=0.0 \
- # TODO: 'python-quebra-frases' \
- 'python-requests' \
+'python-combo-lock' \
+'python-importlib-metadata' \
+'python-langcodes' \
+'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
+'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
+'python-ovos-utils>=0.0.31a6' #>=0.0.31a6,~=0.0 \
+'python-quebra-frases' \
+'python-requests' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

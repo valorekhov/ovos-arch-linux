@@ -11,12 +11,12 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_utils/'
 license=('')
 depends=(python \
- 'python-json-database' \
- # TODO: 'python-kthread' \
- 'python-pexpect' \
- 'python-pyee' \
- 'python-requests' \
- 'python-watchdog' \
+'python-json-database' \
+'python-kthread' \
+'python-pexpect' \
+'python-pyee' \
+'python-requests' \
+'python-watchdog' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

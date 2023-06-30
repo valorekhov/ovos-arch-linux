@@ -10,9 +10,9 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/'
 license=('')
 depends=(python \
- 'python-ovos-plugin-manager>=0.0.4' \
- 'python-ovos-utils>=0.0.14' \
- # TODO: 'python-precise-lite-runner>=0.4.1' #>=0.4.1,~=0.4 \
+'python-ovos-plugin-manager>=0.0.4' \
+'python-ovos-utils>=0.0.14' \
+'python-precise-lite-runner>=0.4.1' #>=0.4.1,~=0.4 \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

@@ -1,0 +1,18 @@
+pkgbase = python-timezonefinder
+	pkgdesc = Hierarchical hexagonal geospatial indexing system
+	pkgver = 3.7.6
+	pkgrel = 00
+	url = https://github.com/uber/h3-py
+	arch = x86_64
+	license = Apache
+	makedepends = cython
+	depends = python
+	depends = python-numpy
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/0e/92/30070479f7c41d66dc5f0ac44298eaedf4a7dad722348dac82d6dcc7ddd8/h3-3.7.6.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = fa7a1039356953d5773c22dbeeed0aa1
+	md5sums = 3b83ef96387f14655fc854ddc3c6bd57
+
+pkgname = python-timezonefinder

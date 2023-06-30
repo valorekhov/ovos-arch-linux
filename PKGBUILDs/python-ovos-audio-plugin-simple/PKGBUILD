@@ -10,7 +10,7 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-audio-plugin-simple/'
 license=('Apache-2.0')
 depends=(python \
- 'python-ovos-plugin-manager' \
+'python-ovos-plugin-manager' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

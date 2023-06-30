@@ -10,9 +10,9 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-balena-wifi/'
 license=('')
 depends=(python \
- # TODO: 'python-mycroft-messagebus-client' \
- 'python-ovos-utils' \
- 'python-ovos-plugin-manager>=0.0.1' \
+'python-mycroft-messagebus-client' \
+'python-ovos-utils' \
+'python-ovos-plugin-manager>=0.0.1' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

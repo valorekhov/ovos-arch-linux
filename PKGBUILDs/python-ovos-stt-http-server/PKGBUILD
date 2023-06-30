@@ -10,11 +10,11 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-http-server/'
 license=('')
 depends=(python \
- 'python-fastapi' \
- # TODO: 'python-gradio' \
- 'python-ovos-plugin-manager' \
- 'python-ovos-utils' \
- # TODO: 'python-uvicorn' \
+'python-fastapi' \
+'python-gradio' \
+'python-ovos-plugin-manager' \
+'python-ovos-utils' \
+'python-uvicorn' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

@@ -1,0 +1,17 @@
+pkgbase = python-precise-runner
+	pkgdesc = Wrapper to use Mycroft Precise Wake Word Listener
+	pkgver = 0.3.1
+	pkgrel = 00
+	url = http://github.com/MycroftAI/mycroft-precise
+	arch = any
+	license = custom:unknown
+	depends = python
+	depends = python-pyaudio
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/61/59/ffa7b37956d898d1d9f81eff6083661015ecc5d08645fcf7e8dee502c577/precise-runner-0.3.1.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = a2434be110444192e804f4dada0ccecf
+	md5sums = 175792518e4ac015ab6696d16c4f607e
+
+pkgname = python-precise-runner

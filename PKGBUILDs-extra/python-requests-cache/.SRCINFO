@@ -1,0 +1,20 @@
+pkgbase = python-requests-cache
+	pkgdesc = Composable complex class support for attrs and dataclasses.
+	pkgver = 23.1.2
+	pkgrel = 00
+	url = https://github.com/python-attrs/cattrs
+	arch = any
+	license = MIT
+	depends = python
+	depends = python-attrs
+	depends = python-typing_extensions
+	depends = python-yaml
+	noextract = cattrs-23.1.2-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/3a/ba/05df14efaa0624fac6b1510e87f5ce446208d2f6ce50270a89b6268aebfe/cattrs-23.1.2-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = a496978fb75c5c4016c26fa5e1ddc4c3
+	md5sums = 12efd5ce6c6c43c4ead370bd15f93560
+
+pkgname = python-requests-cache

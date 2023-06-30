@@ -1,0 +1,17 @@
+pkgbase = python-pytube
+	pkgdesc = Python 3 library for downloading YouTube Videos.
+	pkgver = 15.0.0
+	pkgrel = 00
+	url = https://github.com/pytube/pytube
+	arch = any
+	license = custom:The Unlicense (Unlicense)
+	depends = python
+	noextract = pytube-15.0.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/51/64/bcf8632ed2b7a36bbf84a0544885ffa1d0b4bcf25cc0903dba66ec5fdad9/pytube-15.0.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 6c601c9803949146e294464d11bf1156
+	md5sums = 7246f848faa4e9c9fc0ea91122d6e680
+
+pkgname = python-pytube

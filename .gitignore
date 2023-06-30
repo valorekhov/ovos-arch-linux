@@ -1,6 +1,7 @@
 /PKGBUILDs/*/src
 /PKGBUILDs/*/pkg
 /PKGBUILDs/**/*.tar.*
+/PKGBUILDs/**/*.whl
 
 /PKGBUILDs-extra/*/src
 /PKGBUILDs-extra/*/pkg

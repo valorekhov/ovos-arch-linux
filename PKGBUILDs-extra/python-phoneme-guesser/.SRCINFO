@@ -1,0 +1,16 @@
+pkgbase = python-phoneme-guesser
+	pkgdesc = phonemes from text
+	pkgver = 0.1.1
+	pkgrel = 00
+	url = https://github.com/OpenJarbas/phoneme_guesser
+	arch = any
+	license = custom:Apache2
+	depends = python
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/bc/a8/1a341ca70837374a954d46a616eed073465938728f96b325c87d73ce54fc/phoneme_guesser-0.1.1.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 2216d5a9bd923e23e7f230f10b5ac88d
+	md5sums = 5d00ad131cf9e051d0b0dc61f7ea003d
+
+pkgname = python-phoneme-guesser

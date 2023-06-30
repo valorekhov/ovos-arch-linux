@@ -11,8 +11,8 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-bandcamp-plugin/'
 license=('')
 depends=(python \
- # TODO: 'python-ovos-plugin-common-play' \
- # TODO: 'python-py-bandcamp' \
+'python-ovos-plugin-common-play' \
+'python-py-bandcamp' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

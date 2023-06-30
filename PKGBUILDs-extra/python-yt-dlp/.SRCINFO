@@ -1,0 +1,17 @@
+pkgbase = python-yt-dlp
+	pkgdesc = Python package for providing Mozilla's CA Bundle.
+	pkgver = 2023.5.7
+	pkgrel = 00
+	url = https://github.com/certifi/python-certifi
+	arch = any
+	license = MPL2
+	depends = python
+	noextract = certifi-2023.5.7-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/9d/19/59961b522e6757f0c9097e4493fa906031b95b3ebe9360b2c3083561a6b4/certifi-2023.5.7-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 8d7d421ff8c841ba36d0d24c81726c7d
+	md5sums = 3c2b7404369c587c3559afb604fce2f2
+
+pkgname = python-yt-dlp

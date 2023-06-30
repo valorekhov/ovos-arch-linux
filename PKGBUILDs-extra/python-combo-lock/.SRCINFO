@@ -1,0 +1,17 @@
+pkgbase = python-combo-lock
+	pkgdesc = A platform independent file lock.
+	pkgver = 3.12.2
+	pkgrel = 00
+	url = https://pypi.org/project/filelock/
+	arch = any
+	license = custom:The Unlicense (Unlicense)
+	depends = python
+	noextract = filelock-3.12.2-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/00/45/ec3407adf6f6b5bf867a4462b2b0af27597a26bd3cd6e2534cb6ab029938/filelock-3.12.2-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 4ff1be60b3d76c6764c29c73d766ca09
+	md5sums = 911690f51af322440237a253d695d19f
+
+pkgname = python-combo-lock

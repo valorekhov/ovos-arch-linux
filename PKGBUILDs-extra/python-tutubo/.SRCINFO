@@ -1,0 +1,17 @@
+pkgbase = python-tutubo
+	pkgdesc = Dummy package for Beautiful Soup
+	pkgver = 0.0.1
+	pkgrel = 00
+	url = https://pypi.python.org/pypi/beautifulsoup4
+	arch = any
+	license = custom:unknown
+	depends = python
+	depends = python-beautifulsoup4
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/10/ed/7e8b97591f6f456174139ec089c769f89a94a1a4025fe967691de971f314/bs4-0.0.1.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = fe7e51587ac3b174608f3c4f8bd893ac
+	md5sums = e4761ae89d23a3f9a0ac3c39c13262dd
+
+pkgname = python-tutubo

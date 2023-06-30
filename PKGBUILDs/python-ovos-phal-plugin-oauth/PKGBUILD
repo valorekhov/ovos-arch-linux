@@ -10,12 +10,12 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-oauth/'
 license=('')
 depends=(python \
- 'python-flask>=0.12' \
- 'python-oauthlib' \
- 'python-ovos-backend-client' \
- 'python-ovos-utils>=0.0.26' #>=0.0.26,~=0.0 \
- 'python-pillow' \
- 'python-qrcode' \
+'python-flask>=0.12' \
+'python-oauthlib' \
+'python-ovos-backend-client' \
+'python-ovos-utils>=0.0.26' #>=0.0.26,~=0.0 \
+'python-pillow' \
+'python-qrcode' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

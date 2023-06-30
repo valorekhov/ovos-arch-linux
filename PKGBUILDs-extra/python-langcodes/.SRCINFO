@@ -1,0 +1,18 @@
+pkgbase = python-langcodes
+	pkgdesc = Tools for labeling human languages with IETF language tags
+	pkgver = 3.3.0
+	pkgrel = 00
+	url = https://github.com/rspeer/langcodes
+	arch = any
+	license = MIT
+	depends = python
+	depends = python-setuptools
+	noextract = langcodes-3.3.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/fe/c3/0d04d248624a181e57c2870127dfa8d371973561caf54333c85e8f9133a2/langcodes-3.3.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 819c9de0949070768723967a98aba655
+	md5sums = 0c3795648deb81e3b4136bdeee03f070
+
+pkgname = python-langcodes
