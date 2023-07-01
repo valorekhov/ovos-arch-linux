@@ -9,7 +9,7 @@ pkgbase = python-ovos-audio
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
-	depends = python-ovos-plugin-common-play>=0.0.5a3
+	depends = python-ovos-ocp-audio-plugin>=0.0.5a3
 	depends = python-ovos-bus-client>=0.0.3a4
 	depends = python-ovos-config>=0.0.8a2
 	depends = python-ovos-ocp-files-plugin

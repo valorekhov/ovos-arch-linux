@@ -19,7 +19,7 @@ depends=(python \
 'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
 'python-padacioso>=0.1.1' #>=0.1.1,~=0.1 \
 )
-conflicts=( 'python-ovos-plugin-common-play' \
+conflicts=( 'python-ovos-ocp-audio-plugin' \
  'python-ovos-workshop>=0.1.0' \
  'python-ovos-bus-client>=0.1.0' \
  'python-ovos-plugin-manager>=0.1.0' \

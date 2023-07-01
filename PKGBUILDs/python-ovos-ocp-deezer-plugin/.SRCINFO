@@ -10,7 +10,7 @@ pkgbase = python-ovos-ocp-deezer-plugin
 	makedepends = python-wheel
 	depends = python
 	depends = python-deezeridu
-	depends = python-ovos-plugin-common-play
+	depends = python-ovos-ocp-audio-plugin
 	source = https://github.com/OpenVoiceOS/ovos-ocp-deezer-plugin/archive/67d1ee8e6df4333c19e838c1ef248f871d47533f.tar.gz
 	sha256sums = 4b1c8727402acc0e49a89bfba6658c9041f5cf689706910bfc3b4a7cadbc923e
 

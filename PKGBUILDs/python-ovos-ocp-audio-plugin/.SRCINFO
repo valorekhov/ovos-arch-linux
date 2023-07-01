@@ -17,7 +17,7 @@ pkgbase = python-ovos-ocp-audio-plugin
 	depends = python-ovos-plugin-manager>=0.0.22
 	depends = python-ovos-utils>=0.0.32
 	depends = python-padacioso>=0.1.1
-	conflicts = python-ovos-plugin-common-play
+	conflicts = python-ovos-ocp-audio-plugin
 	conflicts = python-ovos-workshop>=0.1.0
 	conflicts = python-ovos-bus-client>=0.1.0
 	conflicts = python-ovos-plugin-manager>=0.1.0

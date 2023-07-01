@@ -11,7 +11,7 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-youtube-plugin/'
 license=('')
 depends=(python \
-'python-ovos-plugin-common-play' \
+'python-ovos-ocp-audio-plugin' \
 'python-tutubo' \
 'python-yt-dlp' \
 )

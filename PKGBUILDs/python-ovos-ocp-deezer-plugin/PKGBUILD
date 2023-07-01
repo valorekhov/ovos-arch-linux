@@ -12,7 +12,7 @@ url='https://github.com/OpenVoiceOS/ovos-ocp-deezer-plugin/'
 license=('')
 depends=(python \
 'python-deezeridu' \
-'python-ovos-plugin-common-play' \
+'python-ovos-ocp-audio-plugin' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

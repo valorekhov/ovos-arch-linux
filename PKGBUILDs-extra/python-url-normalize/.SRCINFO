@@ -1,0 +1,18 @@
+pkgbase = python-url-normalize
+	pkgdesc = URL normalization for Python
+	pkgver = 1.4.3
+	pkgrel = 00
+	url = https://github.com/niksite/url-normalize
+	arch = any
+	license = MIT
+	depends = python
+	depends = python-six
+	noextract = url_normalize-1.4.3-py2.py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/65/1c/6c6f408be78692fc850006a2b6dea37c2b8592892534e09996e401efc74b/url_normalize-1.4.3-py2.py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 0604cdf11e78b0e5746fb7909dceb258
+	md5sums = 0355248f9f4025eb234b21ac43b9ad7a
+
+pkgname = python-url-normalize

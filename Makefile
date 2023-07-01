@@ -12,8 +12,11 @@ all: $(OVOS_PACKAGES)
 
 extra: $(EXTRA_PACKAGES)
 
-clean:
-	@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/pkg ./{PKGBUILDs,PKGBUILDs-extra}/*/src ./{PKGBUILDs,PKGBUILDs-extra}/*/*.pkg.tar*
+clean: remake
+	@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/{pkg,src}
+rebuild:
+	@echo 'Deleted any built packages, you may now run make all'
+	@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/*.pkg.tar*
 
 uninstall:
 	@pacman -Qq | sort | comm -12 - <(echo "$(ALL_PACKAGES)" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm
@@ -48,6 +51,8 @@ python-bitstruct:  PKGBUILDs-extra/python-bitstruct/*.pkg.tar.zst
 
 python-bs4:  PKGBUILDs-extra/python-bs4/*.pkg.tar.zst
 
+python-cattrs:  PKGBUILDs-extra/python-cattrs/*.pkg.tar.zst
+
 python-combo-lock: python-filelock python-memory-tempfile PKGBUILDs-extra/python-combo-lock/*.pkg.tar.zst
 
 python-cutecharts:  PKGBUILDs-extra/python-cutecharts/*.pkg.tar.zst
@@ -57,6 +62,8 @@ python-deezeridu:  PKGBUILDs-extra/python-deezeridu/*.pkg.tar.zst
 python-filelock:  PKGBUILDs-extra/python-filelock/*.pkg.tar.zst
 
 python-gradio: python-uvicorn PKGBUILDs-extra/python-gradio/*.pkg.tar.zst
+
+python-h3:  PKGBUILDs-extra/python-h3/*.pkg.tar.zst
 
 python-json-database: python-combo-lock PKGBUILDs-extra/python-json-database/*.pkg.tar.zst
 
@@ -70,7 +77,7 @@ python-mycroft-messagebus-client:  PKGBUILDs/python-mycroft-messagebus-client/*.
 
 python-nested-lookup:  PKGBUILDs-extra/python-nested-lookup/*.pkg.tar.zst
 
-python-ovos-audio: python-ovos-bus-client python-ovos-config python-ovos-ocp-files-plugin python-ovos-ocp-m3u-plugin python-ovos-ocp-news-plugin python-ovos-ocp-rss-plugin python-ovos-plugin-manager python-ovos-tts-plugin-mimic3-server python-ovos-utils PKGBUILDs/python-ovos-audio/*.pkg.tar.zst
+python-ovos-audio: python-ovos-ocp-audio-plugin python-ovos-bus-client python-ovos-config python-ovos-ocp-files-plugin python-ovos-ocp-m3u-plugin python-ovos-ocp-news-plugin python-ovos-ocp-rss-plugin python-ovos-plugin-manager python-ovos-tts-plugin-mimic3-server python-ovos-utils PKGBUILDs/python-ovos-audio/*.pkg.tar.zst
 
 python-ovos-audio-plugin-simple: python-ovos-plugin-manager PKGBUILDs/python-ovos-audio-plugin-simple/*.pkg.tar.zst
 
@@ -102,19 +109,19 @@ python-ovos-notifications-service: python-mycroft-messagebus-client python-ovos-
 
 python-ovos-ocp-audio-plugin: python-ovos-audio-plugin-simple python-ovos-workshop python-ovos-bus-client python-ovos-ocp-files-plugin python-ovos-plugin-manager python-ovos-utils python-padacioso PKGBUILDs/python-ovos-ocp-audio-plugin/*.pkg.tar.zst
 
-python-ovos-ocp-bandcamp-plugin: python-py-bandcamp PKGBUILDs/python-ovos-ocp-bandcamp-plugin/*.pkg.tar.zst
+python-ovos-ocp-bandcamp-plugin: python-ovos-ocp-audio-plugin python-py-bandcamp PKGBUILDs/python-ovos-ocp-bandcamp-plugin/*.pkg.tar.zst
 
-python-ovos-ocp-deezer-plugin: python-deezeridu PKGBUILDs/python-ovos-ocp-deezer-plugin/*.pkg.tar.zst
+python-ovos-ocp-deezer-plugin: python-deezeridu python-ovos-ocp-audio-plugin PKGBUILDs/python-ovos-ocp-deezer-plugin/*.pkg.tar.zst
 
 python-ovos-ocp-files-plugin: python-bitstruct python-pprintpp PKGBUILDs/python-ovos-ocp-files-plugin/*.pkg.tar.zst
 
-python-ovos-ocp-m3u-plugin:  PKGBUILDs/python-ovos-ocp-m3u-plugin/*.pkg.tar.zst
+python-ovos-ocp-m3u-plugin: python-ovos-ocp-audio-plugin PKGBUILDs/python-ovos-ocp-m3u-plugin/*.pkg.tar.zst
 
-python-ovos-ocp-news-plugin: python-ovos-ocp-m3u-plugin python-ovos-ocp-rss-plugin PKGBUILDs/python-ovos-ocp-news-plugin/*.pkg.tar.zst
+python-ovos-ocp-news-plugin: python-ovos-ocp-audio-plugin python-ovos-ocp-m3u-plugin python-ovos-ocp-rss-plugin PKGBUILDs/python-ovos-ocp-news-plugin/*.pkg.tar.zst
 
-python-ovos-ocp-rss-plugin:  PKGBUILDs/python-ovos-ocp-rss-plugin/*.pkg.tar.zst
+python-ovos-ocp-rss-plugin: python-ovos-ocp-audio-plugin PKGBUILDs/python-ovos-ocp-rss-plugin/*.pkg.tar.zst
 
-python-ovos-ocp-youtube-plugin: python-tutubo python-yt-dlp PKGBUILDs/python-ovos-ocp-youtube-plugin/*.pkg.tar.zst
+python-ovos-ocp-youtube-plugin: python-ovos-ocp-audio-plugin python-tutubo python-yt-dlp PKGBUILDs/python-ovos-ocp-youtube-plugin/*.pkg.tar.zst
 
 python-ovos-personal-backend: python-json-database python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-utils python-requests-cache python-sqlalchemy-json python-timezonefinder PKGBUILDs/python-ovos-personal-backend/*.pkg.tar.zst
 
@@ -236,7 +243,7 @@ python-pywebio:  PKGBUILDs-extra/python-pywebio/*.pkg.tar.zst
 
 python-quebra-frases:  PKGBUILDs-extra/python-quebra-frases/*.pkg.tar.zst
 
-python-requests-cache:  PKGBUILDs-extra/python-requests-cache/*.pkg.tar.zst
+python-requests-cache: python-cattrs python-url-normalize PKGBUILDs-extra/python-requests-cache/*.pkg.tar.zst
 
 python-rich-click:  PKGBUILDs-extra/python-rich-click/*.pkg.tar.zst
 
@@ -250,9 +257,11 @@ python-speechrecognition:  PKGBUILDs-extra/python-speechrecognition/*.pkg.tar.zs
 
 python-sqlalchemy-json:  PKGBUILDs-extra/python-sqlalchemy-json/*.pkg.tar.zst
 
-python-timezonefinder:  PKGBUILDs-extra/python-timezonefinder/*.pkg.tar.zst
+python-timezonefinder: python-h3 PKGBUILDs-extra/python-timezonefinder/*.pkg.tar.zst
 
 python-tutubo: python-bs4 python-pytube PKGBUILDs-extra/python-tutubo/*.pkg.tar.zst
+
+python-url-normalize:  PKGBUILDs-extra/python-url-normalize/*.pkg.tar.zst
 
 python-uvicorn:  PKGBUILDs-extra/python-uvicorn/*.pkg.tar.zst
 

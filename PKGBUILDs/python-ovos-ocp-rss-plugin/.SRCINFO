@@ -10,7 +10,7 @@ pkgbase = python-ovos-ocp-rss-plugin
 	makedepends = python-wheel
 	depends = python
 	depends = python-feedparser
-	depends = python-ovos-plugin-common-play
+	depends = python-ovos-ocp-audio-plugin
 	source = https://github.com/OpenVoiceOS/ovos-ocp-rss-plugin/archive/3875c176609e29c925940366a8bafda0fb831ab7.tar.gz
 	sha256sums = 34505d50989dc5d239efe45ba834e394016ac450f6da6348ae169c14f964a6a0
 
