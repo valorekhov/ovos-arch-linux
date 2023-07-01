@@ -215,7 +215,7 @@ python-ovos-ww-plugin-pocketsphinx: python-ovos-plugin-manager python-phoneme-gu
 
 python-ovos-ww-plugin-precise: python-ovos-plugin-manager python-ovos-utils python-petact python-precise-runner PKGBUILDs/python-ovos-ww-plugin-precise/*.pkg.tar.zst
 
-python-ovos-ww-plugin-precise-lite: python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-ww-plugin-precise-lite/*.pkg.tar.zst
+python-ovos-ww-plugin-precise-lite: python-ovos-plugin-manager python-ovos-utils python-precise-lite-runner PKGBUILDs/python-ovos-ww-plugin-precise-lite/*.pkg.tar.zst
 
 python-ovos-ww-plugin-vosk: python-ovos-plugin-manager python-ovos-skill-installer python-vosk PKGBUILDs/python-ovos-ww-plugin-vosk/*.pkg.tar.zst
 
@@ -230,6 +230,8 @@ python-phoneme-guesser:  PKGBUILDs-extra/python-phoneme-guesser/*.pkg.tar.zst
 python-pocketsphinx:  PKGBUILDs-extra/python-pocketsphinx/*.pkg.tar.zst
 
 python-pprintpp:  PKGBUILDs-extra/python-pprintpp/*.pkg.tar.zst
+
+python-precise-lite-runner: python-sonopy PKGBUILDs-extra/python-precise-lite-runner/*.pkg.tar.zst
 
 python-precise-runner:  PKGBUILDs-extra/python-precise-runner/*.pkg.tar.zst
 
@@ -252,6 +254,8 @@ python-rpi.gpio:  PKGBUILDs-extra/python-rpi.gpio/*.pkg.tar.zst
 python-simplematch:  PKGBUILDs-extra/python-simplematch/*.pkg.tar.zst
 
 python-smbus2:  PKGBUILDs-extra/python-smbus2/*.pkg.tar.zst
+
+python-sonopy:  PKGBUILDs-extra/python-sonopy/*.pkg.tar.zst
 
 python-speechrecognition:  PKGBUILDs-extra/python-speechrecognition/*.pkg.tar.zst
 

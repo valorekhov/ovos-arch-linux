@@ -1,0 +1,18 @@
+pkgbase = python-sonopy
+	pkgdesc = A simple audio feature extraction library
+	pkgver = 0.1.2
+	pkgrel = 00
+	url = https://github.com/mycroftai/sonopy
+	arch = any
+	license = custom:unknown
+	depends = python
+	depends = python-numpy
+	depends = python-scipy
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/2b/4d/862855fb391bc30351f90d6c50ea913df9d18b0ae3b6b8ef3c7aa3ac976f/sonopy-0.1.2.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 38e80eb773174c199d06c0bc25cec3f3
+	md5sums = 175792518e4ac015ab6696d16c4f607e
+
+pkgname = python-sonopy

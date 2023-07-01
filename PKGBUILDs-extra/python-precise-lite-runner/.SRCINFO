@@ -1,0 +1,17 @@
+pkgbase = python-precise-lite-runner
+	pkgver = 0.4.2a2
+	pkgrel = 00
+	url = https://github.com/OpenVoiceOS/precise_lite_runner
+	arch = any
+	license = custom:Apache-2.0
+	depends = python
+	depends = python-sonopy
+	noextract = precise_lite_runner-0.4.2a2-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/f1/0c/ac58a27d876ce2327a1a5eb256c02414fbc0392433876f5eb3085d4c738f/precise_lite_runner-0.4.2a2-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = cf01a5bcf40a4affe2a9f6405782985f
+	md5sums = 045edd5501b7c33e6848b421aa2d9e1e
+
+pkgname = python-precise-lite-runner
