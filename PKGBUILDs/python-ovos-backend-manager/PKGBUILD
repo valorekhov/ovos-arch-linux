@@ -11,7 +11,7 @@ url='https://github.com/OpenVoiceOS/ovos-backend-manager/'
 license=('')
 depends=(python \
 'python-cutecharts' \
-'python-ovos-local-backend>=0.1.5a2' \
+'python-ovos-personal-backend>=0.1.5a2' \
 'python-pywebio' \
 )
 conflicts=()

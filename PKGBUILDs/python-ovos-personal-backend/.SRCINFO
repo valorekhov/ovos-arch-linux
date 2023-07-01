@@ -22,6 +22,7 @@ pkgbase = python-ovos-personal-backend
 	depends = python-requests-cache
 	depends = python-sqlalchemy-json
 	depends = python-timezonefinder
+	conflicts = python-ovos-local-backend
 	source = https://github.com/OpenVoiceOS/ovos-personal-backend/archive/5029f4bd5a97fafd47590ca35757f579e64f53d4.tar.gz
 	sha256sums = 5c7ee4704de3fc27497b666f481fbdc015334336ead73ac2a96de2d2ec8d0dd2
 

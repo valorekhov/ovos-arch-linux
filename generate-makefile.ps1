@@ -45,7 +45,7 @@ function New-Makefile([string]$dir, $deps){
         + "`n`nuninstall:`n`t@pacman -Qq | sort | comm -12 - <(echo `"`$(ALL_PACKAGES)`" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm" `
         | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
 
-    "%.pkg.tar.zst:`n`t`$(eval DIR := `$(shell echo '$*' | cut -d* -f1))`n`t@echo 'Building `$(DIR)'`n`t@cd `$(DIR) && `$(RUN_MAKEPKG)`n" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
+    "`n%.pkg.tar.zst:`n`t`$(eval DIR := `$(shell echo '$*' | cut -d* -f1))`n`t@echo 'Building `$(DIR)'`n`t@cd `$(DIR) && `$(RUN_MAKEPKG)`n" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
 
     function Get-DepName([Parameter(ValueFromPipeline = $true)] $name){
         process {
@@ -57,7 +57,7 @@ function New-Makefile([string]$dir, $deps){
 
     $sorted | ForEach-Object {
         $key = $_
-        $depends = $deps[$key] | Get-DepName
+        $depends = $deps[$key] #| Get-DepName
         $targetName = $key | Get-DepName
         "`n$($key): $($depends -join ' ') $targetName"  `
                 # + "`n$($targetName):`n`t@echo 'Building $key'`n`t@cd '$pkgBaseDir/$key' && `$(RUN_MAKEPKG)`n" `

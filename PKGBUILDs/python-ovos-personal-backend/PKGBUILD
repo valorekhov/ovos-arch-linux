@@ -25,7 +25,7 @@ depends=(python \
 'python-sqlalchemy-json' \
 'python-timezonefinder' \
 )
-conflicts=()
+conflicts=( python-ovos-local-backend )
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
