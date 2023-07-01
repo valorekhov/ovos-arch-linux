@@ -257,6 +257,8 @@ python-speechrecognition:  PKGBUILDs-extra/python-speechrecognition/*.pkg.tar.zs
 
 python-sqlalchemy-json:  PKGBUILDs-extra/python-sqlalchemy-json/*.pkg.tar.zst
 
+python-srt:  PKGBUILDs-extra/python-srt/*.pkg.tar.zst
+
 python-timezonefinder: python-h3 PKGBUILDs-extra/python-timezonefinder/*.pkg.tar.zst
 
 python-tutubo: python-bs4 python-pytube PKGBUILDs-extra/python-tutubo/*.pkg.tar.zst
@@ -267,7 +269,7 @@ python-uvicorn:  PKGBUILDs-extra/python-uvicorn/*.pkg.tar.zst
 
 python-vlc:  PKGBUILDs-extra/python-vlc/*.pkg.tar.zst
 
-python-vosk:  PKGBUILDs-extra/python-vosk/*.pkg.tar.zst
+python-vosk: python-srt PKGBUILDs-extra/python-vosk/*.pkg.tar.zst
 
 python-youtube-search:  PKGBUILDs-extra/python-youtube-search/*.pkg.tar.zst
 

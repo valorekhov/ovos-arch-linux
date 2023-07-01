@@ -1,0 +1,16 @@
+pkgbase = python-srt
+	pkgdesc = A tiny library for parsing, modifying, and composing SRT files.
+	pkgver = 3.5.3
+	pkgrel = 00
+	url = https://github.com/cdown/srt
+	arch = any
+	license = MIT
+	depends = python
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/66/b7/4a1bc231e0681ebf339337b0cd05b91dc6a0d701fa852bb812e244b7a030/srt-3.5.3.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 102ba419fc500b7586eb3cdab7ac819f
+	md5sums = 6658a1272b4469f7249985d28b8697bb
+
+pkgname = python-srt
