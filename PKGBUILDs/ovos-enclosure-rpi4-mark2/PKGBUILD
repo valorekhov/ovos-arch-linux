@@ -14,7 +14,7 @@ source=("xvf3510.dtbo" \
         "register-sj201-overlays.install")
 sha256sums=('213ac1919151453977accc49cb64d6b54d5c234c17cd4d6823d6482c1ff4778a'
             'b7cf09d6d7c0e719dc96f1ae6832ce22c060d2ccb69530111ca390bd39976d71'
-            '88f5ebf8b7e36c73beca90027fe7d44af693db1ce329b62e0760e87ca03b6e58')
+            'b653ea4ab0ea47dc60537fa85a7fe11c93444c25f58fe924cadc9dee60dfef97')
 
 build() {
     cd "$srcdir"
