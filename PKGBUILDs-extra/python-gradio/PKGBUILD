@@ -5,14 +5,14 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-gradio
 epoch=
-pkgver=23.1.0
+pkgver=3.30.0
 pkgrel=00
-pkgdesc='File support for asyncio.'
+pkgdesc='Python library for easily interacting with trained machine learning models'
 arch=(any)
-url=https://github.com/Tinche/aiofiles
-license=(Apache)
-depends=(python )
-## EXTRA_DEPENDS ##
+url=https://pypi.org/project/gradio/
+license=(custom:unknown)
+depends=(python python-aiofiles python-aiohttp python-altair python-fastapi python-ffmpy python-gradio-client python-httpx python-huggingface-hub python-jinja python-markdown-it-py python-markupsafe python-matplotlib python-mdit-py-plugins python-numpy python-orjson python-pandas python-pillow python-pydantic python-pydub python-pygments python-python-multipart python-yaml python-requests python-semantic-version python-typing_extensions python-uvicorn python-websockets)
+depends+=(python-packaging python-setuptools)
 makedepends=()
 checkdepends=()
 provides=()
@@ -20,11 +20,11 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/a8/76/635aa4f210d46ca105bfedd42d41f649b91d3e58422912726fc5e7965442/aiofiles-23.1.0-py3-none-any.whl)
-md5sums+=(b47ce0f79821dcbc185ab303fe4aaeae)
-noextract+=(aiofiles-23.1.0-py3-none-any.whl)
+source+=(https://files.pythonhosted.org/packages/d7/74/de6dd369ffdcf8c3f60f69d0af0a2efe6283d6b8b9232bd5ce76b28fa388/gradio-3.30.0-py3-none-any.whl)
+md5sums+=(188a2b202dc91f189726de9d3859afa8)
+noextract+=(gradio-3.30.0-py3-none-any.whl)
 source+=(LICENSE)
-md5sums+=(d2794c0df5b907fdace235a619d80314)
+md5sums+=(86d3f3a95c324c9479bd8986968f4327)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |

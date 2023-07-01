@@ -5,13 +5,13 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-vosk
 epoch=
-pkgver=3.5.3
+pkgver=0.3.45
 pkgrel=00
-pkgdesc='A tiny library for parsing, modifying, and composing SRT files.'
-arch=(any)
-url=https://github.com/cdown/srt
-license=(MIT)
-depends=(python )
+pkgdesc='Offline open source speech recognition API based on Kaldi and Vosk'
+arch=(aarch64 x86_64)
+url=https://github.com/alphacep/vosk-api
+license=(Apache)
+depends=(python python-cffi python-requests python-srt python-tqdm python-websockets)
 ## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
@@ -20,10 +20,17 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/66/b7/4a1bc231e0681ebf339337b0cd05b91dc6a0d701fa852bb812e244b7a030/srt-3.5.3.tar.gz)
-md5sums+=(102ba419fc500b7586eb3cdab7ac819f)
+source_aarch64=(https://files.pythonhosted.org/packages/a4/23/3130a69fa0bf4f5566a52e415c18cd854bf561547bb6505666a6eb1bb625/vosk-0.3.45-py3-none-manylinux2014_aarch64.whl)
+md5sums_aarch64=(6ac65b5d5170371c2d0b815fc019f302)
+noextract+=(vosk-0.3.45-py3-none-manylinux2014_aarch64.whl)
+source_x86_64=(https://files.pythonhosted.org/packages/fc/ca/83398cfcd557360a3d7b2d732aee1c5f6999f68618d1645f38d53e14c9ff/vosk-0.3.45-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.whl)
+md5sums_x86_64=(eae5cb75693006b64d56f7c5c87a3e45)
+noextract+=(vosk-0.3.45-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.whl)
+source_x86_64=(https://files.pythonhosted.org/packages/fc/ca/83398cfcd557360a3d7b2d732aee1c5f6999f68618d1645f38d53e14c9ff/vosk-0.3.45-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.whl)
+md5sums_x86_64=(eae5cb75693006b64d56f7c5c87a3e45)
+noextract+=(vosk-0.3.45-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.whl)
 source+=(LICENSE)
-md5sums+=(6658a1272b4469f7249985d28b8697bb)
+md5sums+=(d09bbd7a3746b6052fbd78b26a87396b)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |

@@ -1,17 +1,19 @@
 pkgbase = python-rich-click
-	pkgdesc = Markdown URL utilities
-	pkgver = 0.1.2
+	pkgdesc = Format click help output nicely with rich
+	pkgver = 1.6.1
 	pkgrel = 00
-	url = https://pypi.org/project/mdurl/
+	url = https://github.com/ewels/rich-click
 	arch = any
 	license = MIT
 	depends = python
-	noextract = mdurl-0.1.2-py3-none-any.whl
+	depends = python-click
+	depends = python-rich
+	noextract = rich_click-1.6.1-py3-none-any.whl
 	source = PKGBUILD_EXTRAS
-	source = https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl
+	source = https://files.pythonhosted.org/packages/f4/f2/3fbb0e6eee13a484dc8aaca450e9322d267fc3839b6769841492f1594037/rich_click-1.6.1-py3-none-any.whl
 	source = LICENSE
 	md5sums = SKIP
-	md5sums = 7db14dc5d739bfca141f035953620659
-	md5sums = aca1dc6b9088f1dda81c89cad2c77ad1
+	md5sums = 2ea756182ce23a2660ea3001f8945141
+	md5sums = 5372b77c3720be60b7eff9a9a5c0000d
 
 pkgname = python-rich-click

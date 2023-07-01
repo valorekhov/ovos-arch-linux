@@ -6,7 +6,6 @@ pkgbase = python-pprintpp
 	arch = any
 	license = BSD
 	depends = python
-	depends = python-numpy
 	noextract = pprintpp-0.4.0-py2.py3-none-any.whl
 	source = PKGBUILD_EXTRAS
 	source = https://files.pythonhosted.org/packages/4e/d1/e4ed95fdd3ef13b78630280d9e9e240aeb65cc7c544ec57106149c3942fb/pprintpp-0.4.0-py2.py3-none-any.whl

@@ -5,13 +5,13 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-padacioso
 epoch=
-pkgver=1.3
+pkgver=0.2.1a2
 pkgrel=00
-pkgdesc='Minimal, super readable string pattern matching.'
+pkgdesc='dead simple intent parser'
 arch=(any)
-url=https://github.com/tfeldmann/simplematch
-license=(MIT)
-depends=(python )
+url=https://github.com/OpenVoiceOS/padacioso
+license=(custom:apache-2.0)
+depends=(python python-simplematch)
 ## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
@@ -20,11 +20,11 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/22/a0/bc9bf0bfc972110e16dc8d51e4923de9d9020cd34f50dd4d7601c293b286/simplematch-1.3-py3-none-any.whl)
-md5sums+=(7943cfc43d8b2585a39078f60e749505)
-noextract+=(simplematch-1.3-py3-none-any.whl)
+source+=(https://files.pythonhosted.org/packages/2a/ae/4b3358a8179221cd9f08638f4e2c29bbf37982d347249dece06973f99af5/padacioso-0.2.1a2-py3-none-any.whl)
+md5sums+=(db3c2d59c6c426a5d3ee401d5c5b0704)
+noextract+=(padacioso-0.2.1a2-py3-none-any.whl)
 source+=(LICENSE)
-md5sums+=(6f688e5a735f5cda6cbd3b0449d760d3)
+md5sums+=(ffb93058331cc7f50f76179423b9c219)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |

@@ -5,13 +5,13 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-tutubo
 epoch=
-pkgver=0.0.1
+pkgver=0.0.2a1.post1
 pkgrel=00
-pkgdesc='Dummy package for Beautiful Soup'
+pkgdesc='wrapper around pytube with some new functionality'
 arch=(any)
-url=https://pypi.python.org/pypi/beautifulsoup4
-license=(custom:unknown)
-depends=(python python-beautifulsoup4)
+url=https://github.com/OpenJarbas/tutubo
+license=(custom:Apache)
+depends=(python python-bs4 python-pytube python-requests python-ytmusicapi)
 ## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
@@ -20,10 +20,10 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/10/ed/7e8b97591f6f456174139ec089c769f89a94a1a4025fe967691de971f314/bs4-0.0.1.tar.gz)
-md5sums+=(fe7e51587ac3b174608f3c4f8bd893ac)
+source+=(https://files.pythonhosted.org/packages/58/66/76c41b7fd092173641a9f25106ba5ec0dace423f19d7460e8363afa0f0d9/tutubo-0.0.2a1.post1.tar.gz)
+md5sums+=(df67448041359f88deccb3431929f517)
 source+=(LICENSE)
-md5sums+=(e4761ae89d23a3f9a0ac3c39c13262dd)
+md5sums+=(29df0831065bf309d5f89f6488efccb2)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |

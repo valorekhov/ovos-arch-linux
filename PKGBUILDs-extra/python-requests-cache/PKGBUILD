@@ -5,14 +5,14 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-requests-cache
 epoch=
-pkgver=23.1.2
+pkgver=1.0.1
 pkgrel=00
-pkgdesc='Composable complex class support for attrs and dataclasses.'
+pkgdesc='A persistent cache for python requests'
 arch=(any)
-url=https://github.com/python-attrs/cattrs
-license=(MIT)
-depends=(python python-attrs)
-depends+=(python-typing_extensions python-yaml)
+url=https://github.com/requests-cache/requests-cache
+license=(BSD)
+depends=(python python-attrs python-cattrs python-platformdirs python-requests python-url-normalize python-urllib3)
+## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
 provides=()
@@ -20,11 +20,11 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/3a/ba/05df14efaa0624fac6b1510e87f5ce446208d2f6ce50270a89b6268aebfe/cattrs-23.1.2-py3-none-any.whl)
-md5sums+=(a496978fb75c5c4016c26fa5e1ddc4c3)
-noextract+=(cattrs-23.1.2-py3-none-any.whl)
+source+=(https://files.pythonhosted.org/packages/df/34/c9893aca1061ea42cf90536e1af9593474316a991a868c8ceda3631e2368/requests_cache-1.0.1-py3-none-any.whl)
+md5sums+=(ed9687af6a6a5609ff2d43bbf8e1250f)
+noextract+=(requests_cache-1.0.1-py3-none-any.whl)
 source+=(LICENSE)
-md5sums+=(12efd5ce6c6c43c4ead370bd15f93560)
+md5sums+=(c2556dbcf8ef52bbb1e5cfb605934354)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |

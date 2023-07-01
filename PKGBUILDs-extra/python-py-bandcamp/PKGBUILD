@@ -5,14 +5,14 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-py-bandcamp
 epoch=
-pkgver=23.1.2
+pkgver=0.7.0
 pkgrel=00
-pkgdesc='Composable complex class support for attrs and dataclasses.'
+pkgdesc='bandcamp data scrapper'
 arch=(any)
-url=https://github.com/python-attrs/cattrs
-license=(MIT)
-depends=(python python-attrs)
-depends+=(python-yaml python-typing_extensions)
+url=https://github.com/OpenJarbas/py_bandcamp
+license=(custom:Apache2)
+depends=(python python-beautifulsoup4 python-requests python-requests-cache)
+## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
 provides=()
@@ -20,11 +20,10 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/3a/ba/05df14efaa0624fac6b1510e87f5ce446208d2f6ce50270a89b6268aebfe/cattrs-23.1.2-py3-none-any.whl)
-md5sums+=(a496978fb75c5c4016c26fa5e1ddc4c3)
-noextract+=(cattrs-23.1.2-py3-none-any.whl)
+source+=(https://files.pythonhosted.org/packages/f6/64/eb89bb1aafd1cc56a6c38e40aeaab01ebe3b057f2cc7aad3fb371355e94d/py_bandcamp-0.7.0.tar.gz)
+md5sums+=(e43597eb8c2c16079a701dc673e536dc)
 source+=(LICENSE)
-md5sums+=(12efd5ce6c6c43c4ead370bd15f93560)
+md5sums+=(b07bb9076b477429fb89bfca2d1b584c)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |

@@ -12,7 +12,7 @@ arch=(any)
 url=https://github.com/wolever/pprintpp
 license=(BSD)
 depends=(python )
-depends+=(python-numpy)
+## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
 provides=()

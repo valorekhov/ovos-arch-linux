@@ -1,14 +1,17 @@
 pkgbase = python-json-database
 	pkgdesc = searchable json database with persistence
 	pkgver = 0.7.0
-	pkgrel = 1
+	pkgrel = 00
 	url = https://github.com/OpenJarbas/json_database
 	arch = any
-	license = MIT
-	makedepends = python-setuptools
+	license = custom:MIT
 	depends = python
-	source = https://files.pythonhosted.org/packages/source/j/json-database/json_database-0.7.0.tar.gz
-	sha256sums = 05fc330c48454c68cedb4ebb56039e0be1bdb78a3c15af4d83f6488e23ab67f4
+	depends = python-combo-lock
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/ef/dc/6d6a6e4d4ab02dcd08a83344818c943799eb68b79619ff862e54c64a2c56/json_database-0.7.0.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = cfc0952ea99cb2e6a59b289e2bf772ab
+	md5sums = c72419962ba4980b7980b8d471b6a28b
 
 pkgname = python-json-database
-	depends = python
