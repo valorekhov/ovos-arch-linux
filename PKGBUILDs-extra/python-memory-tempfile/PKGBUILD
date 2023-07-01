@@ -3,15 +3,15 @@
 export PIP_CONFIG_FILE=/dev/null
 export PIP_DISABLE_PIP_VERSION_CHECK=true
 
-pkgname=python-combo-lock
+pkgname=python-memory-tempfile
 epoch=
-pkgver=0.2.5
+pkgver=2.2.3
 pkgrel=00
-pkgdesc='A combined process and thread lock'
+pkgdesc='Helper functions to identify and use paths on the OS (Linux-only for now) where RAM-based tempfiles can be created.'
 arch=(any)
-url=https://github.com/forslund/combo-lock
-license=(Apache)
-depends=(python python-filelock python-memory-tempfile)
+url=https://github.com/mbello/memory-tempfile
+license=(MIT)
+depends=(python )
 ## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
@@ -20,10 +20,11 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/1a/7d/22bc221fd33a0f72c84ff8c6f6b5f06533825c058fe29a57d12467344cb3/combo_lock-0.2.5.tar.gz)
-md5sums+=(fb378b7b4b9a3b6589b59cd2e7fa5c70)
+source+=(https://files.pythonhosted.org/packages/4a/08/43af249eed4ffadc4df084549994ad606a62119fa37bf3a3857acd2d61f4/memory_tempfile-2.2.3-py3-none-any.whl)
+md5sums+=(6e7b5bdf9b79dc02dee393214115d86a)
+noextract+=(memory_tempfile-2.2.3-py3-none-any.whl)
 source+=(LICENSE)
-md5sums+=(a5c534c0b0d5eb7b11a937c909109c2c)
+md5sums+=(cd5a66bf7a1d133c71948809a5216d5a)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |

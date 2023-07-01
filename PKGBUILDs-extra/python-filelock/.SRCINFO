@@ -1,0 +1,17 @@
+pkgbase = python-filelock
+	pkgdesc = A platform independent file lock.
+	pkgver = 3.12.0
+	pkgrel = 00
+	url = https://pypi.org/project/filelock/
+	arch = any
+	license = custom:The Unlicense (Unlicense)
+	depends = python
+	noextract = filelock-3.12.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/ad/73/b094a662ae05cdc4ec95bc54e434e307986a5de5960166b8161b7c1373ee/filelock-3.12.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = f394d5946c05f55cee9b80fcec40b549
+	md5sums = 911690f51af322440237a253d695d19f
+
+pkgname = python-filelock

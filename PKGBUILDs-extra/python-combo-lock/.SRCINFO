@@ -1,17 +1,18 @@
 pkgbase = python-combo-lock
-	pkgdesc = A platform independent file lock.
-	pkgver = 3.12.2
+	pkgdesc = A combined process and thread lock
+	pkgver = 0.2.6
 	pkgrel = 00
-	url = https://pypi.org/project/filelock/
+	url = https://github.com/forslund/combo-lock
 	arch = any
-	license = custom:The Unlicense (Unlicense)
+	license = Apache
 	depends = python
-	noextract = filelock-3.12.2-py3-none-any.whl
+	depends = python-filelock
+	depends = python-memory-tempfile
 	source = PKGBUILD_EXTRAS
-	source = https://files.pythonhosted.org/packages/00/45/ec3407adf6f6b5bf867a4462b2b0af27597a26bd3cd6e2534cb6ab029938/filelock-3.12.2-py3-none-any.whl
+	source = https://files.pythonhosted.org/packages/1a/7d/22bc221fd33a0f72c84ff8c6f6b5f06533825c058fe29a57d12467344cb3/combo_lock-0.2.6.tar.gz
 	source = LICENSE
 	md5sums = SKIP
-	md5sums = 4ff1be60b3d76c6764c29c73d766ca09
-	md5sums = 911690f51af322440237a253d695d19f
+	md5sums = fb378b7b4b9a3b6589b59cd2e7fa5c70
+	md5sums = a5c534c0b0d5eb7b11a937c909109c2c
 
 pkgname = python-combo-lock

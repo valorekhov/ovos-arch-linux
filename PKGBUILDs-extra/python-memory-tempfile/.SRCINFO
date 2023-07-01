@@ -1,0 +1,17 @@
+pkgbase = python-memory-tempfile
+	pkgdesc = Helper functions to identify and use paths on the OS (Linux-only for now) where RAM-based tempfiles can be created.
+	pkgver = 2.2.3
+	pkgrel = 00
+	url = https://github.com/mbello/memory-tempfile
+	arch = any
+	license = MIT
+	depends = python
+	noextract = memory_tempfile-2.2.3-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/4a/08/43af249eed4ffadc4df084549994ad606a62119fa37bf3a3857acd2d61f4/memory_tempfile-2.2.3-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 6e7b5bdf9b79dc02dee393214115d86a
+	md5sums = cd5a66bf7a1d133c71948809a5216d5a
+
+pkgname = python-memory-tempfile
