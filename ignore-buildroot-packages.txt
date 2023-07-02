@@ -1,0 +1,1 @@
+python-ovos-phal-plugin-ipc2bus

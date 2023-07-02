@@ -26,10 +26,14 @@ foreach ($existingPkgDir in (Get-ChildItem -Path "./PKGBUILDs-extra/" -Directory
     $existingPkgDir.Name
     $knownPackages[$existingPkgDir.Name] = $existingPkgDir.FullName
 }
+$ingoreBuildrootPackages = Get-Content ./ignore-buildroot-packages.txt
 Push-Location
 try{
     foreach ($packageDir in $packageDirectories) {
         $packageName = $packageDir.Name
+        if ($ingoreBuildrootPackages.Contains($packageName)){
+            continue
+        }
         $dstPkgDir = "./PKGBUILDs/$packageName"
         mkdir -p $dstPkgDir
 
