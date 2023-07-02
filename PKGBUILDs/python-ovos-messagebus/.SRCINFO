@@ -12,7 +12,13 @@ pkgbase = python-ovos-messagebus
 	depends = python-ovos-config>=0.0.8a2
 	depends = python-ovos-utils>=0.0.31a3
 	depends = python-tornado>=6.0.3
+	provides = ovos-messagebus-server
+	conflicts = ovos-bus-server
 	source = https://github.com/OpenVoiceOS/ovos-messagebus/archive/034ef0b14aeab33152fc97b3fea0e445051a828a.tar.gz
+	source = ovos-messagebus.service
+	source = ovos-systemd_messagebus.py
 	sha256sums = 49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58
+	sha256sums = 0e95100c02b2c323510bd2fe68d268760189376f9fee6e6aa2550a10b563bc46
+	sha256sums = f1732d6858fd0c74e91304e92db30b0ee4a9c4a3e32d98d97bf3564a8197c685
 
 pkgname = python-ovos-messagebus

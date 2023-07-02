@@ -9,6 +9,8 @@ url='https://github.com/OpenVoiceOS/ovos-bus-server/'
 license=('Apache License 2.0')
 depends=()
 makedepends=(pkgconf cmake)
+provides=("ovos-messagebus-server")
+conflicts=("python-ovos-messagebus")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz" \
    0001-Make-package-installable.patch)

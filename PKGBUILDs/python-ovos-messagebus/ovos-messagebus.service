@@ -1,0 +1,23 @@
+[Unit]
+Description=OVOS Messagebus
+PartOf=ovos.service
+After=ovos.service
+
+[Service]
+User=ovos
+Type=notify
+WorkingDirectory=/home/ovos
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/ovos/.local/share/systemd/ovos-systemd_messagebus.py
+# StandardOutput=append:/var/log/ovos/bus.log
+# StandardError=file:/var/log/ovos/bus.error.log
+TimeoutStartSec=1m
+TimeoutStopSec=1m
+Restart=on-failure
+StartLimitInterval=5min
+StartLimitBurst=4
+#StartLimitAction=reboot-force
+#WatchdogSec=30s
+
+[Install]
+WantedBy=ovos.service

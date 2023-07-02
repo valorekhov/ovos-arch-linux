@@ -16,11 +16,15 @@ depends=(python \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
+provides=("ovos-messagebus-server")
+conflicts=("ovos-bus-server")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-messagebus-034ef0b14aeab33152fc97b3fea0e445051a828a.tar.gz \
-   49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+    "ovos-messagebus.service" \
+    "ovos-systemd_messagebus.py")
+sha256sums=('49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58'
+            '0e95100c02b2c323510bd2fe68d268760189376f9fee6e6aa2550a10b563bc46'
+            'f1732d6858fd0c74e91304e92db30b0ee4a9c4a3e32d98d97bf3564a8197c685')
 
 prepare() {
     cd "$srcdir"
@@ -75,6 +79,12 @@ package() {
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/ovos-messagebus.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/home/ovos/.local/share/systemd/"
+    install -Dm644 "$srcdir/ovos-systemd_messagebus.py" "$pkgdir/home/ovos/.local/share/systemd/"
 }
 
 
