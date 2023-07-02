@@ -19,7 +19,6 @@ build() {
 package() {
     cd "$srcdir"
 
-    mkdir -p "$pkgdir/usr/lib/systemd/system"
     mkdir -p "$pkgdir/usr/lib/sysusers.d"
     mkdir -p "$pkgdir/usr/lib/tmpfiles.d"
 

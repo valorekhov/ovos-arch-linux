@@ -1,0 +1,15 @@
+[Unit]
+Description=OVOS Software stack.
+# TODO: Figure out on which the sound target is appropriate
+After=network.target # sound.target
+Wants=network.target # sound.target
+
+[Service]
+User=ovos
+WorkingDirectory=/home/ovos
+Type=oneshot
+ExecStart=/bin/true
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

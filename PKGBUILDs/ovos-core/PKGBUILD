@@ -1,0 +1,23 @@
+pkgname=ovos-core
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="OpenVoiceOS Core Configuration Package"
+arch=('any')
+url='https://github.com/OpenVoiceOS'
+license=('Apache')
+depends=('python-ovos-core' 'ovos-service-base')
+source=('ovos.conf' 'ovos.service')
+sha256sums=('0fe6dc121bf8f64773bef5281e172d65de3fb7354525d579ec4ad98a71a30bca'
+    '3bb4afb9669183afa627930eb62466d442cff56cae4a18656ad76cb3b20d5113')
+
+package() {
+    cd "$srcdir"
+    
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    mkdir -p "$pkgdir/home/ovos/.config/ovos/"
+    # install -Dm644 ovos.conf "$pkgdir/etc/ovos/ovos.conf"
+    install -Dm644 ovos.conf "$pkgdir/home/ovos/.config/ovos/ovos.conf"
+    ln -s "$pkgdir/home/ovos/.config/ovos/ovos.conf" "$pkgdir/home/ovos/.config/ovos/mycroft.conf"
+
+    install -Dm644 ovos.service "$pkgdir/usr/lib/systemd/system/"
+}
