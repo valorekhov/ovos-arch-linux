@@ -10,10 +10,10 @@ pkgbase = python-ovos-stt-http-server
 	makedepends = python-wheel
 	depends = python
 	depends = python-fastapi
-	depends = python-gradio
 	depends = python-ovos-plugin-manager
 	depends = python-ovos-utils
 	depends = python-uvicorn
+	optdepends = python-gradio: for Gradio-compatible GUI
 	source = https://github.com/OpenVoiceOS/ovos-stt-http-server/archive/57c656242e44f8d1d4b60574775dc29167cf314f.tar.gz
 	sha256sums = 9b93a3b9cd97810874084f14ac6957e711da822ab399c8f164f6e8173872da79
 

@@ -11,11 +11,11 @@ url='https://github.com/OpenVoiceOS/ovos-tts-server/'
 license=('')
 depends=(python \
 'python-fastapi' \
-'python-gradio' \
 'python-ovos-plugin-manager' \
 'python-ovos-utils' \
 'python-uvicorn' \
 )
+optdepends=('python-gradio: for Gradio-compatible GUI')
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 

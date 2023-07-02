@@ -31,6 +31,8 @@ mycroft-gui:  PKGBUILDs/mycroft-gui/*.pkg.tar.zst
 
 ovos-bus-server:  PKGBUILDs/ovos-bus-server/*.pkg.tar.zst
 
+ovos-core: python-ovos-core ovos-service-base PKGBUILDs/ovos-core/*.pkg.tar.zst
+
 ovos-dashboard:  PKGBUILDs/ovos-dashboard/*.pkg.tar.zst
 
 ovos-enclosure-rpi4-mark2:  PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
@@ -175,7 +177,7 @@ python-ovos-skill-installer:  PKGBUILDs/python-ovos-skill-installer/*.pkg.tar.zs
 
 python-ovos-skill-manager: python-bs4 python-combo-lock python-json-database python-ovos-config python-ovos-skill-installer python-ovos-utils python-pako python-requests-cache PKGBUILDs/python-ovos-skill-manager/*.pkg.tar.zst
 
-python-ovos-stt-http-server: python-gradio python-ovos-plugin-manager python-ovos-utils python-uvicorn PKGBUILDs/python-ovos-stt-http-server/*.pkg.tar.zst
+python-ovos-stt-http-server: python-ovos-plugin-manager python-ovos-utils python-uvicorn PKGBUILDs/python-ovos-stt-http-server/*.pkg.tar.zst
 
 python-ovos-stt-plugin-chromium: python-ovos-utils python-ovos-plugin-manager PKGBUILDs/python-ovos-stt-plugin-chromium/*.pkg.tar.zst
 
@@ -199,7 +201,7 @@ python-ovos-tts-plugin-mimic3-server: python-ovos-plugin-manager python-ovos-uti
 
 python-ovos-tts-plugin-pico: python-ovos-plugin-manager PKGBUILDs/python-ovos-tts-plugin-pico/*.pkg.tar.zst
 
-python-ovos-tts-server: python-gradio python-ovos-plugin-manager python-ovos-utils python-uvicorn PKGBUILDs/python-ovos-tts-server/*.pkg.tar.zst
+python-ovos-tts-server: python-ovos-plugin-manager python-ovos-utils python-uvicorn PKGBUILDs/python-ovos-tts-server/*.pkg.tar.zst
 
 python-ovos-tts-server-plugin: python-ovos-plugin-manager PKGBUILDs/python-ovos-tts-server-plugin/*.pkg.tar.zst
 
