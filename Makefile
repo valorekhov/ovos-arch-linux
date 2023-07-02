@@ -12,7 +12,7 @@ all: $(OVOS_PACKAGES)
 
 extra: $(EXTRA_PACKAGES)
 
-clean: remake
+clean: rebuild
 	@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/{pkg,src}
 rebuild:
 	@echo 'Deleted any built packages, you may now run make all'

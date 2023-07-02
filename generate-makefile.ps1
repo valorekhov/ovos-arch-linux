@@ -41,7 +41,7 @@ function New-Makefile([string]$dir, $deps){
 
     "extra: `$(EXTRA_PACKAGES)`n" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
 
-    "clean: remake`n`t@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/{pkg,src}" `
+    "clean: rebuild`n`t@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/{pkg,src}" `
         + "`nrebuild:`n`t@echo 'Deleted any built packages, you may now run make all'`n`t@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/*.pkg.tar*" `
         + "`n`nuninstall:`n`t@pacman -Qq | sort | comm -12 - <(echo `"`$(ALL_PACKAGES)`" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm" `
         | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
