@@ -1,0 +1,6 @@
+post_install() {
+    chown -R ovos:ovos /home/ovos/.local/share/systemd/
+}
+post_upgrade() {
+    chown -R ovos:ovos /home/ovos/.local/share/systemd/
+}

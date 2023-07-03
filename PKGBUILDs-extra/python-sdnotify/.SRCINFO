@@ -1,0 +1,16 @@
+pkgbase = python-sdnotify
+	pkgdesc = A pure Python implementation of systemd's service notification protocol (sd_notify)
+	pkgver = 0.3.2
+	pkgrel = 00
+	url = https://github.com/bb4242/sdnotify
+	arch = any
+	license = MIT
+	depends = python
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/ce/d8/9fdc36b2a912bf78106de4b3f0de3891ff8f369e7a6f80be842b8b0b6bd5/sdnotify-0.3.2.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 749ddca1c70be1697fecc443fb1fdb16
+	md5sums = cc572ccc4b18a4b7d13be5d01bc8213e
+
+pkgname = python-sdnotify

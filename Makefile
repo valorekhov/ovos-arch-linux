@@ -105,7 +105,7 @@ python-ovos-lingua-franca: python-quebra-frases PKGBUILDs/python-ovos-lingua-fra
 
 python-ovos-listener: python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-stt-plugin-vosk python-ovos-utils python-ovos-vad-plugin-webrtcvad python-ovos-ww-plugin-pocketsphinx python-ovos-ww-plugin-precise-lite python-ovos-ww-plugin-vosk python-speechrecognition PKGBUILDs/python-ovos-listener/*.pkg.tar.zst
 
-python-ovos-messagebus: python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
+python-ovos-messagebus: python-sdnotify python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
 
 python-ovos-notifications-service: python-mycroft-messagebus-client python-ovos-utils PKGBUILDs/python-ovos-notifications-service/*.pkg.tar.zst
 
@@ -252,6 +252,8 @@ python-requests-cache: python-cattrs python-url-normalize PKGBUILDs-extra/python
 python-rich-click:  PKGBUILDs-extra/python-rich-click/*.pkg.tar.zst
 
 python-rpi.gpio:  PKGBUILDs-extra/python-rpi.gpio/*.pkg.tar.zst
+
+python-sdnotify:  PKGBUILDs-extra/python-sdnotify/*.pkg.tar.zst
 
 python-simplematch:  PKGBUILDs-extra/python-simplematch/*.pkg.tar.zst
 

@@ -3,12 +3,14 @@ pkgbase = python-ovos-messagebus
 	pkgver = 0.0.3a1
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-messagebus/
+	install = python-ovos-messagebus.install
 	arch = any
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-sdnotify
 	depends = python-ovos-config>=0.0.8a2
 	depends = python-ovos-utils>=0.0.31a3
 	depends = python-tornado>=6.0.3
@@ -17,8 +19,10 @@ pkgbase = python-ovos-messagebus
 	source = https://github.com/OpenVoiceOS/ovos-messagebus/archive/034ef0b14aeab33152fc97b3fea0e445051a828a.tar.gz
 	source = ovos-messagebus.service
 	source = ovos-systemd_messagebus.py
+	source = python-ovos-messagebus.install
 	sha256sums = 49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58
 	sha256sums = 0e95100c02b2c323510bd2fe68d268760189376f9fee6e6aa2550a10b563bc46
 	sha256sums = f1732d6858fd0c74e91304e92db30b0ee4a9c4a3e32d98d97bf3564a8197c685
+	sha256sums = a514ea8a9824bfcd51489d8edbcf14befc75d03634ee1335c8f5ff645ac2eb57
 
 pkgname = python-ovos-messagebus
