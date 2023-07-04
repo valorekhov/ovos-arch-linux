@@ -7,18 +7,17 @@ pkgdesc='alternative ovos bus service (websocket server) in C++'
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/OpenVoiceOS/ovos-bus-server/'
 license=('Apache License 2.0')
-depends=()
+depends=('ovos-service-base')
 makedepends=(pkgconf cmake)
 provides=("ovos-messagebus-server")
 conflicts=("python-ovos-messagebus")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz" \
-   0001-Make-package-installable.patch)
-sha256sums=(
-   #ovos-bus-server-6390bb787fad4660106577891ada6fa935b662d7.tar.gz \
-   2352676a4c1726d2febe7a39c920d5b8b26a5256913039c5e69beff5e5469d3e \
-   #0001-Make-package-installable.patch \
-   BBD1F91A15BA6F40358D618168D64547B1FAC5F9AA53FEA64BA7A2D0A0948B00)
+   0001-Make-package-installable.patch
+   ovos-messagebus.service)
+sha256sums=('2352676a4c1726d2febe7a39c920d5b8b26a5256913039c5e69beff5e5469d3e'
+            'bbd1f91a15ba6f40358d618168d64547b1fac5f9aa53fea64ba7a2d0a0948b00'
+            '53c5b43b05b5f4443ef28061124e244fc43b0d6e26dfeca106b59789d3189770')
 
 prepare() {
     cd "$srcdir"
@@ -63,4 +62,7 @@ package() {
     # Search for license files in the original source directory
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/ovos-messagebus.service" "$pkgdir/usr/lib/systemd/system"
 }

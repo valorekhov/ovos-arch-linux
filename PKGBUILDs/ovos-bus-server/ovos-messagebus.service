@@ -1,17 +1,14 @@
 [Unit]
-Description=OVOS Messagebus
+Description=OVOS Messagebus Server (C++)
 PartOf=ovos.service
 After=ovos.service
 
 [Service]
 User=ovos
 Group=ovos
-Type=notify
+Type=simple
 WorkingDirectory=/home/ovos
-Environment=PYTHONUNBUFFERED=1
-ExecStart=/usr/bin/python /etc/systemd/system/ovos-messagebus.d/ovos-systemd_messagebus.py
-# StandardOutput=append:/var/log/ovos/bus.log
-# StandardError=file:/var/log/ovos/bus.error.log
+ExecStart=/usr/bin/ovos-bus-server
 StandardOutput=journal
 TimeoutStartSec=1m
 TimeoutStopSec=1m
