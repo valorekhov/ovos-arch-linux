@@ -1,0 +1,24 @@
+
+pkgname=python-tflite-runtime
+pkgver=2.14.0.dev
+pkgrel=20230612
+pkgdesc='TensorFlow Lite Python bindings'
+arch=('x86_64' 'aarch64')
+url='https://www.tensorflow.org/lite/'
+license=('Apache')
+#depends=('python-tensorflow')
+makedepends=("python" "python-pip")
+source_x86_64=("https://files.pythonhosted.org/packages/90/b0/85d5e9f57c5b2a1aadb10de855c7029963c87a1e60139149debece0095f0/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_x86_64.whl")
+sha256sums_x86_64=('3e0c15c75f735c0a24cf9265dfedd75159dc62fe95f4d393772bc11f6409da77')
+sha256sums_aarch64=('fe8efe935549eb0c2f5d6d8d822fad7bcccb956bf8c56d58e47b2b78bdb96c26')
+
+source_aarch64=("https://files.pythonhosted.org/packages/2b/34/5c6c7a8982db098fc83cb8428e42cf59ffdd4f36e776e8f92c997c5bb566/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_aarch64.whl")
+noextract=("tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_x86_64.whl tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_aarch64.whl")
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_$arch.whl"
+}
