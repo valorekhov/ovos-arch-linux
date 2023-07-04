@@ -14,10 +14,10 @@ package() {
     cd "$srcdir"
 
     mkdir -p "$pkgdir/usr/lib/systemd/system"
-    mkdir -p "$pkgdir/etc/ovos/"
+    # mkdir -p "$pkgdir/etc/ovos/"
     mkdir -p "$pkgdir/etc/mycroft/"
-    install -Dm644 ovos.conf "$pkgdir/etc/ovos/ovos.conf"
-    ln -s "$pkgdir/etc/ovos/ovos.conf" "$pkgdir/etc/mycroft/mycroft.conf"
+    install -Dm644 ovos.conf "$pkgdir/etc/mycroft/mycroft.conf"
+    # ln -s  "$pkgdir/etc/mycroft/mycroft.conf" "$pkgdir/etc/ovos/ovos.conf"
     
     #install -Dm644 ovos.conf "$pkgdir/home/ovos/.config/ovos/ovos.conf"
     #ln -s "$pkgdir/home/ovos/.config/ovos/ovos.conf" "$pkgdir/home/ovos/.config/ovos/mycroft.conf"
