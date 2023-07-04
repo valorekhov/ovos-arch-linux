@@ -2,6 +2,7 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-core
 pkgname=python-ovos-core
 _name=ovos-core
+_unit_name_skills="ovos-skills-messagebus"
 _base_ver='e4cabf257c278e183d5c77aaaa3c920028e4f51f'
 pkgver=0.0.8a21
 pkgrel=1
@@ -10,7 +11,7 @@ Mycroft-core, the central component of Mycroft'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-core/'
 license=('')
-depends=(python \
+depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-adapt-parser>=1.0.0' #<2.0.0,>=1.0.0 \
 'python-combo-lock>=0.2.2' #<0.3,>=0.2.2 \
 'python-ovos-backend-client>=0.0.6' #<0.1.0,>=0.0.6 \
@@ -38,11 +39,17 @@ conflicts=( 'python-adapt-parser>=2.0.0' \
  'python-requests>=3.0' \
  'python-watchdog>=3.0')
 makedepends=(python-build python-installer python-wheel)
+provides=("$_unit_name_skills")
+conflicts+=("$_unit_name_skills")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-core-e4cabf257c278e183d5c77aaaa3c920028e4f51f.tar.gz \
-   75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+    "$_unit_name_skills.service" \
+    "ovos-systemd_skills_messagebus.py" \
+    # "python-ovos-skills.install" \
+)
+sha256sums=('75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff'
+            'd70fa7be87303b9359fb45b3920fcbadae474963009bf7cdc01892dd3f58f840'
+            'bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a')
 
 prepare() {
     cd "$srcdir"
@@ -97,6 +104,12 @@ package() {
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/$_unit_name_skills.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/etc/systemd/system/$_unit_name_skills.d/"
+    install -Dm644 "$srcdir/ovos-systemd_skills_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name_skills.d/"
 }
 
 

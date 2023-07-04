@@ -94,7 +94,6 @@ package() {
 
     mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
     install -Dm644 "$srcdir/ovos-systemd_audio_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
-
 }
 
 
