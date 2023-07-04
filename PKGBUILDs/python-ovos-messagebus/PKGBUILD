@@ -9,7 +9,7 @@ pkgdesc='messagebus service, the nervous system of OpenVoiceOS'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-messagebus/'
 license=('')
-depends=(python python-sdnotify \
+depends=('ovos-service-base' 'python' 'python-sdnotify' \
 'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
 'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
 'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
