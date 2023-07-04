@@ -39,6 +39,8 @@ ovos-enclosure-rpi4-mark2:  PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
 
 ovos-enclosure-rpi4-mark2-sj201-r10:  PKGBUILDs/ovos-enclosure-rpi4-mark2-sj201-r10/*.pkg.tar.zst
 
+ovos-precise-lite-models:  PKGBUILDs/ovos-precise-lite-models/*.pkg.tar.zst
+
 ovos-service-base:  PKGBUILDs/ovos-service-base/*.pkg.tar.zst
 
 ovos-shell: mycroft-gui PKGBUILDs/ovos-shell/*.pkg.tar.zst
@@ -99,6 +101,8 @@ python-ovos-config-assistant: python-cutecharts python-ovos-backend-client pytho
 
 python-ovos-core: ovos-service-base python-sdnotify python-adapt-parser python-combo-lock python-ovos-backend-client python-ovos-bus-client python-ovos-workshop python-ovos-classifiers python-ovos-config python-ovos-lingua-franca python-ovos-plugin-manager python-ovos-utils python-padacioso PKGBUILDs/python-ovos-core/*.pkg.tar.zst
 
+python-ovos-dinkum-listener: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
+
 python-ovos-gui: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-gui/*.pkg.tar.zst
 
 python-ovos-lingua-franca: python-quebra-frases PKGBUILDs/python-ovos-lingua-franca/*.pkg.tar.zst
@@ -106,6 +110,12 @@ python-ovos-lingua-franca: python-quebra-frases PKGBUILDs/python-ovos-lingua-fra
 python-ovos-listener: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-stt-plugin-vosk python-ovos-utils python-ovos-vad-plugin-webrtcvad python-ovos-ww-plugin-pocketsphinx python-ovos-ww-plugin-precise-lite python-ovos-ww-plugin-vosk python-speechrecognition PKGBUILDs/python-ovos-listener/*.pkg.tar.zst
 
 python-ovos-messagebus: python-sdnotify python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
+
+python-ovos-microphone-plugin-alsa: python-ovos-plugin-manager python-pyalsaaudio PKGBUILDs/python-ovos-microphone-plugin-alsa/*.pkg.tar.zst
+
+python-ovos-microphone-plugin-pyaudio: python-ovos-plugin-manager python-speechrecognition PKGBUILDs/python-ovos-microphone-plugin-pyaudio/*.pkg.tar.zst
+
+python-ovos-microphone-plugin-sounddevice: python-ovos-plugin-manager python-speechrecognition PKGBUILDs/python-ovos-microphone-plugin-sounddevice/*.pkg.tar.zst
 
 python-ovos-notifications-service: python-mycroft-messagebus-client python-ovos-utils PKGBUILDs/python-ovos-notifications-service/*.pkg.tar.zst
 
@@ -266,6 +276,8 @@ python-speechrecognition:  PKGBUILDs-extra/python-speechrecognition/*.pkg.tar.zs
 python-sqlalchemy-json:  PKGBUILDs-extra/python-sqlalchemy-json/*.pkg.tar.zst
 
 python-srt:  PKGBUILDs-extra/python-srt/*.pkg.tar.zst
+
+python-tflite-runtime:  PKGBUILDs-extra/python-tflite-runtime/*.pkg.tar.zst
 
 python-timezonefinder: python-h3 PKGBUILDs-extra/python-timezonefinder/*.pkg.tar.zst
 
