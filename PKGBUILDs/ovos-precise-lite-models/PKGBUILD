@@ -1,0 +1,48 @@
+pkgname=ovos-precise-lite-models
+pkgver=0.0.1
+pkgrel=1    
+arch=('any')
+license=('UNKNOWN')
+source=(https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/android.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/computer.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/hey_chatterbox.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/hey_firefox.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/hey_k9.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/hey_kit.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/hey_moxie.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/hey_mycroft.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/hey_scout.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/marvin.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/o_sauro.tflite
+https://github.com/OpenVoiceOS/precise-lite-models/raw/master/wakewords/en/sheila.tflite)
+
+sha256sums=('62054dc9bb1a20e68e9582577ffb2495106d42da3153589378705975f51d2516'
+            'f1810137a7f4cdcf3be6ae33c27e5b042d6fbaa9297d5aa35eb0ed485ac4c3a0'
+            '18ceebae6ad7ddcdd396b5b36a5e6767a4690c1cbd4a73cde15cab509ec602f5'
+            '84fd33d3a0a54a29495c4e64db4b6e940a2fbc040c32ab8f26f94ef6325546f8'
+            '2c725b47e9afc45f2201d86816288a6e1975f815564cfa088688d43adb48679b'
+            '1b3a0509cf29f5f4c8f71aabf4c4272ed0f5adae6dcf1def27ffc472ae06d01c'
+            '70327b148f923493b8f3ce35d8f45dc851207ba656bcf9ee98d68ac45c15236e'
+            'a95e470f8e1a3e0167c666aefaf57acd37b229e12c6b300dc3ddd3cbff7ea65a'
+            'b424b79f1e361e8c15130ea700ba796ecf7b0a1d21deaa3fb0cf7ced1a8f32ea'
+            '4322f7fe235b570e9f8908e91edc306bc23f9608c3e83ebefa8894a145a516bb'
+            'abd6cc0a978cc609c14d8cb1f5b10401850a785936609a5bc1a8008ce88c51e2'
+            'ce7959411e0c4309165bb7eed84e97fe8525499feb1b69d163ec0eafd0dc5e7d')
+
+package(){
+    cd "$srcdir"
+
+    mkdir -p "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 android.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 computer.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 hey_chatterbox.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 hey_firefox.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 hey_k9.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 hey_kit.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 hey_moxie.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 hey_mycroft.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 hey_scout.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 marvin.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 o_sauro.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+    install -Dm644 sheila.tflite "$pkgdir/usr/share/ovos/wakewords/precise-lite-models/"
+}
