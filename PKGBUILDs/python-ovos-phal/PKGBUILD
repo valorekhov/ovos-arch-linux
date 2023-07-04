@@ -2,6 +2,7 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos_PHAL
 pkgname=python-ovos-phal
 _name=ovos-PHAL
+_unit_name="ovos-phal-messagebus"
 _base_ver='b03fa1e3ba1202a34a755bb8979e0380419a02b3'
 pkgver=0.0.5a6
 pkgrel=1
@@ -9,7 +10,7 @@ pkgdesc='OVOS-PHAL'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_PHAL/'
 license=('')
-depends=(python \
+depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-ovos-workshop>=0.0.12a3' #>=0.0.12a3,~=0.0 \
 'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
@@ -21,13 +22,18 @@ depends=(python \
 'python-ovos-plugin-manager>=0.0.23a5' #>=0.0.23a5,~=0.0 \
 'python-ovos-utils>=0.0.31a6' #>=0.0.31a6,~=0.0 \
 )
-conflicts=()
 makedepends=(python-build python-installer python-wheel)
+provides=("$_unit_name")
+conflicts=("$_unit_name")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-phal-b03fa1e3ba1202a34a755bb8979e0380419a02b3.tar.gz \
-   09b273cde6729342da7f2a03dd2430691de73a7c62600bf9faf95da95c88b2a1)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+    "$_unit_name.service" \
+    "ovos-systemd_phal_messagebus.py" \
+    # "python-ovos-gui.install" \
+    )
+sha256sums=('09b273cde6729342da7f2a03dd2430691de73a7c62600bf9faf95da95c88b2a1'
+            'f8a80237e75d95edb22e99013bfa81f06f36a6fc8929437d813c9298d8e1a93e'
+            '2c920defb96d86406d30890da1262520d575b54ad9c830e3b5ad00c88456c4bf')
 
 prepare() {
     cd "$srcdir"
@@ -82,6 +88,12 @@ package() {
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/$_unit_name.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
+    install -Dm644 "$srcdir/ovos-systemd_phal_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
 
 

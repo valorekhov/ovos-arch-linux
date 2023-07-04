@@ -1,0 +1,24 @@
+[Unit]
+Description=OVOS PHAL Service
+PartOf=ovos.service
+After=ovos.service
+After=ovos-messagebus.service
+
+[Service]
+User=ovos
+Group=ovos
+Type=notify12
+WorkingDirectory=/home/ovos
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python /etc/systemd/system/ovos-phal-messagebus.d/ovos-systemd_phal_messagebus.py
+StandardOutput=journal
+TimeoutStartSec=1m
+TimeoutStopSec=1m
+Restart=on-failure
+StartLimitInterval=5min
+StartLimitBurst=4
+#StartLimitAction=reboot-force
+#WatchdogSec=30s
+
+[Install]
+WantedBy=ovos.service
