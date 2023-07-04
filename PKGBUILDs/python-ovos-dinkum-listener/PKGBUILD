@@ -1,0 +1,121 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-dinkum-listener
+pkgname=python-ovos-dinkum-listener
+_name=ovos-dinkum-listener
+_unit_name="ovos-listener-messagebus"
+_commit='b4c473f8ab6ea80195647307c31fd3c81b8fd82c'
+pkgver=0.0.2
+pkgrel=1
+pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core. Dinkum flavor'
+arch=('any')
+url="https://github.com/$_gh_org/$_gh_proj/"
+license=('Apache')
+depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
+'ovos-microphone-plugin' \
+'python-ovos-backend-client>=0.0.6' \
+'python-ovos-bus-client>=0.0.3a16' \
+'python-ovos-config>=0.0.10'  \
+'python-ovos-plugin-manager>=0.0.23a5' \
+#'python-ovos-stt-plugin-server>=0.0.2' #>=0.0.2,~=0.0 \
+#'python-ovos-stt-plugin-vosk' \
+'python-ovos-utils>=0.0.33a8' \
+#'python-ovos-vad-plugin-webrtcvad' \
+#python-ovos-ww-plugin-pocketsphinx>=0.1.3' #>=0.1.3,~=0.1 \
+#python-ovos-ww-plugin-precise-lite>=0.1.2a3' #>=0.1.2a3,~=0.1 \
+#python-ovos-ww-plugin-vosk' \
+#python-pyaudio' \
+'python-speechrecognition>=3.9' \
+)
+makedepends=(python-build python-installer python-wheel)
+provides=("$_unit_name")
+conflicts=("$_unit_name" "python-ovos-listener")
+replaces=("python-ovos-listener")
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
+    "$_unit_name.service" \
+    "ovos-systemd_dinkum_listener_messagebus.py" \
+    # "python-ovos-listener.install" \
+)
+sha256sums=('35ea2e88b6a6fe49d41e96fdfe933d31a178495098f17ad2a8fc6231848ab756'
+            '6d852114cd72b873a90690191c9db678ae7d06180fd61bd0a63315155bab093d'
+            'f6b682fbc4020f6573a9a9407b32ba59d369feba579dec8dd34816ceb01376cb')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/$_unit_name.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
+    install -Dm644 "$srcdir/ovos-systemd_dinkum_listener_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
+}
+
+
+################################################################################
+# #
+# # python-ovos-listener
+# #
+# ################################################################################
+# 
+# PYTHON_OVOS_LISTENER_VERSION = 2d6ba2b6dbfae1c48c1833079d4aa94fa5cf6af5
+# PYTHON_OVOS_LISTENER_SITE = $(call github,OpenVoiceOS,ovos-listener,$(PYTHON_OVOS_LISTENER_VERSION))
+# PYTHON_OVOS_LISTENER_SETUP_TYPE = setuptools
+# PYTHON_OVOS_LISTENER_LICENSE_FILES = LICENSE
+# PYTHON_OVOS_LISTENER_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

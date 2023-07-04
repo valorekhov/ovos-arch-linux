@@ -1,0 +1,19 @@
+pkgbase = python-ovos-microphone-plugin-alsa
+	pkgdesc = A alsa microphone implementation for OVOS
+	pkgver = 0.0.0
+	pkgrel = 00
+	url = https://github.com/OpenVoiceOS/ovos-microphone-plugin-alsa
+	arch = any
+	license = Apache
+	depends = python
+	depends = python-ovos-plugin-manager
+	depends = python-pyalsaaudio
+	noextract = ovos_microphone_plugin_alsa-0.0.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/40/fa/3adba50c73edc0053951ab20d314055a64cb540cc4d598bb47cd90815ed0/ovos_microphone_plugin_alsa-0.0.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 3576976a66f29188be306b346ee5272f
+	md5sums = 31de8f44bc100290cc57a2aad82335da
+
+pkgname = python-ovos-microphone-plugin-alsa

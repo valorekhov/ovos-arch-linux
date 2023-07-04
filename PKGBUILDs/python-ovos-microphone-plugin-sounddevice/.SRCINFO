@@ -1,0 +1,20 @@
+pkgbase = python-ovos-microphone-plugin-sounddevice
+	pkgdesc = A sounddevice microphone implementation for OVOS
+	pkgver = 0.0.0a2
+	pkgrel = 00
+	url = https://github.com/OpenVoiceOS/ovos-microphone-plugin-sounddevice
+	arch = any
+	license = Apache
+	depends = python
+	depends = python-ovos-plugin-manager
+	depends = python-sounddevice
+	depends = python-speechrecognition
+	noextract = ovos_microphone_plugin_sounddevice-0.0.0a2-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/c7/63/1519d874ccc0cc470ceaa5f27e675f55051b9e5cd38caba488c991829b72/ovos_microphone_plugin_sounddevice-0.0.0a2-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = b63f1ef814b258b9e52ba9389d1f58e2
+	md5sums = 31de8f44bc100290cc57a2aad82335da
+
+pkgname = python-ovos-microphone-plugin-sounddevice
