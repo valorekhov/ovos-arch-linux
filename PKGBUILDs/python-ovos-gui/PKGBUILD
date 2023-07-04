@@ -11,7 +11,7 @@ and implements the gui protocol'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-gui/'
 license=('')
-depends=('ovos-service-base' 'python' 'python-sdnotify' \
+depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-ovos-backend-client' \
 'python-ovos-bus-client>=0.0.4a5' #>=0.0.4a5,~=0.0 \
 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
@@ -28,7 +28,7 @@ source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
     # "python-ovos-gui.install" \
     )
 sha256sums=('09488c55a2617bf3d2807a84c4f2a8f636ce1b8a547a0ce5c685bba3f8742e96'
-            '86d4dea34148090a9495df599a6cd6beb7301c89403cea2392ee8e8d6bf61c6d'
+            'f1cced84a19e22734cf530a94823a2c1d38203253ed70f588a898e77f9192b67'
             '91183c0c107817a3e95a17dc3a68dbc2b84341373c645d762b1e2bc2f10dbbc9')
 
 prepare() {
