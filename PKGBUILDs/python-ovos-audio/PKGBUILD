@@ -2,16 +2,15 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-audio
 pkgname=python-ovos-audio
 _name=${pkgname#python-}
+_unit_name="ovos-audio-messagebus"
 _base_ver='3903c8cbb0072fc03a260020b5ef4e6e6b823377'
 pkgver=0.0.2a13
 pkgrel=1
-pkgdesc='The "mouth" of the OVOS assistant!
-
-Handles TTS generation and audio playback'
+pkgdesc='The "mouth" of the OVOS assistant! Handles TTS generation and audio playback'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-audio/'
 license=('')
-depends=(python \
+depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-ovos-ocp-audio-plugin>=0.0.5a3' #>=0.0.5a3,~=0.0 \
 'python-ovos-bus-client>=0.0.3a4' #>=0.0.3a4,~=0.0 \
 'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
@@ -23,13 +22,18 @@ depends=(python \
 'python-ovos-tts-plugin-mimic3-server' \
 'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
 )
-conflicts=()
 makedepends=(python-build python-installer python-wheel)
+provides=("$_unit_name")
+conflicts=("$_unit_name")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-audio-3903c8cbb0072fc03a260020b5ef4e6e6b823377.tar.gz \
-   7a1ce7e28771833aac072cc2037f689e49074768b11ffc99a9a50169ce1becc2)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+    "$_unit_name.service" \
+    "ovos-systemd_audio_messagebus.py" \
+    # "python-ovos-audio.install" \
+)
+sha256sums=('7a1ce7e28771833aac072cc2037f689e49074768b11ffc99a9a50169ce1becc2'
+            '506bdc5c208535d62b156b3bc2bc52cff6ba7d18e87538702e3574c85d810a03'
+            'fd853f6345506ecb1ea81408ea34f8fec3f7701e0b576993ba23db85377859ee')
 
 prepare() {
     cd "$srcdir"
@@ -84,6 +88,13 @@ package() {
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/$_unit_name.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
+    install -Dm644 "$srcdir/ovos-systemd_audio_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
+
 }
 
 
