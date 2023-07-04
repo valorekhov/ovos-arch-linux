@@ -8,7 +8,10 @@ pkgbase = python-ovos-audio
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	depends = ovos-service-base
+	depends = ovos-messagebus-server
 	depends = python
+	depends = python-sdnotify
 	depends = python-ovos-ocp-audio-plugin>=0.0.5a3
 	depends = python-ovos-bus-client>=0.0.3a4
 	depends = python-ovos-config>=0.0.8a2
@@ -19,7 +22,13 @@ pkgbase = python-ovos-audio
 	depends = python-ovos-plugin-manager>=0.0.23a4
 	depends = python-ovos-tts-plugin-mimic3-server
 	depends = python-ovos-utils>=0.0.31a3
+	provides = ovos-audio-messagebus
+	conflicts = ovos-audio-messagebus
 	source = https://github.com/OpenVoiceOS/ovos-audio/archive/3903c8cbb0072fc03a260020b5ef4e6e6b823377.tar.gz
+	source = ovos-audio-messagebus.service
+	source = ovos-systemd_audio_messagebus.py
 	sha256sums = 7a1ce7e28771833aac072cc2037f689e49074768b11ffc99a9a50169ce1becc2
+	sha256sums = 506bdc5c208535d62b156b3bc2bc52cff6ba7d18e87538702e3574c85d810a03
+	sha256sums = fd853f6345506ecb1ea81408ea34f8fec3f7701e0b576993ba23db85377859ee
 
 pkgname = python-ovos-audio

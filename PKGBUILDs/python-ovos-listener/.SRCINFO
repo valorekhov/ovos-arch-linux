@@ -8,7 +8,10 @@ pkgbase = python-ovos-listener
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	depends = ovos-service-base
+	depends = ovos-messagebus-server
 	depends = python
+	depends = python-sdnotify
 	depends = python-ovos-backend-client>=0.0.7a2
 	depends = python-ovos-bus-client>=0.0.3a16
 	depends = python-ovos-config>=0.0.8a3
@@ -22,7 +25,13 @@ pkgbase = python-ovos-listener
 	depends = python-ovos-ww-plugin-vosk
 	depends = python-pyaudio
 	depends = python-speechrecognition>=3.8.1
+	provides = ovos-listener-messagebus
+	conflicts = ovos-listener-messagebus
 	source = https://github.com/OpenVoiceOS/ovos-listener/archive/2d6ba2b6dbfae1c48c1833079d4aa94fa5cf6af5.tar.gz
+	source = ovos-listener-messagebus.service
+	source = ovos-systemd_listener_messagebus.py
 	sha256sums = ea4b70b9c932820820d8daf26cc4251b0e8b248b70a0e1c549ecdd375a960449
+	sha256sums = d6bed399ddbe1dc07b23cd753656a696afb294a3b0cc4983526f3ba5f50f2be3
+	sha256sums = 8dce510650ec2ff5f209c126ad72105a31277069345ce472f7aa710e48840fc8
 
 pkgname = python-ovos-listener

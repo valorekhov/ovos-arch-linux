@@ -8,7 +8,10 @@ pkgbase = python-ovos-core
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	depends = ovos-service-base
+	depends = ovos-messagebus-server
 	depends = python
+	depends = python-sdnotify
 	depends = python-adapt-parser>=1.0.0
 	depends = python-combo-lock>=0.2.2
 	depends = python-ovos-backend-client>=0.0.6
@@ -23,6 +26,7 @@ pkgbase = python-ovos-core
 	depends = python-dateutil>=2.6
 	depends = python-requests>=2.26
 	depends = python-watchdog>=2.1
+	provides = ovos-skills-messagebus
 	conflicts = python-adapt-parser>=2.0.0
 	conflicts = python-combo-lock>=0.3
 	conflicts = python-ovos-backend-client>=0.1.0
@@ -34,7 +38,12 @@ pkgbase = python-ovos-core
 	conflicts = python-dateutil>=3.0
 	conflicts = python-requests>=3.0
 	conflicts = python-watchdog>=3.0
+	conflicts = ovos-skills-messagebus
 	source = https://github.com/OpenVoiceOS/ovos-core/archive/e4cabf257c278e183d5c77aaaa3c920028e4f51f.tar.gz
+	source = ovos-skills-messagebus.service
+	source = ovos-systemd_skills_messagebus.py
 	sha256sums = 75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff
+	sha256sums = d70fa7be87303b9359fb45b3920fcbadae474963009bf7cdc01892dd3f58f840
+	sha256sums = bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a
 
 pkgname = python-ovos-core

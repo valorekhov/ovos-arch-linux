@@ -8,13 +8,22 @@ pkgbase = python-ovos-gui
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	depends = ovos-service-base
+	depends = ovos-messagebus-server
 	depends = python
+	depends = python-sdnotify
 	depends = python-ovos-backend-client
 	depends = python-ovos-bus-client>=0.0.4a5
 	depends = python-ovos-config>=0.0.8a3
 	depends = python-ovos-utils>=0.0.31a5
 	depends = python-tornado>=6.0.3
+	provides = ovos-gui-messagebus
+	conflicts = ovos-gui-messagebus
 	source = https://github.com/OpenVoiceOS/ovos-gui/archive/502dec01d0055c54998280ffaa76d5f54961173f.tar.gz
+	source = ovos-gui-messagebus.service
+	source = ovos-systemd_gui_messagebus.py
 	sha256sums = 09488c55a2617bf3d2807a84c4f2a8f636ce1b8a547a0ce5c685bba3f8742e96
+	sha256sums = f1cced84a19e22734cf530a94823a2c1d38203253ed70f588a898e77f9192b67
+	sha256sums = 91183c0c107817a3e95a17dc3a68dbc2b84341373c645d762b1e2bc2f10dbbc9
 
 pkgname = python-ovos-gui
