@@ -11,20 +11,20 @@ pkgdesc=''
 arch=(any)
 url=https://github.com/OpenVoiceOS/precise_lite_runner
 license=(custom:Apache-2.0)
-depends=(python python-sonopy)
+depends=(python python-sonopy python-tflite-runtime python-pyaudio) 
 ## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
 provides=()
 conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
-md5sums=(SKIP)
+md5sums=('d41d8cd98f00b204e9800998ecf8427e'
+         'cf01a5bcf40a4affe2a9f6405782985f'
+         '045edd5501b7c33e6848b421aa2d9e1e')
 noextract=()
 source+=(https://files.pythonhosted.org/packages/f1/0c/ac58a27d876ce2327a1a5eb256c02414fbc0392433876f5eb3085d4c738f/precise_lite_runner-0.4.2a2-py3-none-any.whl)
-md5sums+=(cf01a5bcf40a4affe2a9f6405782985f)
 noextract+=(precise_lite_runner-0.4.2a2-py3-none-any.whl)
 source+=(LICENSE)
-md5sums+=(045edd5501b7c33e6848b421aa2d9e1e)
 
 _first_source() {
     echo " ${source_i686[@]} ${source_x86_64[@]} ${source[@]}" |
