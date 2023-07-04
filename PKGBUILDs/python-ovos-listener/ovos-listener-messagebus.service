@@ -1,0 +1,26 @@
+[Unit]
+Description=OVOS Listener (Wakeword & STT) Messagebus Service
+PartOf=ovos.service
+After=ovos.service
+After=ovos-messagebus.service
+After=sound.target
+Wants=sound.target
+
+[Service]
+User=ovos
+Group=ovos
+Type=notify
+WorkingDirectory=/home/ovos
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python /etc/systemd/system/ovos-listener-messagebus.d/ovos-systemd_listener_messagebus.py
+StandardOutput=journal
+TimeoutStartSec=1m
+TimeoutStopSec=1m
+Restart=on-failure
+StartLimitInterval=5min
+StartLimitBurst=4
+#StartLimitAction=reboot-force
+#WatchdogSec=30s
+
+[Install]
+WantedBy=ovos.service

@@ -2,17 +2,15 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-listener
 pkgname=python-ovos-listener
 _name=ovos-listener
+_unit_name="ovos-listener-messagebus"
 _base_ver='2d6ba2b6dbfae1c48c1833079d4aa94fa5cf6af5'
 pkgver=0.0.2a12
 pkgrel=1
-pkgdesc='The "ears" of the OVOS assistant!
-
-Listens for wakewords, performs VAD and STT, the
-final transcribed speech is then sent to ovos-core'
+pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-listener/'
 license=('')
-depends=(python \
+depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-ovos-backend-client>=0.0.7a2' #>=0.0.7a2,~=0.0 \
 'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
@@ -27,13 +25,18 @@ depends=(python \
 'python-pyaudio' \
 'python-speechrecognition>=3.8.1' \
 )
-conflicts=()
 makedepends=(python-build python-installer python-wheel)
+provides=("$_unit_name")
+conflicts=("$_unit_name")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-listener-2d6ba2b6dbfae1c48c1833079d4aa94fa5cf6af5.tar.gz \
-   ea4b70b9c932820820d8daf26cc4251b0e8b248b70a0e1c549ecdd375a960449)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+    "$_unit_name.service" \
+    "ovos-systemd_listener_messagebus.py" \
+    # "python-ovos-listener.install" \
+)
+sha256sums=('ea4b70b9c932820820d8daf26cc4251b0e8b248b70a0e1c549ecdd375a960449'
+            'd6bed399ddbe1dc07b23cd753656a696afb294a3b0cc4983526f3ba5f50f2be3'
+            '8dce510650ec2ff5f209c126ad72105a31277069345ce472f7aa710e48840fc8')
 
 prepare() {
     cd "$srcdir"
@@ -88,6 +91,12 @@ package() {
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/$_unit_name.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
+    install -Dm644 "$srcdir/ovos-systemd_listener_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
 
 
