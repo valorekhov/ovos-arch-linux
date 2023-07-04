@@ -3,6 +3,7 @@ _gh_proj=ovos-gui
 pkgname=python-ovos-gui
 _name=ovos-gui
 _base_ver='502dec01d0055c54998280ffaa76d5f54961173f'
+_unit_name="ovos-gui-messagebus"
 pkgver=0.0.3a2
 pkgrel=1
 pkgdesc='GUI messagebus service, manages GUI state
@@ -10,20 +11,25 @@ and implements the gui protocol'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-gui/'
 license=('')
-depends=(python \
+depends=('ovos-service-base' 'python' 'python-sdnotify' \
 'python-ovos-backend-client' \
 'python-ovos-bus-client>=0.0.4a5' #>=0.0.4a5,~=0.0 \
 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
 'python-ovos-utils>=0.0.31a5' #>=0.0.31a5,~=0.0 \
 'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
 )
-conflicts=()
 makedepends=(python-build python-installer python-wheel)
+provides=("$_unit_name")
+conflicts=("$_unit_name")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-gui-502dec01d0055c54998280ffaa76d5f54961173f.tar.gz \
-   09488c55a2617bf3d2807a84c4f2a8f636ce1b8a547a0ce5c685bba3f8742e96)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+    "$_unit_name.service" \
+    "ovos-systemd_gui_messagebus.py" \
+    # "python-ovos-gui.install" \
+    )
+sha256sums=('09488c55a2617bf3d2807a84c4f2a8f636ce1b8a547a0ce5c685bba3f8742e96'
+            '86d4dea34148090a9495df599a6cd6beb7301c89403cea2392ee8e8d6bf61c6d'
+            '91183c0c107817a3e95a17dc3a68dbc2b84341373c645d762b1e2bc2f10dbbc9')
 
 prepare() {
     cd "$srcdir"
@@ -78,6 +84,12 @@ package() {
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/$_unit_name.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
+    install -Dm644 "$srcdir/ovos-systemd_gui_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
 
 
