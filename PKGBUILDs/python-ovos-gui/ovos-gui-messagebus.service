@@ -1,5 +1,5 @@
 [Unit]
-Description=OVOS GUI Messagebus
+Description=OVOS GUI Messagebus  Service
 PartOf=ovos.service
 After=ovos.service
 After=ovos-messagebus.service
