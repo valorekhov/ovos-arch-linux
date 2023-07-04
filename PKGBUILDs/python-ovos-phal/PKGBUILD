@@ -23,17 +23,21 @@ depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify'
 'python-ovos-utils>=0.0.31a6' #>=0.0.31a6,~=0.0 \
 )
 makedepends=(python-build python-installer python-wheel)
-provides=("$_unit_name")
-conflicts=("$_unit_name")
+provides=("$_unit_name" "ovos-admin-phal-messagebus")
+conflicts=("$_unit_name" "ovos-admin-phal-messagebus")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
     "$_unit_name.service" \
+    "ovos-admin-phal-messagebus.service" \
     "ovos-systemd_phal_messagebus.py" \
+    "ovos-systemd_admin_phal_messagebus.py" \
     # "python-ovos-gui.install" \
     )
 sha256sums=('09b273cde6729342da7f2a03dd2430691de73a7c62600bf9faf95da95c88b2a1'
             'f8a80237e75d95edb22e99013bfa81f06f36a6fc8929437d813c9298d8e1a93e'
-            '2c920defb96d86406d30890da1262520d575b54ad9c830e3b5ad00c88456c4bf')
+            '5352b30d840d995a47098b71066194bf7fcf81b2d6c49f6c13383f602208ecb1'
+            '2c920defb96d86406d30890da1262520d575b54ad9c830e3b5ad00c88456c4bf'
+            '846378e2d1153dbcd40b77195d1114d4f79819b83785e24f9f17662395ea0958')
 
 prepare() {
     cd "$srcdir"
@@ -91,9 +95,11 @@ package() {
 
     mkdir -p "$pkgdir/usr/lib/systemd/system"
     install -Dm644 "$srcdir/$_unit_name.service" "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/ovos-admin-phal-messagebus.service" "$pkgdir/usr/lib/systemd/system"
 
     mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
     install -Dm644 "$srcdir/ovos-systemd_phal_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
+    install -Dm644 "$srcdir/ovos-systemd_admin_phal_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
 
 
