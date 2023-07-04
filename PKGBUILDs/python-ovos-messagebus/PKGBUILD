@@ -2,6 +2,7 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-messagebus
 pkgname=python-ovos-messagebus
 _name=ovos-messagebus
+_unit_name="ovos-messagebus"
 _base_ver='034ef0b14aeab33152fc97b3fea0e445051a828a'
 pkgver=0.0.3a1
 pkgrel=1
@@ -16,18 +17,18 @@ depends=('ovos-service-base' 'python' 'python-sdnotify' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
-provides=("ovos-messagebus-server")
+provides=("$_unit_name-server")
 conflicts=("ovos-bus-server")
 # install=python-ovos-messagebus.install
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
-    "ovos-messagebus.service" \
+    "$_unit_name.service" \
     "ovos-systemd_messagebus.py" \
-    "python-ovos-messagebus.install")
+    "python-$_unit_name.install")
 sha256sums=('49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58'
-            '229d9988af3c7c07c101d8eeeeba85ae76a7ef55cbd006b5e81e9ad892f5f19b'
+            '9e4f5e2c4ce876b17f438e397c02c8ae744f852e41957fe781bca2ca8af37c0c'
             'f1732d6858fd0c74e91304e92db30b0ee4a9c4a3e32d98d97bf3564a8197c685'
-            'c6164a4366b71b6a23807125b52f630268c95550ea397b7aea78c38045209b08')
+            'd2208a11d02faee1acf63a0f5b871a41b7005eb26f86a56552c6425b918409fa')
 
 prepare() {
     cd "$srcdir"
@@ -84,10 +85,10 @@ package() {
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 
     mkdir -p "$pkgdir/usr/lib/systemd/system"
-    install -Dm644 "$srcdir/ovos-messagebus.service" "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/$_unit_name.service" "$pkgdir/usr/lib/systemd/system"
 
-    mkdir -p "$pkgdir/etc/systemd/system/ovos-messagebus.d/"
-    install -Dm644 "$srcdir/ovos-systemd_messagebus.py" "$pkgdir/etc/systemd/system/ovos-messagebus.d/"
+    mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
+    install -Dm644 "$srcdir/ovos-systemd_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
 
 
