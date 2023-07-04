@@ -8,7 +8,7 @@ User=ovos
 Type=notify
 WorkingDirectory=/home/ovos
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/home/ovos/.local/share/systemd/ovos-systemd_messagebus.py
+ExecStart=/usr/bin/python /etc/systemd/system/ovos-messagebus.d/ovos-systemd_messagebus.py
 # StandardOutput=append:/var/log/ovos/bus.log
 # StandardError=file:/var/log/ovos/bus.error.log
 StandardOutput=journal

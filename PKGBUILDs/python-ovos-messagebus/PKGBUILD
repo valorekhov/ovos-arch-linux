@@ -18,16 +18,16 @@ conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("ovos-messagebus-server")
 conflicts=("ovos-bus-server")
-install=python-ovos-messagebus.install
+# install=python-ovos-messagebus.install
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
     "ovos-messagebus.service" \
     "ovos-systemd_messagebus.py" \
     "python-ovos-messagebus.install")
 sha256sums=('49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58'
-            '0e95100c02b2c323510bd2fe68d268760189376f9fee6e6aa2550a10b563bc46'
+            '229d9988af3c7c07c101d8eeeeba85ae76a7ef55cbd006b5e81e9ad892f5f19b'
             'f1732d6858fd0c74e91304e92db30b0ee4a9c4a3e32d98d97bf3564a8197c685'
-            'a514ea8a9824bfcd51489d8edbcf14befc75d03634ee1335c8f5ff645ac2eb57')
+            'c6164a4366b71b6a23807125b52f630268c95550ea397b7aea78c38045209b08')
 
 prepare() {
     cd "$srcdir"
@@ -86,9 +86,8 @@ package() {
     mkdir -p "$pkgdir/usr/lib/systemd/system"
     install -Dm644 "$srcdir/ovos-messagebus.service" "$pkgdir/usr/lib/systemd/system"
 
-    mkdir -p "$pkgdir/home/ovos/.local/share/systemd/"
-    chmod 750 "$pkgdir/home/ovos"
-    install -Dm744 "$srcdir/ovos-systemd_messagebus.py" "$pkgdir/home/ovos/.local/share/systemd/"
+    mkdir -p "$pkgdir/etc/systemd/system/ovos-messagebus.d/"
+    install -Dm644 "$srcdir/ovos-systemd_messagebus.py" "$pkgdir/etc/systemd/system/ovos-messagebus.d/"
 }
 
 
