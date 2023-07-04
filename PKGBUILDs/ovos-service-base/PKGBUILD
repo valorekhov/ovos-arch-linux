@@ -11,7 +11,7 @@ makedepends=()
 
 source=(sysusers.conf tmpfiles.conf)
 sha256sums=('17024101fb544f08ed7aab921dbf95d85d76afeebd9dfadd3517df786fe78f64'
-            '677ba322bd6ed9e9abcd2929dc5a7f3255e6e883e9c7f141366e9819d7684dac')
+            '9c1ddb5653978b4c2e462f36b54446931d4e9596b46deebfe612be0ec295ff9a')
 build() {
     cd "$srcdir"
 }
