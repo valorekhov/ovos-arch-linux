@@ -2,11 +2,10 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-plugin-manager
 pkgname=python-ovos-plugin-manager
 _name=ovos-plugin-manager
-_base_ver='7eba4f0911e68aed315ec9029727ac052d363b95'
-pkgver=0.0.23a18
-pkgrel=1
-pkgdesc='OPM can be used to search, install, load
-and create plugins for the OpenVoiceOS ecosystem!'
+_base_ver='ae1df77e9f246f19b71f35b9f6f6cfbf23b5ae48'
+pkgver=0.0.23
+pkgrel=2
+pkgdesc='OPM can be used to search, install, load and create plugins for the OpenVoiceOS ecosystem!'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-plugin-manager/'
 license=('')
@@ -24,9 +23,7 @@ conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-plugin-manager-7eba4f0911e68aed315ec9029727ac052d363b95.tar.gz \
-   2642bdde9eff11333d60c8097ced046e4d5c16121e60ffff92adc9ac26995f96)
+sha256sums=('6ccdbf5e8feab89352d987bfa8673b5d2320fff71b059684c678a9251e04bff8')
 
 prepare() {
     cd "$srcdir"
