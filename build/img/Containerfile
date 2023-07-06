@@ -14,11 +14,9 @@ COPY pacstrap-docker /archlinux/
 
 RUN pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy --noconfirm 
 RUN ./pacstrap-docker /archlinux/rootfs \
-        base  
-#        linux-rpi4 linux-rpi4-headers  
-#       python3
-RUN (pacman -r /archlinux/rootfs -S --noconfirm archlinuxarm-keyring || true)          
-RUN rm -rf rootfs/var/lib/pacman/sync/*
+        base \
+    && (pacman -r /archlinux/rootfs -S --noconfirm archlinuxarm-keyring || true) \
+    && rm -rf rootfs/var/lib/pacman/sync/*
 
 FROM scratch
 ARG ARCH=arm64v8
@@ -29,6 +27,7 @@ COPY rootfs/$ARCH/ /
 
 ENV LANG=en_US.UTF-8
 
+# This imsage is not meant for distribution, so we can pre-generate pacman keys
 RUN locale-gen && \
     pacman-key --init && \
     pacman-key --populate archlinux && \

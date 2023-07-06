@@ -8,7 +8,9 @@ RUN pacman-key --init && (pacman-key --populate archlinuxarm || true) \
     && pacman -Suy --noconfirm base-devel git python3 python-setuptools  \
     && rm -rf rootfs/var/lib/pacman/sync/* \
     && useradd -m build && echo "build ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/build \
-    && mkdir -p /build && chown build:build /build
+    && mkdir -p /build && chown build:build /build \
+    && printf "\nPKGEXT='.pkg.tar.zst'\nMAKEFLAGS=\"-j$(nproc)\"" >> /etc/makepkg.conf \
+    && printf "\n[ovos]\nSigLevel = Optional TrustAll\nServer = file:///build/.repo/$arch" >> /etc/pacman.conf
 
 USER build
 WORKDIR /build
