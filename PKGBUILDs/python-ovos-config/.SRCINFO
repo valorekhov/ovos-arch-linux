@@ -1,6 +1,6 @@
 pkgbase = python-ovos-config
 	pkgdesc = helper package to interact with mycroft config
-	pkgver = 0.0.9a3
+	pkgver = 0.0.10
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-config/
 	arch = any
@@ -17,7 +17,7 @@ pkgbase = python-ovos-config
 	depends = python-watchdog
 	conflicts = python-ovos-utils>=0.1.0
 	conflicts = python-yaml>=7.0.0
-	source = https://github.com/OpenVoiceOS/ovos-config/archive/de57ca2f69fc0b4b95b56f2f486ce75cdd0a421e.tar.gz
-	sha256sums = 026a937926474354dd9b4168e674c15edd3f4c3c25aed46a30b005fa0dca182e
+	source = https://github.com/OpenVoiceOS/ovos-config/archive/e98503435b1c34165362a1881f4c88a41029039a.tar.gz
+	sha256sums = 9f27c138c18f9bb065741dc18d3290afac3bc2af09b5d0d340b006c0c5909a1e
 
 pkgname = python-ovos-config

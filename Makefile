@@ -1,10 +1,13 @@
 .PHONY: all clean extra
-RUN_MAKEPKG := makepkg --syncdeps --noconfirm --force --install
+ARCH := $(shell uname -m)
+WORKSPACE_DIR := $(shell pwd)
+REPO_ROOT := $(WORKSPACE_DIR)/.repo
+REPO_DIR := $(REPO_ROOT)/$(ARCH)
+PACMAN_CONF := $(REPO_ROOT)/pacman-$(ARCH).conf
+RUN_MAKEPKG := makepkg --syncdeps --noconfirm --force 
 
 OVOS_PACKAGES := $(notdir $(wildcard PKGBUILDs/*))
-
 EXTRA_PACKAGES := $(notdir $(wildcard PKGBUILDs-extra/*))
-
 ALL_PACKAGES := $(OVOS_PACKAGES) + $(EXTRA_PACKAGES)
 
 # The default target will build all OVOS packages and only those 'extra' dependent packages which are in use
@@ -16,22 +19,31 @@ clean: rebuild
 	@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/{pkg,src}
 rebuild:
 	@echo 'Deleted any built packages, you may now run make all'
-	@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/*.pkg.tar*
+	@rm -rf ./{PKGBUILDs,PKGBUILDs-extra}/*/*.pkg.tar* $(REPO_DIR)
 
 uninstall:
 	@pacman -Qq | sort | comm -12 - <(echo "$(ALL_PACKAGES)" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm
 
+repo:
+	@mkdir -p "$(REPO_DIR)/"
+	@printf "[ovos]\nSigLevel = Optional TrustAll\nServer = file:///$(REPO_DIR)" > $(PACMAN_CONF)
+
 %.pkg.tar.zst:
 	$(eval DIR := $(shell echo '$*' | cut -d* -f1))
-	@echo 'Building $(DIR)'
-	@cd $(DIR) && $(RUN_MAKEPKG)
+	$(eval PKG := $(shell basename $(DIR)))
+	@echo 'Building $(PKG)'
+	@cd $(DIR) \
+		&& $(RUN_MAKEPKG) \
+		&& cp "$(PKG)"*.pkg.tar.zst $(REPO_DIR) \
+		&& repo-add "$(REPO_DIR)/ovos.db.tar.gz" "$(REPO_DIR)/$(PKG)"*.pkg.tar.zst \
+		&& sudo pacman -Syy --config $(PACMAN_CONF) 
 
 
 mycroft-gui:  PKGBUILDs/mycroft-gui/*.pkg.tar.zst
 
 ovos-bus-server: ovos-service-base PKGBUILDs/ovos-bus-server/*.pkg.tar.zst
 
-ovos-core: python-ovos-core ovos-service-base PKGBUILDs/ovos-core/*.pkg.tar.zst
+ovos-core: python-ovos-core PKGBUILDs/ovos-core/*.pkg.tar.zst
 
 ovos-dashboard:  PKGBUILDs/ovos-dashboard/*.pkg.tar.zst
 
@@ -101,7 +113,7 @@ python-ovos-config-assistant: python-cutecharts python-ovos-backend-client pytho
 
 python-ovos-core: ovos-service-base python-sdnotify python-adapt-parser python-combo-lock python-ovos-backend-client python-ovos-bus-client python-ovos-workshop python-ovos-classifiers python-ovos-config python-ovos-lingua-franca python-ovos-plugin-manager python-ovos-utils python-padacioso PKGBUILDs/python-ovos-core/*.pkg.tar.zst
 
-python-ovos-dinkum-listener: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
+python-ovos-dinkum-listener: ovos-service-base python-sdnotify python-ovos-microphone-plugin-alsa python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
 
 python-ovos-gui: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-gui/*.pkg.tar.zst
 
@@ -109,7 +121,7 @@ python-ovos-lingua-franca: python-quebra-frases PKGBUILDs/python-ovos-lingua-fra
 
 python-ovos-listener: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-stt-plugin-vosk python-ovos-utils python-ovos-vad-plugin-webrtcvad python-ovos-ww-plugin-pocketsphinx python-ovos-ww-plugin-precise-lite python-ovos-ww-plugin-vosk python-speechrecognition PKGBUILDs/python-ovos-listener/*.pkg.tar.zst
 
-python-ovos-messagebus: python-sdnotify python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
+python-ovos-messagebus: ovos-service-base python-sdnotify python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
 
 python-ovos-microphone-plugin-alsa: python-ovos-plugin-manager python-pyalsaaudio PKGBUILDs/python-ovos-microphone-plugin-alsa/*.pkg.tar.zst
 
@@ -227,7 +239,7 @@ python-ovos-ww-plugin-pocketsphinx: python-ovos-plugin-manager python-phoneme-gu
 
 python-ovos-ww-plugin-precise: python-ovos-plugin-manager python-ovos-utils python-petact python-precise-runner PKGBUILDs/python-ovos-ww-plugin-precise/*.pkg.tar.zst
 
-python-ovos-ww-plugin-precise-lite: python-ovos-plugin-manager python-ovos-utils python-precise-lite-runner PKGBUILDs/python-ovos-ww-plugin-precise-lite/*.pkg.tar.zst
+python-ovos-ww-plugin-precise-lite: ovos-precise-lite-models python-ovos-plugin-manager python-ovos-utils python-precise-lite-runner PKGBUILDs/python-ovos-ww-plugin-precise-lite/*.pkg.tar.zst
 
 python-ovos-ww-plugin-vosk: python-ovos-plugin-manager python-ovos-skill-installer python-vosk PKGBUILDs/python-ovos-ww-plugin-vosk/*.pkg.tar.zst
 
@@ -243,7 +255,7 @@ python-pocketsphinx:  PKGBUILDs-extra/python-pocketsphinx/*.pkg.tar.zst
 
 python-pprintpp:  PKGBUILDs-extra/python-pprintpp/*.pkg.tar.zst
 
-python-precise-lite-runner: python-sonopy PKGBUILDs-extra/python-precise-lite-runner/*.pkg.tar.zst
+python-precise-lite-runner: python-sonopy python-tflite-runtime PKGBUILDs-extra/python-precise-lite-runner/*.pkg.tar.zst
 
 python-precise-runner:  PKGBUILDs-extra/python-precise-runner/*.pkg.tar.zst
 

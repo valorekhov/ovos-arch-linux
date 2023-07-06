@@ -6,11 +6,10 @@ pkgbase = ovos-core
 	arch = any
 	license = Apache
 	depends = python-ovos-core
-	depends = ovos-service-base
 	depends = ovos-messagebus-server
 	source = ovos.conf
 	source = ovos.service
-	sha256sums = 0fe6dc121bf8f64773bef5281e172d65de3fb7354525d579ec4ad98a71a30bca
+	sha256sums = 9c71f44cf3f3546544881b009ebac704aa87e22ca9217caf15f3a2f2c8cf93ae
 	sha256sums = 3bb4afb9669183afa627930eb62466d442cff56cae4a18656ad76cb3b20d5113
 
 pkgname = ovos-core

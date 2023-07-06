@@ -23,7 +23,7 @@ pkgbase = python-ovos-gui
 	source = ovos-gui-messagebus.service
 	source = ovos-systemd_gui_messagebus.py
 	sha256sums = 09488c55a2617bf3d2807a84c4f2a8f636ce1b8a547a0ce5c685bba3f8742e96
-	sha256sums = f1cced84a19e22734cf530a94823a2c1d38203253ed70f588a898e77f9192b67
+	sha256sums = b8418c1ba00a7ee9fb28a0a188a0ea7e39cbc5dfbfd21e3715797dfef23e78a9
 	sha256sums = 91183c0c107817a3e95a17dc3a68dbc2b84341373c645d762b1e2bc2f10dbbc9
 
 pkgname = python-ovos-gui

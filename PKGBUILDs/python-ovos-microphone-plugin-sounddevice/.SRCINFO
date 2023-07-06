@@ -9,6 +9,7 @@ pkgbase = python-ovos-microphone-plugin-sounddevice
 	depends = python-ovos-plugin-manager
 	depends = python-sounddevice
 	depends = python-speechrecognition
+	provides = ovos-microphone-plugin
 	noextract = ovos_microphone_plugin_sounddevice-0.0.0a2-py3-none-any.whl
 	source = PKGBUILD_EXTRAS
 	source = https://files.pythonhosted.org/packages/c7/63/1519d874ccc0cc470ceaa5f27e675f55051b9e5cd38caba488c991829b72/ovos_microphone_plugin_sounddevice-0.0.0a2-py3-none-any.whl
