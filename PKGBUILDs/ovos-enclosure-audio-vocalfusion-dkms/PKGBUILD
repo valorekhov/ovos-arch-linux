@@ -1,0 +1,72 @@
+_gh_org=OpenVoiceOS
+_gh_proj=VocalFusionDriver
+_pkgbase=ovos-enclosure-audio-vocalfusion
+pkgname=$_pkgbase-dkms
+pkgver='0.0.1'
+_commit='4675bb2634812429db64dd135222cd74dc097e79'
+pkgrel=1
+pkgdesc='Raspberry Pi VocalFusion linux driver'
+arch=('aarch64' 'armv7h')
+url="https://github.com/$_gh_org/$_gh_proj/"
+license=('Apache License 2.0')
+depends=(dkms)
+makedepends=(pkgconf dtc)
+conflicts=("${_pkgbase}")
+install=xvf3510.install
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
+   Makefile app_xvf3510_int_spi_boot_v4_1_0.bin
+   xvf3510-init.service xvf3510-init.sh xvf3510-flash dkms.conf xvf3510.install)
+sha256sums=('596fb5109a72e3dc8e0af4aa585378039663dfd2802a4446d604f7f41e323ae3'
+            'abff22f2091498baaa2f918eb777494878798c90ff6d792f30eabc440ff40d4c'
+            'c00fef78c4601d039eb1561bc5befb7edd7cfd1172c4e9f3a31737930f722ed9'
+            '6090980002ce787e3f73f01e8d2b856430eeb2627493cc966d517c2f730110a3'
+            '17d1a33b55c71c4884b426601e11b64599fd156920a11c0365266d4f13b3266d'
+            'c62883ad43ba8243f2c10449c3f664a0ecd12ac3bb1a7903570b6db51397110e'
+            'cc24f4be8619b5834687ff8e050de565b833e5e224f61ddf24b12da51b9ae684'
+            '8712b8283ef0ccaf221fac86a09b6328c2dabc4cb3d1d5e032d015d89f943643')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${pkgver}"
+        fi
+    done
+}
+
+build() {
+    cd "$srcdir/$_gh_proj-$_commit"
+
+    mkdir -p "$srcdir/build"
+    dtc -@ -Hepapr -I dts -O dtb -o "$srcdir"/build/xvf3510.dtbo xvf3510.dts
+}
+
+package() {
+    cd "$srcdir" 
+
+    # Copy dkms.conf
+    install -Dm644 dkms.conf "${pkgdir}"/usr/src/${_pkgbase}-${pkgver}/dkms.conf
+
+    # Set name and version
+    sed -e "s/@_PKGBASE@/${_pkgbase}/" \
+        -e "s/@PKGVER@/${pkgver}/" \
+        -i "${pkgdir}"/usr/src/${_pkgbase}-${pkgver}/dkms.conf
+
+    mkdir -p "$pkgdir/boot/overlays"
+    install -Dm644 "./build/xvf3510.dtbo" "$pkgdir/boot/overlays"
+    
+    mkdir -p "$pkgdir/usr/lib/firmware/xvf3510"
+    install -Dm644 "./app_xvf3510_int_spi_boot_v4_1_0.bin" "$pkgdir/usr/lib/firmware/xvf3510"
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "$srcdir/xvf3510-init.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/opt/ovos/bin"
+    install -Dm744 "./xvf3510-flash" "$pkgdir/opt/ovos/bin"
+    install -Dm744 "./xvf3510-init.sh" "$pkgdir/opt/ovos/bin"
+
+    cp Makefile "${pkgdir}"/usr/src/${_pkgbase}-${pkgver}/
+    cp "$_gh_proj-$_commit"/driver/vocalfusion-soundcard.c "${pkgdir}"/usr/src/${_pkgbase}-${pkgver}/
+}
