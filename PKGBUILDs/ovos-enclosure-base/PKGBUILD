@@ -1,0 +1,22 @@
+pkgname=ovos-enclosure-base
+pkgver='0.0.1'
+pkgrel=1
+pkgdesc='Base/Abstract package providing assets & functionality common to all enclosure flavours'
+arch=('any')
+url='https://github.com/OpenVoiceOS/'
+license=('Apache License 2.0')
+depends=(ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-listener ovos-gui-messagebus ovos-phal-messagebus ovos-admin-phal-messagebus ovos-audio-messagebus ovos-skills-messagebus)
+optdepends=()
+makedepends=()
+install=ovos-enclosure.install
+
+source=("ovos-enclosure.install")
+sha256sums=('970425188d11100fbeb2d75cbd12adedec32c3530f517e6d5990d7e0b26bcb1a')
+
+package() {
+    cd "$srcdir"
+
+#     mkdir -p "$pkgdir/boot/overlays"
+#     install -Dm644 "./build/sj201-buttons.dtbo" "$pkgdir/boot/overlays"
+#     install -Dm644 "./xvf3510.dtbo" "$pkgdir/boot/overlays"
+}
