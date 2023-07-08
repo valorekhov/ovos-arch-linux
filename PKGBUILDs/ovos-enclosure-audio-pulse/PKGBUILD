@@ -1,0 +1,32 @@
+pkgname=ovos-enclosure-audio-pulse
+pkgver='0.0.1'
+pkgrel=1
+pkgdesc='Provides a system-wide daemonized PulseAudio instance. Use with embedded setups only'
+arch=('any')
+url='https://github.com/OpenVoiceOS/'
+license=('Apache License 2.0')
+depends=(pulseaudio pulseaudio-alsa pulseaudio-zeroconf)
+optdepends=()
+makedepends=()
+install=pulseaudio.install
+
+source=(pulseaudio.service daemon.ovos.conf system.ovos.pa sysusers.conf pulseaudio.install)
+sha256sums=('2beb0902aab3b045cf53fb3b30229bca4989299853cee9b0075a17ba4657c35f'
+            '0bed908210e4e0d6803c92e0e0aef4680dc903bd5b1deb3c13ccfc4bfc95fc8a'
+            '99c424f9fe75ea3bf756fd4a739397ba50e7fc45ffaaa72e0b7904aa622d655e'
+            '1125b59776db56ae61953399e13f73b747c746a5f47b8b5799921e5d6b620daa'
+            '508e130b4c82e734c87eac50fd0777fc6130ab89e5324838849ccfb8ac8d9f87')
+
+package() {
+    cd "$srcdir"
+
+    mkdir -p "$pkgdir/etc/pulse/system.pa.d"
+    install -Dm644 daemon.ovos.conf "$pkgdir/etc/pulse/"
+    install -Dm644 system.ovos.pa "$pkgdir/etc/pulse/system.pa.d/"
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 pulseaudio.service "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/usr/lib/sysusers.d"
+    install -Dm644 sysusers.conf "$pkgdir/usr/lib/sysusers.d/ovos-pulseaudio.conf"
+}

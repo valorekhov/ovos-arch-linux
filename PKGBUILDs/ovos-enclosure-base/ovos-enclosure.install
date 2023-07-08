@@ -1,0 +1,7 @@
+post_install() {
+    systemctl enable ovos.service ovos-admin-phal-messagebus.service ovos-gui-messagebus.service ovos-messagebus.service ovos-shell-standalone.service ovos-audio-messagebus.service ovos-listener-messagebus.service ovos-phal-messagebus.service ovos-skills-messagebus.service
+}
+
+post_upgrade() {
+    post_install
+}

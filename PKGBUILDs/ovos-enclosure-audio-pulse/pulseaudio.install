@@ -1,0 +1,18 @@
+post_install() {
+    if grep -Fxq "# OpenVoiceOS Audio Settings" /etc/pulse/daemon.conf; then
+        echo "Config already present in /etc/pulse/daemon.conf"
+    else
+        echo "" >> /etc/pulse/daemon.conf
+        echo "# Installed by Package 'ovos-enclosure-audio-pulse'" >> /etc/pulse/daemon.conf
+        cat /etc/pulse/daemon.ovos.conf >> /etc/pulse/daemon.conf
+
+        echo "Updated /etc/pulse/daemon.conf"
+    fi
+
+    # Disable global spawning for users per https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
+    systemctl --global disable pulseaudio.service pulseaudio.socket
+}
+
+post_upgrade() {
+    post_install
+}

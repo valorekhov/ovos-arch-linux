@@ -10,7 +10,7 @@ pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD a
 arch=('any')
 url="https://github.com/$_gh_org/$_gh_proj/"
 license=('Apache')
-depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
+depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'ovos-microphone-plugin' \
 'python-ovos-backend-client>=0.0.6' \
 'python-ovos-bus-client>=0.0.3a16' \

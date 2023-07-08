@@ -1,0 +1,11 @@
+[Unit]
+Description=xvf3510 Init Service
+Before=pulseaudio.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/ovos/bin/xvf3510-init.sh
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=pulseaudio.service

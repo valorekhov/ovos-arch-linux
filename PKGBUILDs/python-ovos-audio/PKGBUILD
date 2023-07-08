@@ -10,7 +10,7 @@ pkgdesc='The "mouth" of the OVOS assistant! Handles TTS generation and audio pla
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-audio/'
 license=('')
-depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
+depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-ovos-ocp-audio-plugin>=0.0.5a3' #>=0.0.5a3,~=0.0 \
 'python-ovos-bus-client>=0.0.3a4' #>=0.0.3a4,~=0.0 \
 'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \

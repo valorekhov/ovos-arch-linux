@@ -10,7 +10,7 @@ pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD a
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-listener/'
 license=('')
-depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
+depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-ovos-backend-client>=0.0.7a2' #>=0.0.7a2,~=0.0 \
 'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \

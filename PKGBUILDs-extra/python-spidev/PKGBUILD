@@ -1,0 +1,41 @@
+pkgname=python-spidev
+_name=spidev
+pkgver=3.6
+pkgrel=1
+pkgdesc="Python bindings for Linux SPI access through spidev"
+arch=('x86_64' 'aarch64' 'armv6h' 'armv7h')
+url="https://github.com/doceme/py-spidev"
+license=('GPL')
+depends=('python')
+source=("https://files.pythonhosted.org/packages/c7/d9/401c0a7be089e02826cf2c201f489876b601f15be100fe391ef9c2faed83/spidev-$pkgver.tar.gz")
+
+build() {
+    cd "$srcdir/$_name-$pkgver"
+    python -m build --wheel --no-isolation
+}
+
+package() {
+    cd "$srcdir/$_name-$pkgver"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+sha256sums=('14dbc37594a4aaef85403ab617985d3c3ef464d62bc9b769ef552db53701115b')
