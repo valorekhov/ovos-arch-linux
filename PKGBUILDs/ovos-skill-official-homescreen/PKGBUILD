@@ -1,0 +1,100 @@
+_gh_org=OpenVoiceOS
+_gh_proj=skill-ovos-homescreen
+pkgname=ovos-skill-official-homescreen
+_name=skill-ovos-homescreen
+_commit='a8a28adc1502b76288974826e3b596cd4205d936'
+pkgver=a8a28adc1502b76288974826e3b596cd4205d936
+pkgrel=1
+pkgdesc='OVOS Homescreen Skill
+Provides custom resting face for OVOS'
+arch=('any')
+url='https://github.com/OpenVoiceOS/skill-ovos-homescreen/'
+license=('')
+depends=(python \
+)
+conflicts=()
+makedepends=(python-build python-installer python-wheel)
+provides=("$pkgname")
+conflicts+=("$pkgname")
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+   0001-homescreen-update.patch)
+sha256sums=(
+   #skill-ovos-homescreen-a8a28adc1502b76288974826e3b596cd4205d936.tar.gz \
+   85e8bd4c43a7f89445a60511906fba977a48e3996b2de66159ec1d7195595461 \
+   #0001-homescreen-update.patch \
+   '6667E2DD8DE8D16F9A5B3D1BF626983678BFF663AED5DF84A48C4B2D1E672302')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # skill-ovos-homescreen
+# #
+# ################################################################################
+# 
+# SKILL_OVOS_HOMESCREEN_VERSION = a8a28adc1502b76288974826e3b596cd4205d936
+# SKILL_OVOS_HOMESCREEN_SITE = $(call github,OpenVoiceOS,skill-ovos-homescreen,$(SKILL_OVOS_HOMESCREEN_VERSION))
+# SKILL_OVOS_HOMESCREEN_SETUP_TYPE = setuptools
+# SKILL_OVOS_HOMESCREEN_LICENSE_FILES = LICENSE
+# SKILL_OVOS_HOMESCREEN_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

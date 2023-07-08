@@ -1,0 +1,96 @@
+_gh_org=OpenVoiceOS
+_gh_proj=skill-ovos-weather
+pkgname=ovos-skill-official-weather
+_name=skill-ovos-weather
+_commit='184c913504c48e1fa4cfe8f5070cb2c45f85114a'
+pkgver=184c913504c48e1fa4cfe8f5070cb2c45f85114a
+pkgrel=1
+pkgdesc='OpenVoiceOS version of Weather Skill, providing
+weather conditions and forecasts.'
+arch=('any')
+url='https://github.com/OpenVoiceOS/skill-ovos-weather/'
+license=('')
+depends=(python \
+)
+conflicts=()
+makedepends=(python-build python-installer python-wheel)
+provides=("$pkgname")
+conflicts+=("$pkgname")
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #skill-ovos-weather-184c913504c48e1fa4cfe8f5070cb2c45f85114a.tar.gz \
+   af469853fa4499b6998123247f9fa38da3e472b51f8d19a7471b43911e684cff)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # skill-ovos-weather
+# #
+# ################################################################################
+# 
+# SKILL_OVOS_WEATHER_VERSION = 184c913504c48e1fa4cfe8f5070cb2c45f85114a
+# SKILL_OVOS_WEATHER_SITE = $(call github,OpenVoiceOS,skill-ovos-weather,$(SKILL_OVOS_WEATHER_VERSION))
+# SKILL_OVOS_WEATHER_SETUP_TYPE = setuptools
+# SKILL_OVOS_WEATHER_LICENSE_FILES = LICENSE
+# 
+# $(eval $(python-package))
+# 
+
+
+

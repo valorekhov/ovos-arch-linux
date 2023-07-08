@@ -18,7 +18,7 @@ noextract=("tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_x86_
 package() {
     cd "$_name-$_commit"
 
-    echo "Installing $pkgname to $pkgdir"
+    echo "Installing $pkgname to $pkgdir with arch $_arch $CARCH"
     # some packages produce multiple wheels, install the one specific to the version of the package
-    python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_$arch.whl"
+    python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_$CARCH.whl"
 }

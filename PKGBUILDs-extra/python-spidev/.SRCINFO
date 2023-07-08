@@ -1,0 +1,15 @@
+pkgbase = python-spidev
+	pkgdesc = Python bindings for Linux SPI access through spidev
+	pkgver = 3.6
+	pkgrel = 1
+	url = https://github.com/doceme/py-spidev
+	arch = x86_64
+	arch = aarch64
+	arch = armv6h
+	arch = armv7h
+	license = GPL
+	depends = python
+	source = https://files.pythonhosted.org/packages/c7/d9/401c0a7be089e02826cf2c201f489876b601f15be100fe391ef9c2faed83/spidev-3.6.tar.gz
+	sha256sums = 14dbc37594a4aaef85403ab617985d3c3ef464d62bc9b769ef552db53701115b
+
+pkgname = python-spidev

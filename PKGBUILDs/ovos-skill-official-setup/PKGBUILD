@@ -1,0 +1,102 @@
+_gh_org=OpenVoiceOS
+_gh_proj=skill-ovos-setup
+pkgname=ovos-skill-official-setup
+_name=skill-ovos-setup
+_commit='d48d23e8d4ef5a3ab950839c6a08c19c15582fa3'
+pkgver=d48d23e8d4ef5a3ab950839c6a08c19c15582fa3
+pkgrel=1
+pkgdesc='OVOS Setup Skill'
+arch=('any')
+url='https://github.com/OpenVoiceOS/skill-ovos-setup/'
+license=('')
+depends=(python \
+)
+conflicts=()
+makedepends=(python-build python-installer python-wheel)
+provides=("$pkgname")
+conflicts+=("$pkgname")
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+   0001-fix-text-overflow-in-list-delegates.patch \
+   0002-fix-backend-buttons.patch)
+sha256sums=(
+   #skill-ovos-setup-d48d23e8d4ef5a3ab950839c6a08c19c15582fa3.tar.gz \
+   96297d023c6e786702ad0147ce3a25f2c93ec4b3a7e410df90cb34426f69e482 \
+   #0001-fix-text-overflow-in-list-delegates.patch \
+   '942D0C0B78BCB4D5309018E4747054C6B6D78DCA12ED734B6FB677D3872D25F3' \
+   #0002-fix-backend-buttons.patch \
+   'E42CE01DE6AB7438BCA862FA0B761E192DB57DD7387F8B1C08D384E1E52C6185')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # skill-ovos-setup
+# #
+# ################################################################################
+# 
+# SKILL_OVOS_SETUP_VERSION = d48d23e8d4ef5a3ab950839c6a08c19c15582fa3
+# SKILL_OVOS_SETUP_SITE = $(call github,OpenVoiceOS,skill-ovos-setup,$(SKILL_OVOS_SETUP_VERSION))
+# SKILL_OVOS_SETUP_SETUP_TYPE = setuptools
+# SKILL_OVOS_SETUP_LICENSE_FILES = LICENSE
+# SKILL_OVOS_SETUP_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

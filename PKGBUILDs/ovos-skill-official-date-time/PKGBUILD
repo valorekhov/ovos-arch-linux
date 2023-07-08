@@ -1,0 +1,98 @@
+_gh_org=OpenVoiceOS
+_gh_proj=skill-ovos-date-time
+pkgname=ovos-skill-official-date-time
+_name=skill-ovos-date-time
+_commit='4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e'
+pkgver=4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e
+pkgrel=1
+pkgdesc='OVOS official Date and Time Skill, providing
+the current time, date and day of week for cities
+around the world.'
+arch=('any')
+url='https://github.com/OpenVoiceOS/skill-ovos-date-time/'
+license=('')
+depends=(python \
+)
+conflicts=()
+makedepends=(python-build python-installer python-wheel)
+provides=("$pkgname")
+conflicts+=("$pkgname")
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #skill-ovos-date-time-4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e.tar.gz \
+   cedd24ccb4b1b6476d1eaaf83e5396fca6f5706fb936f421f2c65c813d557a30)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # skill-ovos-date-time
+# #
+# ################################################################################
+# 
+# SKILL_OVOS_DATE_TIME_VERSION = 4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e
+# SKILL_OVOS_DATE_TIME_SITE = $(call github,OpenVoiceOS,skill-ovos-date-time,$(SKILL_OVOS_DATE_TIME_VERSION))
+# SKILL_OVOS_DATE_TIME_SETUP_TYPE = setuptools
+# SKILL_OVOS_DATE_TIME_LICENSE_FILES = LICENSE
+# SKILL_OVOS_DATE_TIME_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
+# 
+# $(eval $(python-package))
+# 
+
+
+

@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-personal
+	pkgdesc = Learn history and personality of Mycroft
+	pkgver = 7ca20a6e9319eb37f4caacdf2589fc1568b783d3
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-skill-personal/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-personal
+	conflicts = ovos-skill-official-personal
+	source = https://github.com/OpenVoiceOS/ovos-skill-personal/archive/.tar.gz
+	sha256sums = 367bddf4afc35d131251fb65a2031d00956b9f4c3128f56aebef3076077eef27
+
+pkgname = ovos-skill-official-personal

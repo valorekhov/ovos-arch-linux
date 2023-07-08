@@ -8,6 +8,7 @@ pkgbase = python-ovos-messagebus
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	depends = ovos-core
 	depends = ovos-service-base
 	depends = python
 	depends = python-sdnotify

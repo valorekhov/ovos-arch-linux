@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-fallback-unknown
+	pkgdesc = Mycroft AI official Unknown Fallback Skill - used if no Intent is matched to an Utterance
+	pkgver = 185f029f7777d320fb713e04b11b295c4549e103
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-skill-fallback-unknown/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-fallback-unknown
+	conflicts = ovos-skill-official-fallback-unknown
+	source = https://github.com/OpenVoiceOS/ovos-skill-fallback-unknown/archive/.tar.gz
+	sha256sums = 42ed1b020014615893c05524a15db73b6e1870c2a42fe1bae30d639a9b849fcb
+
+pkgname = ovos-skill-official-fallback-unknown

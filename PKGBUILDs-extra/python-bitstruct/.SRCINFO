@@ -4,6 +4,7 @@ pkgbase = python-bitstruct
 	pkgrel = 00
 	url = https://github.com/eerimoq/bitstruct
 	arch = x86_64
+	arch = aarch64
 	license = MIT
 	depends = python
 	source = PKGBUILD_EXTRAS

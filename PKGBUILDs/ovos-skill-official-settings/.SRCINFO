@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-settings
+	pkgdesc = Skill to take control of OpenVoiceOS functions via websettings interface
+	pkgver = ea3bbcd98049f8e725c1363ebf55d3c79ee1ea2c
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/skill-ovos-settings/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-settings
+	conflicts = ovos-skill-official-settings
+	source = https://github.com/OpenVoiceOS/skill-ovos-settings/archive/.tar.gz
+	sha256sums = cf46508c92e7395f4b83ff58f7e6dc485b26cff428c164de2f607a1eed2e320f
+
+pkgname = ovos-skill-official-settings
