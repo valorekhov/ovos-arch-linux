@@ -5,7 +5,14 @@ pkgdesc='Base/Abstract package providing assets & functionality common to all en
 arch=('any')
 url='https://github.com/OpenVoiceOS/'
 license=('Apache License 2.0')
-depends=(ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-listener ovos-gui-messagebus ovos-phal-messagebus ovos-admin-phal-messagebus ovos-audio-messagebus ovos-skills-messagebus)
+depends=(ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-listener 
+ovos-gui-messagebus ovos-phal-messagebus ovos-admin-phal-messagebus ovos-audio-messagebus 
+ovos-skills-messagebus
+ovos-tts-plugin-mimic
+ovos-skill-official-date-time
+ovos-skill-official-volume
+ovos-skill-official-fallback-unknown
+)
 optdepends=()
 makedepends=()
 install=ovos-enclosure.install

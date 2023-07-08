@@ -2,46 +2,42 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-tts-plugin-mimic
 pkgname=python-ovos-tts-plugin-mimic
 _name=ovos-tts-plugin-mimic
-_base_ver='efff5ea111d594cac8bafd257c0d03c5c9e7ac1f'
-pkgver=0.2.6
+_commit='0a76403dff9d1acf1f09b1cd84bef50b0cf38f0f'
+pkgver=0.2.9
 pkgrel=1
 pkgdesc='OVOS TTS plugin for Mimic'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic/'
 license=('')
-depends=(python \
-'python-ovos-plugin-manager>=0.0.5' \
-)
+depends=(python mycroft-mimic1 'python-ovos-plugin-manager>=0.0.5')
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-tts-plugin-mimic-efff5ea111d594cac8bafd257c0d03c5c9e7ac1f.tar.gz \
-   b3680a13cd6f1e83df41643ea9bfddcaf2eeaea941ac6b9f47916504ba4c2f49)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('83103d290616e67d0f02016e5f1eeca01fed2bed2a62783e3f0665dfadf4901d')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -51,7 +47,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
