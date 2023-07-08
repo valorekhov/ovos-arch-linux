@@ -1,0 +1,17 @@
+pkgbase = python-tzlocal
+	pkgdesc = tzinfo object for the local timezone
+	pkgver = 5.0b2
+	pkgrel = 00
+	url = https://pypi.org/project/tzlocal/
+	arch = any
+	license = MIT
+	depends = python
+	noextract = tzlocal-5.0b2-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/9a/5e/6e6eb0f273a2fb1d07d82c6aff3af5432660658467bb0ac30a57a988ba20/tzlocal-5.0b2-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 683bda808339f6b024b1dde9566c042f
+	md5sums = 57e0bd61643d81d05683cdce65b11d10
+
+pkgname = python-tzlocal
