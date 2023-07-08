@@ -3,25 +3,29 @@ _gh_proj=skill-ovos-date-time
 pkgname=ovos-skill-official-date-time
 _name=skill-ovos-date-time
 _commit='4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e'
-pkgver=4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e
+pkgver=0.2.3a1
 pkgrel=1
 pkgdesc='OVOS official Date and Time Skill, providing
 the current time, date and day of week for cities
 around the world.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-date-time/'
-license=('')
-depends=(python \
-)
+license=('Apache License 2.0')
+
+depends=(python 
+    python-pytz 
+    python-tzlocal
+    "python-timezonefinder>=5.2.0"
+    python-geocoder
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27")
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
-conflicts+=("$pkgname")
+conflicts+=("$pkgname" "python-timezonefinder>=6.0.0")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #skill-ovos-date-time-4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e.tar.gz \
-   cedd24ccb4b1b6476d1eaaf83e5396fca6f5706fb936f421f2c65c813d557a30)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('cedd24ccb4b1b6476d1eaaf83e5396fca6f5706fb936f421f2c65c813d557a30')
 
 prepare() {
     cd "$srcdir"
