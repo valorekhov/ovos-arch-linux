@@ -31,6 +31,13 @@ Push-Location
 try{
     foreach ($packageDir in $packageDirectories) {
         $packageName = $packageDir.Name
+        if ($packageName.StartsWith("skill-")){
+            $packageName = $packageName.Substring("skill-".Length)
+            if ($packageName.StartsWith("ovos-")){
+                $packageName = $packageName.Substring("ovos-".Length)
+            }
+            $packageName = "ovos-skill-official-$packageName"
+        }
         if ($ingoreBuildrootPackages.Contains($packageName)){
             continue
         }
