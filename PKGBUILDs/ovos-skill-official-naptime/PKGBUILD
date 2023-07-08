@@ -12,15 +12,17 @@ your voice won'\''t be sent anywhere on an
 accidental activation.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-naptime/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-naptime-92ab0cbef48273148c706a1b6f52d1574adb476f.tar.gz \
    d4293b1fea766e2d31cdcc7a3c03275f0ab05c9090c7d6979370095f7f8dae71)

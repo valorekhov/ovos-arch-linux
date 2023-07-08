@@ -8,15 +8,17 @@ pkgrel=1
 pkgdesc='File Browser for OpenVoice OS Platform'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-filebrowser/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-filebrowser-bf889e80e7fcbdbb2fd501de3610420491412b86.tar.gz \
    2a1c3e6e8454d51a54a9d063bcaa7c95ce813f0804d275e174f513b78a182f42)

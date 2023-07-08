@@ -3,24 +3,24 @@ _gh_proj=skill-ovos-volume
 pkgname=ovos-skill-official-volume
 _name=skill-ovos-volume
 _commit='0feb9cfa55593ee011fdaf1141c6e5db864da104'
-pkgver=0feb9cfa55593ee011fdaf1141c6e5db864da104
+pkgver=0.0.1
 pkgrel=1
 pkgdesc='OVOS Volume Skill
 Control the volume of your Device'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-volume/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #skill-ovos-volume-0feb9cfa55593ee011fdaf1141c6e5db864da104.tar.gz \
-   169474a8d1f9f53a2954b2510e4e704cc37dff25eaf40686bc55494f8bada035)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('169474a8d1f9f53a2954b2510e4e704cc37dff25eaf40686bc55494f8bada035')
 
 prepare() {
     cd "$srcdir"

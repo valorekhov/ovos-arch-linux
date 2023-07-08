@@ -3,6 +3,7 @@ _gh_proj={{gh_proj}}
 pkgname={{pkgname}}
 _name={{_name}}
 _commit={{pkgver}}
+_base_ver=$_commit
 pkgver={{_pkgver}}
 pkgrel=1
 pkgdesc={{pkgdesc}}

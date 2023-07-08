@@ -9,15 +9,17 @@ pkgdesc='Take personal notes to keep track of appointments,
 to-do items, etc.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-notes/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-notes-adcfc50268846852f16cb9205a1dae26055151c4.tar.gz \
    03f020db3f00a91fab6e37723c1535bd76b0b7105402f13adef6cfd00e87994c)

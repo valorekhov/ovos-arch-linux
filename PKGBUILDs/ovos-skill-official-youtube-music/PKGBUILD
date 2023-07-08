@@ -8,15 +8,17 @@ pkgrel=1
 pkgdesc='play music from youtube in mycroft'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-youtube-music/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-youtube-music-b883d9bc64f75e890eef4c6530f63a0444c87814.tar.gz \
    8058b960cc54c9b1d62a0afe13b4807147db5fdbe60cd3680d3352682c47fb94)

@@ -8,15 +8,17 @@ pkgrel=1
 pkgdesc='Learn history and personality of Mycroft'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-skill-personal/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-personal-7ca20a6e9319eb37f4caacdf2589fc1568b783d3.tar.gz \
    367bddf4afc35d131251fb65a2031d00956b9f4c3128f56aebef3076077eef27)

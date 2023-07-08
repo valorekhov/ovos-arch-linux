@@ -9,15 +9,17 @@ pkgdesc='Provides verbal interfaces for basic framework
 interactions, such as the "Stop" command.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-stop/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-stop-f0fa6b19f84503288fe9a927f37c0a135528eab1.tar.gz \
    14de50a5f925a036d28a368485bb7b1a3cade67e4581c88b3b34c3495b58b9a3)

@@ -9,15 +9,17 @@ pkgdesc='OVOS Alarm Skill - Set single
 and recurring alarms, with a choice of alarm sounds'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-alarm/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-alarm-6c14d41903227be490b5249ef464585b7694e4c1.tar.gz \
    efc627fd36e6f4bb1952d73dc5b885aeadf906c0427bca1a6cce80c424b9998f)

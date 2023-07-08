@@ -8,15 +8,17 @@ pkgrel=1
 pkgdesc='Use DuckDuckGo to answer questions'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-ddg/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-ddg-76dd835225ba69c4f6f91edc95c47d142829ba92.tar.gz \
    63d37ec5bfc1ee38eb12f77861b00e080573bdc68ffcfc72d6d40ff79facb499)

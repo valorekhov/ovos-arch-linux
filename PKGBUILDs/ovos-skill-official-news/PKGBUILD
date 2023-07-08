@@ -8,15 +8,17 @@ pkgrel=1
 pkgdesc='News Streams from around the globe'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-news/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-news-392d32ebea4cc9cc3ba3371c1fe63c72426d0070.tar.gz \
    974fb71bf9f0bc652cef1c818efe24e96fc89d4663154e8d3574675a8063fbbb)

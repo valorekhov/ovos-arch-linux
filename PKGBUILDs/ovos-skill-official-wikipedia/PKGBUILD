@@ -8,11 +8,13 @@ Get just a summary, or ask for more to get in-depth
 information.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-wikipedia/'
-license=('')
-depends=()
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27")
 makedepends=()
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-wikipedia-47e43ef8466f18258cc336ddd0c21b5c09398305.tar.gz \
    77d55c8fe6c6c744bfa520ab24e4f98c24f82753e50b603aabe41244c4d5849b)

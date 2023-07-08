@@ -9,15 +9,17 @@ pkgdesc='Set named timers for cooking, watering
 plants, brewing tea and more.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-timer/'
-license=('')
-depends=(python \
+license=('Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27"
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-timer-24c38ec3d6744d9fffed9b581d90d62188824310.tar.gz \
    eba9a5623a3735b935a40925ea21cad6edb1ffdf15557a0a98064a02748ff879)

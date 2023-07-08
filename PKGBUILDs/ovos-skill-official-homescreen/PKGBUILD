@@ -9,15 +9,16 @@ pkgdesc='OVOS Homescreen Skill
 Provides custom resting face for OVOS'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-homescreen/'
-license=('')
-depends=(python \
-)
+license=('Apache License 2.0Apache License 2.0')
+depends=(python
+    "python-ovos-utils>=0.0.28"
+    "python-ovos-workshop>=0.0.12a27")
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
    0001-homescreen-update.patch)
 sha256sums=(
    #skill-ovos-homescreen-a8a28adc1502b76288974826e3b596cd4205d936.tar.gz \
