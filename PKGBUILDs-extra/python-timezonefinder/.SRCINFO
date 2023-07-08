@@ -1,6 +1,6 @@
 pkgbase = python-timezonefinder
 	pkgdesc = fast python package for finding the timezone of any point on earth (coordinates) offline
-	pkgver = 6.2.0
+	pkgver = 5.2.0
 	pkgrel = 00
 	url = https://timezonefinder.michelfe.it/gui
 	arch = x86_64
@@ -12,10 +12,10 @@ pkgbase = python-timezonefinder
 	depends = python-numpy
 	depends = python-setuptools
 	source = PKGBUILD_EXTRAS
-	source = https://files.pythonhosted.org/packages/e7/68/86c8d0b21573150eb7b3c66da2c451159b0159c15d3d59b17777ea557f48/timezonefinder-6.2.0.tar.gz
+	source = https://github.com/jannikmi/timezonefinder/archive/refs/tags/v5.2.0.tar.gz
 	source = LICENSE
-	md5sums = SKIP
-	md5sums = dd7111b6dbf0e314c778ccd93844007e
-	md5sums = 1f5d834673ddf78e221f24c8e56919a0
+	sha256sums = e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+	sha256sums = e1cda4b736f17f564b5db9a7211ddf3610ea50fe6ef421978ff7680cba306819
+	sha256sums = 967dff3a50168062de400a0521b4f005b481b25256de7d21f3d0001648d735e5
 
 pkgname = python-timezonefinder

@@ -53,7 +53,7 @@ ovos-enclosure-audio-vocalfusion-dkms:  PKGBUILDs/ovos-enclosure-audio-vocalfusi
 
 ovos-enclosure-base: ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-listener PKGBUILDs/ovos-enclosure-base/*.pkg.tar.zst
 
-ovos-enclosure-rpi4-mark2: ovos-enclosure-base python-spidev python-rpi.gpio python-smbus2 PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
+ovos-enclosure-rpi4-mark2: ovos-enclosure-base ovos-enclosure-sj201 PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
 
 ovos-enclosure-rpi4-mark2-sj201-r10:  PKGBUILDs/ovos-enclosure-rpi4-mark2-sj201-r10/*.pkg.tar.zst
 
@@ -71,7 +71,7 @@ ovos-skill-official-alerts:  PKGBUILDs/ovos-skill-official-alerts/*.pkg.tar.zst
 
 ovos-skill-official-camera:  PKGBUILDs/ovos-skill-official-camera/*.pkg.tar.zst
 
-ovos-skill-official-date-time:  PKGBUILDs/ovos-skill-official-date-time/*.pkg.tar.zst
+ovos-skill-official-date-time: python-tzlocal python-timezonefinder python-ovos-utils python-ovos-workshop PKGBUILDs/ovos-skill-official-date-time/*.pkg.tar.zst
 
 ovos-skill-official-ddg:  PKGBUILDs/ovos-skill-official-ddg/*.pkg.tar.zst
 
@@ -352,6 +352,8 @@ python-tflite-runtime:  PKGBUILDs-extra/python-tflite-runtime/*.pkg.tar.zst
 python-timezonefinder: python-h3 PKGBUILDs-extra/python-timezonefinder/*.pkg.tar.zst
 
 python-tutubo: python-bs4 python-pytube PKGBUILDs-extra/python-tutubo/*.pkg.tar.zst
+
+python-tzlocal:  PKGBUILDs-extra/python-tzlocal/*.pkg.tar.zst
 
 python-url-normalize:  PKGBUILDs-extra/python-url-normalize/*.pkg.tar.zst
 
