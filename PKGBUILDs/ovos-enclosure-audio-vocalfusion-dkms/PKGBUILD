@@ -15,11 +15,12 @@ conflicts=("${_pkgbase}")
 install=xvf3510.install
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
-   Makefile app_xvf3510_int_spi_boot_v4_1_0.bin
+   Makefile app_xvf3510_int_spi_boot_v4_1_0.bin system.xvf3510.pa
    xvf3510-init.service xvf3510-init.sh xvf3510-flash dkms.conf xvf3510.install)
 sha256sums=('596fb5109a72e3dc8e0af4aa585378039663dfd2802a4446d604f7f41e323ae3'
             'abff22f2091498baaa2f918eb777494878798c90ff6d792f30eabc440ff40d4c'
             'c00fef78c4601d039eb1561bc5befb7edd7cfd1172c4e9f3a31737930f722ed9'
+            '291e3286112bc295087663a83843e5245908951e560441e938a315c5fe8211c6'
             '6090980002ce787e3f73f01e8d2b856430eeb2627493cc966d517c2f730110a3'
             '17d1a33b55c71c4884b426601e11b64599fd156920a11c0365266d4f13b3266d'
             'c62883ad43ba8243f2c10449c3f664a0ecd12ac3bb1a7903570b6db51397110e'
@@ -53,6 +54,9 @@ package() {
     sed -e "s/@_PKGBASE@/${_pkgbase}/" \
         -e "s/@PKGVER@/${pkgver}/" \
         -i "${pkgdir}"/usr/src/${_pkgbase}-${pkgver}/dkms.conf
+
+    mkdir -p "$pkgdir/etc/pulse/system.pa.d"
+    install -Dm644 system.xvf3510.pa "$pkgdir/etc/pulse/system.pa.d/"
 
     mkdir -p "$pkgdir/boot/overlays"
     install -Dm644 "./build/xvf3510.dtbo" "$pkgdir/boot/overlays"

@@ -2,40 +2,16 @@ pkgname=ovos-enclosure-rpi4-mark2
 pkgver='0.0.1'
 pkgrel=1
 pkgdesc='Supporting assets for the Raspberry PI4 -based Mycroft Mark2 Revisions 6 and 10 HATs'
-arch=('any')
+arch=(aarch64)
 url='https://github.com/OpenVoiceOS/'
 license=('Apache License 2.0')
-depends=(ovos-enclosure-base python-spidev python-rpi.gpio python-smbus2)
+depends=(ovos-enclosure-base ovos-enclosure-sj201)
 optdepends=()
 makedepends=(dtc)
 provides=(ovos-enclosure)
 conflicts=(ovos-enclosure)
 
-source=("sj201-buttons-overlay.dts" \
-        "sj201-init.service" "sj201-init.sh" \
-        "rpi4-mark2.install")
-sha256sums=('b7cf09d6d7c0e719dc96f1ae6832ce22c060d2ccb69530111ca390bd39976d71'
-            'a65c0c08baf79aec5d7d9e355201868c06d5a817a0b389ec24e7182d17adea24'
-            '6aa4d034224f0274d7095fb92ddb1a740f10962e92d0d34965ce21c8c7091d03'
-            '3d798bc164dc69083ab7c3b4242ca137bbbaee428dc6a85d6378ac72571a28e7')
-
-build() {
-    cd "$srcdir"
-    mkdir -p "build"
-    dtc -@ -Hepapr -I dts -O dtb -o build/sj201-buttons.dtbo sj201-buttons-overlay.dts
-}
-
-package() {
-    cd "$srcdir"
-
-    mkdir -p "$pkgdir/boot/overlays"
-    install -Dm644 "./build/sj201-buttons.dtbo" "$pkgdir/boot/overlays"
-    
-    mkdir -p "$pkgdir/usr/systemd/system"
-    install -Dm744 "./sj201-init.service" "$pkgdir/usr/systemd/system"
-
-    mkdir -p "$pkgdir/opt/ovos/bin"
-    install -Dm744 "./sj201-init.sh" "$pkgdir/opt/ovos/bin"
-}
+source=("rpi4-mark2.install")
+sha256sums=('4a0418657f2c82ba1ef34fbae5ee5ec4dd1d3d378ec4ae0e71855b7c7f37596d')
 
 install=rpi4-mark2.install

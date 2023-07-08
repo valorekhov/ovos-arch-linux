@@ -1,0 +1,52 @@
+pkgname=ovos-enclosure-sj201
+pkgver='1.0.0'
+pkgrel=1
+pkgdesc='Supporting assets for the Raspberry PI4 -based Mycroft Mark2 production Revisions 6 and 10 HAT'
+arch=(aarch64)
+url='https://github.com/OpenVoiceOS/'
+license=('Apache License 2.0')
+depends=(ovos-enclosure-audio-vocalfusion-dkms i2c-tools python-spidev python-rpi.gpio python-smbus2)
+optdepends=()
+makedepends=(dtc)
+
+source=("sj201-rev10-pwm-fan-overlay.dts" "ovos-enclosure-sj201.install" \
+    "sj201-buttons-overlay.dts" "sj201-init.service" "sj201-init.sh" \
+    "sj201-revisions.sh" sj201-rev6-fan.sh "sj201-tas5806")
+sha256sums=('f4b83816f0f55fe17a3f7852713bed87fdf98f60db4b1bc805b34a6043b4ab9f'
+            'b515f94b07c2d5456b19edd617167a2c894ba0366aac1b34ac238de88658e34d'
+            'b7cf09d6d7c0e719dc96f1ae6832ce22c060d2ccb69530111ca390bd39976d71'
+            'ccb5fd98398687b899ad591cc74db4c9d835adb41f49dd1a55e05461b2a52e46'
+            '26e1486d3fd1de3670b4993875f887658e19c96d54d580b83d4068e926c26b5e'
+            '2638c082c668e6beaefd8b45d413451acf00e21a836368beae63cf1c3a85c656'
+            '26e070898d07ee43f08e21f830feb7754ea5270e5f1d2e47c0ac7dcd844a22fd'
+            '18c7b70735d44ed22f9dd4d1903df28d20d41059b6f21bd82246989d958e240b')
+
+build() {
+    cd "$srcdir"
+    mkdir -p "build"
+    dtc -@ -Hepapr -I dts -O dtb -o build/sj201-buttons.dtbo sj201-buttons-overlay.dts
+    dtc -@ -Hepapr -I dts -O dtb -o build/sj201-rev10-pwm-fan.dtbo sj201-rev10-pwm-fan-overlay.dts
+}
+
+package() {
+    cd "$srcdir"
+
+    mkdir -p "$pkgdir/boot/overlays"
+    install -Dm644 "./build/sj201-buttons.dtbo" "$pkgdir/boot/overlays"
+    install -Dm644 "./build/sj201-rev10-pwm-fan.dtbo" "$pkgdir/boot/overlays"
+
+    mkdir -p "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "./sj201-init.service" "$pkgdir/usr/lib/systemd/system"
+
+    mkdir -p "$pkgdir/opt/ovos/bin"
+    install -Dm755 "./sj201-init.sh" "$pkgdir/opt/ovos/bin"
+    install -Dm755 "./sj201-revisions.sh" "$pkgdir/opt/ovos/bin"
+    install -Dm755 "./sj201-tas5806" "$pkgdir/opt/ovos/bin"
+    install -Dm755 "./sj201-rev6-fan.sh" "$pkgdir/opt/ovos/bin"
+
+    mkdir -p "$pkgdir/etc/modules-load.d/"
+    echo "i2c-dev" > "$pkgdir/etc/modules-load.d/i2c-dev.conf"
+}
+
+# Install script for the target system
+install=ovos-enclosure-sj201.install

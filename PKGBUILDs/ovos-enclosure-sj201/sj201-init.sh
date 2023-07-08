@@ -30,13 +30,34 @@
 # This needs to run as root
 
 # Init TI Amp
-sj201 init-ti-amp
+/opt/ovos/bin/sj201-tas5806
 # Reset LEDs
 # sj201 reset-led red
 
-revision=$(sj201 get-revision)
-echo "Current SJ201 Revision: $revision"
+revision=$(/opt/ovos/bin/sj201-revisions.sh)
+echo "Current SJ201 Revision: '$revision'"
 # Reset fan speed
-if [ "${revision}" != "10" ]; then
-    sj201 set-fan-speed 30
+if [ "${revision}" != "r10" ]; then
+    /opt/ovos/bin/sj201-rev6-fan.sh set_fan_speed 30
+else
+    if [ -f "/sys/firmware/devicetree/base/model" ]; then
+        model=$(tr -d '\0'  < /sys/firmware/devicetree/base/model)
+        if [[ $model == *"Raspberry Pi 4"* ]]; then
+            if grep -Fxq "dtoverlay=sj201-rev10-pwm-fan" /boot/config.txt; then
+                echo "dtoverlay=sj201-rev10-pwm-fan is already present in /boot/config.txt"
+            else
+                echo "" >> /boot/config.txt
+                echo "# Installed by Package 'ovos-enclosure-rpi4-mark2-sj201-r10'" >> /boot/config.txt
+                echo "dtoverlay=sj201-rev10-pwm-fan" >> /boot/config.txt
+                echo "Added dtoverlay=sj201-rev10-pwm-fan to /boot/config.txt"
+                echo
+                echo "You are going to need to reboot your Mark II for the new PWM Fan logic to take effect..."
+            fi
+        else
+            echo "Not Running On Raspberry Pi 4? Got '$model' instead..."
+            echo "You may have to manually modify /boot/config.txt to include dtoverlay=sj201-rev10-pwm-fan at the end"
+        fi
+    else
+            echo "Not running on an RPi / ARM device?"
+    fi
 fi

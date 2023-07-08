@@ -10,8 +10,8 @@ optdepends=()
 makedepends=()
 
 source=(sysusers.conf tmpfiles.conf)
-sha256sums=('17024101fb544f08ed7aab921dbf95d85d76afeebd9dfadd3517df786fe78f64'
-            '9c1ddb5653978b4c2e462f36b54446931d4e9596b46deebfe612be0ec295ff9a')
+sha256sums=('af01654a48139b01fdea4b7ead8308c1cd255411464e563230e38ac26ea7b0c9'
+            '4098674b021ee78a5294b92b89e9a3e8f34fcfa6673ba0343a7dd67d00610454')
 build() {
     cd "$srcdir"
 }

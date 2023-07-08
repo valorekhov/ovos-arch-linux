@@ -1,6 +1,8 @@
 [Unit]
 Description=SJ201 Service
 Before=pulseaudio.service
+Wants=xvf3510-init.service
+After=xvf3510-init.service
 
 [Service]
 Type=oneshot

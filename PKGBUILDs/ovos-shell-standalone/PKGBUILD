@@ -10,7 +10,7 @@ optdepends=()
 makedepends=()
 
 source=(ovos-shell-standalone.service env)
-sha256sums=('8e90a2d1e9271db9aff387c8d0e090cfc7e48f1b99377f080899d51b8e199707'
+sha256sums=('7eaee86a2bf193b4e7b02ba629c04128a78c77a0f7bb90f3afa370fd8f92c455'
             '2c56f7f2cc0c05107fa7fad826ac545c6462a7fa3205c53aa4675e7a8c8cae81')
 
 build() {
@@ -22,6 +22,7 @@ package() {
 
     mkdir -p "$pkgdir/usr/lib/systemd/system"
     mkdir -p "$pkgdir/home/ovos/.config/ovos-shell"
+    chmod 750 "$pkgdir/home/ovos/"
 
     install -Dm644 ovos-shell-standalone.service "$pkgdir/usr/lib/systemd/system"
     install -Dm640 env "$pkgdir/home/ovos/.config/ovos-shell/.env"

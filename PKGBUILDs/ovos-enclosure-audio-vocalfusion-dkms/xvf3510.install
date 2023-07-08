@@ -16,9 +16,11 @@ post_install() {
     systemctl enable xvf3510-init.service
 
   cat<<EOF
+############################################################################################
 Load kernel modules:
 
   sudo modprobe vocalfusion_soundcard
+############################################################################################
 EOF
 
 }

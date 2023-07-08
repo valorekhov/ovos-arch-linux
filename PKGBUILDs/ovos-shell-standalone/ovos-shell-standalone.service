@@ -1,7 +1,7 @@
 [Unit]
 Description=OVOS-Shell standalone 
-After=remote-fs.target systemd-user-sessions.service network-online.target nss-lookup.target sound.target bluetooth.target polkit.service upower.service
-Wants=network-online.target polkit.service upower.service
+# replaces the getty
+After=getty@tty1.service
 Conflicts=getty@tty1.service
 
 [Service]
@@ -20,3 +20,4 @@ StandardOutput=journal
 
 [Install]
 Alias=display-manager.service
+WantedBy=ovos.service

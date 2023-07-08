@@ -13,7 +13,7 @@ install=pulseaudio.install
 source=(pulseaudio.service daemon.ovos.conf system.ovos.pa sysusers.conf pulseaudio.install)
 sha256sums=('2beb0902aab3b045cf53fb3b30229bca4989299853cee9b0075a17ba4657c35f'
             '0bed908210e4e0d6803c92e0e0aef4680dc903bd5b1deb3c13ccfc4bfc95fc8a'
-            '99c424f9fe75ea3bf756fd4a739397ba50e7fc45ffaaa72e0b7904aa622d655e'
+            '1d2750ab90f23d56337c9d393b81709e7e38ffad558017a44f49d75de021cbf2'
             '1125b59776db56ae61953399e13f73b747c746a5f47b8b5799921e5d6b620daa'
             '508e130b4c82e734c87eac50fd0777fc6130ab89e5324838849ccfb8ac8d9f87')
 

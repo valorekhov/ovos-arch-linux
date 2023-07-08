@@ -1,0 +1,31 @@
+# This script is only meant to be ran on the actual RPi4 device.
+post_install() {
+    if [ -f "/boot/config.txt" ]; then
+        if grep -Fxq "dtoverlay=sj201-buttons" /boot/config.txt; then
+            echo "dtoverlay=sj201-buttons is already present in /boot/config.txt"
+        else
+            echo "dtoverlay=sj201-buttons" >> /boot/config.txt
+            echo "Added dtoverlay=sj201-buttons to /boot/config.txt"
+            echo
+            echo "You are going to need to reboot your Mark II for the new overalys to take effect..."
+        fi
+    else
+            echo "Not running on an RPi / ARM device? Unable to find /boot/config.txt"
+    fi
+
+    systemctl enable sj201-init.service
+
+    cat <<EOF
+############################################################################################
+Load kernel modules unless you plan to reboot now:
+
+  sudo modprobe i2c-dev
+
+Also, any non-root user who runs sj201-*.sh shell scripts has to be added to the 'i2c' group
+############################################################################################
+EOF
+}
+
+post_upgrade() {
+    post_install
+}
