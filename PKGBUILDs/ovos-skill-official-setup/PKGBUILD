@@ -2,10 +2,10 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-setup
 pkgname=ovos-skill-official-setup
 _name=skill-ovos-setup
-_commit='d48d23e8d4ef5a3ab950839c6a08c19c15582fa3'
+_commit='60e93ded51e5e4b26892896c93a2a3f6fdaef26a'
 _base_ver=$_commit
 pkgver=0.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc='OVOS Setup Skill'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-setup/'
@@ -25,13 +25,9 @@ conflicts+=("$pkgname")
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
    0001-fix-text-overflow-in-list-delegates.patch \
    0002-fix-backend-buttons.patch)
-sha256sums=(
-   #skill-ovos-setup-d48d23e8d4ef5a3ab950839c6a08c19c15582fa3.tar.gz \
-   96297d023c6e786702ad0147ce3a25f2c93ec4b3a7e410df90cb34426f69e482 \
-   #0001-fix-text-overflow-in-list-delegates.patch \
-   '942D0C0B78BCB4D5309018E4747054C6B6D78DCA12ED734B6FB677D3872D25F3' \
-   #0002-fix-backend-buttons.patch \
-   'E42CE01DE6AB7438BCA862FA0B761E192DB57DD7387F8B1C08D384E1E52C6185')
+sha256sums=('f34d3a8eda86a537530450655c246e1651a43ca3aeec23fbbbf1328113295bfe'
+            '942d0c0b78bcb4d5309018e4747054c6b6d78dca12ed734b6fb677d3872d25f3'
+            'e42ce01de6ab7438bca862fa0b761e192db57dd7387f8b1c08d384e1e52c6185')
 
 prepare() {
     cd "$srcdir"
