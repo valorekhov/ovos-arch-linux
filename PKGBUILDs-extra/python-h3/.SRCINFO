@@ -4,6 +4,7 @@ pkgbase = python-h3
 	pkgrel = 00
 	url = https://github.com/uber/h3-py
 	arch = x86_64
+	arch = aarch64
 	license = Apache
 	makedepends = cython
 	depends = python

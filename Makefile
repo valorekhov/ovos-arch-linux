@@ -47,7 +47,13 @@ ovos-core: python-ovos-core PKGBUILDs/ovos-core/*.pkg.tar.zst
 
 ovos-dashboard:  PKGBUILDs/ovos-dashboard/*.pkg.tar.zst
 
-ovos-enclosure-rpi4-mark2:  PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
+ovos-enclosure-audio-pulse:  PKGBUILDs/ovos-enclosure-audio-pulse/*.pkg.tar.zst
+
+ovos-enclosure-audio-vocalfusion-dkms:  PKGBUILDs/ovos-enclosure-audio-vocalfusion-dkms/*.pkg.tar.zst
+
+ovos-enclosure-base: ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-listener PKGBUILDs/ovos-enclosure-base/*.pkg.tar.zst
+
+ovos-enclosure-rpi4-mark2: ovos-enclosure-base python-spidev python-rpi.gpio python-smbus2 PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
 
 ovos-enclosure-rpi4-mark2-sj201-r10:  PKGBUILDs/ovos-enclosure-rpi4-mark2-sj201-r10/*.pkg.tar.zst
 
@@ -58,6 +64,52 @@ ovos-service-base:  PKGBUILDs/ovos-service-base/*.pkg.tar.zst
 ovos-shell: mycroft-gui PKGBUILDs/ovos-shell/*.pkg.tar.zst
 
 ovos-shell-standalone: ovos-service-base ovos-shell PKGBUILDs/ovos-shell-standalone/*.pkg.tar.zst
+
+ovos-skill-official-alarm:  PKGBUILDs/ovos-skill-official-alarm/*.pkg.tar.zst
+
+ovos-skill-official-alerts:  PKGBUILDs/ovos-skill-official-alerts/*.pkg.tar.zst
+
+ovos-skill-official-camera:  PKGBUILDs/ovos-skill-official-camera/*.pkg.tar.zst
+
+ovos-skill-official-date-time:  PKGBUILDs/ovos-skill-official-date-time/*.pkg.tar.zst
+
+ovos-skill-official-ddg:  PKGBUILDs/ovos-skill-official-ddg/*.pkg.tar.zst
+
+ovos-skill-official-fallback-unknown:  PKGBUILDs/ovos-skill-official-fallback-unknown/*.pkg.tar.zst
+
+ovos-skill-official-filebrowser:  PKGBUILDs/ovos-skill-official-filebrowser/*.pkg.tar.zst
+
+ovos-skill-official-homescreen:  PKGBUILDs/ovos-skill-official-homescreen/*.pkg.tar.zst
+
+ovos-skill-official-info:  PKGBUILDs/ovos-skill-official-info/*.pkg.tar.zst
+
+ovos-skill-official-local-music:  PKGBUILDs/ovos-skill-official-local-music/*.pkg.tar.zst
+
+ovos-skill-official-naptime:  PKGBUILDs/ovos-skill-official-naptime/*.pkg.tar.zst
+
+ovos-skill-official-news:  PKGBUILDs/ovos-skill-official-news/*.pkg.tar.zst
+
+ovos-skill-official-notes:  PKGBUILDs/ovos-skill-official-notes/*.pkg.tar.zst
+
+ovos-skill-official-personal:  PKGBUILDs/ovos-skill-official-personal/*.pkg.tar.zst
+
+ovos-skill-official-settings:  PKGBUILDs/ovos-skill-official-settings/*.pkg.tar.zst
+
+ovos-skill-official-setup:  PKGBUILDs/ovos-skill-official-setup/*.pkg.tar.zst
+
+ovos-skill-official-stop:  PKGBUILDs/ovos-skill-official-stop/*.pkg.tar.zst
+
+ovos-skill-official-timer:  PKGBUILDs/ovos-skill-official-timer/*.pkg.tar.zst
+
+ovos-skill-official-volume:  PKGBUILDs/ovos-skill-official-volume/*.pkg.tar.zst
+
+ovos-skill-official-weather:  PKGBUILDs/ovos-skill-official-weather/*.pkg.tar.zst
+
+ovos-skill-official-wikipedia:  PKGBUILDs/ovos-skill-official-wikipedia/*.pkg.tar.zst
+
+ovos-skill-official-wolfie:  PKGBUILDs/ovos-skill-official-wolfie/*.pkg.tar.zst
+
+ovos-skill-official-youtube-music:  PKGBUILDs/ovos-skill-official-youtube-music/*.pkg.tar.zst
 
 ovos-splash:  PKGBUILDs/ovos-splash/*.pkg.tar.zst
 
@@ -93,7 +145,7 @@ python-mycroft-messagebus-client:  PKGBUILDs/python-mycroft-messagebus-client/*.
 
 python-nested-lookup:  PKGBUILDs-extra/python-nested-lookup/*.pkg.tar.zst
 
-python-ovos-audio: ovos-service-base python-sdnotify python-ovos-ocp-audio-plugin python-ovos-bus-client python-ovos-config python-ovos-ocp-files-plugin python-ovos-ocp-m3u-plugin python-ovos-ocp-news-plugin python-ovos-ocp-rss-plugin python-ovos-plugin-manager python-ovos-tts-plugin-mimic3-server python-ovos-utils PKGBUILDs/python-ovos-audio/*.pkg.tar.zst
+python-ovos-audio: ovos-core ovos-service-base python-sdnotify python-ovos-ocp-audio-plugin python-ovos-bus-client python-ovos-config python-ovos-ocp-files-plugin python-ovos-ocp-m3u-plugin python-ovos-ocp-news-plugin python-ovos-ocp-rss-plugin python-ovos-plugin-manager python-ovos-tts-plugin-mimic3-server python-ovos-utils PKGBUILDs/python-ovos-audio/*.pkg.tar.zst
 
 python-ovos-audio-plugin-simple: python-ovos-plugin-manager PKGBUILDs/python-ovos-audio-plugin-simple/*.pkg.tar.zst
 
@@ -111,17 +163,17 @@ python-ovos-config: python-combo-lock python-ovos-utils python-rich-click PKGBUI
 
 python-ovos-config-assistant: python-cutecharts python-ovos-backend-client python-ovos-utils python-pywebio PKGBUILDs/python-ovos-config-assistant/*.pkg.tar.zst
 
-python-ovos-core: ovos-service-base python-sdnotify python-adapt-parser python-combo-lock python-ovos-backend-client python-ovos-bus-client python-ovos-workshop python-ovos-classifiers python-ovos-config python-ovos-lingua-franca python-ovos-plugin-manager python-ovos-utils python-padacioso PKGBUILDs/python-ovos-core/*.pkg.tar.zst
+python-ovos-core: ovos-core ovos-service-base python-sdnotify python-adapt-parser python-combo-lock python-ovos-backend-client python-ovos-bus-client python-ovos-workshop python-ovos-classifiers python-ovos-config python-ovos-lingua-franca python-ovos-plugin-manager python-ovos-utils python-padacioso PKGBUILDs/python-ovos-core/*.pkg.tar.zst
 
-python-ovos-dinkum-listener: ovos-service-base python-sdnotify python-ovos-microphone-plugin-alsa python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
+python-ovos-dinkum-listener: ovos-core ovos-service-base python-sdnotify python-ovos-microphone-plugin-alsa python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
 
-python-ovos-gui: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-gui/*.pkg.tar.zst
+python-ovos-gui: ovos-core ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-gui/*.pkg.tar.zst
 
 python-ovos-lingua-franca: python-quebra-frases PKGBUILDs/python-ovos-lingua-franca/*.pkg.tar.zst
 
-python-ovos-listener: ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-stt-plugin-vosk python-ovos-utils python-ovos-vad-plugin-webrtcvad python-ovos-ww-plugin-pocketsphinx python-ovos-ww-plugin-precise-lite python-ovos-ww-plugin-vosk python-speechrecognition PKGBUILDs/python-ovos-listener/*.pkg.tar.zst
+python-ovos-listener: ovos-core ovos-service-base python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-stt-plugin-vosk python-ovos-utils python-ovos-vad-plugin-webrtcvad python-ovos-ww-plugin-pocketsphinx python-ovos-ww-plugin-precise-lite python-ovos-ww-plugin-vosk python-speechrecognition PKGBUILDs/python-ovos-listener/*.pkg.tar.zst
 
-python-ovos-messagebus: ovos-service-base python-sdnotify python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
+python-ovos-messagebus: ovos-core ovos-service-base python-sdnotify python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
 
 python-ovos-microphone-plugin-alsa: python-ovos-plugin-manager python-pyalsaaudio PKGBUILDs/python-ovos-microphone-plugin-alsa/*.pkg.tar.zst
 
@@ -149,7 +201,7 @@ python-ovos-ocp-youtube-plugin: python-ovos-ocp-audio-plugin python-tutubo pytho
 
 python-ovos-personal-backend: python-json-database python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-utils python-requests-cache python-sqlalchemy-json python-timezonefinder PKGBUILDs/python-ovos-personal-backend/*.pkg.tar.zst
 
-python-ovos-phal: ovos-service-base python-sdnotify python-ovos-workshop python-ovos-bus-client python-ovos-config python-ovos-phal-plugin-connectivity-events python-ovos-phal-plugin-ipgeo python-ovos-phal-plugin-network-manager python-ovos-phal-plugin-oauth python-ovos-phal-plugin-system python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-phal/*.pkg.tar.zst
+python-ovos-phal: ovos-core ovos-service-base python-sdnotify python-ovos-workshop python-ovos-bus-client python-ovos-config python-ovos-phal-plugin-connectivity-events python-ovos-phal-plugin-ipgeo python-ovos-phal-plugin-network-manager python-ovos-phal-plugin-oauth python-ovos-phal-plugin-system python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-phal/*.pkg.tar.zst
 
 python-ovos-phal-plugin-alsa: python-json-database python-ovos-plugin-manager python-pyalsaaudio PKGBUILDs/python-ovos-phal-plugin-alsa/*.pkg.tar.zst
 
@@ -193,11 +245,15 @@ python-ovos-phal-plugin-system: python-ovos-config python-ovos-plugin-manager py
 
 python-ovos-phal-plugin-wifi-setup: python-mycroft-messagebus-client python-ovos-utils python-ovos-plugin-manager PKGBUILDs/python-ovos-phal-plugin-wifi-setup/*.pkg.tar.zst
 
+python-ovos-plugin-common-play: python-ovos-audio-plugin-simple python-ovos-bus-client python-ovos-ocp-files-plugin python-ovos-plugin-manager python-ovos-utils python-ovos-workshop python-padacioso python-ovos-ocp-audio-plugin python-mycroft-messagebus-client PKGBUILDs-extra/python-ovos-plugin-common-play/*.pkg.tar.zst
+
 python-ovos-plugin-manager: python-combo-lock python-langcodes python-ovos-bus-client python-ovos-config python-ovos-utils python-quebra-frases PKGBUILDs/python-ovos-plugin-manager/*.pkg.tar.zst
 
 python-ovos-skill-installer:  PKGBUILDs/python-ovos-skill-installer/*.pkg.tar.zst
 
 python-ovos-skill-manager: python-bs4 python-combo-lock python-json-database python-ovos-config python-ovos-skill-installer python-ovos-utils python-pako python-requests-cache PKGBUILDs/python-ovos-skill-manager/*.pkg.tar.zst
+
+python-ovos-skills-manager: python-bs4 python-combo-lock python-json-database python-ovos-config python-ovos-skill-installer python-ovos-utils python-pako python-requests-cache PKGBUILDs-extra/python-ovos-skills-manager/*.pkg.tar.zst
 
 python-ovos-stt-http-server: python-ovos-plugin-manager python-ovos-utils python-uvicorn PKGBUILDs/python-ovos-stt-http-server/*.pkg.tar.zst
 
@@ -284,6 +340,8 @@ python-smbus2:  PKGBUILDs-extra/python-smbus2/*.pkg.tar.zst
 python-sonopy:  PKGBUILDs-extra/python-sonopy/*.pkg.tar.zst
 
 python-speechrecognition:  PKGBUILDs-extra/python-speechrecognition/*.pkg.tar.zst
+
+python-spidev:  PKGBUILDs-extra/python-spidev/*.pkg.tar.zst
 
 python-sqlalchemy-json:  PKGBUILDs-extra/python-sqlalchemy-json/*.pkg.tar.zst
 

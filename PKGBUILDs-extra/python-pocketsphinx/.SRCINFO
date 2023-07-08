@@ -4,6 +4,7 @@ pkgbase = python-pocketsphinx
 	pkgrel = 00
 	url = https://github.com/cmusphinx/pocketsphinx
 	arch = x86_64
+	arch = aarch64
 	license = MIT
 	makedepends = cython
 	depends = python

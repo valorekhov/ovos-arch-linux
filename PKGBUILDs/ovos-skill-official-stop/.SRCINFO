@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-stop
+	pkgdesc = Provides verbal interfaces for basic framework interactions, such as the "Stop" command.
+	pkgver = f0fa6b19f84503288fe9a927f37c0a135528eab1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/skill-ovos-stop/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-stop
+	conflicts = ovos-skill-official-stop
+	source = https://github.com/OpenVoiceOS/skill-ovos-stop/archive/.tar.gz
+	sha256sums = 14de50a5f925a036d28a368485bb7b1a3cade67e4581c88b3b34c3495b58b9a3
+
+pkgname = ovos-skill-official-stop

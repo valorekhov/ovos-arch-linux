@@ -4,6 +4,7 @@ pkgbase = python-pyalsaaudio
 	pkgrel = 00
 	url = http://larsimmisch.github.io/pyalsaaudio/
 	arch = x86_64
+	arch = aarch64
 	license = PSF
 	depends = python
 	depends = alsa-lib

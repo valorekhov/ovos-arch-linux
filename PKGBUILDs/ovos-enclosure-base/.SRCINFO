@@ -1,0 +1,21 @@
+pkgbase = ovos-enclosure-base
+	pkgdesc = Base/Abstract package providing assets & functionality common to all enclosure flavours
+	pkgver = 0.0.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/
+	install = ovos-enclosure.install
+	arch = any
+	license = Apache License 2.0
+	depends = ovos-core
+	depends = ovos-shell-standalone
+	depends = python-ovos-messagebus
+	depends = python-ovos-listener
+	depends = ovos-gui-messagebus
+	depends = ovos-phal-messagebus
+	depends = ovos-admin-phal-messagebus
+	depends = ovos-audio-messagebus
+	depends = ovos-skills-messagebus
+	source = ovos-enclosure.install
+	sha256sums = 970425188d11100fbeb2d75cbd12adedec32c3530f517e6d5990d7e0b26bcb1a
+
+pkgname = ovos-enclosure-base

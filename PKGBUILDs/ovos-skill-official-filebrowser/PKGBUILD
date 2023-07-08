@@ -1,0 +1,95 @@
+_gh_org=OpenVoiceOS
+_gh_proj=skill-ovos-filebrowser
+pkgname=ovos-skill-official-filebrowser
+_name=skill-ovos-filebrowser
+_commit='bf889e80e7fcbdbb2fd501de3610420491412b86'
+pkgver=bf889e80e7fcbdbb2fd501de3610420491412b86
+pkgrel=1
+pkgdesc='File Browser for OpenVoice OS Platform'
+arch=('any')
+url='https://github.com/OpenVoiceOS/skill-ovos-filebrowser/'
+license=('')
+depends=(python \
+)
+conflicts=()
+makedepends=(python-build python-installer python-wheel)
+provides=("$pkgname")
+conflicts+=("$pkgname")
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #skill-ovos-filebrowser-bf889e80e7fcbdbb2fd501de3610420491412b86.tar.gz \
+   2a1c3e6e8454d51a54a9d063bcaa7c95ce813f0804d275e174f513b78a182f42)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # skill-ovos-filebrowser
+# #
+# ################################################################################
+# 
+# SKILL_OVOS_FILEBROWSER_VERSION = bf889e80e7fcbdbb2fd501de3610420491412b86
+# SKILL_OVOS_FILEBROWSER_SITE = $(call github,OpenVoiceOS,skill-ovos-filebrowser,$(SKILL_OVOS_FILEBROWSER_VERSION))
+# SKILL_OVOS_FILEBROWSER_SETUP_TYPE = setuptools
+# SKILL_OVOS_FILEBROWSER_LICENSE_FILES = LICENSE
+# 
+# $(eval $(python-package))
+# 
+
+
+

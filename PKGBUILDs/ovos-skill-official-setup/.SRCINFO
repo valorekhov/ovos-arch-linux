@@ -1,0 +1,21 @@
+pkgbase = ovos-skill-official-setup
+	pkgdesc = OVOS Setup Skill
+	pkgver = d48d23e8d4ef5a3ab950839c6a08c19c15582fa3
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/skill-ovos-setup/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-setup
+	conflicts = ovos-skill-official-setup
+	source = https://github.com/OpenVoiceOS/skill-ovos-setup/archive/.tar.gz
+	source = 0001-fix-text-overflow-in-list-delegates.patch
+	source = 0002-fix-backend-buttons.patch
+	sha256sums = 96297d023c6e786702ad0147ce3a25f2c93ec4b3a7e410df90cb34426f69e482
+	sha256sums = 942D0C0B78BCB4D5309018E4747054C6B6D78DCA12ED734B6FB677D3872D25F3
+	sha256sums = E42CE01DE6AB7438BCA862FA0B761E192DB57DD7387F8B1C08D384E1E52C6185
+
+pkgname = ovos-skill-official-setup

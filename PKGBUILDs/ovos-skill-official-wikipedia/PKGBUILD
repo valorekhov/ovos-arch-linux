@@ -1,0 +1,77 @@
+_gh_org=OpenVoiceOS
+_gh_proj=skill-ovos-wikipedia
+pkgname=ovos-skill-official-wikipedia
+pkgver='47e43ef8466f18258cc336ddd0c21b5c09398305'
+pkgrel=0
+pkgdesc='Query Wikipedia for answers to all your questions.
+Get just a summary, or ask for more to get in-depth
+information.'
+arch=('any')
+url='https://github.com/OpenVoiceOS/skill-ovos-wikipedia/'
+license=('')
+depends=()
+makedepends=()
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz")
+sha256sums=(
+   #skill-ovos-wikipedia-47e43ef8466f18258cc336ddd0c21b5c09398305.tar.gz \
+   77d55c8fe6c6c744bfa520ab24e4f98c24f82753e50b603aabe41244c4d5849b)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${pkgver}"
+        fi
+    done
+}
+
+build() {
+    cd "$srcdir"
+    
+        # 
+    # SKILL_OVOS_WIKIPEDIA_SETUP_TYPE = setuptools
+    # 
+}
+
+
+package() {
+    cd "$srcdir" 
+    echo "Installing $pkgname to $pkgdir"
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # skill-ovos-wikipedia
+# #
+# ################################################################################
+# 
+# SKILL_OVOS_WIKIPEDIA_VERSION = 47e43ef8466f18258cc336ddd0c21b5c09398305
+# SKILL_OVOS_WIKIPEDIA_SITE = $(call github,OpenVoiceOS,skill-ovos-wikipedia,$(SKILL_OVOS_WIKIPEDIA_VERSION))
+# SKILL_OVOS_WIKIPEDIA_SETUP_TYPE = setuptools
+# SKILL_OVOS_WIKIPEDIA_LICENSE_FILES = LICENSE
+# 
+# $(eval $(generic-package))
+# 
+
+
+

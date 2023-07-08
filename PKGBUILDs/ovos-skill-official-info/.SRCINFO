@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-info
+	pkgdesc = Skill information parser support skill
+	pkgver = acab00e38d5492aca13b2072114f630791b5ee01
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/ovos-skills-info/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-info
+	conflicts = ovos-skill-official-info
+	source = https://github.com/OpenVoiceOS/ovos-skills-info/archive/.tar.gz
+	sha256sums = 9a69fde22b57490be21474f4cf4ba63c4730c2102926d5a1262e13e189e60b79
+
+pkgname = ovos-skill-official-info

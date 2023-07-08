@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-alarm
+	pkgdesc = OVOS Alarm Skill - Set single and recurring alarms, with a choice of alarm sounds
+	pkgver = 6c14d41903227be490b5249ef464585b7694e4c1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/skill-ovos-alarm/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-alarm
+	conflicts = ovos-skill-official-alarm
+	source = https://github.com/OpenVoiceOS/skill-ovos-alarm/archive/.tar.gz
+	sha256sums = efc627fd36e6f4bb1952d73dc5b885aeadf906c0427bca1a6cce80c424b9998f
+
+pkgname = ovos-skill-official-alarm

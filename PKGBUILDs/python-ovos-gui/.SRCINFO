@@ -8,6 +8,7 @@ pkgbase = python-ovos-gui
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	depends = ovos-core
 	depends = ovos-service-base
 	depends = ovos-messagebus-server
 	depends = python

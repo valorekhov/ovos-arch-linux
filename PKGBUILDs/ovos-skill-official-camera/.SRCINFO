@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-camera
+	pkgdesc = OVOS official camera Skill - Take singleshot photographs with the Camera Skill.
+	pkgver = d860c322f94775e4aee327279141982d379ec899
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/skill-camera/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-camera
+	conflicts = ovos-skill-official-camera
+	source = https://github.com/OpenVoiceOS/skill-camera/archive/.tar.gz
+	sha256sums = x
+
+pkgname = ovos-skill-official-camera

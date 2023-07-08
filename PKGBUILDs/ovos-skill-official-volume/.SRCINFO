@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-volume
+	pkgdesc = OVOS Volume Skill Control the volume of your Device
+	pkgver = 0feb9cfa55593ee011fdaf1141c6e5db864da104
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/skill-ovos-volume/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-volume
+	conflicts = ovos-skill-official-volume
+	source = https://github.com/OpenVoiceOS/skill-ovos-volume/archive/.tar.gz
+	sha256sums = 169474a8d1f9f53a2954b2510e4e704cc37dff25eaf40686bc55494f8bada035
+
+pkgname = ovos-skill-official-volume

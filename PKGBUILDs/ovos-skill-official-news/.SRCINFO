@@ -1,0 +1,17 @@
+pkgbase = ovos-skill-official-news
+	pkgdesc = News Streams from around the globe
+	pkgver = 392d32ebea4cc9cc3ba3371c1fe63c72426d0070
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/skill-ovos-news/
+	arch = any
+	license = 
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	depends = python
+	provides = ovos-skill-official-news
+	conflicts = ovos-skill-official-news
+	source = https://github.com/OpenVoiceOS/skill-ovos-news/archive/.tar.gz
+	sha256sums = 974fb71bf9f0bc652cef1c818efe24e96fc89d4663154e8d3574675a8063fbbb
+
+pkgname = ovos-skill-official-news

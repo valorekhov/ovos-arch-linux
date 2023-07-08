@@ -1,0 +1,95 @@
+_gh_org=OpenVoiceOS
+_gh_proj=skill-ovos-youtube-music
+pkgname=ovos-skill-official-youtube-music
+_name=skill-ovos-youtube-music
+_commit='b883d9bc64f75e890eef4c6530f63a0444c87814'
+pkgver=b883d9bc64f75e890eef4c6530f63a0444c87814
+pkgrel=1
+pkgdesc='play music from youtube in mycroft'
+arch=('any')
+url='https://github.com/OpenVoiceOS/skill-ovos-youtube-music/'
+license=('')
+depends=(python \
+)
+conflicts=()
+makedepends=(python-build python-installer python-wheel)
+provides=("$pkgname")
+conflicts+=("$pkgname")
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+sha256sums=(
+   #skill-youtube-music-b883d9bc64f75e890eef4c6530f63a0444c87814.tar.gz \
+   8058b960cc54c9b1d62a0afe13b4807147db5fdbe60cd3680d3352682c47fb94)
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+    # nosetests
+    # pytest
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
+
+################################################################################
+# #
+# # skill-youtube-music
+# #
+# ################################################################################
+# 
+# SKILL_YOUTUBE_MUSIC_VERSION = b883d9bc64f75e890eef4c6530f63a0444c87814
+# SKILL_YOUTUBE_MUSIC_SITE = $(call github,JarbasSkills,skill-youtube-music,$(SKILL_YOUTUBE_MUSIC_VERSION))
+# SKILL_YOUTUBE_MUSIC_SETUP_TYPE = setuptools
+# SKILL_YOUTUBE_MUSIC_LICENSE_FILES = LICENSE
+# 
+# $(eval $(python-package))
+# 
+
+
+

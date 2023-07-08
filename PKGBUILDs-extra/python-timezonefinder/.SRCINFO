@@ -4,6 +4,7 @@ pkgbase = python-timezonefinder
 	pkgrel = 00
 	url = https://timezonefinder.michelfe.it/gui
 	arch = x86_64
+	arch = aarch64
 	license = MIT
 	depends = python
 	depends = python-cffi
