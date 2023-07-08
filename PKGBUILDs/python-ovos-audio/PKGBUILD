@@ -19,7 +19,7 @@ depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'pyth
 'python-ovos-ocp-news-plugin' \
 'python-ovos-ocp-rss-plugin' \
 'python-ovos-plugin-manager>=0.0.23a4' #>=0.0.23a4,~=0.0 \
-'python-ovos-tts-plugin-mimic3-server' \
+#'python-ovos-tts-plugin-mimic3-server' \
 'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
 )
 makedepends=(python-build python-installer python-wheel)
