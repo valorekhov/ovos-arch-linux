@@ -318,7 +318,7 @@ try{
                 if ($ver -and $versions.Count -gt 1) {"'$__packageName$ver' #$($versions | Sort-Object | Join-String -Separator ",")" }
                     else {"'$__packageName$ver'"}
             }
-            $dependencies = $dependencies | Join-String -Separator " \`n"
+            $dependencies = $dependencies | Join-String -Separator "`n"
             $dependencies += " \`n"
 
             $conflicts += $requirements | Where-Object {$_.specs | Where-Object {$_.op.StartsWith("<") } } | ForEach-Object {
@@ -329,7 +329,7 @@ try{
                     | Select-Object -First 1
                 " '$(Get-PythonPackageName $_.name)$ver'"
             }
-            $conflicts = $conflicts | Join-String -Separator " \`n"
+            $conflicts = $conflicts | Join-String -Separator "`n"
 
             Pop-Location
             Save-PKGBUILD
