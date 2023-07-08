@@ -30,6 +30,8 @@ function Get-SrcInfos([System.IO.FileInfo[]]$pkgBuilds){
 $pkgbuilds = (Get-ChildItem -Path "./PKGBUILDs/*/PKGBUILD" -Recurse) + (Get-ChildItem -Path "./PKGBUILDs-extra/*/PKGBUILD" -Recurse) `
     | Where-Object { -not (Test-Path "$($_.Directory)/.pkgignore" -PathType Leaf) }
 
+$virtualPackages = Get-ConfigFromLines (Get-Content "./virtual-packages.txt") 
+
 $deps = @{}
 $srcInfos = @{}
 $knownPackages = $pkgbuilds | ForEach-Object { $_.Directory.Name }
@@ -47,7 +49,6 @@ foreach($srcInfo in (Get-SrcInfos $pkgbuilds)){
         }
         | Where-Object { $knownPackages -contains $_ }
 }
-$virtualPackages = Get-ConfigFromLines (Get-Content "./virtual-packages.txt") 
 
 function New-Makefile([string]$dir, $deps){
     $sorted = $deps.Keys | Sort-Object
