@@ -7,7 +7,7 @@ After=ovos-messagebus.service
 [Service]
 User=ovos
 Group=ovos
-Type=notify12
+Type=notify
 WorkingDirectory=/home/ovos
 Environment=PYTHONUNBUFFERED=1
 ExecStart=/usr/bin/python /etc/systemd/system/ovos-phal-messagebus.d/ovos-systemd_admin_phal_messagebus.py

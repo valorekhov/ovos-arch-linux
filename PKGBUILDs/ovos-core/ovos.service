@@ -1,8 +1,7 @@
 [Unit]
 Description=OVOS Software stack.
-# TODO: Figure out on which the sound target is appropriate
-After=network.target # sound.target
-Wants=network.target # sound.target
+After=network.target
+Wants=network.target
 
 [Service]
 User=ovos
