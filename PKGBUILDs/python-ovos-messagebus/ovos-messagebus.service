@@ -10,9 +10,9 @@ Type=notify
 WorkingDirectory=/home/ovos
 Environment=PYTHONUNBUFFERED=1
 ExecStart=/usr/bin/python /etc/systemd/system/ovos-messagebus.d/ovos-systemd_messagebus.py
-# StandardOutput=append:/var/log/ovos/bus.log
-# StandardError=file:/var/log/ovos/bus.error.log
-StandardOutput=journal
+StandardOutput=append:/var/log/ovos/bus.log
+StandardError=file:/var/log/ovos/bus.error.log
+# StandardOutput=journal
 TimeoutStartSec=1m
 TimeoutStopSec=1m
 Restart=on-failure
