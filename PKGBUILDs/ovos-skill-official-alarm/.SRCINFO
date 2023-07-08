@@ -4,14 +4,15 @@ pkgbase = ovos-skill-official-alarm
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/skill-ovos-alarm/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-pyalsaaudio
 	provides = ovos-skill-official-alarm
 	conflicts = ovos-skill-official-alarm
-	source = https://github.com/OpenVoiceOS/skill-ovos-alarm/archive/.tar.gz
+	source = https://github.com/OpenVoiceOS/skill-ovos-alarm/archive/6c14d41903227be490b5249ef464585b7694e4c1.tar.gz
 	sha256sums = efc627fd36e6f4bb1952d73dc5b885aeadf906c0427bca1a6cce80c424b9998f
 
 pkgname = ovos-skill-official-alarm

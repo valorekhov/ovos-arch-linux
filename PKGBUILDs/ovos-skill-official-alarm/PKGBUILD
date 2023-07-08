@@ -11,8 +11,7 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-alarm/'
 license=('Apache License 2.0')
 depends=(python
-    "python-ovos-utils>=0.0.28"
-    "python-ovos-workshop>=0.0.12a27"
+'python-pyalsaaudio' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

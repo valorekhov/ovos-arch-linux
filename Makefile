@@ -65,51 +65,51 @@ ovos-shell: mycroft-gui PKGBUILDs/ovos-shell/*.pkg.tar.zst
 
 ovos-shell-standalone: ovos-service-base ovos-shell PKGBUILDs/ovos-shell-standalone/*.pkg.tar.zst
 
-ovos-skill-official-alarm:  PKGBUILDs/ovos-skill-official-alarm/*.pkg.tar.zst
+ovos-skill-official-alarm: python-pyalsaaudio PKGBUILDs/ovos-skill-official-alarm/*.pkg.tar.zst
 
-ovos-skill-official-alerts:  PKGBUILDs/ovos-skill-official-alerts/*.pkg.tar.zst
+ovos-skill-official-alerts: python-combo-lock python-json-database python-ovos-utils PKGBUILDs/ovos-skill-official-alerts/*.pkg.tar.zst
 
-ovos-skill-official-camera:  PKGBUILDs/ovos-skill-official-camera/*.pkg.tar.zst
+ovos-skill-official-camera: python-ovos-utils python-ovos-workshop PKGBUILDs/ovos-skill-official-camera/*.pkg.tar.zst
 
-ovos-skill-official-date-time: python-tzlocal python-timezonefinder python-ovos-utils python-ovos-workshop PKGBUILDs/ovos-skill-official-date-time/*.pkg.tar.zst
+ovos-skill-official-date-time: python-ovos-workshop python-ovos-utils python-timezonefinder python-tzlocal PKGBUILDs/ovos-skill-official-date-time/*.pkg.tar.zst
 
 ovos-skill-official-ddg:  PKGBUILDs/ovos-skill-official-ddg/*.pkg.tar.zst
 
-ovos-skill-official-fallback-unknown:  PKGBUILDs/ovos-skill-official-fallback-unknown/*.pkg.tar.zst
+ovos-skill-official-fallback-unknown: python-ovos-utils python-ovos-workshop PKGBUILDs/ovos-skill-official-fallback-unknown/*.pkg.tar.zst
 
 ovos-skill-official-filebrowser:  PKGBUILDs/ovos-skill-official-filebrowser/*.pkg.tar.zst
 
-ovos-skill-official-homescreen:  PKGBUILDs/ovos-skill-official-homescreen/*.pkg.tar.zst
+ovos-skill-official-homescreen: python-ovos-utils python-ovos-skills-manager PKGBUILDs/ovos-skill-official-homescreen/*.pkg.tar.zst
 
 ovos-skill-official-info:  PKGBUILDs/ovos-skill-official-info/*.pkg.tar.zst
 
-ovos-skill-official-local-music:  PKGBUILDs/ovos-skill-official-local-music/*.pkg.tar.zst
+ovos-skill-official-local-music: python-ovos-ocp-audio-plugin python-ovos-workshop PKGBUILDs/ovos-skill-official-local-music/*.pkg.tar.zst
 
-ovos-skill-official-naptime:  PKGBUILDs/ovos-skill-official-naptime/*.pkg.tar.zst
+ovos-skill-official-naptime: python-ovos-workshop python-ovos-bus-client python-ovos-utils PKGBUILDs/ovos-skill-official-naptime/*.pkg.tar.zst
 
-ovos-skill-official-news:  PKGBUILDs/ovos-skill-official-news/*.pkg.tar.zst
+ovos-skill-official-news: python-ovos-plugin-common-play python-ovos-workshop PKGBUILDs/ovos-skill-official-news/*.pkg.tar.zst
 
-ovos-skill-official-notes:  PKGBUILDs/ovos-skill-official-notes/*.pkg.tar.zst
+ovos-skill-official-notes: python-json-database PKGBUILDs/ovos-skill-official-notes/*.pkg.tar.zst
 
-ovos-skill-official-personal:  PKGBUILDs/ovos-skill-official-personal/*.pkg.tar.zst
+ovos-skill-official-personal: python-ovos-workshop python-ovos-utils PKGBUILDs/ovos-skill-official-personal/*.pkg.tar.zst
 
-ovos-skill-official-settings:  PKGBUILDs/ovos-skill-official-settings/*.pkg.tar.zst
+ovos-skill-official-settings: python-ovos-utils python-ovos-workshop PKGBUILDs/ovos-skill-official-settings/*.pkg.tar.zst
 
-ovos-skill-official-setup:  PKGBUILDs/ovos-skill-official-setup/*.pkg.tar.zst
+ovos-skill-official-setup: python-ovos-backend-client python-ovos-utils python-ovos-workshop python-ovos-phal-plugin-system python-ovos-plugin-manager PKGBUILDs/ovos-skill-official-setup/*.pkg.tar.zst
 
-ovos-skill-official-stop:  PKGBUILDs/ovos-skill-official-stop/*.pkg.tar.zst
+ovos-skill-official-stop: python-ovos-workshop python-ovos-utils PKGBUILDs/ovos-skill-official-stop/*.pkg.tar.zst
 
 ovos-skill-official-timer:  PKGBUILDs/ovos-skill-official-timer/*.pkg.tar.zst
 
-ovos-skill-official-volume:  PKGBUILDs/ovos-skill-official-volume/*.pkg.tar.zst
+ovos-skill-official-volume: python-ovos-utils PKGBUILDs/ovos-skill-official-volume/*.pkg.tar.zst
 
-ovos-skill-official-weather:  PKGBUILDs/ovos-skill-official-weather/*.pkg.tar.zst
+ovos-skill-official-weather: python-ovos-workshop python-ovos-utils PKGBUILDs/ovos-skill-official-weather/*.pkg.tar.zst
 
-ovos-skill-official-wikipedia:  PKGBUILDs/ovos-skill-official-wikipedia/*.pkg.tar.zst
+ovos-skill-official-wikipedia: python-ovos-utils PKGBUILDs/ovos-skill-official-wikipedia/*.pkg.tar.zst
 
 ovos-skill-official-wolfie:  PKGBUILDs/ovos-skill-official-wolfie/*.pkg.tar.zst
 
-ovos-skill-official-youtube-music:  PKGBUILDs/ovos-skill-official-youtube-music/*.pkg.tar.zst
+ovos-skill-official-youtube-music: python-ovos-workshop python-tutubo PKGBUILDs/ovos-skill-official-youtube-music/*.pkg.tar.zst
 
 ovos-splash:  PKGBUILDs/ovos-splash/*.pkg.tar.zst
 

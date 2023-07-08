@@ -12,17 +12,18 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-date-time/'
 license=('Apache License 2.0')
 
-depends=(python 
-    python-pytz 
-    python-tzlocal
-    "python-timezonefinder>=5.2.0"
-    python-geocoder
-    "python-ovos-utils>=0.0.28"
-    "python-ovos-workshop>=0.0.12a27")
+depends=(python
+'python-geocoder'
+'python-ovos-workshop>=0.0.12a27' #>=0.0.12a27,~=0.0
+'python-ovos-utils>=0.0.28' #>=0.0.28,~=0.0
+'python-pytz>=2022.1'
+'python-timezonefinder'
+'python-tzlocal>=1.3' \
+)
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
-conflicts+=("$pkgname" "python-timezonefinder>=6.0.0")
+conflicts+=("$pkgname")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=('cedd24ccb4b1b6476d1eaaf83e5396fca6f5706fb936f421f2c65c813d557a30')

@@ -4,14 +4,14 @@ pkgbase = ovos-skill-official-timer
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/skill-ovos-timer/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
 	provides = ovos-skill-official-timer
 	conflicts = ovos-skill-official-timer
-	source = https://github.com/OpenVoiceOS/skill-ovos-timer/archive/.tar.gz
+	source = https://github.com/OpenVoiceOS/skill-ovos-timer/archive/24c38ec3d6744d9fffed9b581d90d62188824310.tar.gz
 	sha256sums = eba9a5623a3735b935a40925ea21cad6edb1ffdf15557a0a98064a02748ff879
 
 pkgname = ovos-skill-official-timer

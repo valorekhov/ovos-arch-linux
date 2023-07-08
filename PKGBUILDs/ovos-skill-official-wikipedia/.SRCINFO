@@ -4,8 +4,10 @@ pkgbase = ovos-skill-official-wikipedia
 	pkgrel = 0
 	url = https://github.com/OpenVoiceOS/skill-ovos-wikipedia/
 	arch = any
-	license = 
-	source = https://github.com/OpenVoiceOS/skill-ovos-wikipedia/archive/47e43ef8466f18258cc336ddd0c21b5c09398305.tar.gz
+	license = Apache License 2.0
+	depends = python
+	depends = python-ovos-utils>=0.0.28
+	source = https://github.com/OpenVoiceOS/skill-ovos-wikipedia/archive/.tar.gz
 	sha256sums = 77d55c8fe6c6c744bfa520ab24e4f98c24f82753e50b603aabe41244c4d5849b
 
 pkgname = ovos-skill-official-wikipedia

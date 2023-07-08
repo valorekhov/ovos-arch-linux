@@ -16,7 +16,7 @@ makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-info-acab00e38d5492aca13b2072114f630791b5ee01.tar.gz \
    9a69fde22b57490be21474f4cf4ba63c4730c2102926d5a1262e13e189e60b79)

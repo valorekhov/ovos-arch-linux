@@ -10,8 +10,8 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-skill-personal/'
 license=('Apache License 2.0')
 depends=(python
-    "python-ovos-utils>=0.0.28"
-    "python-ovos-workshop>=0.0.12a27"
+'python-ovos-workshop>=0.0.12a27' #>=0.0.12a27,~=0.0
+'python-ovos-utils>=0.0.28' #>=0.0.28,~=0.0 \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)

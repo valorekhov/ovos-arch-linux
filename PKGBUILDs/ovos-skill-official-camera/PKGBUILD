@@ -10,7 +10,7 @@ singleshot photographs with the Camera Skill.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-camera/'
 license=('Apache License 2.0')
-depends=(python
+depends=(python  #TODO: check source requirements
     "python-ovos-utils>=0.0.28"
     "python-ovos-workshop>=0.0.12a27"
 )

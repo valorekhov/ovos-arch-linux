@@ -4,14 +4,15 @@ pkgbase = ovos-skill-official-notes
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/skill-ovos-notes/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-json-database
 	provides = ovos-skill-official-notes
 	conflicts = ovos-skill-official-notes
-	source = https://github.com/OpenVoiceOS/skill-ovos-notes/archive/.tar.gz
+	source = https://github.com/OpenVoiceOS/skill-ovos-notes/archive/adcfc50268846852f16cb9205a1dae26055151c4.tar.gz
 	sha256sums = 03f020db3f00a91fab6e37723c1535bd76b0b7105402f13adef6cfd00e87994c
 
 pkgname = ovos-skill-official-notes

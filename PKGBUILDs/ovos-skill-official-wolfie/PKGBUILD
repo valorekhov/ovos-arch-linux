@@ -9,14 +9,16 @@ pkgdesc='Use Wolfram Alpha for general knowledge questions'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-wolfie/'
 license=('')
-depends=(python \
+depends=(python
+'python-neon-solver-wolfram-alpha-plugin'
+'python-neon-solvers'
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #skill-ovos-wolfie-1e4af2fa0735f88d19fca917c7130a0995d17fc7.tar.gz \
    a14e3f986815cd8bc0f03dfb49d76708a58b4db26cfb2a7bacd06c6c86d032d5)

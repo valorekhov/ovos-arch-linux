@@ -3,22 +3,23 @@ _gh_proj=skill-local_music
 pkgname=ovos-skill-official-local-music
 _name=skill-local_music
 _commit='c03107987c3f2aba23e8933ff0fc93a7217655b9'
+_base_ver=$_commit
 pkgver=c03107987c3f2aba23e8933ff0fc93a7217655b9
 pkgrel=1
 pkgdesc='Neon Skill for Local Music Playback'
 arch=('any')
 url='https://github.com/NeonGeckoCom/skill-local_music/'
-license=('Apache License 2.0')
+license=('')
 depends=(python
-    "python-ovos-utils>=0.0.28"
-    "python-ovos-workshop>=0.0.12a27"
+'python-ovos-ocp-audio-plugin'
+'python-ovos-workshop' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit_commit.tar.gz" \
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
    0001-Make-home-mycroft-Music-the-default-folder.patch)
 sha256sums=(
    #skill-local-music-c03107987c3f2aba23e8933ff0fc93a7217655b9.tar.gz \

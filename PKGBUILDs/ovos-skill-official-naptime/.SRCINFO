@@ -4,14 +4,17 @@ pkgbase = ovos-skill-official-naptime
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/skill-ovos-naptime/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-ovos-workshop>=0.0.12a27
+	depends = python-ovos-bus-client
+	depends = python-ovos-utils>=0.0.28
 	provides = ovos-skill-official-naptime
 	conflicts = ovos-skill-official-naptime
-	source = https://github.com/OpenVoiceOS/skill-ovos-naptime/archive/.tar.gz
+	source = https://github.com/OpenVoiceOS/skill-ovos-naptime/archive/92ab0cbef48273148c706a1b6f52d1574adb476f.tar.gz
 	sha256sums = d4293b1fea766e2d31cdcc7a3c03275f0ab05c9090c7d6979370095f7f8dae71
 
 pkgname = ovos-skill-official-naptime

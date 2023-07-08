@@ -4,14 +4,16 @@ pkgbase = ovos-skill-official-camera
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/skill-camera/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-ovos-utils>=0.0.28
+	depends = python-ovos-workshop>=0.0.12a27
 	provides = ovos-skill-official-camera
 	conflicts = ovos-skill-official-camera
-	source = https://github.com/OpenVoiceOS/skill-camera/archive/.tar.gz
+	source = https://github.com/OpenVoiceOS/skill-camera/archive/d860c322f94775e4aee327279141982d379ec899.tar.gz
 	sha256sums = x
 
 pkgname = ovos-skill-official-camera

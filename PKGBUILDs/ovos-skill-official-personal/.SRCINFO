@@ -4,14 +4,16 @@ pkgbase = ovos-skill-official-personal
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-skill-personal/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-ovos-workshop>=0.0.12a27
+	depends = python-ovos-utils>=0.0.28
 	provides = ovos-skill-official-personal
 	conflicts = ovos-skill-official-personal
-	source = https://github.com/OpenVoiceOS/ovos-skill-personal/archive/.tar.gz
+	source = https://github.com/OpenVoiceOS/ovos-skill-personal/archive/7ca20a6e9319eb37f4caacdf2589fc1568b783d3.tar.gz
 	sha256sums = 367bddf4afc35d131251fb65a2031d00956b9f4c3128f56aebef3076077eef27
 
 pkgname = ovos-skill-official-personal
