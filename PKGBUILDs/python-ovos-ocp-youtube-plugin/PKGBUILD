@@ -19,9 +19,7 @@ conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-ocp-youtube-plugin-df6bfd8ccc3e178cfc5284c92932196883581dac.tar.gz \
-   0d94ac0b26820a9793808ba33c561a4ec0d17f911377689365bed7515579cdab)
+sha256sums=('0d94ac0b26820a9793808ba33c561a4ec0d17f911377689365bed7515579cdab')
 
 prepare() {
     cd "$srcdir"
