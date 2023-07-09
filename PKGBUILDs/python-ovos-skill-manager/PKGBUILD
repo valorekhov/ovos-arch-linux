@@ -34,9 +34,7 @@ conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-skill-manager-1a749aed214b4274097b8fcea5ca2984f76b000d.tar.gz \
-   9d90f42a8b70aeeda69ec42b3086a76a3011a8064c0acc6653624f83b4884dac)
+sha256sums=('9d90f42a8b70aeeda69ec42b3086a76a3011a8064c0acc6653624f83b4884dac')
 
 prepare() {
     cd "$srcdir"
