@@ -4,12 +4,13 @@ pkgname=python-ovos-ocp-audio-plugin
 _name=ovos-ocp-audio-plugin
 _base_ver='31701ded43a4f7ff6c02833d6aaf1bc0740257fc'
 pkgver=0.0.6a1
-pkgrel=1
+pkgrel=2
 pkgdesc='OVOS GUI mediaplayer plugin'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin/'
 license=('')
 depends=(python \
+gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly ffmpeg
 'python-dbus-next' \
 'python-ovos-audio-plugin-simple' \
 'python-ovos-workshop>=0.0.11' #<0.1.0,>=0.0.11 \
@@ -27,9 +28,9 @@ conflicts=( 'python-ovos-ocp-audio-plugin' \
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-ocp-audio-plugin-31701ded43a4f7ff6c02833d6aaf1bc0740257fc.tar.gz \
-   d5f695b5d6533fb51d81b5c11e2a6731341d1d8d9f4933713905b81d99bf64a5)
+sha256sums=('d5f695b5d6533fb51d81b5c11e2a6731341d1d8d9f4933713905b81d99bf64a5')
+
+provides=('python-ovos-plugin-common-play' 'python-ovos-ocp-audio-plugin')
 
 prepare() {
     cd "$srcdir"
