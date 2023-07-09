@@ -9,6 +9,8 @@ depends=(ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-list
 ovos-gui-messagebus ovos-phal-messagebus ovos-admin-phal-messagebus ovos-audio-messagebus 
 ovos-skills-messagebus
 ovos-tts-plugin-mimic
+ovos-skill-official-homescreen
+ovos-skill-official-naptime
 ovos-skill-official-date-time
 ovos-skill-official-volume
 ovos-skill-official-fallback-unknown
