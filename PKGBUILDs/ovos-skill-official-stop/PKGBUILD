@@ -3,7 +3,7 @@ _gh_proj=skill-ovos-stop
 pkgname=ovos-skill-official-stop
 _name=skill-ovos-stop
 _commit='f0fa6b19f84503288fe9a927f37c0a135528eab1'
-pkgver=f0fa6b19f84503288fe9a927f37c0a135528eab1
+pkgver=0.3.0
 pkgrel=1
 pkgdesc='Provides verbal interfaces for basic framework
 interactions, such as the "Stop" command.'
@@ -20,9 +20,7 @@ provides=("$pkgname")
 conflicts+=("$pkgname")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=(
-   #skill-ovos-stop-f0fa6b19f84503288fe9a927f37c0a135528eab1.tar.gz \
-   14de50a5f925a036d28a368485bb7b1a3cade67e4581c88b3b34c3495b58b9a3)
+sha256sums=('14de50a5f925a036d28a368485bb7b1a3cade67e4581c88b3b34c3495b58b9a3')
 
 prepare() {
     cd "$srcdir"
