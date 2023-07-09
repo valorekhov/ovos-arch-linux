@@ -18,9 +18,7 @@ conflicts=()
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-phal-plugin-wifi-setup-1ef9c2b01e25690c6d6f515830e5c45b038ab3fe.tar.gz \
-   3869dfb36c9a76118f6824b7c28a667d0ef4672aba046bf4b1e928bd88200b42)
+sha256sums=('3869dfb36c9a76118f6824b7c28a667d0ef4672aba046bf4b1e928bd88200b42')
 
 prepare() {
     cd "$srcdir"
