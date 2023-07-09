@@ -3,7 +3,7 @@ _gh_proj=skill-ovos-naptime
 pkgname=ovos-skill-official-naptime
 _name=skill-ovos-naptime
 _commit='92ab0cbef48273148c706a1b6f52d1574adb476f'
-pkgver=92ab0cbef48273148c706a1b6f52d1574adb476f
+pkgver=0.2.3
 pkgrel=1
 pkgdesc='Tell me to sleep when you don'\''t want
 to be disturbed in any way. This stops all
@@ -24,9 +24,7 @@ provides=("$pkgname")
 conflicts+=("$pkgname")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=(
-   #skill-ovos-naptime-92ab0cbef48273148c706a1b6f52d1574adb476f.tar.gz \
-   d4293b1fea766e2d31cdcc7a3c03275f0ab05c9090c7d6979370095f7f8dae71)
+sha256sums=('d4293b1fea766e2d31cdcc7a3c03275f0ab05c9090c7d6979370095f7f8dae71')
 
 prepare() {
     cd "$srcdir"
