@@ -3,7 +3,7 @@ _gh_proj=skill-ovos-news
 pkgname=ovos-skill-official-news
 _name=skill-ovos-news
 _commit='392d32ebea4cc9cc3ba3371c1fe63c72426d0070'
-pkgver=392d32ebea4cc9cc3ba3371c1fe63c72426d0070
+pkgver=0.0.1
 pkgrel=1
 pkgdesc='News Streams from around the globe'
 arch=('any')
@@ -12,7 +12,7 @@ license=('Apache License 2.0')
 depends=(python
 'python-beautifulsoup4'
 'python-feedparser'
-'python-ovos-plugin-common-play>=0.0.3a10'
+'python-ovos-plugin-common-play'
 'python-ovos-workshop'
 'python-pytz' \
 )
@@ -22,9 +22,7 @@ provides=("$pkgname")
 conflicts+=("$pkgname")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=(
-   #skill-ovos-news-392d32ebea4cc9cc3ba3371c1fe63c72426d0070.tar.gz \
-   974fb71bf9f0bc652cef1c818efe24e96fc89d4663154e8d3574675a8063fbbb)
+sha256sums=('974fb71bf9f0bc652cef1c818efe24e96fc89d4663154e8d3574675a8063fbbb')
 
 prepare() {
     cd "$srcdir"
