@@ -1,0 +1,22 @@
+pkgbase = python-ovos-phal-plugin-wallpaper-manager
+	pkgdesc = A plugin for OpenVoiceOS hardware abstraction layer
+	pkgver = 0.0.0
+	pkgrel = 00
+	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-wallpaper-manager
+	arch = any
+	license = Apache
+	depends = python
+	depends = python-mycroft-messagebus-client
+	depends = python-ovos-plugin-manager
+	depends = python-ovos-utils
+	depends = python-wallpaper-finder
+	depends = python-requests
+	noextract = ovos_PHAL_plugin_wallpaper_manager-0.0.0-py3-none-any.whl
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/9b/83/9de9837b2171b8138152c1a226691c89691d56ede71e16bf3d16eb5df588/ovos_PHAL_plugin_wallpaper_manager-0.0.0-py3-none-any.whl
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = d7fd880cd80eef0c499f5fa09243547f
+	md5sums = 86d3f3a95c324c9479bd8986968f4327
+
+pkgname = python-ovos-phal-plugin-wallpaper-manager

@@ -1,0 +1,20 @@
+pkgbase = python-wallpaper-finder
+	pkgdesc = platform wallpaper changer
+	pkgver = 0.1.2
+	pkgrel = 00
+	url = https://github.com/JarbasAl/wallpaper_changer
+	arch = any
+	license = custom:Apache2.0
+	depends = python
+	depends = python-bs4
+	depends = python-feedparser
+	depends = python-requests
+	depends = python-requests-cache
+	source = PKGBUILD_EXTRAS
+	source = https://files.pythonhosted.org/packages/36/54/e8370ccc92ad496fb2cda1b2640d9647b1e9079d1baf74efcdf23e2d2a0b/wallpaper_finder-0.1.2.tar.gz
+	source = LICENSE
+	md5sums = SKIP
+	md5sums = 3e1c2f689799230727703a86f747824c
+	md5sums = a514e37cd2c3ee680b934d2e0cbaf09a
+
+pkgname = python-wallpaper-finder
