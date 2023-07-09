@@ -11,7 +11,7 @@ url='https://github.com/NeonGeckoCom/skill-local_music/'
 license=('')
 depends=(python
 'python-ovos-workshop>=0.0.7' 
-'python-ovos-plugin-common-play'
+'python-ovos-ocp-audio-plugin'
 'python-ovos-ocp-files-plugin>=0.13'
 'python-ovos-utils>=0.0.28'
 'python-ovos-skill-installer>=0.0.5'

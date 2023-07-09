@@ -12,7 +12,7 @@ license=('Apache License 2.0')
 depends=(python
 'python-beautifulsoup4'
 'python-feedparser'
-'python-ovos-plugin-common-play'
+'python-ovos-ocp-audio-plugin'
 'python-ovos-workshop'
 'python-pytz' \
 )
