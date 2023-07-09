@@ -12,7 +12,7 @@ WorkingDirectory=/home/ovos
 Environment=PYTHONUNBUFFERED=1
 ExecStart=/usr/bin/python /etc/systemd/system/ovos-skills-messagebus.d/ovos-systemd_skills_messagebus.py
 StandardOutput=journal
-TimeoutStartSec=1m
+TimeoutStartSec=2m
 TimeoutStopSec=1m
 Restart=on-failure
 StartLimitInterval=5min

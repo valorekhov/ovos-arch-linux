@@ -5,12 +5,12 @@ _name=ovos-core
 _unit_name_skills="ovos-skills-messagebus"
 _base_ver='e4cabf257c278e183d5c77aaaa3c920028e4f51f'
 pkgver=0.0.8a21
-pkgrel=1
+pkgrel=2
 pkgdesc='OVOS-core is a backwards-compatible descendant of
 Mycroft-core, the central component of Mycroft'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-core/'
-license=('')
+license=('Apache')
 depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-adapt-parser>=1.0.0' #<2.0.0,>=1.0.0 \
 'python-combo-lock>=0.2.2' #<0.3,>=0.2.2 \
@@ -48,7 +48,7 @@ source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
     # "python-ovos-skills.install" \
 )
 sha256sums=('75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff'
-            'd70fa7be87303b9359fb45b3920fcbadae474963009bf7cdc01892dd3f58f840'
+            '75c9c0a3e6b9aa13a50c20acad46299f010abc7fdb64184d16fbb550959a2406'
             'bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a')
 
 prepare() {
