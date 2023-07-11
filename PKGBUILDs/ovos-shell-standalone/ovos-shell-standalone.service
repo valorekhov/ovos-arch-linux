@@ -9,6 +9,7 @@ User=ovos
 Group=ovos
 WorkingDirectory=/home/ovos
 EnvironmentFile=-/home/ovos/.config/ovos-shell/.env
+Environment=XDG_RUNTIME_DIR=%t
 PAMName=login
 TTYPath=/dev/tty1
 ExecStartPre=-/usr/bin/kbuildsycoca5
