@@ -11,17 +11,29 @@ pkgdesc='OpenVoiceOS Shell on EGLFS:
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/OpenVoiceOS/ovos-shell/'
 license=('Apache License 2.0')
-depends=(mycroft-gui kio kio-extras plasma-framework qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base
+depends=(mycroft-gui 
+kio kio-extras plasma-framework 
+qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base qt5-virtualkeyboard qt5-lottie
+breeze-icons
 # possibly needed:
 gst-plugin-va libva libva-utils 
+python-ovos-phal-plugin-alsa
+python-ovos-phal-plugin-system
+python-ovos-phal-plugin-configuration-provider
 )
-optdepends=('qt5-lottie: QT5 animation support')
+optdepends=(
+python-ovos-phal-plugin-notification-widgets
+python-ovos-phal-plugin-network-manager
+python-ovos-phal-plugin-gui-network-client
+python-ovos-phal-plugin-wifi-setup
+python-ovos-phal-plugin-dashboard
+python-ovos-phal-plugin-brightness-control-rpi
+python-ovos-phal-plugin-color-scheme-manager
+)
 makedepends=(pkgconf cmake extra-cmake-modules)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz")
-sha256sums=(
-   #ovos-shell-0f3335b0aa3a806b130a6a79299d79c75bc12c0e.tar.gz \
-   743862ed78d9e5d4a71740706f25e379468dedc5a94598dbc54b6c4273c94485)
+sha256sums=('743862ed78d9e5d4a71740706f25e379468dedc5a94598dbc54b6c4273c94485')
 
 prepare() {
     cd "$srcdir"
