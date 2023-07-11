@@ -13,7 +13,7 @@ Type=notify
 WorkingDirectory=/home/ovos
 Environment=PYTHONUNBUFFERED=1
 Environment=AUDIODRIVER=pulseaudio
-Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=XDG_RUNTIME_DIR=%t
 ExecStart=/usr/bin/python /etc/systemd/system/ovos-audio-messagebus.d/ovos-systemd_audio_messagebus.py
 StandardOutput=journal
 TimeoutStartSec=1m
