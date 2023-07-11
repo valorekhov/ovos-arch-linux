@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ocp-audio-plugin
 pkgname=python-ovos-ocp-audio-plugin
 _name=ovos-ocp-audio-plugin
-_base_ver='31701ded43a4f7ff6c02833d6aaf1bc0740257fc'
-pkgver=0.0.6a1
-pkgrel=2
+_base_ver='1b746a1c04b53405008ea7098d0e2ac515788301'
+pkgver=0.0.5
+pkgrel=1
 pkgdesc='OVOS GUI mediaplayer plugin'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin/'
@@ -28,7 +28,7 @@ conflicts=( 'python-ovos-ocp-audio-plugin' \
 makedepends=(python-build python-installer python-wheel)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=('d5f695b5d6533fb51d81b5c11e2a6731341d1d8d9f4933713905b81d99bf64a5')
+sha256sums=('93cca2a79e67a8fecb6487e06d54158484c6727ef3cc8165b4ecca2ba967a4a8')
 
 provides=('python-ovos-plugin-common-play' 'python-ovos-ocp-audio-plugin')
 
@@ -84,7 +84,6 @@ package() {
     # Search for license files in the original source directory
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
-    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
 
 
