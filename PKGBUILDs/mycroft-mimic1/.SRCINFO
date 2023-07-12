@@ -1,0 +1,23 @@
+pkgbase = mycroft-mimic1
+	pkgver = 1.3.0
+	pkgrel = 1
+	url = https://github.com/MycroftAI/mimic1
+	arch = x86_64
+	arch = aarch64
+	arch = armv7h
+	license = see https://github.com/MycroftAI/mimic1/blob/master/COPYING
+	makedepends = gcc
+	makedepends = make
+	makedepends = pkg-config
+	makedepends = automake
+	makedepends = libtool
+	source = https://github.com/MycroftAI/mimic1/archive/eba879c6e4ece50ca6de9b4966f2918ed89148bd.tar.gz
+	sha256sums = 3b0afee54dc4f2eef6e64d81d9d2373c090aab894993ef8921216a0147b9feff
+
+pkgname = mycroft-mimic1
+	pkgdesc = Mimic is a fast, lightweight Text-to-speech engine developed by Mycroft A.I. and VocaliD, based on Carnegie Mellon University’s Flite (Festival-Lite) software. Mimic takes in text and reads it out loud to create a high quality voice.
+	depends = alsa-lib
+
+pkgname = mycroft-mimic1-voices
+	pkgdesc = Flite engine voices for Mimic1
+	arch = any

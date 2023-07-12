@@ -9,6 +9,7 @@ pkgbase = python-ovos-vlc-plugin
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = vlc
 	depends = python-ovos-plugin-manager
 	depends = python-vlc>=1.1.2
 	source = https://github.com/OpenVoiceOS/ovos-vlc-plugin/archive/1f6a2915d728baba925ecf5f53547ee7c7a766c1.tar.gz

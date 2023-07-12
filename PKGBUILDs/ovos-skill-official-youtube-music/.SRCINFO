@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-official-youtube-music
 	pkgdesc = play music from youtube in mycroft
-	pkgver = b883d9bc64f75e890eef4c6530f63a0444c87814
-	pkgrel = 1
+	pkgver = 0.0.1
+	pkgrel = 2
 	url = https://github.com/OpenVoiceOS/skill-ovos-youtube-music/
 	arch = any
 	license = Apache License 2.0
@@ -9,11 +9,13 @@ pkgbase = ovos-skill-official-youtube-music
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-ovos-ocp-youtube-plugin
+	depends = python-ovos-utils>=0.0.28
 	depends = python-ovos-workshop>=0.0.5a1
 	depends = python-tutubo
 	provides = ovos-skill-official-youtube-music
 	conflicts = ovos-skill-official-youtube-music
-	source = https://github.com/OpenVoiceOS/skill-ovos-youtube-music/archive/b883d9bc64f75e890eef4c6530f63a0444c87814.tar.gz
-	sha256sums = 8058b960cc54c9b1d62a0afe13b4807147db5fdbe60cd3680d3352682c47fb94
+	source = https://github.com/OpenVoiceOS/skill-ovos-youtube-music/archive/3a4f52d2bcbd1c3074df4d2d29853f5ed743a442.tar.gz
+	sha256sums = da4c17fe4a6d28a18145d4b66ea3d4c243256e2f18675460c95cef5c52ef8e92
 
 pkgname = ovos-skill-official-youtube-music

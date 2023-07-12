@@ -1,6 +1,6 @@
 pkgbase = ovos-skill-official-stop
 	pkgdesc = Provides verbal interfaces for basic framework interactions, such as the "Stop" command.
-	pkgver = f0fa6b19f84503288fe9a927f37c0a135528eab1
+	pkgver = 0.3.0
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/skill-ovos-stop/
 	arch = any

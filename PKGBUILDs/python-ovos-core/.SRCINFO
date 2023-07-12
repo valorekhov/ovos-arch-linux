@@ -1,10 +1,10 @@
 pkgbase = python-ovos-core
 	pkgdesc = OVOS-core is a backwards-compatible descendant of Mycroft-core, the central component of Mycroft
 	pkgver = 0.0.8a21
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/OpenVoiceOS/ovos-core/
 	arch = any
-	license = 
+	license = Apache
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
@@ -44,7 +44,7 @@ pkgbase = python-ovos-core
 	source = ovos-skills-messagebus.service
 	source = ovos-systemd_skills_messagebus.py
 	sha256sums = 75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff
-	sha256sums = d70fa7be87303b9359fb45b3920fcbadae474963009bf7cdc01892dd3f58f840
+	sha256sums = 75c9c0a3e6b9aa13a50c20acad46299f010abc7fdb64184d16fbb550959a2406
 	sha256sums = bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a
 
 pkgname = python-ovos-core

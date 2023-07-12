@@ -1,6 +1,6 @@
 pkgbase = ovos-skill-official-news
 	pkgdesc = News Streams from around the globe
-	pkgver = 392d32ebea4cc9cc3ba3371c1fe63c72426d0070
+	pkgver = 0.0.1
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/skill-ovos-news/
 	arch = any
@@ -11,7 +11,7 @@ pkgbase = ovos-skill-official-news
 	depends = python
 	depends = python-beautifulsoup4
 	depends = python-feedparser
-	depends = python-ovos-plugin-common-play>=0.0.3a10
+	depends = python-ovos-ocp-audio-plugin
 	depends = python-ovos-workshop
 	depends = python-pytz
 	provides = ovos-skill-official-news

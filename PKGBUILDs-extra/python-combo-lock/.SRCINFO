@@ -1,6 +1,6 @@
 pkgbase = python-combo-lock
 	pkgdesc = A combined process and thread lock
-	pkgver = 0.2.6
+	pkgver = 0.2.5
 	pkgrel = 00
 	url = https://github.com/forslund/combo-lock
 	arch = any
@@ -9,7 +9,7 @@ pkgbase = python-combo-lock
 	depends = python-filelock
 	depends = python-memory-tempfile
 	source = PKGBUILD_EXTRAS
-	source = https://files.pythonhosted.org/packages/1a/7d/22bc221fd33a0f72c84ff8c6f6b5f06533825c058fe29a57d12467344cb3/combo_lock-0.2.6.tar.gz
+	source = https://files.pythonhosted.org/packages/1a/7d/22bc221fd33a0f72c84ff8c6f6b5f06533825c058fe29a57d12467344cb3/combo_lock-0.2.5.tar.gz
 	source = LICENSE
 	md5sums = SKIP
 	md5sums = fb378b7b4b9a3b6589b59cd2e7fa5c70

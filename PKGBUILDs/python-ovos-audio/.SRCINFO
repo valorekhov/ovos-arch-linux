@@ -21,7 +21,6 @@ pkgbase = python-ovos-audio
 	depends = python-ovos-ocp-news-plugin
 	depends = python-ovos-ocp-rss-plugin
 	depends = python-ovos-plugin-manager>=0.0.23a4
-	depends = python-ovos-tts-plugin-mimic3-server
 	depends = python-ovos-utils>=0.0.31a3
 	provides = ovos-audio-messagebus
 	conflicts = ovos-audio-messagebus

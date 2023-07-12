@@ -1,6 +1,6 @@
 pkgbase = ovos-skill-official-local-music
 	pkgdesc = Neon Skill for Local Music Playback
-	pkgver = c03107987c3f2aba23e8933ff0fc93a7217655b9
+	pkgver = 1.0.0
 	pkgrel = 1
 	url = https://github.com/NeonGeckoCom/skill-local_music/
 	arch = any
@@ -9,13 +9,14 @@ pkgbase = ovos-skill-official-local-music
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = python-ovos-workshop>=0.0.7
 	depends = python-ovos-ocp-audio-plugin
-	depends = python-ovos-workshop
+	depends = python-ovos-ocp-files-plugin>=0.13
+	depends = python-ovos-utils>=0.0.28
+	depends = python-ovos-skill-installer>=0.0.5
 	provides = ovos-skill-official-local-music
 	conflicts = ovos-skill-official-local-music
-	source = https://github.com/NeonGeckoCom/skill-local_music/archive/c03107987c3f2aba23e8933ff0fc93a7217655b9.tar.gz
-	source = 0001-Make-home-mycroft-Music-the-default-folder.patch
-	sha256sums = 71644c7aded29cce69938b3227a355f6bdd93521736d540da041b9e2063711ae
-	sha256sums = 174D291556FCB5BBD89AAC7588E26AC695101BF2404C5570495D826AA35683B0
+	source = https://github.com/NeonGeckoCom/skill-local_music/archive/73b37aa32425eeab40955a0389d4b887be6e5aa9.tar.gz
+	sha256sums = f64dafc910f8afaa1044baf25ea57f54b2c51836e85885e17dcb1bc806c02724
 
 pkgname = ovos-skill-official-local-music

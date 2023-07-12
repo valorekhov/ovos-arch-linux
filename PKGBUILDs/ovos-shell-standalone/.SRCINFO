@@ -9,7 +9,11 @@ pkgbase = ovos-shell-standalone
 	depends = ovos-shell
 	source = ovos-shell-standalone.service
 	source = env
-	sha256sums = 7eaee86a2bf193b4e7b02ba629c04128a78c77a0f7bb90f3afa370fd8f92c455
-	sha256sums = 2c56f7f2cc0c05107fa7fad826ac545c6462a7fa3205c53aa4675e7a8c8cae81
+	source = qt5ct.conf
+	source = fonts.conf
+	sha256sums = 2a81616cae6997401c7681e09e2f59e915e5e2464591cde7184b9fbaaf7350f8
+	sha256sums = 212efd5a6ea0590e4baaf272aff330e4a45217f260f7058fb297b59b04343e5b
+	sha256sums = dba44104636fe56fcd95d3ae6f001bcc78cfa0953f94afa0e78704453c38765e
+	sha256sums = 87118a0ecb7d4f89a7bdc3b5da45b08c93b8e8ed1e4c816e3640965c74c395c1
 
 pkgname = ovos-shell-standalone

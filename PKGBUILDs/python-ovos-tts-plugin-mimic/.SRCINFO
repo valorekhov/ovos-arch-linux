@@ -1,6 +1,6 @@
 pkgbase = python-ovos-tts-plugin-mimic
 	pkgdesc = OVOS TTS plugin for Mimic
-	pkgver = 0.2.6
+	pkgver = 0.2.9
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic/
 	arch = any
@@ -9,8 +9,9 @@ pkgbase = python-ovos-tts-plugin-mimic
 	makedepends = python-installer
 	makedepends = python-wheel
 	depends = python
+	depends = mycroft-mimic1
 	depends = python-ovos-plugin-manager>=0.0.5
-	source = https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic/archive/efff5ea111d594cac8bafd257c0d03c5c9e7ac1f.tar.gz
-	sha256sums = b3680a13cd6f1e83df41643ea9bfddcaf2eeaea941ac6b9f47916504ba4c2f49
+	source = https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic/archive/0a76403dff9d1acf1f09b1cd84bef50b0cf38f0f.tar.gz
+	sha256sums = 83103d290616e67d0f02016e5f1eeca01fed2bed2a62783e3f0665dfadf4901d
 
 pkgname = python-ovos-tts-plugin-mimic
