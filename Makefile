@@ -67,9 +67,9 @@ mycroft-mimic1-voices:  PKGBUILDs/mycroft-mimic1/*.pkg.tar.zst
 
 mycroft-mimic3-tts-bin:  PKGBUILDs/mycroft-mimic3-tts-bin/*.pkg.tar.zst
 
-onnxruntime: aur-repo AUR/python-onnxruntime/*.pkg.tar.zst
+nsync: aur-repo AUR/nsync/*.pkg.tar.zst
 
-onnxruntime-cuda: aur-repo AUR/python-onnxruntime/*.pkg.tar.zst
+onnxruntime: nsync nsync PKGBUILDs-extra/python-onnxruntime/*.pkg.tar.zst
 
 ovos-bus-server: ovos-service-base PKGBUILDs/ovos-bus-server/*.pkg.tar.zst
 
@@ -133,7 +133,7 @@ python-combo-lock: python-filelock python-memory-tempfile PKGBUILDs-extra/python
 
 python-convertdate: aur-repo AUR/python-convertdate/*.pkg.tar.zst
 
-python-crfsuite-git: aur-repo AUR/python-crfsuite-git/*.pkg.tar.zst
+python-crfsuite-git:  PKGBUILDs-extra/python-crfsuite-git/*.pkg.tar.zst
 
 python-cutecharts:  PKGBUILDs-extra/python-cutecharts/*.pkg.tar.zst
 
@@ -175,13 +175,13 @@ python-memory-tempfile:  PKGBUILDs-extra/python-memory-tempfile/*.pkg.tar.zst
 
 python-mycroft-messagebus-client:  PKGBUILDs/python-mycroft-messagebus-client/*.pkg.tar.zst
 
-python-mycroft-mimic3-tts: python-espeak-phonemizer python-dataclasses-json python-epitran python-gruut python-phonemes2ids python-xdgenvpy PKGBUILDs/python-mycroft-mimic3-tts/*.pkg.tar.zst
+python-mycroft-mimic3-tts: python-espeak-phonemizer python-dataclasses-json python-epitran python-gruut python-onnxruntime python-phonemes2ids python-xdgenvpy PKGBUILDs/python-mycroft-mimic3-tts/*.pkg.tar.zst
 
 python-nested-lookup:  PKGBUILDs-extra/python-nested-lookup/*.pkg.tar.zst
 
 python-num2words: aur-repo AUR/python-num2words/*.pkg.tar.zst
 
-python-onnxruntime: aur-repo onnxruntime AUR/python-onnxruntime/*.pkg.tar.zst
+python-onnxruntime: onnxruntime nsync PKGBUILDs-extra/python-onnxruntime/*.pkg.tar.zst
 
 python-ovos-audio: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-ocp-audio-plugin python-ovos-bus-client python-ovos-config python-ovos-ocp-files-plugin python-ovos-ocp-m3u-plugin python-ovos-ocp-news-plugin python-ovos-ocp-rss-plugin python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-audio/*.pkg.tar.zst
 
