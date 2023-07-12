@@ -13,7 +13,7 @@ AUR_LOCK_FILE=$2
 echo "Cloning AUR packages to $AUR_REPO_DIR"
 mkdir -p $AUR_REPO_DIR
 
-while read -r line; do 
+while read -r line  || [ "$line" ] ; do 
     printf "Processing $line\n"; 
     package=$(echo "$line" | cut -d: -f1); 
     commit=$(echo "$line" | cut -d: -f2); 
