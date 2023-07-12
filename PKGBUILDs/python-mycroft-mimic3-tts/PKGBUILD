@@ -1,0 +1,74 @@
+# Original by: AlphaJack <alphajack at tuta dot io>
+# Original by Contributor: robertfoster
+
+_gh_org=MycroftAI
+_gh_proj=mimic3
+pkgname=python-mycroft-mimic3-tts
+_name=mycroft_mimic3_tts
+pkgver=0.2.4
+pkgrel=1
+pkgdesc='Mycroft mimic3; WIP. not ready. No support for arm64 due to unavailable `onnxruntime` on that arch'
+arch=(x86_64)
+url='https://github.com/MycroftAI/mimic3'
+license=('AGPL3')
+depends=(python 
+"python-espeak-phonemizer"
+"python-dataclasses-json"
+"python-epitran"
+"python-gruut" 
+"python-numpy"
+"python-onnxruntime"
+"python-phonemes2ids"
+#"python-quart"
+#"python-quart-cors"
+"python-requests"
+#"python-swagger-ui-py"
+"python-tqdm"
+"python-xdgenvpy"
+)
+conflicts=($pkgname)
+makedepends=(python-build python-installer python-wheel)
+provides=($pkgname)
+
+source=("https://github.com/MycroftAI/mimic3/releases/download/release/v$pkgver/mycroft_mimic3_tts-$pkgver.tar.gz")
+sha256sums=('60cd282274c94967e11845b9127ff2eb7ba936341de0e231107297c0c70d2a27')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${pkgver}"
+        fi
+    done
+}
+
+build() {
+    cd "$_name-$pkgver"
+    python -m build --wheel --no-isolation
+}
+
+package() {
+    cd "$_name-$pkgver"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}

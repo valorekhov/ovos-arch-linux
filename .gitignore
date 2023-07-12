@@ -1,4 +1,5 @@
 .repo/
+AUR/
 /PKGBUILDs/*/src
 /PKGBUILDs/*/pkg
 /PKGBUILDs/**/*.tar.*

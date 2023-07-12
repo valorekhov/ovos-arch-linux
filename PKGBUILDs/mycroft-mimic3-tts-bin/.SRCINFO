@@ -1,0 +1,24 @@
+pkgbase = mycroft-mimic3-tts-bin
+	pkgdesc = Mycroft mimic3
+	pkgver = 0.2.4
+	pkgrel = 1
+	url = https://github.com/MycroftAI/mimic3
+	arch = x86_64
+	arch = aarch64
+	arch = armv7hf
+	license = AGPL3
+	optdepends = onnxruntime-cuda: use gpu
+	provides = mycroft-mimic3-tts
+	conflicts = mimic3
+	conflicts = mycroft-mimic3-tts
+	options = !strip
+	source = https://raw.githubusercontent.com/MycroftAI/mimic3/master/LICENSE
+	sha256sums = 0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0
+	source_x86_64 = https://github.com/MycroftAI/mimic3/releases/download/release/v0.2.4/mycroft-mimic3-tts_0.2.4_amd64.deb
+	sha256sums_x86_64 = a622280d00742c9bfc20b9c075c619c23b4184c757abecc3021397009c01e315
+	source_aarch64 = https://github.com/MycroftAI/mimic3/releases/download/release/v0.2.4/mycroft-mimic3-tts_0.2.4_arm64.deb
+	sha256sums_aarch64 = 57069d2e207c8d2e899b974d13e4985e4d5866a977ed9499bd2d229ddedddee8
+	source_armv7hf = https://github.com/MycroftAI/mimic3/releases/download/release/v0.2.4/mycroft-mimic3-tts_0.2.4_armhf.deb
+	sha256sums_armv7hf = a0a32d9ad3e8b06e47cffc0d2fe88cd2acdb86dd33f1c5efd1fd03f5f5e8f22f
+
+pkgname = mycroft-mimic3-tts-bin
