@@ -1,0 +1,141 @@
+# Maintainer: sant0s <diego.delossantos@mailbox.org>
+
+# Onboarded from AUR to add aarch64 support
+
+pkgbase=onnxruntime-bin
+pkgname='onnxruntime'
+pkgver=1.15.1
+pkgrel=3
+pkgdesc="ONNX Runtime: cross-platform, high performance ML inferencing and training accelerator"
+arch=('x86_64' 'aarch64')
+url="https://www.onnxruntime.ai/"
+license=('MIT')
+groups=()
+depends=()
+makedepends=('chrpath')
+provides=("onnxruntime")
+conflicts=("onnxruntime")
+replaces=()
+backup=()
+options=()
+source=("https://github.com/microsoft/onnxruntime/archive/refs/tags/v$pkgver.tar.gz")
+source_x86_64=("https://github.com/microsoft/onnxruntime/releases/download/v$pkgver/onnxruntime-linux-x64-$pkgver.tgz")
+source_aarch64=("https://github.com/microsoft/onnxruntime/releases/download/v$pkgver/onnxruntime-linux-aarch64-$pkgver.tgz")
+
+noextract=()
+sha256sums=('301eb8ca44736abb3c49b47ee7273ebfe35adcf98a56ba38dda6cc051d5dd1f2'
+            '5bc5186d61b6a4e6eda3617e57b8a25db9f08be8bdf245a665791cd21bb37ac0'
+            'da16da1276de54f5e7856727c702ba30fbdbc343205fe7dc48a48f2ed33c5609'
+            '93a9b6f148639938ccbaa48d0f641d8f33312fdfcc69ee9466e11362b43917c4')
+sha256sums_x86_64=('5492f9065f87538a286fb04c8542e9ff7950abb2ea6f8c24993a940006787d87')
+sha256sums_aarch64=('85272e75d8dd841138de4b774a9672ea93c1be108d96038c6c34a62d7f976aee')
+
+_arch="x64"
+case "${CARCH}" in
+    x86_64) _arch=x64 ;;
+    aarch64) _arch=arm64 ;;
+esac
+
+# build() {
+#     # Gcc 12+
+#     CXXFLAGS+=" -Wno-maybe-uninitialized"
+#     CFLAGS="${CFLAGS/_FORTIFY_SOURCE=2/_FORTIFY_SOURCE=0}"
+#     CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=2/_FORTIFY_SOURCE=0}"
+
+
+#     # Use -Donnxruntime_ENABLE_LAZY_TENSOR=OFF as it requires patched python-pytorch
+#     # See: https://github.com/microsoft/onnxruntime/pull/10460 https://github.com/pytorch/pytorch/pulls/wschin
+#     local _cmake_args=(
+#         -DCMAKE_BUILD_TYPE=Debug
+#         -DCMAKE_INSTALL_PREFIX=/usr
+#         -DCMAKE_SKIP_INSTALL_RPATH=OFF
+#         -DCMAKE_SKIP_RPATH=OFF
+#         -Donnxruntime_ENABLE_PYTHON=ON
+#         -Donnxruntime_BUILD_SHARED_LIB=OFF
+#         -Donnxruntime_BUILD_UNIT_TESTS=OFF
+#         -Donnxruntime_ENABLE_TRAINING=OFF
+#         -Donnxruntime_ENABLE_LAZY_TENSOR=OFF
+#         -Donnxruntime_USE_MPI=OFF
+#         -Donnxruntime_USE_DNNL=OFF
+#         -Donnxruntime_USE_PREINSTALLED_EIGEN=ON
+#         -Deigen_SOURCE_PATH=$(pkg-config --cflags eigen3 | sed 's|-I||g')
+#         -DCMAKE_CXX_STANDARD=17
+#     )
+
+#     # Use protobuf-lite instead of full protobuf to workaround symbol conflicts
+#     # with onnx; see https://github.com/onnx/onnx/issues/1277 for details.
+#     _cmake_args+=(
+#         -Donnxruntime_USE_FULL_PROTOBUF=OFF
+#     )
+
+#     cd onnxruntime-$pkgver/cmake
+#     cmake -S . -B ../../build \
+#     "${_cmake_args[@]}" \
+#     "$@"
+    
+#     cd "${srcdir}"
+#     LC_ALL=C cmake --build build -v
+
+#     mkdir -p ${srcdir}/dist
+#     {
+#         cd "${srcdir}"/build
+#         python ../"onnxruntime-${pkgver}/"setup.py bdist_wheel -d ${srcdir}/dist
+#     }
+# }
+
+package() {
+    depends+=(
+        'onednn'
+        'abseil-cpp'
+    )
+
+    mkdir -p "${pkgdir}/usr/include/onnxruntime"
+    mkdir -p "${pkgdir}/usr/lib"
+
+    cp -r "${srcdir}/onnxruntime-${pkgver}/include/onnxruntime"/* "${pkgdir}/usr/include/onnxruntime"
+    cp -r "${srcdir}/onnxruntime-linux-$_arch-${pkgver}/include"/* "${pkgdir}/usr/include/onnxruntime"
+    cp "${srcdir}/onnxruntime-linux-$_arch-${pkgver}/lib"/* "${pkgdir}/usr/lib/"
+    
+    chrpath -d "${pkgdir}/usr/lib/"libonnxruntime.so.*
+
+    install -Dm644 onnxruntime-${pkgver}/LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    install -Dm644 onnxruntime-${pkgver}/ThirdPartyNotices.txt "${pkgdir}/usr/share/licenses/${pkgname}/ThirdPartyNotices.txt"
+}
+
+# package_python-onnxruntime() {
+#   depends=(
+#     'onnxruntime'
+#     'python-coloredlogs'
+#     'python-flatbuffers'
+#     'python-numpy'
+#     'python-protobuf'
+#     'python-sympy'
+#     'python-packaging'
+#   )
+#   optdepends=(
+#     # https://github.com/microsoft/onnxruntime/pull/9969
+#     'python-onnx: for the backend API, quantization, orttraining, transformers and various tools'
+#     'python-psutil: for transformers'
+#     'python-py-cpuinfo: for transformers'
+#     'python-py3nvml: for transformers'
+#     'python-transformers: for transformers'
+#     'python-scipy: for transformers and various tools'
+#     'python-pytorch: for transformers, orttraining and various tools'
+#     'python-pytorch-cuda'
+#     'python-cerberus: for orttraining'
+#     'python-h5py: for orttraining'
+#     'python-matplotlib'
+#     'python-tensorflow-opt-cuda'
+#     'python-importlib-metadata'
+#   )
+
+#   pip install -I -U --root "${pkgdir}" --no-warn-script-location --no-deps dist/*.whl
+
+#   _PY_ORT_DIR="$(python -c 'import site; print(site.getsitepackages()[0])')/onnxruntime"
+#   # already installed by `cmake --install`, and not useful as this path is not looked up by the linker
+#   rm -vf "${pkgdir}/${_PY_ORT_DIR}"/capi/libonnxruntime_providers_*
+#   chrpath -d "${pkgdir}/${_PY_ORT_DIR}/capi/onnxruntime_pybind11_state.so"
+
+#   install -Ddm755 "${pkgdir}/usr/share/licenses"
+#   ln -s onnxruntime "${pkgdir}/usr/share/licenses/${pkgname}"
+# }
