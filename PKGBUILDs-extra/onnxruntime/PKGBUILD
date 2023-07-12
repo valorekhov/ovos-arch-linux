@@ -4,17 +4,27 @@
 # Oboarded from AUR to add aarch64 support
 
 #MAKEFLAGS=-j4
+_ENABLE_SHARED_LIB=1 # _ENABLE_SHARED_LIB=0 is used for native builds on aarch to only build the python package
+                          # in that case the onnxruntime dep is provided by the onnxruntime-bin package
+_ENABLE_TRAINING=0
 _ENABLE_CUDA=0
 _ENABLE_TENSORRT=0  #NOTE: not working due https://github.com/microsoft/onnxruntime/issues/15131
 
 pkgbase=onnxruntime
-# Not split DNNL EP to another package as it's needed unconditionally at runtime if built at compile time
-# https://github.com/microsoft/onnxruntime/blob/v1.9.1/onnxruntime/python/onnxruntime_pybind_state.cc#L533
-pkgname=('onnxruntime'
-         'python-onnxruntime'
-         )
+
+pkgname=('python-onnxruntime')
+if [[ $_ENABLE_SHARED_LIB = 1 ]]; then
+  # Not split DNNL EP to another package as it's needed unconditionally at runtime if built at compile time
+  # https://github.com/microsoft/onnxruntime/blob/v1.9.1/onnxruntime/python/onnxruntime_pybind_state.cc#L533
+  pkgname+=('onnxruntime')
+fi
+
+provides=($pkgbase)
+conflicts=($pkgbase)         
+
 pkgver=1.15.1
-pkgdesc='Cross-platform, high performance scoring engine for ML models'
+pkgdesc='Cross-platform, high performance scoring engine for ML models. Inferencing build'
+
 pkgrel=1
 arch=('x86_64' 'aarch64')
 url='https://github.com/microsoft/onnxruntime'
@@ -41,7 +51,6 @@ makedepends=(
   'boost'
   'eigen'
   'flatbuffers'
-  'onednn'
   're2'
   #'python-coloredlogs'
   'python-flatbuffers'
@@ -53,6 +62,11 @@ makedepends=(
   'chrpath'
   'nsync'
 )
+
+if [[ $CARCH = 'x86_64' ]]; then
+  makedepends+=('onednn')
+fi
+
 # not de-vendored libraries
 # onnx: needs shared libonnx (https://github.com/onnx/onnx/issues/3030)
 source=(
@@ -66,7 +80,7 @@ sha256sums=('301eb8ca44736abb3c49b47ee7273ebfe35adcf98a56ba38dda6cc051d5dd1f2'
             '5bc5186d61b6a4e6eda3617e57b8a25db9f08be8bdf245a665791cd21bb37ac0'
             'da16da1276de54f5e7856727c702ba30fbdbc343205fe7dc48a48f2ed33c5609'
             '93a9b6f148639938ccbaa48d0f641d8f33312fdfcc69ee9466e11362b43917c4')
-options=('debug')
+#options=('debug')
 
 if [[ $_ENABLE_CUDA = 1 ]]; then
   pkgname+=('onnxruntime-cuda')
@@ -131,7 +145,9 @@ prepare() {
         -i cmake/deps.txt
   fi
 
-  patch -Np1 -i "${srcdir}/install-orttraining-files.diff"
+  if [[ $_ENABLE_TRAINING = 1 ]]; then
+    patch -Np1 -i "${srcdir}/install-orttraining-files.diff"
+  fi
   # Force use bundled flatbuffers due fail build
   sed '/NAMES Flatbuffers/s/^/#/g' -i cmake/external/onnxruntime_external_deps.cmake
   # Same with Protobuf
@@ -164,7 +180,7 @@ build() {
   fi
 
   # Gcc 12+
-  CXXFLAGS+=" -Wno-maybe-uninitialized -Wno-stringop-overflow -Wno-dangling-reference"
+  CXXFLAGS+=" -Wno-maybe-uninitialized -Wno-stringop-overflow -Wno-dangling-reference -Wno-restrict"
   CFLAGS="${CFLAGS/_FORTIFY_SOURCE=2/_FORTIFY_SOURCE=0}"
   CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=2/_FORTIFY_SOURCE=0}"
 
@@ -172,21 +188,41 @@ build() {
   # Use -Donnxruntime_ENABLE_LAZY_TENSOR=OFF as it requires patched python-pytorch
   # See: https://github.com/microsoft/onnxruntime/pull/10460 https://github.com/pytorch/pytorch/pulls/wschin
   local _cmake_args=(
-    -DCMAKE_BUILD_TYPE=Debug
+    -DCMAKE_BUILD_TYPE=Release
     -DCMAKE_INSTALL_PREFIX=/usr
     -DCMAKE_SKIP_INSTALL_RPATH=OFF
     -DCMAKE_SKIP_RPATH=OFF
     -Donnxruntime_ENABLE_PYTHON=ON
-    -Donnxruntime_BUILD_SHARED_LIB=ON
-    -Donnxruntime_BUILD_UNIT_TESTS=ON
-    -Donnxruntime_ENABLE_TRAINING=ON
     -Donnxruntime_ENABLE_LAZY_TENSOR=OFF
-    -Donnxruntime_USE_MPI=ON
-    -Donnxruntime_USE_DNNL=ON
+    -Donnxruntime_BUILD_UNIT_TESTS=OFF
     -Donnxruntime_USE_PREINSTALLED_EIGEN=ON
     -Deigen_SOURCE_PATH=$(pkg-config --cflags eigen3 | sed 's|-I||g')
     -DCMAKE_CXX_STANDARD=17
   )
+
+  if [[ $_ENABLE_TRAINING = 1 ]]; then
+    _cmake_args+=(
+      -Donnxruntime_ENABLE_TRAINING=ON
+      -Donnxruntime_USE_MPI=ON
+      -Donnxruntime_USE_DNNL=ON
+    )
+  else
+    _cmake_args+=(
+      -Donnxruntime_ENABLE_TRAINING=OFF
+      -Donnxruntime_USE_MPI=OFF
+      -Donnxruntime_USE_DNNL=OFF
+    )
+  fi
+
+  if [[ $_ENABLE_SHARED_LIB = 1 ]]; then
+    _cmake_args+=(
+      -Donnxruntime_BUILD_SHARED_LIB=ON
+    )
+  else
+    _cmake_args+=(
+      -Donnxruntime_BUILD_SHARED_LIB=OFF
+    )
+  fi
 
   # Use protobuf-lite instead of full protobuf to workaround symbol conflicts
   # with onnx; see https://github.com/onnx/onnx/issues/1277 for details.
@@ -230,9 +266,12 @@ build() {
 
 package_onnxruntime() {
   depends+=(
-    'onednn'
     'abseil-cpp'
   )
+  if [[ $CARCH = 'x86_64' ]]; then
+    depends+=('onednn')
+  fi
+
 
   DESTDIR="${pkgdir}" cmake --install build
 
