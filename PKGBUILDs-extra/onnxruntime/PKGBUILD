@@ -241,8 +241,8 @@ package_onnxruntime() {
 
   chrpath -d "${pkgdir}/usr/lib/"libonnxruntime.so.*
 
-  install -Dm644 onnxruntime/LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-  install -Dm644 onnxruntime/ThirdPartyNotices.txt "${pkgdir}/usr/share/licenses/${pkgname}/ThirdPartyNotices.txt"
+  install -Dm644 onnxruntime-$pkgver/LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm644 onnxruntime-$pkgver/ThirdPartyNotices.txt "${pkgdir}/usr/share/licenses/${pkgname}/ThirdPartyNotices.txt"
 
 }
 
