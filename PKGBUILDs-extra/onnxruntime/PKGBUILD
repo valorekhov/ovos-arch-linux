@@ -19,8 +19,6 @@ if [[ $_ENABLE_SHARED_LIB = 1 ]]; then
   pkgname+=('onnxruntime')
 fi
 
-provides=($pkgbase)
-conflicts=($pkgbase)         
 
 pkgver=1.15.1
 pkgdesc='Cross-platform, high performance scoring engine for ML models. Inferencing build'
@@ -265,6 +263,7 @@ build() {
 }
 
 package_onnxruntime() {
+  conflicts=($pkgbase-bin) 
   depends+=(
     'abseil-cpp'
   )
@@ -288,13 +287,16 @@ package_onnxruntime() {
 package_python-onnxruntime() {
   depends=(
     'onnxruntime'
-    'python-coloredlogs'
     'python-flatbuffers'
     'python-numpy'
     'python-protobuf'
     'python-sympy'
     'python-packaging'
   )
+  if [[ $_ENABLE_TRAINING = 1 ]]; then
+    depends+=('python-coloredlogs')
+  fi
+
   optdepends=(
     # https://github.com/microsoft/onnxruntime/pull/9969
     'python-onnx: for the backend API, quantization, orttraining, transformers and various tools'
