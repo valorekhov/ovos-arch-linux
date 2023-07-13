@@ -16,8 +16,8 @@ Environment=AUDIODRIVER=pulseaudio
 Environment=XDG_RUNTIME_DIR=%t
 ExecStart=/usr/bin/python /etc/systemd/system/ovos-audio-messagebus.d/ovos-systemd_audio_messagebus.py
 StandardOutput=journal
-TimeoutStartSec=1m
-TimeoutStopSec=1m
+TimeoutStartSec=2m
+TimeoutStopSec=2m
 Restart=on-failure
 StartLimitInterval=5min
 StartLimitBurst=4
