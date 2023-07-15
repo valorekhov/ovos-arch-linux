@@ -1,0 +1,81 @@
+_gh_org=OpenVoiceOS
+_gh_proj=mycroft-gui-qt6
+_name=$_gh_proj
+pkgname=mycroft-gui-qt6-git
+provides=("mycroft-gui")
+conflicts=("mycroft-gui")
+_tracking_branch='dev'
+pkgver="1.0.1"
+pkgrel=0
+pkgdesc='The KDE-based visual interface for working with Mycroft'
+arch=('x86_64' 'aarch64' 'armv7h')
+url='https://github.com/OpenVoiceOS/mycroft-gui-qt6'
+license=('Apache License 2.0')
+depends=(kirigami2 kirigami-addons qt6-websockets qt6-declarative qt6-multimedia qt6-quickcontrols2 qt6-base)
+optdepends=('qt6-lottie: QT6 animation support' 
+'qt6-webview: for webview scenarios :)'
+'qt6-webengine: for web scenarios :)')
+makedepends=(pkgconf cmake extra-cmake-modules appstream kio kio-extras plasma-framework qt6-tools)
+
+source=("git+https://github.com/$_gh_org/$_gh_proj.git#branch=$_tracking_branch"
+        "StatusIndicator.qml")
+sha256sums=('SKIP'
+            '582f45a39cd79fed297213edaa89ab8a4d02d98271d4135103c997543569ea16')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}"
+        fi
+    done
+
+    cp StatusIndicator.qml "${srcdir}/${_name}/import/qml"
+}
+
+build() {
+    cd "$srcdir"
+
+    build_dir="./$_name"
+    echo "Build folder is $build_dir"
+
+    cmake -B build -S "$build_dir"  \
+        -DQT_MAJOR_VERSION=6 \
+        #-DQT_INSTALL_PREFIX=/usr/include/qt6 -DCMAKE_PREFIX_PATH=/usr/include/qt6 \
+        -DCMAKE_BUILD_TYPE='None' -DNDEBUG=ON \
+        -DKDE_INSTALL_LIBDIR=lib -DKDE_INSTALL_USE_QT_SYS_PATHS=OFF \
+        -DCMAKE_SKIP_INSTALL_RPATH=YES \
+        -DCMAKE_INSTALL_PREFIX='/usr' \
+        -Wno-dev
+    cmake --build build
+}
+
+# Testing Requres OpenGL Context
+# check() {
+#    QT_QPA_PLATFORM=offscreen  ctest --test-dir build --output-on-failure
+# }
+
+package() {
+    cd "$srcdir" 
+    echo "Installing $pkgname to $pkgdir"
+    DESTDIR="$pkgdir" cmake --install build
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Optional: Remove unused files or directories
+    # For example, removing unneeded binaries, license files, etc.
+    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
+    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
+
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}
+
