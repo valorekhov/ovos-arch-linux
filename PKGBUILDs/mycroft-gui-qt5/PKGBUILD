@@ -1,19 +1,24 @@
-_gh_org=MycroftAI
-_gh_proj=mycroft-gui
-pkgname=mycroft-gui
-pkgver='53fb4a1824c9ce9155000ec0f31663f0438195ab'
+_gh_org=OpenVoiceOS
+_gh_proj=mycroft-gui-qt5
+pkgname=mycroft-gui-qt5
+provides=("mycroft-gui")
+conflicts=("mycroft-gui")
+_commit='e3e87b22be62e009ff227a86d6e4731e4ad5a5d8'
+pkgver="1.0.1"
 pkgrel=0
 pkgdesc='The KDE-based visual interface for working with Mycroft'
 arch=('x86_64' 'aarch64' 'armv7h')
-url='https://github.com/MycroftAI/mycroft-gui'
+url='https://github.com/OpenVoiceOS/mycroft-gui-qt5'
 license=('Apache License 2.0')
-depends=(kirigami2 kirigami-addons kio kio-extras plasma-framework qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base)
-optdepends=('qt5-lottie: QT5 animation support')
-makedepends=(pkgconf cmake extra-cmake-modules)
+depends=(kirigami2 kirigami-addons qt5-websockets qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-base)
+optdepends=('qt5-lottie: QT5 animation support' 
+'qt5-webview: for webview scenarios :)'
+'qt5-webengine: for web scenarios :)')
+makedepends=(pkgconf cmake extra-cmake-modules kio kio-extras plasma-framework)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz"
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz"
         "StatusIndicator.qml")
-sha256sums=('d8e96f03cb5078e887e91f78fed4f1f0419477891db5b0264a8818e1fd585b4d'
+sha256sums=('5b8f9a714141dee31902f4168fed1bca170dd2809b84d50686a177bc1ca2c0cc'
             '582f45a39cd79fed297213edaa89ab8a4d02d98271d4135103c997543569ea16')
 
 prepare() {
@@ -21,11 +26,11 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${pkgver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${_commit}"
         fi
     done
 
-    cp StatusIndicator.qml "${srcdir}/${pkgname}-${pkgver}/import/qml"
+    cp StatusIndicator.qml "${srcdir}/${pkgname}-${_commit}/import/qml"
 }
 
 build() {
