@@ -38,7 +38,8 @@ jobs:
             echo "::set-output name=has_changes::true"
           fi
 
-      - name: Check for changes in PKGBUILDs and aur.lock
+      - name: Rebuild Makefile
+        id: rebuild_makefile
         if: steps.check_PKGBUILDs.outputs.has_changes == 'true' || steps.check_aur_lock.outputs.has_changes == 'true'
         run: |
           echo "Changes detected. Rebuilding Makefile..."
@@ -46,9 +47,13 @@ jobs:
           shell: pwsh
 
       - name: Commit changes
+        after: 
+          - rebuild_makefile
         run: |
           git config --local user.email "ovos-arch-buildbot@noemail.local"
           git config --local user.name "OVOS Arch BuildBot"
           git add .
           git diff-index --quiet HEAD || git commit -m "Update Makefile"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
