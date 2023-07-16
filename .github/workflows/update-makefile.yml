@@ -16,7 +16,7 @@ jobs:
       - name: Check for changes in PKGBUILD folders
         id: check_PKGBUILDs
         run: |
-          git diff --name-only HEAD~1..HEAD -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
+          git diff --name-only 'HEAD~1..HEAD' -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
             echo "PKGBUILDs changed. Updating .SCRINFO files..."
             while IFS= read -r file; do
@@ -31,7 +31,7 @@ jobs:
       - name: Check for changes in aur.lock
         id: check_aur_lock
         run: |
-          if git diff --name-only HEAD~1..HEAD -- aur.lock | grep -q 'aur.lock'; then
+          if git diff --name-only 'HEAD~1..HEAD' -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
             echo "::set-output name=has_changes::true"
           fi
