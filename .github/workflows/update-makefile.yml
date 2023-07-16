@@ -47,8 +47,7 @@ jobs:
           shell: pwsh
 
       - name: Commit changes
-        after: 
-          - rebuild_makefile
+        if: steps.check_PKGBUILDs.outputs.has_changes == 'true' || steps.check_aur_lock.outputs.has_changes == 'true'
         run: |
           git config --local user.email "ovos-arch-buildbot@noemail.local"
           git config --local user.name "OVOS Arch BuildBot"
