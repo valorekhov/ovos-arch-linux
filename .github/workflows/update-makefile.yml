@@ -36,10 +36,6 @@ jobs:
             echo "::set-output name=has_changes::true"
           fi
 
-      - name: Set up PowerShell
-        if: steps.check_PKGBUILDs.outputs.has_changes == 'true' || steps.check_aur_lock.outputs.has_changes == 'true'
-        uses: actions/setup-powershell@v1
-
       - name: Check for changes in PKGBUILDs and aur.lock
         if: steps.check_PKGBUILDs.outputs.has_changes == 'true' || steps.check_aur_lock.outputs.has_changes == 'true'
         run: |
