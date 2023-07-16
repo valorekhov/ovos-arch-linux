@@ -26,7 +26,7 @@ jobs:
               pusd "$pkgbuild_dir"
               makepkg --printsrcinfo > .SRCINFO 
               popd
-            done < changed_files.txt
+            done < /tmp/changed_PKGBUILDs.txt
             echo "::set-output name=has_changes::true"
           fi
 
