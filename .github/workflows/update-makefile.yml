@@ -23,7 +23,7 @@ jobs:
             echo "PKGBUILDs changed. Updating .SCRINFO files..."
             while IFS= read -r file; do
               pkgbuild_dir="$(dirname "$file")"
-              pusd "$pkgbuild_dir"
+              pushd "$pkgbuild_dir"
               makepkg --printsrcinfo > .SRCINFO 
               popd
             done < /tmp/changed_PKGBUILDs.txt
