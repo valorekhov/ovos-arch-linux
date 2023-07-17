@@ -14,6 +14,10 @@ inputs:
     description: 'The working directory to run the operation in'
     required: false
     default: ''
+  rebuild-all:
+    description: 'Rebuild all .SRCINFOs and/or packages without regard to modification status'
+    required: false
+    default: ''
   
 
 runs:

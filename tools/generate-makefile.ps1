@@ -1,3 +1,7 @@
+param(
+    [switch]SkipSrcInfoCheck = $false
+)
+
 Import-Module $PSScriptRoot/config-parser.psm1
 
 # Canonicalized repo root
@@ -7,9 +11,11 @@ function Get-SrcInfos([System.IO.FileInfo[]]$pkgBuilds){
     $pkgBuilds | ForEach-Object {
         $srcInfoPath = "$($_.Directory)/.SRCINFO"
         $scrInfoExists = Test-Path $srcInfoPath -PathType Leaf
-        if ($scrInfoExists -and ((Get-ChildItem -Hidden $srcInfoPath).LastWriteTime -lt $_.LastWriteTime)){
-            Remove-Item -Force $srcInfoPath
-            $scrInfoExists = $false
+        if (-not SkipSrcInfoCheck){
+            if ($scrInfoExists -and ((Get-ChildItem -Hidden $srcInfoPath).LastWriteTime -lt $_.LastWriteTime)){
+                Remove-Item -Force $srcInfoPath
+                $scrInfoExists = $false
+            }
         }
         if ($scrInfoExists){
             $srcInfo = Get-Content $srcInfoPath
@@ -103,7 +109,6 @@ function New-Makefile([string]$dir, $deps){
             $depends = @("aur-repo") + $depends
         }
         "`n$($key): $($depends -join ' ') $targetName"  `
-                # + "`n$($targetName):`n`t@echo 'Building $key'`n`t@cd '$pkgBaseDir/$key' && `$(RUN_MAKEPKG)`n" `
                 | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
     }
 }
