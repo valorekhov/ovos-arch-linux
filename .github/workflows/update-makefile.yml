@@ -34,8 +34,12 @@ jobs:
           fi
           if git diff --name-only 'HEAD~1..HEAD' -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
+            make aur-lock
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
+          # Temp change to always trigger following tasks
+          echo "has_PKGBUILD_changes=true" >> $GITHUB_OUTPUT
+
 
       - name: Check for changes in Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'

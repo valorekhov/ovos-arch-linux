@@ -33,7 +33,7 @@ ensure_srcinfo() {
 
 #
 makefile(){
-    make "aur-repo"
+    ls -la "$WORKDIR"
 
     echo "Ensuring Makefile dependencies ..."
     export -f ensure_srcinfo
