@@ -13,7 +13,7 @@ license=('Apache License 2.0')
 depends=(kirigami2 kirigami-addons qt5-websockets qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-base)
 optdepends=('qt5-lottie: QT5 animation support' 
 'qt5-webview: webview support'
-'qt5-webengine: for web scenarios :)')
+'qt5-webengine: for web scenarios')
 makedepends=(pkgconf cmake extra-cmake-modules kio kio-extras plasma-framework)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz"

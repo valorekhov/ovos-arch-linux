@@ -19,15 +19,12 @@ jobs:
         run: |
           git diff --name-only 'HEAD~1..HEAD' -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
-            echo "PKGBUILDs changed. Updating .SCRINFO files..."
+            echo "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
             # The task will also output the list of PKGBUILDs paths as `set-output` variable encoded in json array
             pkgbuilds=()
             while IFS= read -r file; do
               pkgbuilds+=("$file")
-              pkgbuild_dir="$(dirname "$file")"
-              pushd "$pkgbuild_dir"
-              makepkg --printsrcinfo > .SRCINFO 
-              popd
+              echo "Changed: $file"
             done < /tmp/changed_PKGBUILDs.txt
             echo "has_PKGBUILD_changes=true" >> $GITHUB_OUTPUT
             echo "pkgbuilds=$(echo "${pkgbuilds[@]}" | jq -R . | jq -s .)" >> $GITHUB_OUTPUT
