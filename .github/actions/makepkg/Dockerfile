@@ -6,7 +6,7 @@ RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git
 COPY entrypoint.sh /entrypoint.sh
     
 # Setup user
-RUN groupadd -g 123 gh && useradd -m build && usermod -a -G gh build && \
+RUN groupadd -g 123 gh && useradd --uid 1001 -m build && usermod -a -G gh build && \
     echo 'build ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 WORKDIR /home/build
 USER build
