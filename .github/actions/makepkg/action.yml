@@ -1,0 +1,21 @@
+name: "Arch package action(s)"
+description: "GitHub Action to run Arch Linux's package tools"
+author: 'valorekhov'
+branding:
+  icon: 'package'
+  color: 'blue'
+
+inputs:
+  operation:
+    description: 'The operation to perform'
+    required: true
+    default: 'makepkg'
+  working-dir:
+    description: 'The working directory to run the operation in'
+    required: false
+    default: ''
+  
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

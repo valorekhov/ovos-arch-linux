@@ -41,25 +41,23 @@ jobs:
       has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
       pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
 
-  matrix-build:
+  update-srcinfos:
     needs: check
     if: needs.check.outputs.has_PKGBUILD_changes == 'true'
     runs-on: ubuntu-latest
-    name: SRCINFO update matrix task
-    strategy:
-      matrix:
-        pkg: ${{ fromJson(needs.check.outputs.pkgbuilds) }}
+    name: Bulk SRCINFO update task
+    # strategy:
+    #   matrix:
+    #     pkg: ${{ fromJson(needs.check.outputs.pkgbuilds) }}
     steps:
-    - uses: hapakaien/archlinux-package-action@v2
+    - uses: ./.github/actions/makepkg
       with:
-        path: ${{ matrix.pkg }}
-        flags: ''
-        namcap: false
-        srcinfo: true
+        operation: makefile
+        working-dir: ${{ matrix.pkg }}
 
   makefile:
     needs: 
-    - matrix-build
+    - update-srcinfos
     - check
     if: needs.check.outputs.has_PKGBUILD_changes == 'true' || needs.check.outputs.has_AUR_lock_changes == 'true'
     runs-on: ubuntu-latest

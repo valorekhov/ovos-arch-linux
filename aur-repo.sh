@@ -24,10 +24,10 @@ while read -r line  || [ "$line" ] ; do
         continue; 
     fi;
 
-    printf "\n\n### Processing $package, $commit\n"
+    printf "\n### Processing $package, $commit\n"
 
     mkdir -p "$AUR_REPO_DIR/$package" 
-    pushd "$AUR_REPO_DIR/$package"
+    pushd "$AUR_REPO_DIR/$package" > /dev/null
     # check if aur-$commit.tar.gz exists, if not download it
     if [ ! -f "aur-$commit.tar.gz" ]; then 
         printf "Downloading aur-$commit.tar.gz\n"; 
@@ -50,7 +50,7 @@ while read -r line  || [ "$line" ] ; do
         printf "Generating .SRCINFO\n"; 
         makepkg --printsrcinfo > .SRCINFO
     fi; 
-    popd
+    popd > /dev/null
 
         
 done < $AUR_LOCK_FILE
