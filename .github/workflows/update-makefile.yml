@@ -6,9 +6,8 @@ on:
       - main
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -16,7 +15,7 @@ jobs:
           fetch-depth: 2
 
       - name: Check for changes in PKGBUILD folders
-        id: check_PKGBUILDs
+        id: check_assets
         run: |
           git diff --name-only 'HEAD~1..HEAD' -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
@@ -30,41 +29,49 @@ jobs:
               makepkg --printsrcinfo > .SRCINFO 
               popd
             done < /tmp/changed_PKGBUILDs.txt
-            echo "::set-output name=has_changes::true"
-            echo "::set-output name=pkgbuilds::$(echo "${pkgbuilds[@]}" | jq -R . | jq -s .)"
+            echo "has_PKGBUILD_changes=true" >> $GITHUB_OUTPUT
+            echo "pkgbuilds=$(echo "${pkgbuilds[@]}" | jq -R . | jq -s .)" >> $GITHUB_OUTPUT
           fi
-
-      - name: PKGBUILD matrix task
-        id: pkgbuild_matrix
-        strategy:
-          matrix:
-            pkg: ${{ fromJson(steps.check_PKGBUILDs.outputs.pkgbuilds) }}
-        steps:
-        - uses: hapakaien/archlinux-package-action@v2
-          with:
-            path: ${{ matrix.pkg }}
-            flags: ''
-            namcap: false
-            srcinfo: true
-
-      - name: Check for changes in aur.lock
-        id: check_aur_lock
-        run: |
           if git diff --name-only 'HEAD~1..HEAD' -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
-            echo "::set-output name=has_changes::true"
+            echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
+    outputs:
+      has_PKGBUILD_changes: ${{ steps.check_assets.outputs.has_PKGBUILD_changes }}
+      has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
+      pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
 
+  matrix-build:
+    needs: check
+    runs-on: ubuntu-latest
+    name: SRCINFO update matrix task
+    strategy:
+      matrix:
+        pkg: ${{ fromJson(needs.check.outputs.pkgbuilds) }}
+    steps:
+    - uses: hapakaien/archlinux-package-action@v2
+      with:
+        path: ${{ matrix.pkg }}
+        flags: ''
+        namcap: false
+        srcinfo: true
+
+  makefile:
+    needs: 
+    - matrix-build
+    - check
+    if: needs.check.outputs.has_PKGBUILD_changes == 'true' || needs.check.outputs.has_AUR_lock_changes == 'true'
+    runs-on: ubuntu-latest
+    name: Makefile and commit
+    steps:
       - name: Rebuild Makefile
         id: rebuild_makefile
-        if: steps.check_PKGBUILDs.outputs.has_changes == 'true' || steps.check_aur_lock.outputs.has_changes == 'true'
         run: |
           echo "Changes detected. Rebuilding Makefile..."
           run: ./generate-makefile.ps1
           shell: pwsh
 
       - name: Commit changes
-        if: steps.check_PKGBUILDs.outputs.has_changes == 'true' || steps.check_aur_lock.outputs.has_changes == 'true'
         run: |
           git config --local user.email "ovos-arch-buildbot@noemail.local"
           git config --local user.name "OVOS Arch BuildBot"
