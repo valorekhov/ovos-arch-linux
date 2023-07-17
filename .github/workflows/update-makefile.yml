@@ -36,28 +36,36 @@ jobs:
             echo "aur.lock changed."
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Check for changes in Makefile
+        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
+        uses: ./.github/actions/makepkg
+        with:
+          operation: makefile
+          #working-dir: ${{ matrix.pkg }}
+
     outputs:
       has_PKGBUILD_changes: ${{ steps.check_assets.outputs.has_PKGBUILD_changes }}
       has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
       pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
 
-  update-srcinfos:
-    needs: check
-    if: needs.check.outputs.has_PKGBUILD_changes == 'true'
-    runs-on: ubuntu-latest
-    name: Bulk SRCINFO update task
-    # strategy:
-    #   matrix:
-    #     pkg: ${{ fromJson(needs.check.outputs.pkgbuilds) }}
-    steps:
-    - uses: ./.github/actions/makepkg
-      with:
-        operation: makefile
-        working-dir: ${{ matrix.pkg }}
+  # update-srcinfos:
+  #   needs: check
+  #   if: needs.check.outputs.has_PKGBUILD_changes == 'true'
+  #   runs-on: ubuntu-latest
+  #   name: Bulk SRCINFO update task
+  #   # strategy:
+  #   #   matrix:
+  #   #     pkg: ${{ fromJson(needs.check.outputs.pkgbuilds) }}
+  #   steps:
+  #   - uses: ./.github/actions/makepkg
+  #     with:
+  #       operation: makefile
+  #       working-dir: ${{ matrix.pkg }}
 
   makefile:
     needs: 
-    - update-srcinfos
+  #  - update-srcinfos
     - check
     if: needs.check.outputs.has_PKGBUILD_changes == 'true' || needs.check.outputs.has_AUR_lock_changes == 'true'
     runs-on: ubuntu-latest
