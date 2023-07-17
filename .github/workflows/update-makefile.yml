@@ -36,8 +36,7 @@ jobs:
 
       - name: PKGBUILD matrix task
         id: pkgbuild_matrix
-        if: steps.check_PKGBUILDs.outputs.has_changes == 'true'
-        strategy:
+\        strategy:
           matrix:
             pkg: ${{ fromJson(steps.check_PKGBUILDs.outputs.pkgbuilds) }}
         steps:
