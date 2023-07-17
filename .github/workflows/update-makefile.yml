@@ -46,7 +46,6 @@ jobs:
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
           # Temp change to always trigger following tasks
-          echo "has_PKGBUILD_changes=true" >> $GITHUB_OUTPUT
 
 
       - name: Check for changes in Makefile
