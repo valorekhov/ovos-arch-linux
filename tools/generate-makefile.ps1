@@ -1,5 +1,9 @@
 param(
-    [switch]$SkipSrcInfoCheck = $false
+    # RebuildSrcInfos and SkipSrcInfoCheck are mutually exclusive
+    [Parameter(Mandatory = $false, ParameterSetName = 'SrcInfos')]
+    [switch]$SkipSrcInfoCheck = $false,
+    [Parameter(Mandatory = $false, ParameterSetName = 'SrcInfos')]
+    [switch]$RebuildSrcInfos = $false  
 )
 
 Import-Module $PSScriptRoot/config-parser.psm1
@@ -11,8 +15,8 @@ function Get-SrcInfos([System.IO.FileInfo[]]$pkgBuilds){
     $pkgBuilds | ForEach-Object {
         $srcInfoPath = "$($_.Directory)/.SRCINFO"
         $scrInfoExists = Test-Path $srcInfoPath -PathType Leaf
-        if (-not SkipSrcInfoCheck){
-            if ($scrInfoExists -and ((Get-ChildItem -Hidden $srcInfoPath).LastWriteTime -lt $_.LastWriteTime)){
+        if (-not $SkipSrcInfoCheck){
+            if ($RebuildSrcInfos -or ($scrInfoExists -and ((Get-ChildItem -Hidden $srcInfoPath).LastWriteTime -lt $_.LastWriteTime))){
                 Remove-Item -Force $srcInfoPath
                 $scrInfoExists = $false
             }
