@@ -33,6 +33,7 @@ ensure_srcinfo() {
 
 #
 makefile(){
+    id
     ls -la "$WORKDIR"
 
     echo "Ensuring Makefile dependencies ..."
