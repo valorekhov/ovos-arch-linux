@@ -36,7 +36,7 @@ jobs:
 
       - name: PKGBUILD matrix task
         id: pkgbuild_matrix
-\        strategy:
+        strategy:
           matrix:
             pkg: ${{ fromJson(steps.check_PKGBUILDs.outputs.pkgbuilds) }}
         steps:
