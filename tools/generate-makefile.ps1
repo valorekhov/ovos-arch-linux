@@ -1,5 +1,5 @@
 param(
-    [switch]SkipSrcInfoCheck = $false
+    [switch]$SkipSrcInfoCheck = $false
 )
 
 Import-Module $PSScriptRoot/config-parser.psm1
