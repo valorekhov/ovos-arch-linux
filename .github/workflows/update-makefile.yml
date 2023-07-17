@@ -17,6 +17,14 @@ jobs:
       - name: Check for changes in PKGBUILD folders
         id: check_assets
         run: |
+          commit_message=$(git log -1 --pretty=%B)
+          if [[ $commit_message =~ "\#NoRebuild" ]]; then
+            echo "Skipping PKGBUILDs check due to #NoRebuild or [No Rebuild] in commit message"
+            echo "has_PKGBUILD_changes=false" >> $GITHUB_OUTPUT
+            echo "has_AUR_lock_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           git diff --name-only 'HEAD~1..HEAD' -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
             echo "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
@@ -46,7 +54,7 @@ jobs:
         uses: ./.github/actions/makepkg
         with:
           operation: makefile-update
-          rebuildall: 1
+          rebuildall: false
 
       - name: Rebuild Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'

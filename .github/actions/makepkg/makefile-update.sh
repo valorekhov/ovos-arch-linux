@@ -28,6 +28,6 @@ ensure_srcinfo() {
 echo "WORKDIR: $WORKDIR"
 echo "Running as: $(whoami) with UID: $UID"
 
-echo "Ensuring Makefile dependencies, Rebuild-All: $INPUT_REBUILDALL"
+echo "Ensuring Makefile dependencies, RebuildAll: $INPUT_REBUILDALL"
 export -f ensure_srcinfo
 find "$WORKDIR/"PKGBUILDs{,-extra} -type f -name "PKGBUILD" -exec bash -c 'ensure_srcinfo "$0"' {} \;
