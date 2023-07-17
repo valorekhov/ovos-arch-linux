@@ -43,6 +43,7 @@ jobs:
 
   matrix-build:
     needs: check
+    if: needs.check.outputs.has_PKGBUILD_changes == 'true'
     runs-on: ubuntu-latest
     name: SRCINFO update matrix task
     strategy:
