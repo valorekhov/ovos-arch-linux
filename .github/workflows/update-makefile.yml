@@ -46,7 +46,7 @@ jobs:
         uses: ./.github/actions/makepkg
         with:
           operation: makefile-update
-          rebuild-all: 1
+          rebuildall: 1
 
       - name: Rebuild Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'

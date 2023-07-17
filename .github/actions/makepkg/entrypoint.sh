@@ -50,7 +50,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 #id
 #ls -la
 
-echo "Operation: $INPUT_OPERATION, REBUILD_ALL: $INPUT_REBUILD_ALL"
+echo "Operation: $INPUT_OPERATION, REBUILD_ALL: $INPUT_REBUILDALL"
 case "$INPUT_OPERATION" in
     "makefile-update")
         ensure_user_ns "$SCRIPT_DIR/makefile-update.sh"

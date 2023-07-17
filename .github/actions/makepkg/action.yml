@@ -10,11 +10,11 @@ inputs:
     description: 'The operation to perform'
     required: true
     default: 'makefile-update'
-  working-dir:
+  workingdir:
     description: 'The working directory to run the operation in'
     required: false
     default: ''
-  rebuild-all:
+  rebuildall:
     description: 'Rebuild all .SRCINFOs and/or packages without regard to modification status'
     required: false
     default: ''
