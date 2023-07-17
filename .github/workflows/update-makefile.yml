@@ -21,14 +21,32 @@ jobs:
           git diff --name-only 'HEAD~1..HEAD' -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
             echo "PKGBUILDs changed. Updating .SCRINFO files..."
+            # The task will also output the list of PKGBUILDs paths as `set-output` variable encoded in json array
+            pkgbuilds=()
             while IFS= read -r file; do
+              pkgbuilds+=("$file")
               pkgbuild_dir="$(dirname "$file")"
               pushd "$pkgbuild_dir"
               makepkg --printsrcinfo > .SRCINFO 
               popd
             done < /tmp/changed_PKGBUILDs.txt
             echo "::set-output name=has_changes::true"
+            echo "::set-output name=pkgbuilds::$(echo "${pkgbuilds[@]}" | jq -R . | jq -s .)"
           fi
+
+      - name: PKGBUILD matrix task
+        id: pkgbuild_matrix
+        if: steps.check_PKGBUILDs.outputs.has_changes == 'true'
+        uses: hapakaien/archlinux-package-action@v2
+        #needs: build
+        strategy:
+          matrix:
+            pkg: ${{ fromJson(steps.check_PKGBUILDs.outputs.pkgbuilds) }}
+        with:
+          path: ${{ matrix.pkg }}
+          flags: ''
+          namcap: false
+          srcinfo: true
 
       - name: Check for changes in aur.lock
         id: check_aur_lock
