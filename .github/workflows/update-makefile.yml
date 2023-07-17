@@ -45,44 +45,18 @@ jobs:
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         uses: ./.github/actions/makepkg
         with:
-          operation: makefile
-          #working-dir: ${{ matrix.pkg }}
+          operation: makefile-update
 
-    outputs:
-      has_PKGBUILD_changes: ${{ steps.check_assets.outputs.has_PKGBUILD_changes }}
-      has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
-      pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
-
-  # update-srcinfos:
-  #   needs: check
-  #   if: needs.check.outputs.has_PKGBUILD_changes == 'true'
-  #   runs-on: ubuntu-latest
-  #   name: Bulk SRCINFO update task
-  #   # strategy:
-  #   #   matrix:
-  #   #     pkg: ${{ fromJson(needs.check.outputs.pkgbuilds) }}
-  #   steps:
-  #   - uses: ./.github/actions/makepkg
-  #     with:
-  #       operation: makefile
-  #       working-dir: ${{ matrix.pkg }}
-
-  makefile:
-    needs: 
-  #  - update-srcinfos
-    - check
-    if: needs.check.outputs.has_PKGBUILD_changes == 'true' || needs.check.outputs.has_AUR_lock_changes == 'true'
-    runs-on: ubuntu-latest
-    name: Makefile and commit
-    steps:
       - name: Rebuild Makefile
+        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         id: rebuild_makefile
         run: |
           echo "Changes detected. Rebuilding Makefile..."
-          run: ./generate-makefile.ps1
+          run: ./tools/generate-makefile.ps1
           shell: pwsh
 
       - name: Commit changes
+        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         run: |
           git config --local user.email "ovos-arch-buildbot@noemail.local"
           git config --local user.name "OVOS Arch BuildBot"
@@ -91,3 +65,22 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    outputs:
+      has_PKGBUILD_changes: ${{ steps.check_assets.outputs.has_PKGBUILD_changes }}
+      has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
+      pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
+
+  update-srcinfos:
+    needs: check
+    if: needs.check.outputs.has_PKGBUILD_changes == 'true'
+    runs-on: ubuntu-latest
+    name: Bulk SRCINFO update task
+    strategy:
+      matrix:
+        arch: ['x86_64', 'aarch64']
+    steps:
+    - name: "Build on ${{ matrix.arch }}"
+      run: |
+        echo "Updating SRCINFO files for arch ${{ matrix.arch }}..."
+        echo "TODO....."

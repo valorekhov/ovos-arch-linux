@@ -1,1 +1,2 @@
 ovos-microphone-plugin=python-ovos-microphone-plugin-alsa
+mycroft-gui=mycroft-gui-qt5

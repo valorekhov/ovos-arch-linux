@@ -51,7 +51,7 @@ repo: aur-repo
 
 aur-repo:
 	@mkdir -p "$(WORKSPACE_DIR)/AUR"
-	./aur-repo.sh "$(WORKSPACE_DIR)/AUR/" "$(WORKSPACE_DIR)/aur.lock"
+	./tools/aur-repo.sh "$(WORKSPACE_DIR)/AUR/" "$(WORKSPACE_DIR)/aur.lock"
 
 %.pkg.tar.zst:
 	$(eval DIR := $(shell echo '$*' | cut -d* -f1))

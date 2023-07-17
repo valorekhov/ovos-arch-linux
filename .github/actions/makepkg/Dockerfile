@@ -3,13 +3,13 @@ FROM archlinux:base-devel
 # Install dependencies
 RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git
 
-COPY entrypoint.sh /entrypoint.sh
+COPY *.sh /usr/local/bin/
     
 # Setup user
-RUN groupadd -g 123 gh && useradd --uid 1001 -m build && usermod -a -G gh build && \
+RUN useradd -m build && \
     echo 'build ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 WORKDIR /home/build
 USER build
 
 # Set entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -9,7 +9,7 @@ inputs:
   operation:
     description: 'The operation to perform'
     required: true
-    default: 'makepkg'
+    default: 'makefile-update'
   working-dir:
     description: 'The working directory to run the operation in'
     required: false

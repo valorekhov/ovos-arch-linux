@@ -5,7 +5,7 @@
 # the name is prefixed with a `#` character. 
 function Find-PackageInRepositories([string]$name){
     # Get directory from which this script is running
-    $dbPath = "$PSScriptRoot/.known-repo-packages" 
+    $dbPath = "$PSScriptRoot/../.known-repo-packages" 
     $knownPackages = Get-Content -Path $dbPath -ErrorAction SilentlyContinue
     $res = $knownPackages | Where-Object { $_.StartsWith("#$name") -or $_.StartsWith("$name") }
                 | Select-Object -First 1

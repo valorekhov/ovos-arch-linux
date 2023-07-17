@@ -1,32 +1,32 @@
 param(
     [switch]$Force = $false
 )
-Import-Module ./config-parser.psm1
-Import-Module ./makefile-parser.psm1
-Import-Module ./utils.psm1
+Import-Module $PSScriptRoot/config-parser.psm1
+Import-Module $PSScriptRoot/makefile-parser.psm1
+Import-Module $PSScriptRoot/utils.psm1
 
-$rootDir = Get-Location
+$rootDir = (Get-Item -Path "$PSScriptRoot/..").FullName
 
 # TODO: prefixes: python-mycroft, python-neon, skill
 $packagePrefix = "python-ovos"
-$rootPath = "../ovos-buildroot/buildroot-external/package"
+$rootPath = "$rootDir/../ovos-buildroot/buildroot-external/package"
 
 $packageDirectories = Get-ChildItem -Path $rootPath -Directory -Filter "$packagePrefix*"
 
 $buildTypeRegex = [regex]"`\$\(eval `\$\((cmake|python|autotools|generic)-package\)\)"
 
-$packageMap = Get-ParsedConfig -Path "./package-map.txt"
-$existingPkgDirs = Get-ChildItem -Path "./PKGBUILDs/" -Directory 
+$packageMap = Get-ParsedConfig -Path "$rootDir/package-map.txt"
+$existingPkgDirs = Get-ChildItem -Path "$rootDir/PKGBUILDs/" -Directory 
 $knownPackages = @{}
 $packageMap.Values | ForEach-Object { $knownPackages[$_] = $true }
 foreach ($existingPkgDir in $existingPkgDirs) {
     $knownPackages[$existingPkgDir.Name] = $existingPkgDir.FullName
 }
-foreach ($existingPkgDir in (Get-ChildItem -Path "./PKGBUILDs-extra/" -Directory)) {
+foreach ($existingPkgDir in (Get-ChildItem -Path "$rootDir/PKGBUILDs-extra/" -Directory)) {
     $existingPkgDir.Name
     $knownPackages[$existingPkgDir.Name] = $existingPkgDir.FullName
 }
-$ingoreBuildrootPackages = Get-Content ./ignore-buildroot-packages.txt
+$ingoreBuildrootPackages = Get-Content $PSScriptRoot/ignore-buildroot-packages.txt
 Push-Location
 try{
     foreach ($packageDir in $packageDirectories) {
@@ -41,7 +41,7 @@ try{
         if ($ingoreBuildrootPackages.Contains($packageName)){
             continue
         }
-        $dstPkgDir = "./PKGBUILDs/$packageName"
+        $dstPkgDir = "$rootDir/PKGBUILDs/$packageName"
         mkdir -p $dstPkgDir
 
         # Check if $dstPkgDir already has a built package file *.pkg.tar.zst
@@ -82,11 +82,11 @@ try{
                         | Where-Object { -not ($_.StartsWith("#") -or $_.Contains("`$(eval")) }
                         | Where-Object { $_ -notmatch "^\s*($exclude)" }
 
-        Copy-Item -Path "$packageDir/*" -Destination "./PKGBUILDs/$packageName/" `
+        Copy-Item -Path "$packageDir/*" -Destination "$rootDir/PKGBUILDs/$packageName/" `
             -Exclude "*.patch", "*.mk", "*.hash", "*.in" -Recurse -Force
         $extraSources = Get-ChildItem -Path $packageDir -Exclude "*.patch", "*.mk", "*.hash", "*.in" -Force
 
-        Copy-Item -Path "$packageDir/*.patch" -Destination "./PKGBUILDs/$packageName/" 
+        Copy-Item -Path "$packageDir/*.patch" -Destination "$rootDir/PKGBUILDs/$packageName/" 
         $patches = Get-ChildItem -Path $packageDir -Filter "*.patch" -Force
 
         $sha256sums = @()
@@ -160,21 +160,21 @@ try{
             $buildType = $evalMatches[0].Groups[1].Value
             switch ($buildType) {
                 "cmake" { 
-                    $dstTemplate = Set-Template -template (Get-Content "./templates/cmake/PKGBUILD" -Raw) -properties @{
+                    $dstTemplate = Set-Template -template (Get-Content "$PSScriptRoot/templates/cmake/PKGBUILD" -Raw) -properties @{
                         "build_opts" = if ($confOptions) {"CONF_OPTS=$confOptions"}
                         "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
                     }
                     $makeDependencies += "cmake"
                 }
                 "autotools" {
-                    $dstTemplate = Set-Template -template (Get-Content "./templates/autotools/PKGBUILD" -Raw) -properties @{
+                    $dstTemplate = Set-Template -template (Get-Content "$PSScriptRoot/templates/autotools/PKGBUILD" -Raw) -properties @{
                         "build_opts" = if ($confOptions) {"CONF_OPTS=$confOptions"}
                         "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
                     }
                     $makeDependencies += "autoconf", "automake", "libtool"
                 }
                 "generic" {
-                    $dstTemplate = Set-Template -template (Get-Content "./templates/generic/PKGBUILD" -Raw) -properties @{
+                    $dstTemplate = Set-Template -template (Get-Content "$PSScriptRoot/templates/generic/PKGBUILD" -Raw) -properties @{
                         "build_leader" =  $buildSteps | ForEach-Object { "    # " + $_ } | Join-String -Separator "`n" 
                     }
                 }
@@ -184,7 +184,7 @@ try{
                     $sources = @($sources | ForEach-Object { $_ -replace "pkgver", "_base_ver" })         
                     $makeDependencies += "python-build", "python-installer", "python-wheel"
                         
-                    $dstTemplate = Set-Template -template (Get-Content "./templates/python/PKGBUILD" -Raw) -properties @{
+                    $dstTemplate = Set-Template -template (Get-Content "$PSScriptRoot/templates/python/PKGBUILD" -Raw) -properties @{
                         "_name" = if ($_name) { $_name } else {
                             if ($gitHubProj) {$gitHubProj} else {$packageName.Substring("python-".Length)}
                         }

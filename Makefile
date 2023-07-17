@@ -51,7 +51,7 @@ repo: aur-repo
 
 aur-repo:
 	@mkdir -p "$(WORKSPACE_DIR)/AUR"
-	./aur-repo.sh "$(WORKSPACE_DIR)/AUR/" "$(WORKSPACE_DIR)/aur.lock"
+	./tools/aur-repo.sh "$(WORKSPACE_DIR)/AUR/" "$(WORKSPACE_DIR)/aur.lock"
 
 %.pkg.tar.zst:
 	$(eval DIR := $(shell echo '$*' | cut -d* -f1))
@@ -59,7 +59,7 @@ aur-repo:
 	@cd $(DIR) && $(RUN_MAKEPKG) 
 	$(call $(RUN_POST_PKG_BUILD),$(DIR))
 
-mycroft-gui:  PKGBUILDs/mycroft-gui/*.pkg.tar.zst
+mycroft-gui-qt5:  PKGBUILDs/mycroft-gui-qt5/*.pkg.tar.zst
 
 mycroft-mimic1:  PKGBUILDs/mycroft-mimic1/*.pkg.tar.zst
 
@@ -67,9 +67,9 @@ mycroft-mimic1-voices:  PKGBUILDs/mycroft-mimic1/*.pkg.tar.zst
 
 mycroft-mimic3-tts-bin:  PKGBUILDs/mycroft-mimic3-tts-bin/*.pkg.tar.zst
 
-nsync: aur-repo AUR/nsync/*.pkg.tar.zst
+nsync:  PKGBUILDs-extra/nsync/*.pkg.tar.zst
 
-onnxruntime: nsync nsync PKGBUILDs-extra/python-onnxruntime/*.pkg.tar.zst
+onnxruntime:  PKGBUILDs-extra/onnxruntime-bin/*.pkg.tar.zst
 
 ovos-bus-server: ovos-service-base PKGBUILDs/ovos-bus-server/*.pkg.tar.zst
 
@@ -91,7 +91,7 @@ ovos-precise-lite-models:  PKGBUILDs/ovos-precise-lite-models/*.pkg.tar.zst
 
 ovos-service-base:  PKGBUILDs/ovos-service-base/*.pkg.tar.zst
 
-ovos-shell: mycroft-gui python-ovos-phal-plugin-alsa python-ovos-phal-plugin-system python-ovos-phal-plugin-configuration-provider PKGBUILDs/ovos-shell/*.pkg.tar.zst
+ovos-shell: mycroft-gui-qt5 python-ovos-phal-plugin-alsa python-ovos-phal-plugin-system python-ovos-phal-plugin-configuration-provider PKGBUILDs/ovos-shell/*.pkg.tar.zst
 
 ovos-shell-standalone: ovos-service-base ovos-shell PKGBUILDs/ovos-shell-standalone/*.pkg.tar.zst
 
@@ -181,7 +181,7 @@ python-nested-lookup:  PKGBUILDs-extra/python-nested-lookup/*.pkg.tar.zst
 
 python-num2words: aur-repo AUR/python-num2words/*.pkg.tar.zst
 
-python-onnxruntime: onnxruntime nsync PKGBUILDs-extra/python-onnxruntime/*.pkg.tar.zst
+python-onnxruntime: onnxruntime nsync PKGBUILDs-extra/onnxruntime/*.pkg.tar.zst
 
 python-ovos-audio: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-ocp-audio-plugin python-ovos-bus-client python-ovos-config python-ovos-ocp-files-plugin python-ovos-ocp-m3u-plugin python-ovos-ocp-news-plugin python-ovos-ocp-rss-plugin python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-audio/*.pkg.tar.zst
 

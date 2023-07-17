@@ -1,4 +1,7 @@
-Import-Module ./config-parser.psm1
+Import-Module $PSScriptRoot/config-parser.psm1
+
+# Canonicalized repo root
+$RepoRoot = (Get-Item -Path "$PSScriptRoot/..").FullName
 
 function Get-SrcInfos([System.IO.FileInfo[]]$pkgBuilds){
     $pkgBuilds | ForEach-Object {
@@ -25,19 +28,23 @@ function Get-SrcInfos([System.IO.FileInfo[]]$pkgBuilds){
         foreach($pkg in $packages){
             # $pkg['_pkggroup'] = if ($_.Directory.FullName.Contains('-extra')) {"extra"} 
             #         else { if ($_.Directory.FullName.Contains('AUR/')) {"aur"} else {"main"} }
-            $pkg['_folder'] = $_.Directory.FullName.Replace("$PSScriptRoot/", "")
+
+            $pkg['_folder'] = $_.Directory.FullName.Replace("$RepoRoot/", "")
         }
         $packages
     }
     | % { $_ } # Flatten array
 }
 
-$pkgbuilds = (Get-ChildItem -Path "./PKGBUILDs/*/PKGBUILD" -Recurse) `
-        + (Get-ChildItem -Path "./PKGBUILDs-extra/*/PKGBUILD" -Recurse) `
-        + (Get-ChildItem -Path "./AUR/*/PKGBUILD" -Recurse) `
-    | Where-Object { -not (Test-Path "$($_.Directory)/.pkgignore" -PathType Leaf) }
+$ignorePackages = Get-Content "$RepoRoot/package-ignore.txt"
 
-$virtualPackages = Get-ConfigFromLines (Get-Content "./virtual-packages.txt") 
+$pkgbuilds = (Get-ChildItem -Path "$RepoRoot/PKGBUILDs/*/PKGBUILD" -Recurse) `
+        + (Get-ChildItem -Path "$RepoRoot/PKGBUILDs-extra/*/PKGBUILD" -Recurse) `
+        + (Get-ChildItem -Path "$RepoRoot/AUR/*/PKGBUILD" -Recurse) `
+    | Where-Object { -not (Test-Path "$($_.Directory)/.pkgignore" -PathType Leaf) }
+    | Where-Object { -not $ignorePackages.Contains($_.Directory.Name) }
+
+$virtualPackages = Get-ConfigFromLines (Get-Content "$RepoRoot/virtual-packages.txt") 
 
 $deps = @{}
 $srcInfos = @{}
@@ -72,7 +79,7 @@ foreach($srcInfo in $srcInfoList){
 function New-Makefile([string]$dir, $deps){
     $sorted = $deps.Keys | Sort-Object
 
-    Copy-Item -Path "$dir/templates/Makefile" -Destination "$dir/Makefile" -Force
+    Copy-Item -Path "$PSScriptRoot/templates/Makefile" -Destination "$dir/Makefile" -Force
     function Get-DepName([Parameter(ValueFromPipeline = $true)] $name){
         process {
             $srcInfo = $srcInfos[$name]
@@ -97,7 +104,7 @@ function New-Makefile([string]$dir, $deps){
     }
 }
 
-mkdir -p "$PSScriptRoot/AUR"
-bash ./aur-repo.sh "$PSScriptRoot/AUR/" "$PSScriptRoot/aur.lock"
-New-Makefile "$PSScriptRoot" $deps
+mkdir -p "$RepoRoot/AUR"
+bash "$PSScriptRoot/aur-repo.sh" "$RepoRoot/AUR/" "$RepoRoot/aur.lock"
+New-Makefile "$RepoRoot/" $deps
 Write-Host "Done"
