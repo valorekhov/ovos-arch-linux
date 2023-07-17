@@ -34,7 +34,6 @@ ensure_srcinfo() {
 #
 makefile(){
     id
-    getent group 123
     ls -la "$WORKDIR"
 
     echo "Ensuring Makefile dependencies ..."
