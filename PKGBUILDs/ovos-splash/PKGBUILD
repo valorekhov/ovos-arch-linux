@@ -45,9 +45,10 @@ source=("http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot/$_psplash.ta
         "ovos-splash-systemd.service" \
         "psplash-colors.h" \
         "psplash-config.h" \
-        "file://$startdir/base-images/psplash-bar.png" \
-        "file://$startdir/base-images/psplash-hand.png" \
-        "file://$startdir/base-images/psplash-poky.png" \
+        # TODO: The
+        "psplash-bar.png" \
+        "psplash-hand.png" \
+        "psplash-poky.png" \
         )
 sha256sums=('8fc1782873a1d778ab979c79a37cd0eb762ef180fa6ff01806ff08ba3fb334a6'
             '6a8221ef125e47a64755165f275472ae87435437512cbd6f4463ba3dfda443e1'
