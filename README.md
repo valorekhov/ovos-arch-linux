@@ -23,10 +23,12 @@ ufw allow ssh
    the corresponding `linux-rpi-headers` package. You should also install `raspberrypi-bootloader` and uninstall `uboot` 
    which will place the "traditional" bootloader folder structure on the /boot partition. This is required for the 
    SJ201 overlays to work. 
+
 ```sh
 pacman -R linux-aarch64 uboot-raspberrypi
 pacman -S linux-rpi linux-rpi-headers 
 ```
+
     Edit `/boot/cmdline.txt` and replace `root=/dev/mmcblk0p2` with `root=/dev/sda2` (or whatever your root partition is)
 
     To perform the above steps, use of a chroot will likely be is required. If you have access to another running AArch64 system 
@@ -39,7 +41,9 @@ pacman -S linux-rpi linux-rpi-headers
 
 
 ### Building From Source
-For installation on all taegets:
+Edit `/etc/makepkg.conf` to change PKGEXT='.pkg.tar.xz' to PKGEXT='.pkg.tar.zst'
+
+For installation on all targets:
 ```sh
 git clone https://github.com/valorekhov/ovos-arch-linux.git
 cd ovos-arch-linux
