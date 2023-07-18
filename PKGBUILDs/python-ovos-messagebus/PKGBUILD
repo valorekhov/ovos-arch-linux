@@ -10,13 +10,13 @@ pkgdesc='messagebus service, the nervous system of OpenVoiceOS'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-messagebus/'
 license=('')
-depends=('ovos-core' 'ovos-service-base' 'python' 'python-sdnotify' \
+depends=('ovos-service-base' 'python' 'python-sdnotify' \
 'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
 'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
 'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name-server")
 conflicts=("ovos-bus-server")
 # install=python-ovos-messagebus.install
@@ -90,22 +90,4 @@ package() {
     mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
     install -Dm644 "$srcdir/ovos-systemd_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
-
-
-################################################################################
-# #
-# # python-ovos-core
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_MESSAGEBUS_VERSION = 034ef0b14aeab33152fc97b3fea0e445051a828a
-# PYTHON_OVOS_MESSAGEBUS_SITE = $(call github,OpenVoiceOS,ovos-messagebus,$(PYTHON_OVOS_MESSAGEBUS_VERSION))
-# PYTHON_OVOS_MESSAGEBUS_SETUP_TYPE = setuptools
-# PYTHON_OVOS_MESSAGEBUS_LICENSE_FILES = LICENSE
-# PYTHON_OVOS_MESSAGEBUS_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
 

@@ -11,7 +11,7 @@ RUN pacman-key --init && (pacman-key --populate archlinuxarm || true) \
     && mkdir -p /build && chown build:build /build \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen \
     && printf "\nPKGEXT='.pkg.tar.zst'\nMAKEFLAGS=\"-j$(nproc)\"" >> /etc/makepkg.conf \
-    && printf "\n[ovos]\nSigLevel = Optional TrustAll\nServer = file:///build/.repo/$arch" >> /etc/pacman.confxd
+    && printf "\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = file:///build/.repo/\$arch" >> /etc/pacman.confd
 
 USER build
 WORKDIR /build

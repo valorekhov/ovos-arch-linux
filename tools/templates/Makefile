@@ -1,30 +1,15 @@
 .PHONY: all clean extra repo aur-repo rebuild uninstall
-MODE := "DirectInstall"
+# MODE := "source"
 ARCH := $(shell uname -m)
 WORKSPACE_DIR := $(shell pwd)
 REPO_ROOT := $(WORKSPACE_DIR)/.repo
 REPO_DIR := $(REPO_ROOT)/$(ARCH)
 PACMAN_CONF := $(REPO_ROOT)/pacman-$(ARCH).conf
 
-define post_build_repo
-	$(eval PKG := $(shell basename $(1)))
-	@cd $(1) \
-		&& cp "$(PKG)"*.pkg.tar.zst $(REPO_DIR) \
-		&& repo-add "$(REPO_DIR)/ovos.db.tar.gz" "$(REPO_DIR)/$(PKG)"*.pkg.tar.zst \
-		&& sudo pacman -Syy --config $(PACMAN_CONF) 
-	@echo "#####  Package successfully built and added to the repo: $(1)"
-endef
-
-define post_build_single_pkg
-	@echo "#####  Package successfully built: $(1)"
-endef
-
-ifeq ($(MODE), "Repo")
-	RUN_MAKEPKG := makepkg --syncdeps --noconfirm --force
-	RUN_POST_PKG_BUILD := post_build_repo
+ifeq ($(MODE), repo)
+	RUN_MAKEPKG := "$(WORKSPACE_DIR)/tools/pkg-build/repo-build.sh" "$(REPO_DIR)" "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 else 
-	RUN_MAKEPKG := makepkg -srif --noconfirm 
-	RUN_POST_PKG_BUILD := post_build_single_pkg
+	RUN_MAKEPKG := "$(WORKSPACE_DIR)/tools/pkg-build/source-build.sh"
 endif
 
 OVOS_PACKAGES := $(notdir $(wildcard PKGBUILDs/*))
@@ -47,7 +32,18 @@ uninstall:
 
 repo: aur-repo
 	@mkdir -p "$(REPO_DIR)/"
-	@printf "[ovos]\nSigLevel = Optional TrustAll\nServer = file:///$(REPO_DIR)" > $(PACMAN_CONF)
+	@cp /etc/pacman.conf "$(PACMAN_CONF)"
+	@printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = file:///$(REPO_DIR)" >> $(PACMAN_CONF)
+	@cp "$(WORKSPACE_DIR)/tools/pkg-build/pacman-wrapper.sh" "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
+	@sed -i 's|/etc/pacman.conf|$(PACMAN_CONF)|g' "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
+	@chmod +x "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
+ifeq (, $(wildcard $(REPO_DIR)/ovos-arch.db.tar.gz))
+	@repo-add "$(REPO_DIR)/ovos-arch.db.tar.gz"
+	@echo "Repo created..."
+endif
+
+sync-repo:
+	@"$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh" -Syy 
 
 aur-repo:
 	@mkdir -p "$(WORKSPACE_DIR)/AUR"
@@ -55,6 +51,6 @@ aur-repo:
 
 %.pkg.tar.zst:
 	$(eval DIR := $(shell echo '$*' | cut -d* -f1))
-	@echo '##### Building $(DIR) with $(RUN_MAKEPKG)'
-	@cd $(DIR) && $(RUN_MAKEPKG) 
-	$(call $(RUN_POST_PKG_BUILD),$(DIR))
+	@echo "Building $(DIR) with ''$(RUN_MAKEPKG)''"
+	@cd $(DIR) && $(RUN_MAKEPKG)
+	

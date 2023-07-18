@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-respeaker-4mic
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-respeaker-4mic/archive/0f54c45b1d7e1d461053dfd617522ee4e59a80ba.tar.gz
 	source = 0001-Loosen-some-requirements.patch

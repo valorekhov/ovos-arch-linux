@@ -15,7 +15,7 @@ depends=(python \
 'python-mycroft-mimic3-tts' \
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=('14cf95c2d4f22ab710f0673aaee25e7315256d9691fe7820217c797465aa36e1')

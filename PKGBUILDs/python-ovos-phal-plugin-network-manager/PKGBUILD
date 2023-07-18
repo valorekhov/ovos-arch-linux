@@ -16,7 +16,7 @@ depends=(python \
 'python-ovos-plugin-manager>=0.0.1' \
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=(

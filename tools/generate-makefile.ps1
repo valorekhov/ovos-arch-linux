@@ -69,8 +69,7 @@ foreach($srcInfo in $srcInfoList){
         foreach($prov in $srcInfo.provides){
             $knownPackages[$prov] = $true
             $virtualPackages[$prov] = $srcInfo.pkgname
-        }mkdir -p "$RepoRoot/AUR"
-        bash "$PSScriptRoot/aur-repo.sh" "$RepoRoot/AUR/" "$RepoRoot/aur.lock"
+        }
     }
 }
 Write-Host "Got " $knownPackages.Count " known packages"
@@ -114,6 +113,10 @@ function New-Makefile([string]$dir, $deps){
         }
         "`n$($key): $($depends -join ' ') $targetName"  `
                 | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
+    }
+
+    $ignorePackages | ForEach-Object {
+        "`n$($_): # Ignored" | Out-File -FilePath "$dir/Makefile" -Append -Encoding "UTF8"
     }
 }
 

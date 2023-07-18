@@ -8,6 +8,7 @@ pkgbase = python-ovos-vad-plugin-webrtcvad
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.11
 	depends = python-webrtcvad

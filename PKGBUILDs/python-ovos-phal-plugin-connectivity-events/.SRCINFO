@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-connectivity-events
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-connectivity-events/archive/286bf5d2a8bb326edcca4353353a92f540c5b93b.tar.gz

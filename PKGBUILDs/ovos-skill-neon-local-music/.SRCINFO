@@ -1,4 +1,4 @@
-pkgbase = ovos-skill-official-local-music
+pkgbase = ovos-skill-neon-local-music
 	pkgdesc = Neon Skill for Local Music Playback
 	pkgver = 1.0.0
 	pkgrel = 1
@@ -8,15 +8,16 @@ pkgbase = ovos-skill-official-local-music
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-workshop>=0.0.7
 	depends = python-ovos-ocp-audio-plugin
 	depends = python-ovos-ocp-files-plugin>=0.13
 	depends = python-ovos-utils>=0.0.28
 	depends = python-ovos-skill-installer>=0.0.5
-	provides = ovos-skill-official-local-music
-	conflicts = ovos-skill-official-local-music
+	provides = ovos-skill-neon-local-music
+	conflicts = ovos-skill-neon-local-music
 	source = https://github.com/NeonGeckoCom/skill-local_music/archive/73b37aa32425eeab40955a0389d4b887be6e5aa9.tar.gz
 	sha256sums = f64dafc910f8afaa1044baf25ea57f54b2c51836e85885e17dcb1bc806c02724
 
-pkgname = ovos-skill-official-local-music
+pkgname = ovos-skill-neon-local-music

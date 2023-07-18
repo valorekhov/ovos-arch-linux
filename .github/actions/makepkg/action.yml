@@ -14,6 +14,10 @@ inputs:
     description: 'The working directory to run the operation in'
     required: false
     default: ''
+  packages:
+    description: 'List of repo-relative paths to PKGBUILDs to operate on. Encoded as a JSON array.'
+    required: false
+    default: '[]'
   rebuildall:
     description: 'Rebuild all .SRCINFOs and/or packages without regard to modification status'
     required: false

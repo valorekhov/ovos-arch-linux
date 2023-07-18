@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-dashboard
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-dashboard/archive/4ab48f75c577218acf11b6e5f4dbe54300b63567.tar.gz

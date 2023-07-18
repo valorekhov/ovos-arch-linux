@@ -27,7 +27,7 @@ depends=(python
 "python-xdgenvpy"
 )
 conflicts=($pkgname)
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=($pkgname)
 
 source=("https://github.com/MycroftAI/mimic3/releases/download/release/v$pkgver/mycroft_mimic3_tts-$pkgver.tar.gz")

@@ -53,6 +53,7 @@ jobs:
         uses: ./.github/actions/makepkg
         with:
           operation: makefile-update
+          packages: ${{ steps.check_assets.outputs.pkgbuilds }}
           rebuildall: false
 
       - name: Rebuild Makefile

@@ -11,7 +11,7 @@ Mycroft-core, the central component of Mycroft'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-core/'
 license=('Apache')
-depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
+depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-adapt-parser>=1.0.0' #<2.0.0,>=1.0.0 \
 'python-combo-lock>=0.2.2' #<0.3,>=0.2.2 \
 'python-ovos-backend-client>=0.0.6' #<0.1.0,>=0.0.6 \
@@ -38,7 +38,7 @@ conflicts=( 'python-adapt-parser>=2.0.0' \
  'python-dateutil>=3.0' \
  'python-requests>=3.0' \
  'python-watchdog>=3.0')
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name_skills")
 conflicts+=("$_unit_name_skills")
 

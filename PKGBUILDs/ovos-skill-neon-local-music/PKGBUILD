@@ -1,6 +1,6 @@
 _gh_org=NeonGeckoCom
 _gh_proj=skill-local_music
-pkgname=ovos-skill-official-local-music
+pkgname=ovos-skill-neon-local-music
 _name=skill-local_music
 _commit='73b37aa32425eeab40955a0389d4b887be6e5aa9'
 pkgver=1.0.0
@@ -18,7 +18,7 @@ depends=(python
 #'python-id3parse'
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 

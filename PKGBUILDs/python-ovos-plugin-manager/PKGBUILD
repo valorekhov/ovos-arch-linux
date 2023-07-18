@@ -20,7 +20,7 @@ depends=(python \
 'python-requests' \
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=('6ccdbf5e8feab89352d987bfa8673b5d2320fff71b059684c678a9251e04bff8')

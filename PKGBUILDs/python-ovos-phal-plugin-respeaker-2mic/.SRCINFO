@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-respeaker-2mic
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-respeaker-2mic/archive/d8d2e2197b71332f8e6e88f6ccca8689ddd2ac8d.tar.gz
 	sha256sums = c330ab24cb57fec00b4d3becd76dd930250f2149a1b006c195bd21912354c289
