@@ -21,7 +21,7 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 sha256sums=('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
             'e1cda4b736f17f564b5db9a7211ddf3610ea50fe6ef421978ff7680cba306819'
-            '967dff3a50168062de400a0521b4f005b481b25256de7d21f3d0001648d735e5')
+            '04996d7d9eb2b8fa6e7ad905609d307017ed7fe458b7b248820c64976fdd441b')
 noextract=()
 source+=(https://github.com/jannikmi/timezonefinder/archive/refs/tags/v$pkgver.tar.gz)
 source+=(LICENSE)
