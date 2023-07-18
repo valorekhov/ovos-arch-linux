@@ -12,7 +12,6 @@ While x84_64 architecture is supported, the following instructions have been pre
 pacman-key --init
 pacman-key --populate archlinuxarm
 pacman -Syu iwd ufw networkmanager base-devel git openssh
-systemctl enable iwd
 systemctl enable NetworkManager
 systemctl enable sshd
 ufw enable
@@ -29,14 +28,14 @@ pacman -R linux-aarch64 uboot-raspberrypi
 pacman -S linux-rpi linux-rpi-headers 
 ```
 
-    Edit `/boot/cmdline.txt` and replace `root=/dev/mmcblk0p2` with `root=/dev/sda2` (or whatever your root partition is)
+Edit `/boot/cmdline.txt` and replace `root=/dev/mmcblk0p2` with `root=/dev/sda2` (or whatever your root partition is)
 
-    To perform the above steps, use of a chroot will likely be is required. If you have access to another running AArch64 system 
-    (another RPi4, for example), mount the new USB drive and chroot into it. If you do not have access to another AArch64 system,
-    you can use qemu to emulate one following these instructions: https://wiki.archlinux.org/title/QEMU#Chrooting_into_arm/arm64_environment_from_x86_64. You can also use the `arch-chroot` script from the `arch-install-scripts` package.
+To perform the above steps, use of a chroot will likely be is required. If you have access to another running AArch64 system 
+(another RPi4, for example), mount the new USB drive and chroot into it. If you do not have access to another AArch64 system,
+you can use qemu to emulate one following these instructions: https://wiki.archlinux.org/title/QEMU#Chrooting_into_arm/arm64_environment_from_x86_64. You can also use the `arch-chroot` script from the `arch-install-scripts` package.
 
-    To simpile the process, you can use the wired ethernet port on the RPi4 to connect to the internet and configure the
-    wireless interface later. Use of a USB keyboard is also recommended before you are able to log in via SSH.
+To simpile the process, you can use the wired ethernet port on the RPi4 to connect to the internet and configure the
+wireless interface later. Use of a USB keyboard is also recommended before you are able to log in via SSH.
 
 
 
