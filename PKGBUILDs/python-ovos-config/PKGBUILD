@@ -19,7 +19,7 @@ depends=(python \
 )
 conflicts=( 'python-ovos-utils>=0.1.0' \
  'python-yaml>=7.0.0')
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=('9f27c138c18f9bb065741dc18d3290afac3bc2af09b5d0d340b006c0c5909a1e')
