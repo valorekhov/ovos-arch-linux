@@ -8,6 +8,7 @@ pkgbase = ovos-skill-official-camera
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-utils>=0.0.28
 	depends = python-ovos-workshop>=0.0.12a27

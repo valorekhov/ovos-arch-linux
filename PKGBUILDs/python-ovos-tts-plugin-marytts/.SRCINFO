@@ -8,6 +8,7 @@ pkgbase = python-ovos-tts-plugin-marytts
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	source = https://github.com/OpenVoiceOS/ovos-tts-plugin-marytts/archive/207961106063ddc29f66b6b8f9077f85e7806480.tar.gz
 	sha256sums = 7828b0d8039ea3a3dcac26e1e45b042cf50bb8b74a8c1847a0bea737b543e650

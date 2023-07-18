@@ -8,6 +8,7 @@ pkgbase = python-ovos-vlc-plugin
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = vlc
 	depends = python-ovos-plugin-manager

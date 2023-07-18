@@ -8,6 +8,7 @@ pkgbase = ovos-skill-official-youtube-music
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-ocp-youtube-plugin
 	depends = python-ovos-utils>=0.0.28

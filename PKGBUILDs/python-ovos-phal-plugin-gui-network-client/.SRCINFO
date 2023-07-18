@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-gui-network-client
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-gui-network-client/archive/847ab586387503b044e497f544a843f0d02110cb.tar.gz

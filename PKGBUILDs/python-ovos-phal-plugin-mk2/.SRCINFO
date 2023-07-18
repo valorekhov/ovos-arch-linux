@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-mk2
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager
 	depends = python-rpi.gpio

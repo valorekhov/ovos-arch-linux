@@ -8,6 +8,7 @@ pkgbase = python-ovos-ww-plugin-precise-lite
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = ovos-precise-lite-models
 	depends = python-ovos-plugin-manager>=0.0.4

@@ -8,6 +8,7 @@ pkgbase = python-ovos-tts-plugin-mimic
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = mycroft-mimic1
 	depends = python-ovos-plugin-manager>=0.0.5

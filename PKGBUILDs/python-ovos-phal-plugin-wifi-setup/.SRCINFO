@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-wifi-setup
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-mycroft-messagebus-client
 	depends = python-ovos-utils

@@ -8,6 +8,7 @@ pkgbase = python-ovos-stt-http-server
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-fastapi
 	depends = python-ovos-plugin-manager

@@ -25,7 +25,7 @@ depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'pyth
 'python-pyaudio' \
 'python-speechrecognition>=3.8.1' \
 )
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name")
 conflicts=("$_unit_name")
 

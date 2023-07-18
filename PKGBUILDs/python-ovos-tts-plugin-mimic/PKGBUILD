@@ -11,7 +11,7 @@ url='https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic/'
 license=('')
 depends=(python mycroft-mimic1 'python-ovos-plugin-manager>=0.0.5')
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=('83103d290616e67d0f02016e5f1eeca01fed2bed2a62783e3f0665dfadf4901d')

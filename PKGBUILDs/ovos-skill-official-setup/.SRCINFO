@@ -8,6 +8,7 @@ pkgbase = ovos-skill-official-setup
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-backend-client>=0.0.6a8
 	depends = python-ovos-utils>=0.0.25

@@ -21,7 +21,7 @@ depends=(python \
 'python-youtube-search' \
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=('4a89246be54232243a0450906186aea67467c8d378ec5eeb5bc9eefbf498aaad')

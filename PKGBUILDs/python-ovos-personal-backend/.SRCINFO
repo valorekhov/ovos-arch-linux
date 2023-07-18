@@ -8,6 +8,7 @@ pkgbase = python-ovos-personal-backend
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-flask>=0.12
 	depends = python-flask-sqlalchemy

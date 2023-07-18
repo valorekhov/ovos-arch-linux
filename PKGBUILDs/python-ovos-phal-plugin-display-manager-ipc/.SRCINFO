@@ -8,6 +8,7 @@ pkgbase = python-ovos-phal-plugin-display-manager-ipc
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-display-manager-ipc/archive/f22f9d41b3927b5cf71e8de0f040dee94e6e6ca6.tar.gz
 	sha256sums = a59dbc2fa3c4e78c478d8257f51f4a2df6fab4dc9203e0b5f7e4edaef6c04b0f

@@ -8,6 +8,7 @@ pkgbase = python-ovos-backend-manager
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-cutecharts
 	depends = python-ovos-personal-backend>=0.1.5a2

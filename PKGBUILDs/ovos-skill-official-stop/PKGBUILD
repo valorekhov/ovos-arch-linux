@@ -15,7 +15,7 @@ depends=(python
 'python-ovos-utils>=0.0.28' #>=0.0.28,~=0.0 \
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 

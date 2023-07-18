@@ -8,6 +8,7 @@ pkgbase = python-ovos-tts-server-plugin
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.5
 	source = https://github.com/OpenVoiceOS/ovos-tts-server-plugin/archive/17e8664cfad5c236bb1f6dd2a07c0604fe41d4a0.tar.gz

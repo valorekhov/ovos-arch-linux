@@ -8,6 +8,7 @@ pkgbase = python-ovos-stt-plugin-pocketsphinx
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.1a7
 	depends = python-pocketsphinx>=0.1.3

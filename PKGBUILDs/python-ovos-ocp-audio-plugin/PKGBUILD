@@ -25,7 +25,7 @@ conflicts=( 'python-ovos-ocp-audio-plugin' \
  'python-ovos-bus-client>=0.1.0' \
  'python-ovos-plugin-manager>=0.1.0' \
  'python-ovos-utils>=0.1.0')
-makedepends=(python-build python-installer python-wheel)
+makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=('93cca2a79e67a8fecb6487e06d54158484c6727ef3cc8165b4ecca2ba967a4a8')

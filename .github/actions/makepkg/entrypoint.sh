@@ -50,7 +50,13 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 #id
 #ls -la
 
-echo "Operation: $INPUT_OPERATION, RebuildAll: $INPUT_REBUILDALL"
+# $INPUT_PACKAGES is supplied as either a space-separated string or a JSON-encoded array
+# if it is a JSON-encoded array, then we need to decode it
+if [[ "$INPUT_PACKAGES" == "["* ]]; then
+    INPUT_PACKAGES=$(echo "$INPUT_PACKAGES" | jq -r '.[]')
+fi
+
+echo "Operation: $INPUT_OPERATION RebuildAll: $INPUT_REBUILDALL Packages: $INPUT_PACKAGES"
 case "$INPUT_OPERATION" in
     "makefile-update")
         ensure_user_ns "$SCRIPT_DIR/makefile-update.sh"

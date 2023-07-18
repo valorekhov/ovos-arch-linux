@@ -8,6 +8,7 @@ pkgbase = python-ovos-tts-plugin-pico
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.1a12
 	source = https://github.com/OpenVoiceOS/ovos-tts-plugin-pico/archive/2b1c96256751c6a1d6db4e88e471de02b38bcf62.tar.gz

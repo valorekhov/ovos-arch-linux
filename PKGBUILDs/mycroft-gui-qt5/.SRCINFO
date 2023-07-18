@@ -13,6 +13,7 @@ pkgbase = mycroft-gui-qt5
 	makedepends = kio
 	makedepends = kio-extras
 	makedepends = plasma-framework
+	makedepends = qt5-webview
 	depends = kirigami2
 	depends = kirigami-addons
 	depends = qt5-websockets

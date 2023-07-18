@@ -10,6 +10,6 @@ pkgbase = ovos-core
 	source = ovos.conf
 	source = ovos.service
 	sha256sums = 9c71f44cf3f3546544881b009ebac704aa87e22ca9217caf15f3a2f2c8cf93ae
-	sha256sums = 3bb4afb9669183afa627930eb62466d442cff56cae4a18656ad76cb3b20d5113
+	sha256sums = 7b6f94d5663f2c5362e1d1cff7b9a69c5e8ca5aa286c0532427613bf7bfa27c2
 
 pkgname = ovos-core

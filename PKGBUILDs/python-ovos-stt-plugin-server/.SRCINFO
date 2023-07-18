@@ -8,6 +8,7 @@ pkgbase = python-ovos-stt-plugin-server
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
+	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.5
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-server/archive/8f440da949ced2f823383b87acb7c7e502cdb7ff.tar.gz
