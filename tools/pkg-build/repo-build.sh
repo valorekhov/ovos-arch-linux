@@ -35,7 +35,7 @@ if $DO_BUILD ; then
         exit 0
     fi
 
-    PACMAN="$LOCAL_PACMAN" makepkg --syncdeps --noconfirm --force
+    PACMAN="$LOCAL_PACMAN" makepkg --syncdeps --noconfirm --force || exit 13
 
     zst_files=( *.pkg.tar.zst )
     xz_files=( *.pkg.tar.xz )
