@@ -1,7 +1,7 @@
 FROM archlinux:base-devel
 
 # Install dependencies
-RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git arch-install-scripts namcap
+RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git arch-install-scripts jq
 
 COPY *.sh /usr/local/bin/
     
