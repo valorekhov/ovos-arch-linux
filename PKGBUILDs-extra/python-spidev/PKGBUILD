@@ -7,6 +7,7 @@ arch=('x86_64' 'aarch64' 'armv6h' 'armv7h')
 url="https://github.com/doceme/py-spidev"
 license=('GPL')
 depends=('python')
+makedepends=(python-build python-installer python-wheel python-setuptools)
 source=("https://files.pythonhosted.org/packages/c7/d9/401c0a7be089e02826cf2c201f489876b601f15be100fe391ef9c2faed83/spidev-$pkgver.tar.gz")
 
 build() {
