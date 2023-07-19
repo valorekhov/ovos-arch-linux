@@ -52,3 +52,7 @@ The above command will execute `makepkg` according to OVOS package dependencies 
 
 For installation onto Mark II hardware, be sure to also `make ovos-enclosure-rpi4-mark2` and reboot.
 
+#### Sound System
+Consider how OVOS will communicate with the sound system. `ovos-enclosure-rpi4-mark2` makes an opinionated choice to use `ovos-enclosure-audio-pulse`, which provides multi-seat Pulse Server functionality appropriate
+for embedded systems. However, `ovos-enclosure-base` installs make no such choice leaving it up to the user to decide how to configure the sound system. 
+
