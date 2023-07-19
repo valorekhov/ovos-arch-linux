@@ -1,2 +1,4 @@
 ovos-microphone-plugin=python-ovos-microphone-plugin-alsa
 mycroft-gui=mycroft-gui-qt5
+ovos-listener-messagebus=python-ovos-dinkum-listener
+ovos-messagebus-server=python-ovos-messagebus

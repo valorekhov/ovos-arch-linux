@@ -76,7 +76,7 @@ ovos-enclosure-audio-pulse:  PKGBUILDs/ovos-enclosure-audio-pulse/*.pkg.tar.zst
 
 ovos-enclosure-audio-vocalfusion-dkms:  PKGBUILDs/ovos-enclosure-audio-vocalfusion-dkms/*.pkg.tar.zst
 
-ovos-enclosure-base: ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-listener python-ovos-gui python-ovos-phal python-ovos-phal python-ovos-audio python-ovos-core python-ovos-tts-plugin-mimic python-ovos-tts-plugin-mimic3-server ovos-skill-official-homescreen ovos-skill-official-naptime ovos-skill-official-date-time ovos-skill-official-volume ovos-skill-official-fallback-unknown PKGBUILDs/ovos-enclosure-base/*.pkg.tar.zst
+ovos-enclosure-base: ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-dinkum-listener python-ovos-gui python-ovos-phal python-ovos-phal python-ovos-audio python-ovos-core python-ovos-tts-plugin-mimic python-ovos-tts-plugin-mimic3-server ovos-skill-official-homescreen ovos-skill-official-naptime ovos-skill-official-date-time ovos-skill-official-volume ovos-skill-official-fallback-unknown PKGBUILDs/ovos-enclosure-base/*.pkg.tar.zst
 
 ovos-enclosure-rpi4-mark2: ovos-enclosure-base ovos-enclosure-sj201 PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
 
@@ -198,7 +198,7 @@ python-ovos-config-assistant: python-cutecharts python-ovos-backend-client pytho
 
 python-ovos-core: ovos-service-base python-ovos-messagebus python-sdnotify python-adapt-parser python-combo-lock python-ovos-backend-client python-ovos-bus-client python-ovos-workshop python-ovos-classifiers python-ovos-config python-ovos-lingua-franca python-ovos-plugin-manager python-ovos-utils python-padacioso PKGBUILDs/python-ovos-core/*.pkg.tar.zst
 
-python-ovos-dinkum-listener: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-microphone-plugin-sounddevice python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
+python-ovos-dinkum-listener: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-microphone-plugin-alsa python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
 
 python-ovos-gui: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-gui/*.pkg.tar.zst
 

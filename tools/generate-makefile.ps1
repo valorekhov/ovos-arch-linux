@@ -68,7 +68,12 @@ foreach($srcInfo in $srcInfoList){
     if ($srcInfo.provides){
         foreach($prov in $srcInfo.provides){
             $knownPackages[$prov] = $true
-            $virtualPackages[$prov] = $srcInfo.pkgname
+            if (-not $virtualPackages[$prov]){
+                # We want the preference for resolutions to be given to 
+                # to the entries in virtual-packages.txt. Therefore we don't
+                # overwrite them here.
+                $virtualPackages[$prov] = $srcInfo.pkgname
+            }
         }
     }
 }
