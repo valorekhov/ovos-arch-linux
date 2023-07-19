@@ -4,7 +4,7 @@ _pkgbase=ovos-enclosure-audio-vocalfusion
 pkgname=$_pkgbase-dkms
 pkgver='0.0.1'
 _commit='4675bb2634812429db64dd135222cd74dc097e79'
-pkgrel=1
+pkgrel=2
 pkgdesc='Raspberry Pi VocalFusion linux driver'
 arch=('aarch64' 'armv7h')
 url="https://github.com/$_gh_org/$_gh_proj/"
@@ -25,7 +25,7 @@ sha256sums=('596fb5109a72e3dc8e0af4aa585378039663dfd2802a4446d604f7f41e323ae3'
             '17d1a33b55c71c4884b426601e11b64599fd156920a11c0365266d4f13b3266d'
             'c62883ad43ba8243f2c10449c3f664a0ecd12ac3bb1a7903570b6db51397110e'
             'cc24f4be8619b5834687ff8e050de565b833e5e224f61ddf24b12da51b9ae684'
-            '2f9eae5d76309b9667818313805381832b615ef6edd34402bec1271f47dab58d')
+            '4c6dbf93c1c7f7b0efd47465733fdcc5d8b2910537aa0c3990d6098c7b5e3d84')
 
 prepare() {
     cd "$srcdir"
