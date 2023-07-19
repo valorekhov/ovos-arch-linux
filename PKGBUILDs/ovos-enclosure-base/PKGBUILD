@@ -1,6 +1,6 @@
 pkgname=ovos-enclosure-base
 pkgver='0.0.1'
-pkgrel=1
+pkgrel=2
 pkgdesc='Base/Abstract package providing assets & functionality common to all enclosure flavours'
 arch=('any')
 url='https://github.com/OpenVoiceOS/'

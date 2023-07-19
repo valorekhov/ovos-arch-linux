@@ -1,7 +1,7 @@
 pkgbase = ovos-enclosure-base
 	pkgdesc = Base/Abstract package providing assets & functionality common to all enclosure flavours
 	pkgver = 0.0.1
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/OpenVoiceOS/
 	install = ovos-enclosure.install
 	arch = any
@@ -16,6 +16,7 @@ pkgbase = ovos-enclosure-base
 	depends = ovos-audio-messagebus
 	depends = ovos-skills-messagebus
 	depends = python-ovos-tts-plugin-mimic
+	depends = python-ovos-tts-plugin-mimic3-server
 	depends = ovos-skill-official-homescreen
 	depends = ovos-skill-official-naptime
 	depends = ovos-skill-official-date-time
