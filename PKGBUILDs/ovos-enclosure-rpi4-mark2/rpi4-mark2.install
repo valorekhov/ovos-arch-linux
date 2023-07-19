@@ -1,6 +1,7 @@
 # This script is only meant to be ran on the actual RPi4 device.
 post_install() {
     systemctl enable systemd-timesyncd 
+    systemctl enable pulseaudio.service
     systemctl disable getty@tty1
 }
 
