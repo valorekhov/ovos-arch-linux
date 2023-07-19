@@ -9,6 +9,7 @@ pkgbase = ovos-enclosure-rpi4-mark2
 	makedepends = dtc
 	depends = ovos-enclosure-base
 	depends = ovos-enclosure-sj201
+	depends = ovos-enclosure-audio-pulse
 	provides = ovos-enclosure
 	conflicts = ovos-enclosure
 	source = rpi4-mark2.install

@@ -78,7 +78,7 @@ ovos-enclosure-audio-vocalfusion-dkms:  PKGBUILDs/ovos-enclosure-audio-vocalfusi
 
 ovos-enclosure-base: ovos-core ovos-shell-standalone python-ovos-messagebus python-ovos-dinkum-listener python-ovos-gui python-ovos-phal python-ovos-phal python-ovos-audio python-ovos-core python-ovos-tts-plugin-mimic python-ovos-tts-plugin-mimic3-server ovos-skill-official-homescreen ovos-skill-official-naptime ovos-skill-official-date-time ovos-skill-official-volume ovos-skill-official-fallback-unknown PKGBUILDs/ovos-enclosure-base/*.pkg.tar.zst
 
-ovos-enclosure-rpi4-mark2: ovos-enclosure-base ovos-enclosure-sj201 PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
+ovos-enclosure-rpi4-mark2: ovos-enclosure-base ovos-enclosure-sj201 ovos-enclosure-audio-pulse PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
 
 ovos-enclosure-sj201: ovos-enclosure-audio-vocalfusion-dkms python-spidev python-rpi.gpio python-smbus2 PKGBUILDs/ovos-enclosure-sj201/*.pkg.tar.zst
 
