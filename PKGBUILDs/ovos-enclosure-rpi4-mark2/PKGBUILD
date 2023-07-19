@@ -12,6 +12,6 @@ provides=(ovos-enclosure)
 conflicts=(ovos-enclosure)
 
 source=("rpi4-mark2.install")
-sha256sums=('4a0418657f2c82ba1ef34fbae5ee5ec4dd1d3d378ec4ae0e71855b7c7f37596d')
+sha256sums=('7924207973910bfe1e5092ab794d8c7a90c7186da56d4901eeed5a96481e7ccb')
 
 install=rpi4-mark2.install
