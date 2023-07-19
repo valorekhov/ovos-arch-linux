@@ -13,7 +13,7 @@ source=("sj201-rev10-pwm-fan-overlay.dts" "ovos-enclosure-sj201.install" \
     "sj201-buttons-overlay.dts" "sj201-init.service" "sj201-init.sh" \
     "sj201-revisions.sh" sj201-rev6-fan.sh "sj201-tas5806")
 sha256sums=('f4b83816f0f55fe17a3f7852713bed87fdf98f60db4b1bc805b34a6043b4ab9f'
-            'b515f94b07c2d5456b19edd617167a2c894ba0366aac1b34ac238de88658e34d'
+            'a09ec911f598bf947cb18a7a806748813753d77a364f25f5ebd919c5d1706b1c'
             'b7cf09d6d7c0e719dc96f1ae6832ce22c060d2ccb69530111ca390bd39976d71'
             'ccb5fd98398687b899ad591cc74db4c9d835adb41f49dd1a55e05461b2a52e46'
             '26e1486d3fd1de3670b4993875f887658e19c96d54d580b83d4068e926c26b5e'
