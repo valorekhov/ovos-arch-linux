@@ -5,4 +5,4 @@ if ! echo "$PKG_ARCH" | grep -qE "(any|$(uname -m))" ; then
     exit 0
 fi
 
-makepkg -srif --noconfirm
+makepkg -srif --noconfirm || exit 13

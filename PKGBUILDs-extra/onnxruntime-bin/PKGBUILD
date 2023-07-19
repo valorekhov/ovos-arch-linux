@@ -5,7 +5,7 @@
 pkgbase=onnxruntime-bin
 pkgname='onnxruntime'
 pkgver=1.15.1
-pkgrel=3
+pkgrel=00
 pkgdesc="ONNX Runtime: cross-platform, high performance ML inferencing and training accelerator"
 arch=('x86_64' 'aarch64')
 url="https://www.onnxruntime.ai/"
