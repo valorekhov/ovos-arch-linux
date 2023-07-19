@@ -13,6 +13,6 @@ pkgbase = ovos-enclosure-rpi4-mark2
 	provides = ovos-enclosure
 	conflicts = ovos-enclosure
 	source = rpi4-mark2.install
-	sha256sums = 7924207973910bfe1e5092ab794d8c7a90c7186da56d4901eeed5a96481e7ccb
+	sha256sums = 2de1240b77dd16ef5795151babb0c1060fd2dcf0892f74c5c7dbd7ef6e6886a8
 
 pkgname = ovos-enclosure-rpi4-mark2
