@@ -5,4 +5,10 @@ if ! echo "$PKG_ARCH" | grep -qE "(any|$(uname -m))" ; then
     exit 0
 fi
 
-makepkg -srif --noconfirm || exit 13
+makepkg -srif --noconfirm 
+# if makepkg fails, specifically due to timing out on a credential prompt to install successfully-built packages,
+# then let's delete the packages so that rerunning 'make' will rebuild and properly install them
+if [ $? -ne 0 ]; then
+    rm *.pkg.tar.{zst,xz} || true
+    exit 13
+fi
