@@ -1,7 +1,11 @@
-FROM archlinux:base-devel
+ARG ARCH_SUFFIX # Used for local builds with a formats of '-x86_64' or '-aarch64'
+
+FROM archlinux$ARCH_SUFFIX:base-devel
 
 # Install dependencies
-RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git arch-install-scripts jq
+RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git arch-install-scripts jq \
+    && (pacman -S --noconfirm archlinuxarm-keyring || true) \
+    && rm -rf rootfs/var/lib/pacman/sync/* # Clean up pacman cache to save on image size
 
 COPY *.sh /usr/local/bin/
     
