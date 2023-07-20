@@ -4,6 +4,9 @@
 
 This repository contains the Arch Linux packages required to run OpenVoiceOS on Arch Linux. Supported architectures are x86_64 and AArch64.
 
+This is a community project and is not officially supported by the OpenVoiceOS project. Do not create issues in the OpenVoiceOS project 
+for issues related to this repository. 
+
 ## Why another OVOS distribution?
 - It is Arch!
 - It is not Buildroot. 
