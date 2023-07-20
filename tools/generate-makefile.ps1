@@ -111,7 +111,7 @@ function New-Makefile([string]$dir, $deps){
 
     $sorted | ForEach-Object {
         $key = $_
-        $depends = $deps[$key] #| Get-DepName
+        $depends = $deps[$key] | Select-Object -Unique  #| Get-DepName
         $targetName = $key | Get-DepName
         if ($targetName.StartsWith("AUR/")){
             $depends = @("aur-repo") + $depends

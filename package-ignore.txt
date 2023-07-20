@@ -1,1 +1,2 @@
 mycroft-gui-qt6-git
+onnxruntime-bin
