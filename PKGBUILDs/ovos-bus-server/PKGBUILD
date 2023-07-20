@@ -1,7 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-bus-server
 pkgname=ovos-bus-server
-pkgver='6390bb787fad4660106577891ada6fa935b662d7'
+_commit='6390bb787fad4660106577891ada6fa935b662d7'
+pkgver=0.0.1
 pkgrel=0
 pkgdesc='alternative ovos bus service (websocket server) in C++'
 arch=('x86_64' 'aarch64' 'armv7h')
@@ -12,7 +13,7 @@ makedepends=(pkgconf cmake)
 provides=("ovos-messagebus-server")
 conflicts=("python-ovos-messagebus")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz" \
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
    0001-Make-package-installable.patch
    ovos-messagebus.service)
 sha256sums=('2352676a4c1726d2febe7a39c920d5b8b26a5256913039c5e69beff5e5469d3e'
@@ -24,7 +25,7 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${pkgver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${_commit}"
         fi
     done
 }

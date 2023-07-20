@@ -7,6 +7,7 @@ pkgbase = python-h3
 	arch = aarch64
 	license = Apache
 	makedepends = cython
+	makedepends = ninja
 	depends = python
 	source = PKGBUILD_EXTRAS
 	source = https://files.pythonhosted.org/packages/18/9f/c3bf7ef02d59cb81db8ac2860292ddbfafe34d299d4f5b45ca58899f9ee3/h3-4.0.0b2.tar.gz

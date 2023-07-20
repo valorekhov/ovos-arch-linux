@@ -1,7 +1,7 @@
 pkgbase = python-ovos-dinkum-listener
 	pkgdesc = The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core. Dinkum flavor
 	pkgver = 0.0.2
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/OpenVoiceOS/ovos-dinkum-listener/
 	arch = any
 	license = Apache
@@ -19,7 +19,9 @@ pkgbase = python-ovos-dinkum-listener
 	depends = python-ovos-bus-client>=0.0.3a16
 	depends = python-ovos-config>=0.0.10
 	depends = python-ovos-plugin-manager>=0.0.23a5
+	depends = python-ovos-stt-plugin-server>=0.0.2
 	depends = python-ovos-utils>=0.0.33a8
+	depends = python-ovos-vad-plugin-webrtcvad
 	depends = python-speechrecognition>=3.9
 	provides = ovos-listener-messagebus
 	conflicts = ovos-listener-messagebus

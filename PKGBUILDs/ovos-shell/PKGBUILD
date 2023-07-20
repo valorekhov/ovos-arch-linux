@@ -1,7 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-shell
 pkgname=ovos-shell
-pkgver='0f3335b0aa3a806b130a6a79299d79c75bc12c0e'
+_commit='0f3335b0aa3a806b130a6a79299d79c75bc12c0e'
+pkgver=0.0.1
 pkgrel=0
 pkgdesc='OpenVoiceOS Shell on EGLFS:
 	  This is a minimal shell which is intended 
@@ -32,7 +33,7 @@ python-ovos-phal-plugin-color-scheme-manager
 )
 makedepends=(pkgconf cmake extra-cmake-modules)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$pkgver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=('743862ed78d9e5d4a71740706f25e379468dedc5a94598dbc54b6c4273c94485')
 
 prepare() {
@@ -40,7 +41,7 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${pkgver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${pkgname}-${_commit}"
         fi
     done
 }

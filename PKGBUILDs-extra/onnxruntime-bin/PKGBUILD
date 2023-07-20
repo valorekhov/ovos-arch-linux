@@ -2,8 +2,7 @@
 
 # Onboarded from AUR to add aarch64 support
 
-pkgbase=onnxruntime-bin
-pkgname='onnxruntime'
+pkgname=onnxruntime-bin
 pkgver=1.15.1
 pkgrel=00
 pkgdesc="ONNX Runtime: cross-platform, high performance ML inferencing and training accelerator"

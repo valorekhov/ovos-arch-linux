@@ -1,6 +1,6 @@
 pkgbase = ovos-shell
 	pkgdesc = OpenVoiceOS Shell on EGLFS: This is a minimal shell which is intended to run on low power hardware either as "single application" on a minimal wayland server or with eglfs backend.
-	pkgver = 0f3335b0aa3a806b130a6a79299d79c75bc12c0e
+	pkgver = 0.0.1
 	pkgrel = 0
 	url = https://github.com/OpenVoiceOS/ovos-shell/
 	arch = x86_64

@@ -13,7 +13,7 @@ url=https://github.com/uber/h3-py
 license=(Apache)
 depends=(python )
 depends+=()
-makedepends=(cython)
+makedepends=(cython ninja)
 checkdepends=()
 provides=()
 conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.

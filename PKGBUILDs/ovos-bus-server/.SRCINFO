@@ -1,6 +1,6 @@
 pkgbase = ovos-bus-server
 	pkgdesc = alternative ovos bus service (websocket server) in C++
-	pkgver = 6390bb787fad4660106577891ada6fa935b662d7
+	pkgver = 0.0.1
 	pkgrel = 0
 	url = https://github.com/OpenVoiceOS/ovos-bus-server/
 	arch = x86_64
