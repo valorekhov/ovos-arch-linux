@@ -12,6 +12,7 @@ COPY *.sh /usr/local/bin/
 # Setup user
 RUN useradd -m build \
     && echo 'build ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/build \
+    && echo 'build-gha ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/build-gha \
     && mkdir -p /build && chown build:build /build \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen \
     && printf "\nPKGEXT='.pkg.tar.zst'\n" >> /etc/makepkg.conf
