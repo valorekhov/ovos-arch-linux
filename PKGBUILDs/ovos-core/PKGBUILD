@@ -9,7 +9,7 @@ depends=('python-ovos-core' 'ovos-messagebus-server')
 source=('ovos.conf' 'ovos.service')
 sha256sums=('9c71f44cf3f3546544881b009ebac704aa87e22ca9217caf15f3a2f2c8cf93ae'
             '7b6f94d5663f2c5362e1d1cff7b9a69c5e8ca5aa286c0532427613bf7bfa27c2')
-
+ 
 package() {
     cd "$srcdir"
 
