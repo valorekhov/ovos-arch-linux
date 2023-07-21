@@ -11,9 +11,9 @@ license=('Apache License 2.0')
 depends=()
 makedepends=()
 
-source=(https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz \
-   0001-Run-on-port-5005.patch \
-   ovos-dashboard@.service)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
+   "0001-Run-on-port-5005.patch" \
+   "ovos-dashboard@.service")
 sha256sums=(
     'd59fa2af8497a09272a2958727eab41e38c87e2c7e93dc14135ff921438efee0'
    #0001-Run-on-port-5005.patch \

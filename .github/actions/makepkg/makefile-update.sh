@@ -38,10 +38,10 @@ if [ "$INPUT_REBUILDALL" = 1 ] || [ -z "$INPUT_PACKAGES" ]; then
 else
     echo "Updating SRCINFO for packages: $INPUT_PACKAGES"
     for pkg in $INPUT_PACKAGES; do
-        # the $pkg may not end with `PKGBUILD`, so we need to append it
-        if [ "${pkg: -9}" != "PKGBUILD" ]; then
-            pkg="$pkg/PKGBUILD"
-        fi
+        # # the $pkg may not end with `PKGBUILD`, so we need to append it
+        # if [ "${pkg: -9}" != "PKGBUILD" ]; then
+        #     pkg="$pkg/PKGBUILD"
+        # fi
         echo "Processing $WORKDIR/$pkg"
         ensure_srcinfo "$WORKDIR/$pkg" 1
     done
