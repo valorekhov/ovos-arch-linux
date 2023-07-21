@@ -78,16 +78,51 @@ jobs:
       has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
       pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
 
-  update-srcinfos:
+  # Because running QEMU builds on GitHub Actions is slow as molasses AND because the project's
+  # python packages are predominantly built for the `any` architecture, we will first build
+  # the x86_64 target and then distribute any `any` packages to the other architectures. 
+  # This stage will filter out `any` packages and will pass down native packages to the next stage(s)
+  package-build-amd64:
     needs: check
     if: needs.check.outputs.has_PKGBUILD_changes == 'true'
     runs-on: ubuntu-latest
     name: Bulk SRCINFO update task
-    strategy:
-      matrix:
-        arch: ['x86_64', 'aarch64']
     steps:
-    - name: "Build on ${{ matrix.arch }}"
+    - name: "Checkout repository"
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+    - name: "Download repo from Azure Blob Storage"
       run: |
-        echo "Updating SRCINFO files for arch ${{ matrix.arch }}..."
+        echo "Downloading repo DB..."
+        mkdir -p .repo/{x86_64,aarch64}        
+        wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/x86_64/ovos-arch.db.tar.gz -O .repo/x86_64/ovos-arch.db.tar.gz
+        wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/aarch64/ovos-arch.db.tar.gz -O .repo/aarch64/ovos-arch.db.tar.gz
+        cp .repo/x86_64/ovos-arch.db.tar.gz .repo/x86_64/ovos-arch.db.tar.gz.bak
+        cp .repo/aarch64/ovos-arch.db.tar.gz .repo/aarch64/ovos-arch.db.tar.gz.bak
+    - name: "Build on x86_64"
+      uses: ./.github/actions/makepkg
+      with:
+        operation: repo-build
+        packages: ${{ needs.check.outputs.pkgbuilds }}
+        rebuildall: false
+    - name: "Upload packages"
+      run: |
+        ls -la .repo/x86_64
+        ls -la .repo/aarch64
+    outputs:
+      has_PKGBUILD_changes: "false"
+      pkgbuilds: ${{ needs.check.outputs.pkgbuilds }}
+
+  package-build-arm:
+    needs: package-build-amd64
+    if: needs.package-build-amd64.outputs.has_PKGBUILD_changes == 'true'
+    runs-on: ubuntu-latest
+    name: Bulk SRCINFO update task
+    # strategy:
+    #   matrix:
+    #     arch: ['aarch64']
+    steps:
+    - name: "Building aarch64" # "Build on ${{ matrix.arch }}"
+      run: |
         echo "TODO....."
