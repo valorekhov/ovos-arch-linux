@@ -1,12 +1,12 @@
 pkgbase = ovos-dashboard
-	pkgdesc = OpenVoiceOS Dashboard Application
+	pkgdesc = DEPRECATED: OpenVoiceOS Dashboard Application
 	pkgver = 0.0.1
 	pkgrel = 0
 	url = https://github.com/OpenVoiceOS/OVOS-Dashboard
 	arch = x86_64
 	arch = aarch64
 	arch = armv7h
-	license = 
+	license = Apache License 2.0
 	source = https://github.com/OpenVoiceOS/OVOS-Dashboard/archive/0e311a5ca9aeaa19bcc8a3aec83fb254dc30c152.tar.gz
 	source = 0001-Run-on-port-5005.patch
 	source = ovos-dashboard@.service
