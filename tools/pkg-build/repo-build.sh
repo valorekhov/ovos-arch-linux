@@ -2,7 +2,9 @@ REPO_DIR=${1%/}
 REPO_ARCH=$(basename "$REPO_DIR")
 REPO_NAME="ovos-arch"
 LOCAL_PACMAN=${2:-"$REPO_DIR/../pacman-wrapper-$(uname -m).sh"}
-REPO_DB_FILE="$REPO_DIR/${3:-$REPO_NAME.db.tar.gz}"
+REPO_DB_NAME=${3:-$REPO_NAME.db.tar.gz}
+REPO_DB_FILE="$REPO_DIR/$REPO_DB_NAME"
+ARM_ARCHS=("aarch64") #"armv7h")
 
 PKGVER=$(grep -m1 "pkgver =" ".SRCINFO" | sed 's/.*pkgver = //g')
 PKGREL=$(grep -m1 "pkgrel =" ".SRCINFO" | sed 's/.*pkgrel = //g')
@@ -12,70 +14,87 @@ PKG_BASE=$(grep "pkgbase =" ".SRCINFO" | sed 's/pkgbase = //g')
 
 echo "$PKG_NAMES"
 
-DO_BUILD=false
 if test -f "$REPO_DB_FILE" ; then
     for PKGNAME in $PKG_NAMES; do
-        echo "##### Checking if $PKGNAME-$PKGVER-$PKGREL is in the $REPO_ARCH repo"
-        
-        if tar -tf "$REPO_DB_FILE" | grep -m1 -qF "$PKGNAME-$PKGVER-$PKGREL" ; then
+        echo "##### Checking if $PKGNAME-$PKGVER-$PKGREL is already stored in local or online repos"
+        if [ "$SKIP_LOCAL_PKG_CHECK" != 1 ] && tar -tf "$REPO_DB_FILE" | grep -m1 -qF "$PKGNAME-$PKGVER-$PKGREL" ; then
             echo " ...... $PKGNAME-$PKGVER-$PKGREL exists in the DB"
+            exit 0
         else
+            # Now, if $ONLINE_REPO_URI is defined, let's using pacman if the exact version of the package is already in the online repo
+            # This is mostly needed to speed up CI builds where we only need to re-buidl the specific package targets that have changed
+            # In this case, target dependencies will be pulled from the online repo, while the target will be built locally
+            if [ -n "$ONLINE_REPO_URI" ] ; then
+                echo " ...... Checking if $PKGNAME-$PKGVER-$PKGREL is in the online repo: $ONLINE_REPO_URI"
+                "$LOCAL_PACMAN" -Sl "$REPO_NAME" | grep -m1 -qF "$PKGNAME $PKGVER-$PKGREL" && echo " ...... and it is found. Skipping build" && exit 0
+            fi
             echo " ...... $PKGNAME-$PKGVER-$PKGREL is not found. Will rebuild the entire (split) package."
-            DO_BUILD=true
         fi
-        # echo "DO_BUILD=$DO_BUILD"
     done
 else
     echo "##### No DB file NOT found: $REPO_DB_FILE"
-    DO_BUILD=true
 fi
 
-if $DO_BUILD ; then
-    # if PKG_ARCH array does not contain the current architecture or 'any', skip the build
-    if ! echo "$PKG_ARCH" | grep -qE "(any|$(uname -m))" ; then
-        echo "##### Skipping build for $(uname -m) as arch is not supported"
-        exit 0
-    fi
+# if PKG_ARCH array does not contain the current architecture or 'any', skip the build
+if ! echo "$PKG_ARCH" | grep -qE "(any|$(uname -m))" ; then
+    echo "##### Skipping build for $(uname -m) as arch is not supported"
+    exit 0
+fi
 
-    # If REPO_ARCH is not x86_64, AND the package arch is 'any', AND we are not building a split package (PKG_NAMES length is 1)
-    # check if the package is already built for x86_64, in which case we can copy it here and skip the build
-
-    if [ "$REPO_ARCH" != "x86_64" ] && [ $(echo "$PKG_NAMES" | wc -w) -eq 1 ] && [ -f "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{zst,xz}" ] ; then
-        echo " ...... $PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{zst,xz} exists in the x86_64 repo. Copying it here and skipping the build"
-        cp "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{zst,xz}" "$REPO_DIR/"
-        cp "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{xst,xz}.sig" "$REPO_DIR/" || true
-    else
-        MAKEFLAGS="-j$(nproc)" PACMAN="$LOCAL_PACMAN" makepkg --syncdeps --noconfirm --force || exit 13
-    fi
-
-    zst_files=( *.pkg.tar.zst )
-    xz_files=( *.pkg.tar.xz )
-    if (( ${#zst_files[@]} )) ; then
-        cp *.pkg.tar.{zst,zst.sig} $REPO_DIR || true
-        for pkg in *.pkg.tar.zst; do
-            echo "##### Adding $pkg to the DB: $REPO_DB_FILE"
-            repo-add "$REPO_DB_FILE" "$REPO_DIR/$pkg"
-            rm $pkg
-        done
-    elif (( ${#xz_files[@]} )) ; then
-        cp *.pkg.tar.{xz,xz.sig} $REPO_DIR || true
-        for pkg in *.pkg.tar.zst; do
-            echo "##### Adding $pkg to the DB: $REPO_DB_FILE"
-            repo-add "$REPO_DB_FILE" "$REPO_DIR/$pkg"
-            rm $pkg
-        done
-    else
-        echo "##### No *.pkg.tar.zst or *.pkg.tar.xz found"
-        exit 1
-    fi
-
-
-    if test -f "$LOCAL_PACMAN" ; then
-            echo "##### Updating system-wide packages"
-            sudo "$LOCAL_PACMAN" -Syy 
-    fi
-
-    echo "#####  Package successfully built and added to the repo"
+# If REPO_ARCH is not x86_64, AND the package arch is 'any', AND we are not building a split package (PKG_NAMES length is 1)
+# check if the package is already built for x86_64, in which case we can copy it here and skip the build
+if [ "$REPO_ARCH" != "x86_64" ] && [ $(echo "$PKG_NAMES" | wc -w) -eq 1 ] && [ -f "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{zst,xz}" ] ; then
+    echo " ...... $PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{zst,xz} exists in the x86_64 repo. Copying it here and skipping the build"
+    cp "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{zst,xz}" "$REPO_DIR/"
+    cp "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{xst,xz}.sig" "$REPO_DIR/" || true
 else
-    echo "#####  Nothing to do"
+    MAKEFLAGS="-j$(nproc)" PACMAN="$LOCAL_PACMAN" makepkg --syncdeps --noconfirm --force || exit 13
 fi
+
+add_to_repo() {
+    local repodir="$1"
+    local pkg="$2"
+
+    if [ -f "$repodir/$REPO_DB_NAME" ] ; then
+        echo "##### Adding $pkg to the DB: $repodir/$pkg"
+        cp -v $pkg $repodir
+        cp -v $pkg.sig $repodir || true
+        repo-add "$repodir/$REPO_DB_NAME" "$repodir/$pkg"
+    else
+        echo "##### $pkg not found in source package DB $repodir/$REPO_DB_NAME"
+    fi
+}
+
+pkg_files=( *.pkg.tar.zst )
+pkg_files+=( *.pkg.tar.xz )
+if (( ${#pkg_files[@]} )) ; then
+    for pkg in $pkg_files; do
+        add_to_repo "$REPO_DIR" "$pkg"
+        # If we are building on/for x86_64, and the package is 'any', and if $REPO_DIR../{$ARM_ARCHS} exists, 
+        # Distribute the new 'any' arcihtecture package to hose ARM repos as well so as to speed up CI builds.
+        # This is the inverse of the above check for local builds, where we check if the package is already built for x86_64
+        # and pull it from there if it exists
+        if [ "$REPO_ARCH" = "x86_64" ] && [[ "$pkg" == *"-any.pkg.tar."* ]] ; then
+            for arch in "${ARM_ARCHS[@]}" ; do
+                if [ -d "$REPO_DIR/../$arch" ] ; then
+                    # echo "##### Also distributing $pkg to $arch"
+                    add_to_repo "$REPO_DIR/../$arch" "$pkg"
+                fi
+            done
+        fi
+        rm $pkg
+    done
+else
+    echo "##### No *.pkg.tar.zst or *.pkg.tar.xz found"
+    exit 1
+fi
+
+# If $LOCAL_PACMAN is defined, and $ONLINE_REPO_URI is not defined, update the system-wide packages.
+# In the event that $ONLINE_REPO_URI is defined, pacman conf will be pointing to the online repo, 
+# and the local $REPO_DIR will not be used for package search & installation, so there is no point in updating the system-wide packages
+if [ -f "$LOCAL_PACMAN" ] && [ -z "$ONLINE_REPO_URI" ] ; then
+        echo "##### Updating system-wide packages"
+        sudo "$LOCAL_PACMAN" -Syy 
+fi
+
+echo "#####  Package successfully built and added to the repo"

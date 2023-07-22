@@ -8,7 +8,7 @@ pkgrel=1
 pkgdesc='helper package to interact with mycroft config'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-config/'
-license=('')
+license=('Apache License 2.0')
 depends=(python \
 'python-combo-lock' \
 'python-ovos-utils' \

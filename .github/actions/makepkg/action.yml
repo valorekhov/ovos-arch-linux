@@ -22,6 +22,10 @@ inputs:
     description: 'Rebuild all .SRCINFOs and/or packages without regard to modification status'
     required: false
     default: ''
+  repourl:
+    description: 'The URL of the repository online to use as a source of prebuilt packages'
+    required: false
+    default: ''
   
 
 runs:

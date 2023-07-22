@@ -6,6 +6,12 @@ REPO_ROOT := $(WORKSPACE_DIR)/.repo
 REPO_DIR := $(REPO_ROOT)/$(ARCH)
 PACMAN_CONF := $(REPO_ROOT)/pacman-$(ARCH).conf
 
+ifneq (, $(ONLINE_REPO_URI))
+	REPO_URI := "$(ONLINE_REPO_URI)/$(ARCH)"
+else
+	REPO_URI := "file:///$(REPO_DIR)"
+endif
+
 ifeq ($(MODE), repo)
 	RUN_MAKEPKG := "$(WORKSPACE_DIR)/tools/pkg-build/repo-build.sh" "$(REPO_DIR)" "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 else 
@@ -32,15 +38,25 @@ uninstall:
 
 repo: aur-repo
 	@mkdir -p "$(REPO_DIR)/"
+	@if [ ! -f "$(REPO_DIR)/ovos-arch.db.tar.gz" ]; then \
+		if [ "$(INPUT_REBUILDALL)" != 1 ] && [ -n "$(ONLINE_REPO_URI)" ] ; then \
+			wget "$(ONLINE_REPO_URI)/$(ARCH)/ovos-arch.db" -O "$(REPO_DIR)/ovos-arch.db"; \
+			wget "$(ONLINE_REPO_URI)/$(ARCH)/ovos-arch.db.tar.gz" -O "$(REPO_DIR)/ovos-arch.db.tar.gz"; \
+			if [ $(ARCH) = "x86_64" ] ; then \
+				mkdir -p "$(REPO_DIR)/../aarch64/"; \
+				wget "$(ONLINE_REPO_URI)/aarch64/ovos-arch.db" -O "$(REPO_DIR)/../aarch64/ovos-arch.db"; \
+				wget "$(ONLINE_REPO_URI)/aarch64/ovos-arch.db.tar.gz" -O "$(REPO_DIR)/../aarch64/ovos-arch.db.tar.gz"; \
+			fi; \
+		else \
+			repo-add "$(REPO_DIR)/ovos-arch.db.tar.gz"; \
+			echo "Repo created..."; \
+		fi; \
+	fi
 	@cp /etc/pacman.conf "$(PACMAN_CONF)"
-	@printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = file:///$(REPO_DIR)" >> $(PACMAN_CONF)
+	@printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = $(REPO_URI)" >> $(PACMAN_CONF)
 	@cp "$(WORKSPACE_DIR)/tools/pkg-build/pacman-wrapper.sh" "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 	@sed -i 's|/etc/pacman.conf|$(PACMAN_CONF)|g' "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 	@chmod +x "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
-ifeq (, $(wildcard $(REPO_DIR)/ovos-arch.db.tar.gz))
-	@repo-add "$(REPO_DIR)/ovos-arch.db.tar.gz"
-	@echo "Repo created..."
-endif
 
 sync-repo:
 	@"$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh" -Syy 

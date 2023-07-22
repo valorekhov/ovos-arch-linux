@@ -93,6 +93,7 @@ jobs:
       with:
         fetch-depth: 1
     - name: "Download repo from Azure Blob Storage"
+      if: false
       run: |
         echo "Downloading repo DB..."
         mkdir -p .repo/{x86_64,aarch64}        
@@ -106,6 +107,7 @@ jobs:
         operation: repo-build
         packages: ${{ needs.check.outputs.pkgbuilds }}
         rebuildall: false
+        repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
     - name: "Upload packages"
       run: |
         ls -la .repo/x86_64
