@@ -12,18 +12,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 2
-      - uses: nrwl/last-successful-commit-action@v1
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
         id: last_successful_commit
         with:
-          branch: 'main'
-          workflow_id: 'update-makefile.yml'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          main-branch-name: 'main'
+          workflow-id: 'update-makefile.yml'
+          #github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check for changes in PKGBUILD folders
         id: check_assets
         run: |
-          last_successful_commit="${{ steps.last_successful_commit.outputs.commit_hash }}"
+          last_successful_commit="${{ steps.last_successful_commit.outputs.base }}"
 
           commit_message=$(git log -1 --pretty=%B)
           if [[ $commit_message =~ "\#NoRebuild" ]]; then
@@ -36,7 +36,6 @@ jobs:
           git diff --name-only "${last_successful_commit}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
             echo "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
-            # The task will also output the list of PKGBUILDs paths as `set-output` variable encoded in json array
             pkgbuilds=()
             while IFS= read -r file; do
               pkgbuilds+=("$file")
