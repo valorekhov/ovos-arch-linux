@@ -23,8 +23,6 @@ jobs:
       - name: Check for changes in PKGBUILD folders
         id: check_assets
         run: |
-          last_successful_commit="{{ steps.last_successful_commit.outputs.base }}"
-
           commit_message=$(git log -1 --pretty=%B)
           if [[ $commit_message =~ "\#NoRebuild" ]]; then
             echo "Skipping PKGBUILDs check due to #NoRebuild or [No Rebuild] in commit message"
@@ -33,7 +31,7 @@ jobs:
             exit 0
           fi
 
-          git diff --name-only "${last_successful_commit}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
+          git diff --name-only "${{ steps.last_successful_commit.outputs.base }}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
             echo "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
             pkgbuilds=()
@@ -47,7 +45,7 @@ jobs:
             echo "pkgbuilds=$json"
             echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
           fi
-          if git diff --name-only '${last_successful_commit}..HEAD' -- aur.lock | grep -q 'aur.lock'; then
+          if git diff --name-only '${{ steps.last_successful_commit.outputs.base }}..HEAD' -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
             make aur-lock
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
