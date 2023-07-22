@@ -23,7 +23,7 @@ jobs:
       - name: Check for changes in PKGBUILD folders
         id: check_assets
         run: |
-          last_successful_commit="${{ steps.last_successful_commit.outputs.base }}"
+          last_successful_commit="{{ steps.last_successful_commit.outputs.base }}"
 
           commit_message=$(git log -1 --pretty=%B)
           if [[ $commit_message =~ "\#NoRebuild" ]]; then
