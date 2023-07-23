@@ -136,8 +136,8 @@ jobs:
       with:
         azcliversion: 2.50.0
         inlineScript: |
-          az storage blob upload-batch --auth-mode key --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
-          az storage blob upload-batch --auth-mode key --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+          az storage blob upload-batch --account-key "${AZURE_STORAGE_KEY}" --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
+          az storage blob upload-batch --account-key "${AZURE_STORAGE_KEY}" --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
       env:
         AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
 
@@ -147,8 +147,8 @@ jobs:
       with:
         azcliversion: 2.50.0
         inlineScript: |
-          az storage blob upload-batch --auth-mode key --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite 
-          az storage blob upload-batch --auth-mode key --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+          az storage blob upload-batch --account-key "${AZURE_STORAGE_KEY}" --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite 
+          az storage blob upload-batch --account-key "${AZURE_STORAGE_KEY}" --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
       env:
         AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
 
