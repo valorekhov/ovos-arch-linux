@@ -189,11 +189,13 @@ jobs:
       id: select_native_arm_packages
       run: |  
         native_pkgbuilds=()
+        original_pkgbuilds=($(echo "${{ fromJson(needs.check.outputs.pkgbuilds) }}" | jq -r '.[]'))
+        echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
         cd .repo/aarch64/
         for pkg in *-any.pkg.tar.*; do
           pkgname=$(echo $pkg | rev | cut -d'-' -f3- | rev)
           echo "pkgname=$pkgname"
-          for entry in $(echo "${{ fromJson(needs.check.outputs.pkgbuilds) }}"); do
+          for entry in $original_pkgbuilds ; do
             echo "entry=$entry, pkgname=$pkgname"
             if [[ $entry == *"/$pkgname/"* ]]; then
               echo "$entry has already been built for ARM, skipping..."
