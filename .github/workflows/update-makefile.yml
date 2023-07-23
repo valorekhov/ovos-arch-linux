@@ -192,18 +192,25 @@ jobs:
         original_pkgbuilds=($(echo '${{ needs.check.outputs.pkgbuilds }}' | jq -r '.[]'))
         echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
         cd .repo/aarch64/
-        for pkg in *-any.pkg.tar.*; do
-          pkgname=$(echo $pkg | rev | cut -d'-' -f3- | rev)
-          echo "pkgname=$pkgname"
-          for entry in $original_pkgbuilds ; do
-            echo "entry=$entry, pkgname=$pkgname"
-            if [[ $entry == *"/$pkgname/"* ]]; then
-              echo "$entry has already been built for ARM, skipping..."
-            else
-              native_pkgbuilds+=($entry)
-            fi
+        pkgfiles=( *-any.pkg.tar.* )
+        if (( ${#pkg_files[@]} )); then
+          echo "pkgfiles='${pkgfiles[@]}'"
+          for pkg in $pkgfiles ; do
+            echo "pkg=$pkg"
+            pkgname=$(echo $pkg | rev | cut -d'-' -f3- | rev)
+            echo "pkgname=$pkgname"
+            for entry in $original_pkgbuilds ; do
+              echo "entry=$entry, pkgname=$pkgname"
+              if [[ $entry == *"/$pkgname/"* ]]; then
+                echo "$entry has already been built for ARM, skipping..."
+              else
+                native_pkgbuilds+=($entry)
+              fi
+            done
           done
-        done
+        else
+          echo "Did not find any package files..."
+        fi
         echo "pkgbuilds='${native_pkgbuilds[@]}'"
         echo "pkgbuilds='${native_pkgbuilds[@]}'" >> $GITHUB_OUTPUT
 
