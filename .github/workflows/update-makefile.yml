@@ -211,8 +211,8 @@ jobs:
         else
           echo "Did not find any package files..."
         fi
-        echo "pkgbuilds='${native_pkgbuilds[@]}'"
-        echo "pkgbuilds='${native_pkgbuilds[@]}'" >> $GITHUB_OUTPUT
+        echo "pkgbuilds=${native_pkgbuilds[@]}"
+        echo "pkgbuilds=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
 
     outputs:
       pkgbuilds: ${{ steps.select_native_arm_packages.outputs.pkgbuilds }}
