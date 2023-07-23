@@ -51,6 +51,16 @@ jobs:
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
 
+      # Restore the cache, if available
+      - name: Restore Docker cache
+        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
+        uses: actions/cache@v3
+        with:
+          path: ~/.docker
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
       - name: Check for changes in Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         uses: ./.github/actions/makepkg
@@ -58,6 +68,14 @@ jobs:
           operation: makefile-update
           packages: ${{ steps.check_assets.outputs.pkgbuilds }}
           rebuildall: false
+
+      # Save the Docker cache for future runs
+      - name: Save Docker cache
+        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
+        uses: actions/cache@v2
+        with:
+          path: ~/.docker
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
 
       - name: Rebuild Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
@@ -111,6 +129,14 @@ jobs:
         wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/aarch64/ovos-arch.db.tar.gz -O .repo/aarch64/ovos-arch.db.tar.gz
         cp .repo/x86_64/ovos-arch.db.tar.gz .repo/x86_64/ovos-arch.db.tar.gz.bak
         cp .repo/aarch64/ovos-arch.db.tar.gz .repo/aarch64/ovos-arch.db.tar.gz.bak
+    # Restore the cache, if available
+    - name: Restore Docker cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.docker
+        key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
     - name: "Build on x86_64"
       uses: ./.github/actions/makepkg
       with:
@@ -151,13 +177,40 @@ jobs:
           az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
       env:
         AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"
+
+    # At this point the .repo/aarch64/ folder will possibly contain -any.pkg.tar.{zst,xz} files
+    # We need to filter out the -any packages from the `needs.check.outputs.pkgbuilds` array
+    # and pass down the native packages to the next stage. 
+    # The pkgbuilds string contains entries in the format PKGBUILDs{,-extra}/<package_name>/PKGUILD 
+    # separated by spaces.
+    # We iterate over -any.pkg.tar.{zst,xz} files extracting <package_name>, which ends before
+    # the third dash counting from the end of the filename.
+    - name: "Select native ARM packages to build"
+      id: select_native_arm_packages
+      run: |  
+        native_pkgbuilds=()
+        for pkg in .repo/aarch64/*-any.pkg.tar.*; do
+          pkgname=$(echo $pkg | rev | cut -d'-' -f3- | rev)
+          echo "pkgname=$pkgname"
+          for entry in $(echo "${{ needs.check.outputs.pkgbuilds }}"); do
+            echo "entry=$entry, pkgname=$pkgname"
+            if [[ $entry == *"/$pkgname/"* ]]; then
+              echo "$entry has already been built for ARM, skipping..."
+            else
+              native_pkgbuilds+=($entry)
+            fi
+          done
+        done
+        echo "pkgbuilds='${native_pkgbuilds[@]}'"
+        echo "pkgbuilds='${native_pkgbuilds[@]}'" >> $GITHUB_OUTPUT
+
     outputs:
       has_PKGBUILD_changes: "false"
       pkgbuilds: ${{ needs.check.outputs.pkgbuilds }}
 
   package-build-arm:
     needs: package-build-amd64
-    if: needs.package-build-amd64.outputs.has_PKGBUILD_changes == 'true'
+    if: needs.package-build-amd64.outputs.pkgbuilds != ''
     runs-on: ubuntu-latest
     name: Build ARM packages
     # strategy:
@@ -166,4 +219,5 @@ jobs:
     steps:
     - name: "Building aarch64" # "Build on ${{ matrix.arch }}"
       run: |
+        echo "Building for aarch64: ${{ needs.package-build-amd64.outputs.pkgbuilds }}"
         echo "TODO....."
