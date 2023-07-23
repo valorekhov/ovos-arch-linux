@@ -182,17 +182,18 @@ jobs:
     # We need to filter out the -any packages from the `needs.check.outputs.pkgbuilds` array
     # and pass down the native packages to the next stage. 
     # The pkgbuilds string contains entries in the format PKGBUILDs{,-extra}/<package_name>/PKGUILD 
-    # separated by spaces.
+    # encoded as a JSON array.
     # We iterate over -any.pkg.tar.{zst,xz} files extracting <package_name>, which ends before
     # the third dash counting from the end of the filename.
     - name: "Select native ARM packages to build"
       id: select_native_arm_packages
       run: |  
         native_pkgbuilds=()
-        for pkg in .repo/aarch64/*-any.pkg.tar.*; do
+        cd .repo/aarch64/
+        for pkg in *-any.pkg.tar.*; do
           pkgname=$(echo $pkg | rev | cut -d'-' -f3- | rev)
           echo "pkgname=$pkgname"
-          for entry in $(echo "${{ needs.check.outputs.pkgbuilds }}"); do
+          for entry in $(echo "${{ fromJson(needs.check.outputs.pkgbuilds) }}"); do
             echo "entry=$entry, pkgname=$pkgname"
             if [[ $entry == *"/$pkgname/"* ]]; then
               echo "$entry has already been built for ARM, skipping..."
