@@ -95,7 +95,7 @@ jobs:
     needs: check
     if: needs.check.outputs.has_PKGBUILD_changes == 'true'
     runs-on: ubuntu-latest
-    name: Build x86_64 packages
+    name: Build `x86_64` native and `any` arch packages
     steps:
     - name: "Checkout repository"
       uses: actions/checkout@v3
@@ -136,16 +136,21 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "ovos-arch.db*" --content-encoding "gzip"
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "*.pkg.tar.*" --content-encoding "gzip"
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token "$OVOS_STORAGE_SAS_TOKEN" --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "ovos-arch.db*" --content-encoding "gzip"
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token "$OVOS_STORAGE_SAS_TOKEN" --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "*.pkg.tar.*" --content-encoding "gzip"
+        env:
+          OVOS_STORAGE_SAS_TOKEN: ${{ secrets.OVOS_STORAGE_SAS }}
 
     - name: "Upload x86_64 packages to Azure Blob Storage"
       if: steps.identify_available_packages.outputs.upload_aarch64 == 'true'
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "ovos-arch.db*" --content-encoding "gzip"
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path aarch64 f--source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip"
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token "$OVOS_STORAGE_SAS_TOKEN" --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "ovos-arch.db*" --content-encoding "gzip"
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token "$OVOS_STORAGE_SAS_TOKENffffff" --destination ovos-arch --destination-path aarch64 f--source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip"
+        env:
+          OVOS_STORAGE_SAS_TOKEN: ${{ secrets.OVOS_STORAGE_SAS }}
+
     
     outputs:
       has_PKGBUILD_changes: "false"
