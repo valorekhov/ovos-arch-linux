@@ -66,6 +66,7 @@ jobs:
         shell: pwsh
 
       - name: Commit changes
+        id: commit_changes
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         run: |
           git config --local user.email "ovos-arch-buildbot@noemail.local"
@@ -75,7 +76,8 @@ jobs:
           git push
 
           # Update the last successful commit hash
-          echo "last_successful_commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "current_commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "current_commit=$(git rev-parse HEAD)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -83,7 +85,7 @@ jobs:
       has_PKGBUILD_changes: ${{ steps.check_assets.outputs.has_PKGBUILD_changes }}
       has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
       pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
-      commit_hash: ${{ steps.rebuild_makefile.outputs.last_successful_commit }}
+      commit_hash: ${{ steps.commit_changes.outputs.current_commit }}
 
   # Because running QEMU builds on GitHub Actions is slow as molasses AND because the project's
   # python packages are predominantly built for the `any` architecture, we will first build
@@ -116,10 +118,35 @@ jobs:
         packages: ${{ needs.check.outputs.pkgbuilds }}
         rebuildall: false
         repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
-    - name: "Upload packages"
+    - name: "Preparing packages"
+      id: identify_available_packages
       run: |
         ls -la .repo/x86_64
         ls -la .repo/aarch64
+
+        if ls .repo/x86_64/*.pkg.tar.* 1> /dev/null 2>&1 ; then
+          echo "upload_x86_64=true" >> $GITHUB_OUTPUT
+        fi
+        if ls .repo/aarch64/*.pkg.tar.* 1> /dev/null 2>&1 ; then
+          echo "upload_aarch64=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: "Upload x86_64 packages to Azure Blob Storage"
+      if: steps.identify_available_packages.outputs.upload_x86_64 == 'true'
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "ovos-arch.db*" --content-encoding "gzip"
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "*.pkg.tar.*" --content-encoding "gzip"
+
+    - name: "Upload x86_64 packages to Azure Blob Storage"
+      if: steps.identify_available_packages.outputs.upload_aarch64 == 'true'
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "ovos-arch.db*" --content-encoding "gzip"
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --sas-token ${{ secrets.OVOS_STORAGE_SAS }} --destination ovos-arch --destination-path aarch64 f--source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip"
+    
     outputs:
       has_PKGBUILD_changes: "false"
       pkgbuilds: ${{ needs.check.outputs.pkgbuilds }}
