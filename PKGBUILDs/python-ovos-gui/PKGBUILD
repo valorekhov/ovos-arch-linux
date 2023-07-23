@@ -5,7 +5,7 @@ _name=ovos-gui
 _unit_name="ovos-gui-messagebus"
 _base_ver='502dec01d0055c54998280ffaa76d5f54961173f'
 pkgver=0.0.3a2
-pkgrel=4
+pkgrel=5
 pkgdesc='GUI messagebus service, manages GUI state
 and implements the gui protocol'
 arch=('any')

@@ -193,7 +193,7 @@ jobs:
         echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
         cd .repo/aarch64/
         pkgfiles=( *-any.pkg.tar.* )
-        if (( ${#pkg_files[@]} )); then
+        if (( ${#pkgfiles[@]} )); then
           echo "pkgfiles='${pkgfiles[@]}'"
           for pkg in $pkgfiles ; do
             echo "pkg=$pkg"
@@ -215,8 +215,7 @@ jobs:
         echo "pkgbuilds='${native_pkgbuilds[@]}'" >> $GITHUB_OUTPUT
 
     outputs:
-      has_PKGBUILD_changes: "false"
-      pkgbuilds: ${{ needs.check.outputs.pkgbuilds }}
+      pkgbuilds: ${{ needs.select_native_arm_packages.outputs.pkgbuilds }}
 
   package-build-arm:
     needs: package-build-amd64
