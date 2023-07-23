@@ -197,7 +197,7 @@ jobs:
           echo "pkgfiles='${pkgfiles[@]}'"
           for pkg in $pkgfiles ; do
             echo "pkg=$pkg"
-            pkgname=$(echo $pkg | rev | cut -d'-' -f3- | rev)
+            pkgname=$(echo $pkg | rev | cut -d'-' -f4- | rev)
             echo "pkgname=$pkgname"
             for entry in $original_pkgbuilds ; do
               echo "entry=$entry, pkgname=$pkgname"
@@ -215,7 +215,7 @@ jobs:
         echo "pkgbuilds='${native_pkgbuilds[@]}'" >> $GITHUB_OUTPUT
 
     outputs:
-      pkgbuilds: ${{ needs.select_native_arm_packages.outputs.pkgbuilds }}
+      pkgbuilds: ${{ steps.select_native_arm_packages.outputs.pkgbuilds }}
 
   package-build-arm:
     needs: package-build-amd64
