@@ -1,0 +1,54 @@
+name: Daily PKGBUILD Version Update
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  scan_and_update_versions:
+    name: Scan and Update PKGBUILD Versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Update Versions
+        id: update_versions
+        run: |
+          $pkgbuilds = (Get-ChildItem -Path "$RepoRoot/PKGBUILDs/*/PKGBUILD" -Recurse)
+          foreach ($pkgbuild in $pkgbuilds) {
+            ./tools/dep-updates/check-for-repo-changes.ps1 -Path $pkgbuild.FullName
+          }
+        shell: pwsh
+
+      - name: Update PKGBUILDs
+        id: update_pkgbuilds
+        run: |
+          $pkgbuilds = (Get-ChildItem -Path "$RepoRoot/PKGBUILDs/*/PKGBUILD" -Recurse)
+          foreach ($pkgbuild in $pkgbuilds) {
+            ./tools/dep-updates/update-pkgbuild-dependencies.ps1 -Path $pkgbuild.FullName
+            
+            # Commit the changes to PKGBUILD
+            git add $pkgbuild_file
+            git commit -m "Update $pkgbuild_file to version $latest_version"
+          }
+        shell: pwsh
+
+      - name: Push Changes
+        run: git push origin HEAD
+        shell: pwsh
+
+      - name: Create Pull Requests
+        run: |
+          $srcinfoFiles = Get-Content srcinfo_files.txt
+          foreach ($srcinfo_file in $srcinfoFiles) {
+            $pkgver = Select-String -Path $srcinfo_file -Pattern 'pkgver = (\S+)' | ForEach-Object { $_.Matches.Groups[1].Value }
+
+            # Create a pull request for each updated .SRCINFO file
+            gh pr create --base main --head (git rev-parse --abbrev-ref HEAD) --title "Update $srcinfo_file to version $pkgver"
+          }
+        shell: pwsh

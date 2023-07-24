@@ -1,4 +1,4 @@
-name: "Arch package action(s)"
+name: "Arch makepkg action(s)"
 description: "GitHub Action to run Arch Linux's package tools"
 author: 'valorekhov'
 branding:
