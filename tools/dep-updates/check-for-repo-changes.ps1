@@ -1,17 +1,15 @@
 param(
     [Parameter(Mandatory = $true)]
-    [System.IO.FileInfo]$Path
+    [System.IO.FileInfo]$Path, 
+    [Parameter(Mandatory = $true)]
+    [System.Collections.Hashtable]$PackageMap
 )
 
 Import-Module $PSScriptRoot/../config-parser.psm1
 Import-Module $PSScriptRoot/../python-module-utils.psm1
 
-# Canonicalized repo root
-$RepoRoot = (Get-Item -Path "$PSScriptRoot/../..").FullName
-$PackageMap = Get-ParsedConfig -Path "$RepoRoot/package-map.txt"
-
 function Get-VersionInformation([System.IO.FileInfo]$path){
-    $dir = if ( (Get-Item $path) -is  [System.IO.DirectoryInfo] ) { $path.Directory.FullName } else { $path.FullName }
+    $dir = if ( (Get-Item $path) -is  [System.IO.DirectoryInfo] ) { $path.FullName } else { $path.Directory.FullName }
     $pkgbuild = if ( (Get-Item $path) -is  [System.IO.DirectoryInfo] ) { Join-Path $path.FullName "PKGBUILD" } else { $path.FullName }
     $srcInfo = "$dir/.SRCINFO"
     $pkgver = Select-String -Path $srcInfo -Pattern 'pkgver = (\S+)' | ForEach-Object { $_.Matches.Groups[1].Value }
@@ -31,31 +29,40 @@ function Get-VersionInformation([System.IO.FileInfo]$path){
 function Get-GithubRelease([string]$url){
     # Extract GitHub organization and repository name from the URL
     $res = $url -match 'https://github.com/([^/]+)/([^/]+)'
+    if (-not $res)
+    {
+        Write-Host "Unable to parse GitHub organization and repository name from URL '$url'" -ForegroundColor Red
+        return
+    }
+
     $org = $Matches[1]
     $repo = $Matches[2] 
 
-    # Extract GitHub organization and repository name from the URL
-    if (-not $res)
-    {
-        Write-Error "Unable to parse GitHub organization and repository name from URL '$url'"
-        exit 1
-    }
 
-    Write-Host "Checking '$org' for current version information on '$repo'" -ForegroundColor Cyan
+    Write-Host "Checking '$org' for current version information on '$repo'" -ForegroundColor Green
 
     # Fetch the latest release version from the URL
     $headers = @{
         "Accept" = "application/vnd.github+json"
         "X-GitHub-Api-Version" = "2022-11-28"
-    #    "Authorization" = "Bearer ..."
     }
-    $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$org/$repo/releases/latest" -Headers $headers
+    if ($env:GITHUB_TOKEN){
+        $headers.Add("Authorization", "Bearer $env:GITHUB_TOKEN")
+    }
+
+    # Write-Host "Url: https://api.github.com/repos/$org/$repo/releases/latest"
+    try{
+        $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$org/$repo/releases/latest" -Headers $headers
+    } catch {
+        Write-Host "Unable to fetch latest release information from GitHub API. Possible missing release?" -ForegroundColor Red
+        return $null
+    }
     $tagName = $release.tag_name
     $tag = Invoke-RestMethod -Uri "https://api.github.com/repos/$org/$repo/git/ref/tags/$tagName" -Headers $headers 
 
     $isPrerelease = $release.prerelease
     $isDraft = $release.draft
-    $releaseVersion = $tagName.TrimStart('v').TrimStart('V')
+    $releaseVersion = $tagName.Replace('release/', '').TrimStart('v').TrimStart('V')
 
     return @{
         'tagName' = $tagName
@@ -123,16 +130,24 @@ $($newDeps.comments)
 }
 
 $versionInfo = Get-VersionInformation $Path
-# $releaseInfo = Get-GithubRelease $versionInfo.url
-$releaseInfo = @{
-    'tagName' = 'v0.0.1'
-    'version' = '0.0.1'
-    'isPrerelease' = $false
-    'isDraft' = $false
-    'commit' = '1234567890'
-    'tarballUrl' = ''
+Write-Host "Getting release info from '$($versionInfo.url)'" -ForegroundColor Green
+$releaseInfo = Get-GithubRelease $versionInfo.url
+if ($null -eq $releaseInfo) {
+    Write-Information "No release version information found for '$Path'"
+    return @{
+        'updated' = $false
+    }
 }
+# $releaseInfo = @{
+#     'tagName' = 'v0.0.1'
+#     'version' = '0.0.1'
+#     'isPrerelease' = $false
+#     'isDraft' = $false
+#     'commit' = '1234567890'
+#     'tarballUrl' = ''
+# }
 
+$updated = $false
 if (-not $releaseInfo.isDraft -and -not $releaseInfo.isPrerelease `
         -and $versionInfo.pkgver -ne $releaseInfo.version) {
     $pkgbuild = $versionInfo.pkgbuild
@@ -156,10 +171,27 @@ if (-not $releaseInfo.isDraft -and -not $releaseInfo.isPrerelease `
         write-host "optdepends:" $newDeps.optdepends 
         write-host "comments:" $newDeps.comments
 
-        Set-PkgbuildDependencies $versionInfo.pkgbuild $newDeps
+        if ($newDeps.modules -and $newDeps.modules.Count -gt 0) {
+            Set-PkgbuildDependencies $versionInfo.pkgbuild $newDeps
+        } else {
+            Write-host "No requirements found in '$($versionInfo.pkgbase)'" -ForegroundColor Yellow
+        }
+        $updated = $true
     }
 
     # # Commit the changes to .SRCINFO
     # git add $pkgbuild
     # git commit -m "Update $pkgbuild to version $latest_version"
+}
+
+return @{
+    'pkgbase' = $versionInfo.pkgbase
+    'pkgver' = $releaseInfo.version
+    'url' = $versionInfo.url
+    'dir' = $versionInfo.dir
+    'priorVersion' = $versionInfo.pkgver
+    'latestVersion' = $releaseInfo.version
+    'isPreRelease' = $releaseInfo.isDraft -or $releaseInfo.isPrerelease
+    'commit' = $releaseInfo.commit
+    'updated' = $updated
 }
