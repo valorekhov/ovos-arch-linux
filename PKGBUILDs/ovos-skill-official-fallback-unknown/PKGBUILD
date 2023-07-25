@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-skill-fallback-unknown
 pkgname=ovos-skill-official-fallback-unknown
 _name=skill-ovos-fallback-unknown
-_commit='185f029f7777d320fb713e04b11b295c4549e103'
-pkgver=0.0.2
-pkgrel=1
+_commit='9e0634e87e74ef7e674ae95753bd34601ee42d98'
+pkgver=0.0.3
+pkgrel=00
 pkgdesc='Mycroft AI official Unknown Fallback Skill -
 used if no Intent is matched to an Utterance'
 arch=('any')
@@ -76,21 +76,5 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # skill-ovos-fallback-unknown
-# #
-# ################################################################################
-# 
-# SKILL_OVOS_FALLBACK_UNKNOWN_VERSION = 185f029f7777d320fb713e04b11b295c4549e103
-# SKILL_OVOS_FALLBACK_UNKNOWN_SITE = $(call github,OpenVoiceOS,ovos-skill-fallback-unknown,$(SKILL_OVOS_FALLBACK_UNKNOWN_VERSION))
-# SKILL_OVOS_FALLBACK_UNKNOWN_SETUP_TYPE = setuptools
-# SKILL_OVOS_FALLBACK_UNKNOWN_LICENSE_FILES = LICENSE
-# 
-# $(eval $(python-package))
-# 
-
 
 
