@@ -14,9 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
+        if: github.event_name != 'pull_request'
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Checkout repository (PR)
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
 
       - uses: nrwl/nx-set-shas@v3
         id: last_successful_commit
@@ -58,7 +66,7 @@ jobs:
             echo "pkgbuilds=$json"
             echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
           fi
-          if git diff --name-only '${base_commit}..HEAD' -- aur.lock | grep -q 'aur.lock'; then
+          if git diff --name-only "${base_commit}..HEAD" -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
             make aur-lock
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
