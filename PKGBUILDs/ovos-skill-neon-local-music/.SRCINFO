@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-neon-local-music
 	pkgdesc = Neon Skill for Local Music Playback
 	pkgver = 1.0.0
-	pkgrel = 001
+	pkgrel = 01
 	url = https://github.com/NeonGeckoCom/skill-local_music/
 	arch = any
 	license = 
