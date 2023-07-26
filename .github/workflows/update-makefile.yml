@@ -20,7 +20,7 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v3
         id: last_successful_commit
-        if: github.event_name != 'pull_request'
+        # if: github.event_name != 'pull_request'
         with:
           main-branch-name: 'main'
           workflow-id: 'update-makefile.yml'
@@ -37,11 +37,11 @@ jobs:
           fi
 
           github_event_name=$(echo $GITHUB_EVENT_NAME | tr '[:upper:]' '[:lower:]') 
-          if [ $github_event_name = "pull_request" ] ; then 
-            base_commit="main"
-          else 
+          # if [ $github_event_name = "pull_request" ] ; then 
+          #   base_commit="main"
+          # else 
             base_commit="${{ steps.last_successful_commit.outputs.base }}"
-          fi 
+          # fi 
           echo "base_commit=$base_commit"
 
           git diff --name-only "${base_commit}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
