@@ -17,6 +17,10 @@ jobs:
           git config --global user.email "ovos-arch-buildbot@noemail.local"
           git config --global user.name "OVOS Arch BuildBot"
 
+      - name: Install Dependencies
+        run: |
+          pip install build
+
       - name: Update Versions
         id: update_versions
         run: |
