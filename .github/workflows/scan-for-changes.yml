@@ -1,7 +1,8 @@
 name: Daily PKGBUILD Version Update
-on:
-  schedule:
-    - cron: "0 0 * * *"
+on: 
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 0 * * *"
 
 jobs:
   scan_and_update_versions:
