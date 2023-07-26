@@ -14,7 +14,7 @@ COPY pacstrap-docker /archlinux/
 
 RUN pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy --noconfirm 
 RUN ./pacstrap-docker /archlinux/rootfs \
-        base \
+        base base-devel \
     && (pacman -r /archlinux/rootfs -S --noconfirm archlinuxarm-keyring || true) \
     && rm -rf rootfs/var/lib/pacman/sync/*
 

@@ -2,10 +2,14 @@ param(
     [Parameter(Mandatory = $true)]
     [System.IO.FileInfo]$Path, 
     [Parameter(Mandatory = $true)]
-    [System.Collections.Hashtable]$PackageMap
+    $PackageMap
 )
 
 Import-Module "$PSScriptRoot/dep-update-utils.psm1"
+
+if ($PackageMap -is [string] -or $PackageMap -is [System.IO.FileInfo]){
+    $PackageMap = Get-ParsedConfig -Path $PackageMap
+}
 
 $versionInfo = Get-VersionInformation $Path
 Write-Host "Getting release info from '$($versionInfo.url)'" -ForegroundColor Green
@@ -17,5 +21,5 @@ if ($null -eq $releaseInfo) {
 
 if (-not $releaseInfo.isDraft -and -not $releaseInfo.isPrerelease `
 -and $versionInfo.pkgver -ne $releaseInfo.version) {
-    return Update-Pkgbuild -VersionInfo $versionInfo -ReleaseInfo $releaseInfo -PackageMap $PackageMap
+    return Update-Pkgbuild -VersionInfo $versionInfo -ReleaseInfo $releaseInfo -PackageMap $PackageMap 
 }
