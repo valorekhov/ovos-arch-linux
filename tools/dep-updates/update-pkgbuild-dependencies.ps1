@@ -31,13 +31,14 @@ foreach ($pkgbuild in $pkgbuilds) {
         continue
     }
 
-    if ($versionInfo.pkgver -eq $releaseInfo.version) {
+    $currentPkgVer = $versionInfo.pkgver
+    if ($currentPkgVer -eq $releaseInfo.version) {
         Write-Host "No update required for '$($versionInfo.pkgbase)'" -ForegroundColor Green
         continue
     }
 
-    if ($versionInfo.pkgver -gt $releaseInfo.version) {
-        Write-Host "No update required for '$($versionInfo.pkgbase)' because the package version $($versionInfo.pkgver) is greater than the latest stable release $($releaseInfo.version) " -ForegroundColor Green
+    if ($currentPkgVer -gt $releaseInfo.version) {
+        Write-Host "No update required for '$($versionInfo.pkgbase)' because the package version $($currentPkgVer) is greater than the latest stable release $($releaseInfo.version) " -ForegroundColor Green
         continue
     }
 
@@ -81,7 +82,7 @@ foreach ($pkgbuild in $pkgbuilds) {
         # Create a pull request for the commit
         gh pr create --base main `
             --head "BUMP/$pkgbase-$latestVersion-$commitSha" `
-            --title "BUMP: $pkgbase to version $pkgver [$commitSha]" `
+            --title "BUMP: $pkgbase to version $latestVersion [$commitSha]" `
             --body "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.url)`ntag: $($releaseInfo.tagName)`ncommit: $commitSha"
 
         Write-Host "Created PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
