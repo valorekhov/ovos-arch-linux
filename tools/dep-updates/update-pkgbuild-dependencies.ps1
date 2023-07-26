@@ -46,6 +46,17 @@ foreach ($pkgbuild in $pkgbuilds) {
         continue
     }
 
+    $commitSha = $releaseInfo.commit.Substring(0, 7)
+    $pkgbase = $versionInfo.pkgbase
+    $latestVersion = $releaseInfo.version
+
+    # check if a PR already exists for this version and commitSha
+    $pr = gh pr list --search "$commitSha" --json number | ConvertFrom-Json
+    if ($pr) {
+        Write-Host "PR already exists for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
+        continue
+    }
+
     $updateInfo = Update-Pkgbuild -VersionInfo $versionInfo -ReleaseInfo $releaseInfo -PackageMap $PackageMap
     
     # if (-not $updateInfo.updated) {
@@ -54,18 +65,7 @@ foreach ($pkgbuild in $pkgbuilds) {
     # }
 
     try{
-        $latestVersion = $updateInfo.latestVersion
         $dir = $pkgbuild.Directory.FullName
-        $pkgbase = $updateInfo.pkgbase
-        $commitSha = $updateInfo.commit.Substring(0, 7)
-
-        Write-Host "Checking for existing PR on version $latestVersion / $commitSha" -ForegroundColor Green
-        # check if a PR already exists for this version and commitSha
-        $pr = gh pr list --search "$commitSha" --json number | ConvertFrom-Json
-        if ($pr) {
-            Write-Host "PR already exists for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
-            continue
-        }
 
         Write-Host "Proceeding to open PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
 
