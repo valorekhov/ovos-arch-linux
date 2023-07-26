@@ -73,12 +73,14 @@ foreach ($pkgbuild in $pkgbuilds) {
         
         git push origin --set-upstream "BUMP/$pkgbase-$latestVersion-$commitSha"
 
-        # Create a pull request for each updated .SRCINFO file
+        # Create a pull request for the commit
         gh pr create --base main `
         --head "BUMP/$pkgbase-$latestVersion-$commitSha" `
         --title "BUMP: $pkgbase to version $pkgver" [$commitSha]`
         --body "BUMP $pkgbase to version $latestVersion`n`n$($commitSha)`n$($updateInfo.url)"
-        
+
+        # TODO: Uncomment this once we confirm PR creation works
+        break        
     } finally {
         git checkout main
     }
