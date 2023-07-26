@@ -1,0 +1,49 @@
+name: Build `archlinux-arm64v8:base-devel` image
+on: 
+  workflow_dispatch:
+
+jobs:
+  package-build-arm:
+    runs-on: ubuntu-latest
+    name: archlinux-arm64v8:base-devel
+    steps:
+    - name: Restore Docker cache
+      uses: actions/cache@v3
+      with:
+        path: /var/lib/docker
+        key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Check if base-devel image is cached
+      id: check-cache
+      run: |
+        if docker image ls | grep -q 'archlinux-arm64v8 base-devel'; then
+          echo "Cache hit for archlinux-arm64v8:base-devel"
+          echo "cache-hit=true" >> $GITHUB_OUTPUT
+        else
+          echo "Cache miss for archlinux-arm64v8:base-devel"
+          echo "cache-hit=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Set up QEMU
+      if: steps.check-cache.outputs.cache-hit != 'true'
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: arm64
+
+    - name: Build base-devel image if not cached
+      if: steps.check-cache.outputs.cache-hit != 'true'
+      run: |
+        wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
+        gzip -d ArchLinuxARM-aarch64-latest.tar.gz
+        docker import ArchLinuxARM-aarch64-latest.tar archlinux-arm64v8:latest
+        docker build -t archlinux-arm64v8:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
+        docker image rm archlinux-arm64v8:latest
+      
+    - name: Save Docker cache
+      if: steps.check-cache.outputs.cache-hit != 'true'
+      uses: actions/cache@v3
+      with:
+        path: /var/lib/docker
+        key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
