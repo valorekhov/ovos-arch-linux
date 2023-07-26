@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   branches:
-  #     - main
+  pull_request:
+    branches:
+      - main
 
 
 jobs:
@@ -18,16 +18,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - name: Check for PR trigger
-      #   if: github.event_name == 'pull_request'
-      #   run: echo "DISABLE_DEPLOY=true" >> $GITHUB_OUTPUT
-        
       - uses: nrwl/nx-set-shas@v3
         id: last_successful_commit
+        if: github.event_name != 'pull_request'
         with:
           main-branch-name: 'main'
           workflow-id: 'update-makefile.yml'
-          #github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check for changes in PKGBUILD folders
         id: check_assets
@@ -40,7 +36,15 @@ jobs:
             exit 0
           fi
 
-          git diff --name-only "${{ steps.last_successful_commit.outputs.base }}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
+          github_event_name=$(echo $GITHUB_EVENT_NAME | tr '[:upper:]' '[:lower:]') 
+          if "$github_event_name" = "pull_request" ; then 
+            base_commit="main"
+          else 
+            base_commit="${{ steps.last_successful_commit.outputs.base }}"
+          fi 
+          echo "base_commit=$base_commit"
+
+          git diff --name-only "${base_commit}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
             echo "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
             pkgbuilds=()
@@ -54,7 +58,7 @@ jobs:
             echo "pkgbuilds=$json"
             echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
           fi
-          if git diff --name-only '${{ steps.last_successful_commit.outputs.base }}..HEAD' -- aur.lock | grep -q 'aur.lock'; then
+          if git diff --name-only '${base_commit}..HEAD' -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
             make aur-lock
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
@@ -65,7 +69,7 @@ jobs:
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         uses: actions/cache@v3
         with:
-          path: ~/.docker
+          path: /var/lib/docker
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
             ${{ runner.os }}-docker-
@@ -83,7 +87,7 @@ jobs:
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         uses: actions/cache@v3
         with:
-          path: ~/.docker
+          path: /var/lib/docker
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
 
       - name: Rebuild Makefile
@@ -136,13 +140,13 @@ jobs:
         mkdir -p .repo/{x86_64,aarch64}        
         wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/x86_64/ovos-arch.db.tar.gz -O .repo/x86_64/ovos-arch.db.tar.gz
         wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/aarch64/ovos-arch.db.tar.gz -O .repo/aarch64/ovos-arch.db.tar.gz
-        cp .repo/x86_64/ovos-arch.db.tar.gz .repo/x86_64/ovos-arch.db.tar.gz.bak
-        cp .repo/aarch64/ovos-arch.db.tar.gz .repo/aarch64/ovos-arch.db.tar.gz.bak
+        # cp .repo/x86_64/ovos-arch.db.tar.gz .repo/x86_64/ovos-arch.db.tar.gz.bak
+        # cp .repo/aarch64/ovos-arch.db.tar.gz .repo/aarch64/ovos-arch.db.tar.gz.bak
     # Restore the cache, if available
     - name: Restore Docker cache
       uses: actions/cache@v3
       with:
-        path: ~/.docker
+        path: /var/lib/docker
         key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
         restore-keys: |
           ${{ runner.os }}-docker-
@@ -155,6 +159,7 @@ jobs:
         repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
     - name: "Preparing packages"
       id: identify_available_packages
+      if: github.event_name != 'pull_request'
       run: |
         if ls .repo/x86_64/*.pkg.tar.* 1> /dev/null 2>&1 ; then
           echo "upload_x86_64=true"
@@ -228,14 +233,90 @@ jobs:
 
   package-build-arm:
     needs: package-build-amd64
-    if: needs.package-build-amd64.outputs.pkgbuilds != ''
+    if: false && needs.package-build-amd64.outputs.pkgbuilds != ''
     runs-on: ubuntu-latest
     name: Build ARM packages
     # strategy:
     #   matrix:
     #     arch: ['aarch64']
     steps:
-    - name: "Building aarch64" # "Build on ${{ matrix.arch }}"
+    - name: "Checkout repository"
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        ref: ${{ needs.check.outputs.commit_hash }}
+
+    - name: "Download repo from Azure Blob Storage"
+      if: false
       run: |
-        echo "Building for aarch64: ${{ needs.package-build-amd64.outputs.pkgbuilds }}"
-        echo "TODO....."
+        echo "Downloading repo DB..."
+        mkdir -p .repo/aarch64        
+        wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/aarch64/ovos-arch.db.tar.gz -O .repo/aarch64/ovos-arch.db.tar.gz
+        # cp .repo/aarch64/ovos-arch.db.tar.gz .repo/aarch64/ovos-arch.db.tar.gz.bak
+
+    - name: Restore Docker cache
+      uses: actions/cache@v3
+      with:
+        path: /var/lib/docker
+        key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: arm64
+
+    - name: Check if base-devel image is cached
+      id: check-cache
+      run: |
+        if docker image ls | grep -q 'archlinux-arm64v8 base-devel'; then
+          echo "Cache hit for archlinux-arm64v8:base-devel"
+          echo "cache-hit=true" >> $GITHUB_OUTPUT
+        else
+          echo "Cache miss for archlinux-arm64v8:base-devel"
+          echo "cache-hit=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Build base-devel image if not cached
+      if: steps.check-cache.outputs.cache-hit != 'true'
+      run: |
+        wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
+        gzip -d ArchLinuxARM-aarch64-latest.tar.gz
+        docker import ArchLinuxARM-aarch64-latest.tar archlinux-arm64v8:latest
+        docker build -t archlinux-arm64v8:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
+        docker image rm archlinux-arm64v8:latest
+
+    - name: Build Docker image
+      run: |
+        docker build --build-arg ARCH="-arm64v8" -t gha-makepkg-arm64v8 ./.github/actions/makepkg
+
+    - name: Save Docker cache
+      uses: actions/cache@v3
+      with:
+        path: /var/lib/docker
+        key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+
+    - name: "Build on aarch64"
+      run: | 
+        docker run --rm -v $PWD:/build -e INPUT_OPERATION=repo-build -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' -e INPUT_REPOURL=https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch gha-makepkg-arm64v8
+
+    - name: "Preparing native aarch64 packages"
+      id: identify_available_packages
+      if: github.event_name != 'pull_request'
+      run: |
+        if ls .repo/aarch64/*.pkg.tar.* 1> /dev/null 2>&1 ; then
+          echo "upload_aarch64=true"
+          echo "upload_aarch64=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: "Upload aarch64 native packages to Azure Blob Storage"
+      if: steps.identify_available_packages.outputs.upload_aarch64 == 'true'
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.50.0
+        inlineScript: |
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite 
+          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+      env:
+        AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"
