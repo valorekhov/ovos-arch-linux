@@ -1,0 +1,26 @@
+name: Daily PKGBUILD Version Update
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  scan_and_update_versions:
+    name: Scan and Update PKGBUILD Versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "ovos-arch-buildbot@noemail.local"
+          git config --global user.name "OVOS Arch BuildBot"
+
+      - name: Update Versions
+        id: update_versions
+        run: |
+          ./tools/dep-updates/update-pkgbuild-dependencies.ps1 -Path $env:REPO_ROOT 
+        shell: pwsh
+        env:
+          REPO_ROOT: ${{ github.workspace }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
