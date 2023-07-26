@@ -66,6 +66,8 @@ foreach ($pkgbuild in $pkgbuilds) {
             continue
         }
 
+        Write-Host "Proceeding to open PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
+
         # Commit the changes to PKGBUILD
         git checkout -b "BUMP/$pkgbase-$latestVersion-$commitSha"
         git add "$dir/"
@@ -73,12 +75,16 @@ foreach ($pkgbuild in $pkgbuilds) {
         
         git push origin --set-upstream "BUMP/$pkgbase-$latestVersion-$commitSha"
 
+        Write-Host "Pushed branch 'BUMP/$pkgbase-$latestVersion-$commitSha' to origin" -ForegroundColor Green
+
         # Create a pull request for the commit
         gh pr create --base main `
         --head "BUMP/$pkgbase-$latestVersion-$commitSha" `
         --title "BUMP: $pkgbase to version $pkgver" [$commitSha]`
         --body "BUMP $pkgbase to version $latestVersion`n`n$($commitSha)`n$($updateInfo.url)"
 
+        Write-Host "Created PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
+        
         # TODO: Uncomment this once we confirm PR creation works
         break        
     } finally {
