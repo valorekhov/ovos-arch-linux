@@ -7,7 +7,7 @@ pkgdesc='frameworks, templates and patches for the
 mycroft universe'
 arch=('any')
 url='https://github.com/OpenVoiceOS/OVOS-workshop/'
-license=('')
+license=('Apache License 2.0')
 depends=(python \
 'python-ovos-backend-client>=0.0.6' #<0.1.0,>=0.0.6 \
 'python-ovos-config>=0.0.4' #<0.1.0,>=0.0.4 \
