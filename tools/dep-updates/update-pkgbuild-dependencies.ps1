@@ -46,12 +46,12 @@ foreach ($pkgbuild in $pkgbuilds) {
         continue
     }
 
-
     $updateInfo = Update-Pkgbuild -VersionInfo $versionInfo -ReleaseInfo $releaseInfo -PackageMap $PackageMap
     
-    if (-not $updateInfo.updated) {
-        continue
-    }
+    # if (-not $updateInfo.updated) {
+    #     Write-Host "No updates made to '$($versionInfo.pkgbase)'" -ForegroundColor Green
+    #     continue
+    # }
 
     try{
         $latestVersion = $updateInfo.latestVersion
@@ -59,6 +59,7 @@ foreach ($pkgbuild in $pkgbuilds) {
         $pkgbase = $updateInfo.pkgbase
         $commitSha = $updateInfo.commit.Substring(0, 7)
 
+        Write-Host "Checking for existing PR on version $latestVersion / $commitSha" -ForegroundColor Green
         # check if a PR already exists for this version and commitSha
         $pr = gh pr list --search "$commitSha" --json number | ConvertFrom-Json
         if ($pr) {
@@ -79,9 +80,9 @@ foreach ($pkgbuild in $pkgbuilds) {
 
         # Create a pull request for the commit
         gh pr create --base main `
-        --head "BUMP/$pkgbase-$latestVersion-$commitSha" `
-        --title "BUMP: $pkgbase to version $pkgver" [$commitSha]`
-        --body "BUMP $pkgbase to version $latestVersion`n`n$($commitSha)`n$($updateInfo.url)"
+            --head "BUMP/$pkgbase-$latestVersion-$commitSha" `
+            --title "BUMP: $pkgbase to version $pkgver" [$commitSha]`
+            --body "BUMP $pkgbase to version $latestVersion`n`n$($commitSha)`n$($updateInfo.url)"
 
         Write-Host "Created PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
         

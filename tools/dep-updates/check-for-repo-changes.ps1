@@ -12,13 +12,10 @@ Write-Host "Getting release info from '$($versionInfo.url)'" -ForegroundColor Gr
 $releaseInfo = Get-GithubRelease $versionInfo.url
 if ($null -eq $releaseInfo) {
     Write-Information "No release version information found for '$Path'"
-    return @{ 'updated' = $false }
+    return 
 }
 
 if (-not $releaseInfo.isDraft -and -not $releaseInfo.isPrerelease `
 -and $versionInfo.pkgver -ne $releaseInfo.version) {
-
     return Update-Pkgbuild -VersionInfo $versionInfo -ReleaseInfo $releaseInfo -PackageMap $PackageMap
 }
-
-return @{ 'updated' = $false }

@@ -134,11 +134,8 @@ $($newDeps.comments)
 # }
 
 function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
-
     $pkgbuild = $versionInfo.pkgbuild
     Write-Host "Updating '$pkgbuild' from '$($versionInfo.pkgver)' to '$($releaseInfo.version)'" -ForegroundColor Green
-
-    $updated = $false
 
     Set-PkgbuildVersion $pkgbuild $releaseInfo.version $releaseInfo.commit
 
@@ -171,12 +168,9 @@ function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
         } else {
             Write-host "No requirements found in '$($versionInfo.pkgbase)'" -ForegroundColor Yellow
         }
-        $updated = $true
+    } else {
+        Write-host "No Python requirements found in '$($versionInfo.pkgbase)'" -ForegroundColor Yellow
     }
-
-    # # Commit the changes to .SRCINFO
-    # git add $pkgbuild
-    # git commit -m "Update $pkgbuild to version $latest_version"
 
     return @{
         'pkgbase' = $versionInfo.pkgbase
@@ -187,6 +181,5 @@ function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
         'latestVersion' = $releaseInfo.version
         'isPreRelease' = $releaseInfo.isDraft -or $releaseInfo.isPrerelease
         'commit' = $releaseInfo.commit
-        'updated' = $updated
     }
 }
