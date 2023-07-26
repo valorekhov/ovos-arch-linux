@@ -340,7 +340,7 @@ python-ovos-vad-plugin-webrtcvad: python-ovos-plugin-manager PKGBUILDs/python-ov
 
 python-ovos-vlc-plugin: python-ovos-plugin-manager python-vlc PKGBUILDs/python-ovos-vlc-plugin/*.pkg.tar.zst
 
-python-ovos-workshop: python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-lingua-franca python-ovos-utils PKGBUILDs/python-ovos-workshop/*.pkg.tar.zst
+python-ovos-workshop: python-ovos-backend-client python-ovos-config python-ovos-bus-client python-ovos-lingua-franca python-ovos-utils PKGBUILDs/python-ovos-workshop/*.pkg.tar.zst
 
 python-ovos-ww-plugin-pocketsphinx: python-ovos-plugin-manager python-phoneme-guesser python-pocketsphinx python-speechrecognition PKGBUILDs/python-ovos-ww-plugin-pocketsphinx/*.pkg.tar.zst
 
