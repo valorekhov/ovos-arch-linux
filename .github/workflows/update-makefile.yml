@@ -37,7 +37,7 @@ jobs:
           fi
 
           github_event_name=$(echo $GITHUB_EVENT_NAME | tr '[:upper:]' '[:lower:]') 
-          if "$github_event_name" = "pull_request" ; then 
+          if [ $github_event_name = "pull_request" ] ; then 
             base_commit="main"
           else 
             base_commit="${{ steps.last_successful_commit.outputs.base }}"
