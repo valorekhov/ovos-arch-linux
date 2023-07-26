@@ -72,7 +72,7 @@ foreach ($pkgbuild in $pkgbuilds) {
         # Commit the changes to PKGBUILD
         git checkout -b "BUMP/$pkgbase-$latestVersion-$commitSha"
         git add "$dir/"
-        git commit -m "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.commit)`n$($updateInfo.url)"
+        git commit -m "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.url)`ntag: $(releaseInfo.tagName)`ncommit: $commitSha"
         
         git push origin --set-upstream "BUMP/$pkgbase-$latestVersion-$commitSha"
 
@@ -81,8 +81,8 @@ foreach ($pkgbuild in $pkgbuilds) {
         # Create a pull request for the commit
         gh pr create --base main `
             --head "BUMP/$pkgbase-$latestVersion-$commitSha" `
-            --title "BUMP: $pkgbase to version $pkgver" [$commitSha]`
-            --body "BUMP $pkgbase to version $latestVersion`n`n$($commitSha)`n$($updateInfo.url)"
+            --title "BUMP: $pkgbase to version $pkgver [$commitSha]" `
+            --body "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.url)`ntag: $(releaseInfo.tagName)`ncommit: $commitSha"
 
         Write-Host "Created PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
         
