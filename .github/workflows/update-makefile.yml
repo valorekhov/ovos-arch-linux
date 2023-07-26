@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  # pull_request:
+  #   branches:
+  #     - main
+
 
 jobs:
   check:
@@ -13,6 +17,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      # - name: Check for PR trigger
+      #   if: github.event_name == 'pull_request'
+      #   run: echo "DISABLE_DEPLOY=true" >> $GITHUB_OUTPUT
+        
       - uses: nrwl/nx-set-shas@v3
         id: last_successful_commit
         with:
