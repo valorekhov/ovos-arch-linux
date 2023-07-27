@@ -15,7 +15,7 @@ jobs:
   build-basedevel-arm-images:
     runs-on: ubuntu-latest
     name: Build ARM archlinux-{arm64v8, armv7hf}:base-devel images
-    if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
+    # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
     strategy:
       matrix:
         platform:
@@ -83,7 +83,7 @@ jobs:
     needs: build-basedevel-arm-images
     runs-on: ubuntu-latest
     name: Build gha-makepkg images
-    if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
+    # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
     strategy:
       matrix:
         platform: 
