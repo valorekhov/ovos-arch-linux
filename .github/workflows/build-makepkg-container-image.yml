@@ -70,10 +70,10 @@ jobs:
 
         case "${{ matrix.platform }}" in
             "arm64v8")
-                arch="linux/amd64"
+                platform="linux/amd64"
                 ;;
             "armv7hf")
-                arch="linux/arm/v7"
+                platform="linux/arm/v7"
                 ;;
             *)
                 echo "Invalid architecture"
@@ -169,13 +169,13 @@ jobs:
 
         case "${{ matrix.platform }}" in
             "amd64")
-                arch="linux/amd64"
+                platform="linux/amd64"
                 ;;
             "arm64v8")
-                arch="linux/arm64"
+                platform="linux/arm64"
                 ;;
             "armv7hf")
-                arch="linux/arm/v7"
+                platform="linux/arm/v7"
                 ;;
             *)
                 echo "Invalid architecture"
