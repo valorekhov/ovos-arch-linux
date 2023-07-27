@@ -81,22 +81,32 @@ jobs:
                 ;;
         esac
         echo "platform=$platform" >> $GITHUB_ENV
+
+        docker buildx build \
+          --build-arg ARCH=${{ matrix.platform }} \
+          --platform $platform \
+          --file ./tools/container-build/base-devel/Containerfile \
+          --tag archlinux-${{ matrix.platform }}:base-devel \
+          --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
+          --pull=false \
+          --push \
+          ./tools/container-build/base-devel
       
-    - name: Build base-devel ArchLinux ARM image
-      uses: docker/build-push-action@v4
-      with:
-        context: ./tools/container-build/base-devel
-        file: ./tools/container-build/base-devel/Containerfile
-        build-args: |
-          ARCH=${{ matrix.platform }}
-        platforms: ${{ steps.prepare_image.outputs.platform }}
-        tags: |
-          archlinux-${{ matrix.platform }}:base-devel
-          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
-        pull: false
-        # cache-from: archlinux-${{ matrix.platform }}:latest
-        # cache-to: type=gha,mode=max
-        push: true
+    # - name: Build base-devel ArchLinux ARM image
+    #   uses: docker/build-push-action@v4
+    #   with:
+    #     context: ./tools/container-build/base-devel
+    #     file: ./tools/container-build/base-devel/Containerfile
+    #     build-args: |
+    #       ARCH=${{ matrix.platform }}
+    #     platforms: ${{ steps.prepare_image.outputs.platform }}
+    #     tags: |
+    #       archlinux-${{ matrix.platform }}:base-devel
+    #       ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
+    #     pull: false
+    #     # cache-from: archlinux-${{ matrix.platform }}:latest
+    #     # cache-to: type=gha,mode=max
+    #     push: true
 
   build-makepkg-image:
     needs: build-basedevel-arm-images
