@@ -157,17 +157,9 @@ jobs:
         cache-to: type=gha,mode=max
         load: true
 
-    # - name: "Build on x86_64"
-    #   uses: ./.github/actions/makepkg
-    #   with:
-    #     operation: repo-build
-    #     packages: ${{ needs.check.outputs.pkgbuilds }}
-    #     rebuildall: false
-    #     repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
-
     - name: "Build on x86_64"
-        run: | 
-          docker run --rm  -v $PWD:/build -e INPUT_OPERATION=repo-build -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' gha-makepkg-x86_64:latest
+      run: | 
+        docker run --rm  -v $PWD:/build -e INPUT_OPERATION=repo-build -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' gha-makepkg-x86_64:latest
 
     - name: "Preparing packages"
       id: identify_available_packages
@@ -244,7 +236,9 @@ jobs:
       pkgbuilds: ${{ steps.select_native_arm_packages.outputs.pkgbuilds }}
 
   package-build-arm:
-    needs: package-build-amd64
+    needs: 
+      - check
+      - package-build-amd64
     if: false && needs.package-build-amd64.outputs.pkgbuilds != ''
     runs-on: ubuntu-latest
     name: Build ARM packages
