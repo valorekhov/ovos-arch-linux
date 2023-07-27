@@ -72,31 +72,32 @@ jobs:
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      # Restore the cache, if available
-      - name: Restore Docker cache
+      - name: Set up Docker Buildx
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
-        uses: actions/cache@v3
-        with:
-          path: /var/lib/docker
-          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
+        uses: docker/setup-buildx-action@v2
 
-      - name: Check for changes in Makefile
+      - name: Build Docker image (from cache)
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
-        uses: ./.github/actions/makepkg
+        uses: docker/build-push-action@v4
         with:
-          operation: makefile-update
-          packages: ${{ steps.check_assets.outputs.pkgbuilds }}
-          rebuildall: false
+          context: ./.github/actions/makepkg
+          file: ./.github/actions/makepkg/Dockerfile
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          tags: localhost/gha-makepkg-x86_64:latest
 
-      # Save the Docker cache for future runs
-      - name: Save Docker cache
+      # - name: Check for changes in Makefile
+      #   if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
+      #   uses: ./.github/actions/makepkg
+      #   with:
+      #     operation: makefile-update
+      #     packages: ${{ steps.check_assets.outputs.pkgbuilds }}
+      #     rebuildall: false
+      - name: "Check for changes in Makefile"
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
-        uses: actions/cache@v3
-        with:
-          path: /var/lib/docker
-          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+        run: | 
+          docker run --rm -v $PWD:/build -e INPUT_OPERATION=makefile-update -e INPUT_PACKAGES='${{ steps.check_assets.outputs.pkgbuilds }}' localhost/gha-makepkg-x86_64:latest
 
       - name: Rebuild Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
@@ -307,7 +308,7 @@ jobs:
 
     - name: "Build on aarch64"
       run: | 
-        docker run --rm -v $PWD:/build -e INPUT_OPERATION=repo-build -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' -e INPUT_REPOURL=https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch gha-makepkg-arm64v8
+        docker run --rm -v $PWD:/build -e INPUT_OPERATION=repo-build -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' -e INPUT_REPOURL=https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch localhost/gha-makepkg-arm64v8
 
     - name: "Preparing native aarch64 packages"
       id: identify_available_packages
