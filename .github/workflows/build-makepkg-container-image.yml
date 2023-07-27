@@ -136,7 +136,6 @@ jobs:
       with:
         context: ./.github/actions/makepkg
         file: ./.github/actions/makepkg/Dockerfile
-          tags: gha-makepkg-x86_64:latest
         build-args: |
           ARCH='-${{ matrix.platform }}'
         platforms: ${{ steps.pull_image.outputs.platform }}
