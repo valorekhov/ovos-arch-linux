@@ -82,19 +82,11 @@ jobs:
         with:
           context: ./.github/actions/makepkg
           file: ./.github/actions/makepkg/Dockerfile
-          push: false
           tags: gha-makepkg-x86_64:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           load: true
 
-      # - name: Check for changes in Makefile
-      #   if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
-      #   uses: ./.github/actions/makepkg
-      #   with:
-      #     operation: makefile-update
-      #     packages: ${{ steps.check_assets.outputs.pkgbuilds }}
-      #     rebuildall: false
       - name: "Check for changes in Makefile"
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         run: | 
@@ -143,6 +135,7 @@ jobs:
       with:
         fetch-depth: 1
         ref: ${{ needs.check.outputs.commit_hash }}
+
     - name: "Download repo from Azure Blob Storage"
       if: false
       run: |
@@ -150,23 +143,32 @@ jobs:
         mkdir -p .repo/{x86_64,aarch64}        
         wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/x86_64/ovos-arch.db.tar.gz -O .repo/x86_64/ovos-arch.db.tar.gz
         wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/aarch64/ovos-arch.db.tar.gz -O .repo/aarch64/ovos-arch.db.tar.gz
-        # cp .repo/x86_64/ovos-arch.db.tar.gz .repo/x86_64/ovos-arch.db.tar.gz.bak
-        # cp .repo/aarch64/ovos-arch.db.tar.gz .repo/aarch64/ovos-arch.db.tar.gz.bak
-    # Restore the cache, if available
-    - name: Restore Docker cache
-      uses: actions/cache@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image (or load from cache)
+      uses: docker/build-push-action@v4
       with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
+        context: ./.github/actions/makepkg
+        file: ./.github/actions/makepkg/Dockerfile
+        tags: gha-makepkg-x86_64:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        load: true
+
+    # - name: "Build on x86_64"
+    #   uses: ./.github/actions/makepkg
+    #   with:
+    #     operation: repo-build
+    #     packages: ${{ needs.check.outputs.pkgbuilds }}
+    #     rebuildall: false
+    #     repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
+
     - name: "Build on x86_64"
-      uses: ./.github/actions/makepkg
-      with:
-        operation: repo-build
-        packages: ${{ needs.check.outputs.pkgbuilds }}
-        rebuildall: false
-        repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
+        run: | 
+          docker run --rm  -v $PWD:/build -e INPUT_OPERATION=repo-build -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' gha-makepkg-x86_64:latest
+
     - name: "Preparing packages"
       id: identify_available_packages
       if: github.event_name != 'pull_request'
