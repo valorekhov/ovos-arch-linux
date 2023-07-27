@@ -93,7 +93,7 @@ jobs:
         tags: |
           archlinux-${{ matrix.platform }}:base-devel
           ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
-        # cache-from: type=gha
+        cache-from: archlinux-${{ matrix.platform }}:latest
         # cache-to: type=gha,mode=max
         push: true
 
