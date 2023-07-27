@@ -80,11 +80,12 @@ jobs:
                 exit 1
                 ;;
         esac
+        echo "platform=$platform" 
         echo "platform=$platform" >> $GITHUB_ENV
 
         docker buildx build \
           --build-arg ARCH=${{ matrix.platform }} \
-          --platform $platform \
+          --platform "$platform" \
           --file ./tools/container-build/base-devel/Containerfile \
           --tag archlinux-${{ matrix.platform }}:base-devel \
           --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
