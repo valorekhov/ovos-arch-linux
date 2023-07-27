@@ -1,10 +1,10 @@
 name: Build `archlinux-{arm64v8,armv7hf}:base-devel` and `gha-makepkg:latest` multi-arch images
 on: 
   workflow_dispatch:
-    inputs:
-      arch:
-        description: 'Build only this arch'
-        required: false
+    # inputs:
+    #   arch:
+    #     description: 'Build only this arch'
+    #     required: false
   push:
     paths:
     - ./.github/actions/makepkg/**
@@ -20,7 +20,7 @@ jobs:
       matrix:
         platform:
         - arm64v8
-        - armv7hf
+        # - armv7hf
     steps:
 
     - name: Set up QEMU
@@ -80,6 +80,7 @@ jobs:
         push: true
 
   build-makepkg-image:
+    needs: build-basedevel-arm-images
     runs-on: ubuntu-latest
     name: Build gha-makepkg images
     if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
@@ -88,7 +89,7 @@ jobs:
         platform: 
         - amd64
         - arm64v8
-        - armv7hf
+        # - armv7hf
     steps:
 
     - name: Set up QEMU
