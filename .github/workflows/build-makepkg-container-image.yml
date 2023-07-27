@@ -65,7 +65,8 @@ jobs:
         wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
         gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
         docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
-        docker image ls
+        docker manifest inspect archlinux-${{ matrix.platform }}:latest
+        
         # docker build -t archlinux-${{ matrix.platform }}:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
 
         case "${{ matrix.platform }}" in
