@@ -106,7 +106,7 @@ ovos-shell: mycroft-gui-qt5 python-ovos-phal-plugin-alsa python-ovos-phal-plugin
 
 ovos-shell-standalone: ovos-service-base ovos-shell PKGBUILDs/ovos-shell-standalone/*.pkg.tar.zst
 
-ovos-skill-neon-local-music: python-ovos-workshop python-ovos-ocp-audio-plugin python-ovos-ocp-files-plugin python-ovos-utils python-ovos-skill-installer PKGBUILDs/ovos-skill-neon-local-music/*.pkg.tar.zst
+ovos-skill-neon-local-music: python-ovos-ocp-audio-plugin python-ovos-ocp-files-plugin python-ovos-skill-installer python-ovos-utils python-ovos-workshop PKGBUILDs/ovos-skill-neon-local-music/*.pkg.tar.zst
 
 ovos-skill-official-camera: python-ovos-utils python-ovos-workshop PKGBUILDs/ovos-skill-official-camera/*.pkg.tar.zst
 
