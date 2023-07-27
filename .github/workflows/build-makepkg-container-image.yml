@@ -23,7 +23,7 @@ jobs:
         # - armv7hf
     steps:
     - name: Checkout Repository
-        uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -110,7 +110,7 @@ jobs:
         # - armv7hf
     steps:
     - name: Checkout Repository
-        uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
     - name: Set up QEMU
       if: matrix.platform != 'amd64'
