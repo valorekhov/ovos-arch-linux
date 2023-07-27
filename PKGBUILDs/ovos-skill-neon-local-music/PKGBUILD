@@ -2,28 +2,39 @@ _gh_org=NeonGeckoCom
 _gh_proj=skill-local_music
 pkgname=ovos-skill-neon-local-music
 _name=skill-local_music
-_commit='73b37aa32425eeab40955a0389d4b887be6e5aa9'
-pkgver=1.0.0
-pkgrel=1
+_commit='5ae11c8a7bb1cb150dfd2f0cbf634265a1fcaf46'
+pkgver='1.0.1'
+pkgrel=00
 pkgdesc='Neon Skill for Local Music Playback'
 arch=('any')
 url='https://github.com/NeonGeckoCom/skill-local_music/'
-license=('')
+license=('BSD3')
 depends=(python
-'python-ovos-workshop>=0.0.7' 
-'python-ovos-ocp-audio-plugin'
-'python-ovos-ocp-files-plugin>=0.13'
-'python-ovos-utils>=0.0.28'
-'python-ovos-skill-installer>=0.0.5'
-#'python-id3parse'
+#'python-id3parse>=0.1' # id3parse~=0.1
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-ocp-audio-plugin>=0.0' # ovos-plugin-common-play~=0.0
+'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13
+'python-ovos-skill-installer>=0.0.5' # ovos-skill-installer~=0.0.5
+'python-ovos-utils>=0.0.28' # ovos_utils~=0.0.28
+'python-ovos-workshop>=0.0.7' # ovos-workshop~=0.0.7
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('f64dafc910f8afaa1044baf25ea57f54b2c51836e85885e17dcb1bc806c02724')
+sha256sums=('fd772e49e0be4fad7bb2e012d38bf16cabcbaf11cca0e63827b5610fbd876eef')
 
 prepare() {
     cd "$srcdir"
@@ -69,31 +80,8 @@ package() {
         chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
     fi
     
-    # Optional: Remove unused files or directories
-    # For example, removing unneeded binaries, license files, etc.
-    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
-    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
-
     # Search for license files in the original source directory
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # skill-local-music
-# #
-# ################################################################################
-# 
-# SKILL_LOCAL_MUSIC_VERSION = c03107987c3f2aba23e8933ff0fc93a7217655b9
-# SKILL_LOCAL_MUSIC_SITE = $(call github,NeonGeckoCom,skill-local_music,$(SKILL_LOCAL_MUSIC_VERSION))
-# SKILL_LOCAL_MUSIC_SETUP_TYPE = setuptools
-# SKILL_LOCAL_MUSIC_LICENSE_FILES = LICENSE
-# 
-# $(eval $(python-package))
-# 
-
-
-
