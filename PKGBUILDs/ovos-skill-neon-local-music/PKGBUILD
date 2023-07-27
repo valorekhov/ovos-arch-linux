@@ -34,7 +34,7 @@ optdepends+=(
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('b605444f9aa94dab4af9e1d3deaf1f9746fa996168d8434171a087c8b8f59877')
+sha256sums=('fd772e49e0be4fad7bb2e012d38bf16cabcbaf11cca0e63827b5610fbd876eef')
 
 prepare() {
     cd "$srcdir"
