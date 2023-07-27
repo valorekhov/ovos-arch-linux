@@ -109,7 +109,6 @@ function Get-GithubRelease([string]$url){
     $org = $Matches[1]
     $repo = $Matches[2] 
 
-
     Write-Host "Checking '$org' for current version information on '$repo'" -ForegroundColor Green
 
     # Fetch the latest release version from the URL
@@ -219,19 +218,21 @@ function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
     $tmpPath = "/tmp/ovos-updater/$($versionInfo.pkgbase)";
     New-Item -ItemType Directory -Path $tmpPath -Force | Out-Null
     # Copy-Item -Path $($versionInfo.dir)/* -Destination $tmpPath/ -Recurse -Force
-    
-    if (-not (Test-Path "$tmpPath/$($versionInfo.pkgbase).tar.gz")) {
-        Invoke-WebRequest -Uri $releaseInfo.tarballUrl -OutFile "$tmpPath/$($versionInfo.pkgbase).tar.gz" -MaximumRedirection 10
-    }
-    tar -xzf "$tmpPath/$($versionInfo.pkgbase).tar.gz" -C $tmpPath --strip-components=1
 
-    # TODO: Calculate sha256sum of the tarball and update the PKGBUILD by sourcing the PKGBUILD with bash
-    # and getting the first sha256sum from the source array, then replacing the obtained value with the calculated one
-    
-    $newSha256 = sha256sum "$tmpPath/$($versionInfo.pkgbase).tar.gz" | ForEach-Object { $_.Split(' ')[0] }
-    $oldSha256 = bash -c "source `"$pkgbuild`"; echo `$sha256sums" | Select-Object -First 1
-    Write-Host "Replacing sha256sum '$oldSha256' with '$newSha256'" 
-    sed -i "s/$oldSha256/$newSha256/" "$pkgbuild"
+    $sourceUrl = bash -c "source `"$pkgbuild`"; echo `$source" | Select-Object -First 1
+    Write-Host "Source URL: $sourceUrl"
+    if ($sourceUrl -and $sourceUrl.StartsWith('http') -and -not (Test-Path "$tmpPath/$($versionInfo.pkgbase).tar.gz")) {
+        Invoke-WebRequest -Uri $sourceUrl -OutFile "$tmpPath/$($versionInfo.pkgbase).tar.gz" -MaximumRedirection 10
+    }
+
+    if (Test-Path "$tmpPath/$($versionInfo.pkgbase).tar.gz" -PathType Leaf){
+        tar -xzf "$tmpPath/$($versionInfo.pkgbase).tar.gz" -C $tmpPath --strip-components=1
+        
+        $newSha256 = sha256sum "$tmpPath/$($versionInfo.pkgbase).tar.gz" | ForEach-Object { $_.Split(' ')[0] }
+        $oldSha256 = bash -c "source `"$pkgbuild`"; echo `$sha256sums" | Select-Object -First 1
+        Write-Host "Replacing sha256sum '$oldSha256' with '$newSha256'" 
+        sed -i "s/$oldSha256/$newSha256/" "$pkgbuild"
+    }
     
     if ((Test-Path "$tmpPath/setup.py") -or (Test-Path "$tmpPath/pyproject.toml")) {
         $newDeps =  ConvertFrom-PythonModuleDependencies -Path $tmpPath -PackageMap $PackageMap -DebugOutput $DebugOutput
