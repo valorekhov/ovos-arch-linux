@@ -72,9 +72,9 @@ jobs:
         build-args: |
           ARCH=${{ matrix.platform }}
         platforms: ${{ steps.prepare_image.outputs.platform }}
-        tags: 
-        - archlinux-${{ matrix.platform }}:base-devel
-        - ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
+        tags: |
+          archlinux-${{ matrix.platform }}:base-devel
+          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
         # cache-from: type=gha
         # cache-to: type=gha,mode=max
         push: true
@@ -139,9 +139,9 @@ jobs:
         build-args: |
           ARCH='-${{ matrix.platform }}'
         platforms: ${{ steps.pull_image.outputs.platform }}
-        tags: 
-        - ghcr.io/valorekhov/archlinux-${{ steps.pull_image.outputs.arch }}:latest
-        - ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
+        tags: |
+          ghcr.io/valorekhov/archlinux-${{ steps.pull_image.outputs.arch }}:latest 
+          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
         # cache-from: type=gha
         cache-to: type=gha,mode=max
         push: true
