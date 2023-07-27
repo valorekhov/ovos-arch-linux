@@ -48,20 +48,36 @@ jobs:
       if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
       run: |
         # Convert docker ARCH to archlinux-arm ARCH
-        switch ('${{ matrix.platform }}') {
-          'arm64v8' { $arch = 'aarch64' }
-          'armv7hf' { $arch = 'armv7' }
-        }
+        case "${{ matrix.platform }}" in
+            "arm64v8")
+                arch="aarch64"
+                ;;
+            "armv7hf")
+                arch="armv7"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
         wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
         gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
         docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
         docker image ls
         # docker build -t archlinux-${{ matrix.platform }}:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
 
-        switch ('${{ matrix.platform }}') {
-          'arm64v8' { $platform = 'linux/amd64' }
-          'armv7hf' { $platform = 'linux/arm/v7' }
-        }
+        case "${{ matrix.platform }}" in
+            "arm64v8")
+                arch="linux/amd64"
+                ;;
+            "armv7hf")
+                arch="linux/arm/v7"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
         echo "platform=$platform" >> $GITHUB_ENV
       
     - name: Build base-devel ArchLinux ARM image
@@ -118,18 +134,38 @@ jobs:
         fi
 
         # Convert docker ARCH to archlinux-arm ARCH
-        switch ('${{ matrix.platform }}') {
-          'amd64' { $arch = 'x86_64' }
-          'arm64v8' { $arch = 'aarch64' }
-          'armv7hf' { $arch = 'armv7hf' }
-        }
+        case "${{ matrix.platform }}" in
+            "amd64")
+                arch="x86_64"
+                ;;
+            "arm64v8")
+                arch="aarch64"
+                ;;
+            "armv7hf")
+                arch="armv7hf"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
         echo "arch=$arch" >> $GITHUB_ENV
 
-        switch ('${{ matrix.platform }}') {
-          'amd64' { $platform = 'linux/amd64' }
-          'arm64v8' { $platform = 'linux/arm64' }
-          'armv7hf' { $platform = 'linux/arm/v7' }
-        }
+        case "${{ matrix.platform }}" in
+            "amd64")
+                arch="linux/amd64"
+                ;;
+            "arm64v8")
+                arch="linux/arm64"
+                ;;
+            "armv7hf")
+                arch="linux/arm/v7"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
         echo "platform=$platform" >> $GITHUB_ENV
 
     - name: Build `gha-makepkg` image
