@@ -92,10 +92,10 @@ jobs:
         file: ./tools/container-build/base-devel/Containerfile.from-rootfs-tarball
         build-args: |
           ARCH=${{ matrix.platform }}
-        platforms: ${{ steps.prepare_image.outputs.platform }}
+        platforms: ${{ matrix.platform }}
         tags: |
           ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
-        #  ghcr.io/valorekhov/archlinux:base-devel-${{ matrix.platform }}
+          ghcr.io/valorekhov/archlinux:base-devel-${{ matrix.platform }}
         pull: false
         # cache-from: archlinux-${{ matrix.platform }}:latest
         # cache-to: type=gha,mode=max
