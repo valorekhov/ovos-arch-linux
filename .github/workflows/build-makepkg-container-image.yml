@@ -78,9 +78,9 @@ jobs:
         docker build \
           --build-arg ARCH=${{ matrix.platform }} \
           --platform "${{ matrix.platform }}" \
-          --f ./tools/container-build/base-devel/Containerfile \
-          --t archlinux-${{ matrix.platform }}:base-devel \
-          --t ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
+          -t archlinux-${{ matrix.platform }}:base-devel \
+          -t ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
+          -f ./tools/container-build/base-devel/Containerfile \
           ./tools/container-build/base-devel
 
         docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:base-devel"
