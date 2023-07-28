@@ -62,13 +62,6 @@ jobs:
                 exit 1
                 ;;
         esac
-        wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
-        gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
-        docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
-        docker manifest inspect archlinux-${{ matrix.platform }}:latest
-        
-        # docker build -t archlinux-${{ matrix.platform }}:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
-
         case "${{ matrix.platform }}" in
             "arm64v8")
                 platform="linux/amd64"
@@ -84,6 +77,15 @@ jobs:
         echo "platform=$platform" 
         echo "platform=$platform" >> $GITHUB_ENV
 
+
+        wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
+        gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
+        # docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
+
+        echo -e 'FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD ["bash"]' | docker build -t "archlinux-${{ matrix.platform }}:latest" --platform="$platform" -f- .
+        docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
+        
+        # docker build -t archlinux-${{ matrix.platform }}:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
         docker buildx build \
           --build-arg ARCH=${{ matrix.platform }} \
           --platform "$platform" \
