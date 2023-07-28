@@ -80,7 +80,7 @@ jobs:
         # docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
         
         docker buildx build \
-          --bufild-arg ARCH=${{ matrix.platform }} \
+          --build-arg ARCH=${{ matrix.platform }} \
           --platform "${{ matrix.platform }}" \
           --file ./tools/container-build/base-devel/Containerfile \
           --tag archlinux-${{ matrix.platform }}:base-devel \
