@@ -24,7 +24,7 @@ jobs:
         - arm32v7
     steps:
     - name: Check if `archlinux-${{ matrix.platform }}:base-devel` image is available in the `ghcr` registry
-      if: github.event.inputs.rebuild_basedevel != true
+      if: github.event.inputs.rebuild_basedevel != 'true'
       id: check_registry
       run: |
         GHCR_TOKEN=$(echo $GITHUB_TOKEN | base64)
