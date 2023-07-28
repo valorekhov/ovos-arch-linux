@@ -14,12 +14,12 @@ on:
 jobs:
   build-basedevel-arm-images:
     runs-on: ubuntu-latest
-    name: Build ARM archlinux-{arm64v8, armv7hf}:base-devel images
+    name: Build ARM archlinux-{aarch64, armv7hf}:base-devel images
     # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
     strategy:
       matrix:
         platform:
-        - arm64v8
+        - aarch64
         # - armv7hf
     steps:
     - name: Checkout Repository
@@ -54,6 +54,9 @@ jobs:
             "arm64v8")
                 arch="aarch64"
                 ;;
+            "aarch64")
+                arch="aarch64"
+                ;;
             "armv7hf")
                 arch="armv7"
                 ;;
@@ -62,34 +65,19 @@ jobs:
                 exit 1
                 ;;
         esac
-        case "${{ matrix.platform }}" in
-            "arm64v8")
-                platform="linux/arm64"
-                ;;
-            "armv7hf")
-                platform="linux/arm/v7"
-                ;;
-            *)
-                echo "Invalid architecture"
-                exit 1
-                ;;
-        esac
-        echo "platform=$platform" 
-        echo "platform=$platform" >> $GITHUB_ENV
-
 
         wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
         gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
         # docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
 
         echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]"
-        echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" | docker build -t "archlinux-${{ matrix.platform }}:latest" --platform="$platform" -f- .
+        echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" | docker build -t "archlinux-${{ matrix.platform }}:latest" --platform="${{ matrix.platform }}" -f- .
         docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
         
         # docker build -t archlinux-${{ matrix.platform }}:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
         docker buildx build \
           --build-arg ARCH=${{ matrix.platform }} \
-          --platform "$platform" \
+          --platform "${{ matrix.platform }}" \
           --file ./tools/container-build/base-devel/Containerfile \
           --tag archlinux-${{ matrix.platform }}:base-devel \
           --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
@@ -122,7 +110,7 @@ jobs:
       matrix:
         platform: 
         - amd64
-        - arm64v8
+        - aarch64
         # - armv7hf
     steps:
     - name: Checkout Repository
@@ -158,7 +146,7 @@ jobs:
             "amd64")
                 arch="x86_64"
                 ;;
-            "arm64v8")
+            "aarch64")
                 arch="aarch64"
                 ;;
             "armv7hf")
@@ -175,7 +163,7 @@ jobs:
             "amd64")
                 platform="linux/amd64"
                 ;;
-            "arm64v8")
+            "aarch64")
                 platform="linux/arm64"
                 ;;
             "armv7hf")
