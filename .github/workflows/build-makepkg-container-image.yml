@@ -21,7 +21,7 @@ jobs:
       matrix:
         platform:
         - aarch64
-        # - armv7hf
+        - arm32v7
     steps:
     - name: Check if `archlinux-${{ matrix.platform }}:base-devel` image is available in the `ghcr` registry
       if: github.event.inputs.rebuild_basedevel != true
@@ -71,6 +71,9 @@ jobs:
             "armv7hf")
                 arch="armv7"
                 ;;
+            "arm32v7")
+                arch="armv7"
+                ;;
             *)
                 echo "Invalid architecture"
                 exit 1
@@ -80,43 +83,34 @@ jobs:
         wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
         gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
         mv "ArchLinuxARM-$arch-latest.tar" "./tools/container-build/base-devel/ArchLinuxARM-latest.tar"
-        # docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
 
         # echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" > /tmp/archlinux-${{ matrix.platform }}-Dockerfile 
-        
+                
         # docker buildx build \
-        #   --tag "archlinux-${{ matrix.platform }}:latest" \
-        #   --tag "ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest" \
-        #   --platform="${{ matrix.platform }}" \
+        #   --build-arg ARCH=${{ matrix.platform }} \
+        #   --platform "${{ matrix.platform }}" \
+        #   --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
+        #   --pull=false \
         #   --push \
-        #   --file /tmp/archlinux-${{ matrix.platform }}-Dockerfile .        
-        # docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
-        
-        docker buildx build \
-          --build-arg ARCH=${{ matrix.platform }} \
-          --platform "${{ matrix.platform }}" \
-          --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
-          --pull=false \
-          --push \
-          --file ./tools/container-build/base-devel/Containerfile.from-rootfs-tarball \
-          ./tools/container-build/base-devel
+        #   --file ./tools/container-build/base-devel/Containerfile.from-rootfs-tarball \
+        #   ./tools/container-build/base-devel
       
-    # - name: Build base-devel ArchLinux ARM image
-    #   if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
-    #   uses: docker/build-push-action@v4
-    #   with:
-    #     context: ./tools/container-build/base-devel
-    #     file: ./tools/container-build/base-devel/Containerfile
-    #     build-args: |
-    #       ARCH=${{ matrix.platform }}
-    #     platforms: ${{ steps.prepare_image.outputs.platform }}
-    #     tags: |
-    #       archlinux-${{ matrix.platform }}:base-devel
-    #       ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
-    #     pull: false
-    #     # cache-from: archlinux-${{ matrix.platform }}:latest
-    #     # cache-to: type=gha,mode=max
-    #     push: true
+    - name: Build archlinux-${{ matrix.platform }}:base-devel image
+      if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
+      uses: docker/build-push-action@v4
+      with:
+        context: ./tools/container-build/base-devel
+        file: ./tools/container-build/base-devel/Containerfile.from-rootfs-tarball
+        build-args: |
+          ARCH=${{ matrix.platform }}
+        platforms: ${{ steps.prepare_image.outputs.platform }}
+        tags: |
+          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
+          ghcr.io/valorekhov/archlinux:base-devel
+        pull: false
+        # cache-from: archlinux-${{ matrix.platform }}:latest
+        # cache-to: type=gha,mode=max
+        push: true
 
   build-makepkg-image:
     needs: build-basedevel-arm-images
@@ -124,11 +118,13 @@ jobs:
     name: Build gha-makepkg images
     # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
     strategy:
+      fail-fast: false
+      # max-parallel: 1  GH seeems to be spuriously cancelling pulls. Will try this workaround
       matrix:
         platform: 
         - amd64
         - aarch64
-        # - armv7hf
+        - arm32v7
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
@@ -148,15 +144,41 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Pull down ${{ matrix.platform }} base-devel image
-      id: pull_image
+      id: setup_buildx_params
       run: |
-        if [ '${{ matrix.platform }}' =  'amd64' ] ; then 
-          docker pull archlinux:base-devel
-          docker tag archlinux:base-devel archlinux-amd64:base-devel
-        else
-          docker pull --platform=${{ matrix.platform }} ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
-          docker tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel archlinux-${{ matrix.platform }}:base-devel
-        fi
+        case "${{ matrix.platform }}" in
+            "amd64")
+                repo="library"
+                ;;
+            "aarch64")
+                repo="ghcr.io/valorekhov"
+                ;;
+            "arm32v7")
+                repo="ghcr.io/valorekhov"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
+        echo "repo=$repo" >> $GITHUB_ENV
+
+        case "${{ matrix.platform }}" in
+            "amd64")
+                suffix=""
+                ;;
+            "aarch64")
+                suffix="-aarch64"
+                ;;
+            "arm32v7")
+                suffix="-arm32v7"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
+        echo "suffix=$suffix" >> $GITHUB_ENV
 
     - name: Build `gha-makepkg` image
       uses: docker/build-push-action@v4
@@ -164,10 +186,13 @@ jobs:
         context: ./.github/actions/makepkg
         file: ./.github/actions/makepkg/Dockerfile
         build-args: |
-          ARCH_SUFFIX='-${{ matrix.platform }}'
+          ARCH_SUFFIX=${{ steps.setup_buildx_params.outputs.suffix }}
+          REPO=${{ steps.setup_buildx_params.outputs.repo }}
         platforms: ${{ matrix.platform }}
-        tags: ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
+        tags: |
+          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
+          ghcr.io/valorekhov/archlinux:latest-${{ matrix.platform }}
         pull: false
         # cache-from: type=gha
-        cache-to: type=gha,mode=max
+        # cache-to: type=gha,mode=max
         push: true
