@@ -1,10 +1,11 @@
 name: Build `archlinux-{arm64v8,armv7hf}:base-devel` and `gha-makepkg:latest` multi-arch images
 on: 
   workflow_dispatch:
-    # inputs:
-    #   arch:
-    #     description: 'Build only this arch'
-    #     required: false
+    inputs:
+      rebuild_basedevel:
+        description: 'Rebuild base-devel'
+        type: boolean
+        required: false
   push:
     paths:
     - ./.github/actions/makepkg/**
@@ -23,11 +24,17 @@ jobs:
         # - armv7hf
     steps:
     - name: Check if `archlinux-${{ matrix.platform }}:base-devel` image is available in the `ghcr` registry
+      if: github.event.inputs.rebuild_basedevel != true
       id: check_registry
       run: |
-        docker manifest inspect "ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel" || exit 0
+        GHCR_TOKEN=$(echo $GITHUB_TOKEN | base64)
+        curl --head --fail -H "Authorization: Bearer $GHCR_TOKEN" https://ghcr.io/v2/valorekhov/archlinux-${{ matrix.platform }}/manifests/base-devel || exit 0
+
+        # docker manifest inspect "ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel" || exit 0
         echo "registry_has_base_devel_image=true"
         echo "registry_has_base_devel_image=true" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout Repository
       if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
