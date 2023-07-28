@@ -41,8 +41,7 @@ jobs:
     - name: Check if `archlinux-${{ matrix.platform }}:base-devel` image is available in the `ghcr` registry
       id: check_registry
       run: |
-        docker pull ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel || exit 0
-        docker tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel archlinux-${{ matrix.platform }}:base-devel
+        docker manifest inspect ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel || exit 0
         echo "registry_has_base_devel_image=true" >> $GITHUB_OUTPUT
 
     - name: Build base-devel image from ArchLinux ARM tarball
@@ -142,7 +141,7 @@ jobs:
           docker pull archlinux:base-devel
           docker tag archlinux:base-devel archlinux-amd64:base-devel
         else
-          docker pull ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
+          docker pull --platform=${{ matrix.platform }} ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
           docker tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel archlinux-${{ matrix.platform }}:base-devel
         fi
 
