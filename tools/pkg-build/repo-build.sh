@@ -4,7 +4,7 @@ REPO_NAME="ovos-arch"
 LOCAL_PACMAN=${2:-"$REPO_DIR/../pacman-wrapper-$(uname -m).sh"}
 REPO_DB_NAME=${3:-$REPO_NAME.db.tar.gz}
 REPO_DB_FILE="$REPO_DIR/$REPO_DB_NAME"
-ARM_ARCHS=("aarch64") #"armv7h")
+ARM_ARCHS=("aarch64" "armv7h")
 
 PKGVER=$(grep -m1 "pkgver =" ".SRCINFO" | sed 's/.*pkgver = //g')
 PKGREL=$(grep -m1 "pkgrel =" ".SRCINFO" | sed 's/.*pkgrel = //g')
