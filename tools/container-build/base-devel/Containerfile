@@ -22,8 +22,8 @@ FROM scratch
 ARG ARCH=arm64v8
 
 COPY --from=0 /archlinux/rootfs/ /
-COPY rootfs/common/ /
-COPY rootfs/$ARCH/ /
+#COPY rootfs/common/ /
+#COPY rootfs/$ARCH/ /
 
 ENV LANG=en_US.UTF-8
 

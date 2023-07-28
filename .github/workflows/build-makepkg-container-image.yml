@@ -71,19 +71,13 @@ jobs:
         # docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
 
         echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]"
-        echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" | docker build -t "archlinux-${{ matrix.platform }}:latest" --platform="${{ matrix.platform }}" -f- .
-        docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
+        echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" > /tmp/archlinux-${{ matrix.platform }}-Dockerfile 
         
-        # docker build \
-        #   --build-arg ARCH=${{ matrix.platform }} \
-        #   --platform "${{ matrix.platform }}" \
-        #   -t archlinux-${{ matrix.platform }}:base-devel \
-        #   -t ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
-        #   -f ./tools/container-build/base-devel/Containerfile \
-        #   ./tools/container-build/base-devel
-
-        # docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:base-devel"
-        # docker push ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
+        docker buidlx build \
+          -t "archlinux-${{ matrix.platform }}:latest" \
+          --platform="${{ matrix.platform }}" \
+          -f /tmp/archlinux-${{ matrix.platform }}-Dockerfile .
+        # docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
         
         docker buildx build \
           --build-arg ARCH=${{ matrix.platform }} \
