@@ -75,15 +75,26 @@ jobs:
         docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
         
         # docker build -t archlinux-${{ matrix.platform }}:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
-        docker buildx build \
+        docker build \
           --build-arg ARCH=${{ matrix.platform }} \
           --platform "${{ matrix.platform }}" \
-          --file ./tools/container-build/base-devel/Containerfile \
-          --tag archlinux-${{ matrix.platform }}:base-devel \
-          --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
-          --pull=false \
-          --push \
+          --f ./tools/container-build/base-devel/Containerfile \
+          --t archlinux-${{ matrix.platform }}:base-devel \
+          --t ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
           ./tools/container-build/base-devel
+
+        docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:base-devel"
+        docker push ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
+        
+        # docker buildx build \
+        #   --build-arg ARCH=${{ matrix.platform }} \
+        #   --platform "${{ matrix.platform }}" \
+        #   --file ./tools/container-build/base-devel/Containerfile \
+        #   --tag archlinux-${{ matrix.platform }}:base-devel \
+        #   --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
+        #   --pull=false \
+        #   --push \
+        #   ./tools/container-build/base-devel
       
     # - name: Build base-devel ArchLinux ARM image
     #   uses: docker/build-push-action@v4
