@@ -68,7 +68,7 @@ jobs:
 
         wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
         gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
-        mv "ArchLinuxARM-$arch-latest.tar.gz" "./tools/container-build/base-devel/ArchLinuxARM-latest.tar"
+        mv "ArchLinuxARM-$arch-latest.tar" "./tools/container-build/base-devel/ArchLinuxARM-latest.tar"
         # docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
 
         # echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" > /tmp/archlinux-${{ matrix.platform }}-Dockerfile 
