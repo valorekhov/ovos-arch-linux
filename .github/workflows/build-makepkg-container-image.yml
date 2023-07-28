@@ -158,41 +158,6 @@ jobs:
           docker tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel archlinux-${{ matrix.platform }}:base-devel
         fi
 
-        # Convert docker ARCH to archlinux-arm ARCH
-        case "${{ matrix.platform }}" in
-            "amd64")
-                arch="x86_64"
-                ;;
-            "aarch64")
-                arch="aarch64"
-                ;;
-            "armv7hf")
-                arch="armv7hf"
-                ;;
-            *)
-                echo "Invalid architecture"
-                exit 1
-                ;;
-        esac
-        echo "arch=$arch" >> $GITHUB_ENV
-
-        case "${{ matrix.platform }}" in
-            "amd64")
-                platform="linux/amd64"
-                ;;
-            "aarch64")
-                platform="linux/arm64"
-                ;;
-            "armv7hf")
-                platform="linux/arm/v7"
-                ;;
-            *)
-                echo "Invalid architecture"
-                exit 1
-                ;;
-        esac
-        echo "platform=$platform" >> $GITHUB_ENV
-
     - name: Build `gha-makepkg` image
       uses: docker/build-push-action@v4
       with:
@@ -200,10 +165,8 @@ jobs:
         file: ./.github/actions/makepkg/Dockerfile
         build-args: |
           ARCH='-${{ matrix.platform }}'
-        platforms: ${{ steps.pull_image.outputs.platform }}
-        tags: |
-          ghcr.io/valorekhov/archlinux-${{ steps.pull_image.outputs.arch }}:latest 
-          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
+        platforms: ${{ matrix.platform }}
+        tags: ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
         pull: false
         # cache-from: type=gha
         cache-to: type=gha,mode=max
