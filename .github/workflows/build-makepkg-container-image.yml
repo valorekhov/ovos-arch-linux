@@ -68,27 +68,26 @@ jobs:
 
         wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
         gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
+        mv "ArchLinuxARM-$arch-latest.tar.gz" "./tools/container-build/base-devel/ArchLinuxARM-latest.tar"
         # docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
 
-        echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" > /tmp/archlinux-${{ matrix.platform }}-Dockerfile 
+        # echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" > /tmp/archlinux-${{ matrix.platform }}-Dockerfile 
         
-        docker buildx build \
-          --tag "archlinux-${{ matrix.platform }}:latest" \
-          --tag "ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest" \
-          --platform="${{ matrix.platform }}" \
-          --push \
-          --file /tmp/archlinux-${{ matrix.platform }}-Dockerfile .
-        
+        # docker buildx build \
+        #   --tag "archlinux-${{ matrix.platform }}:latest" \
+        #   --tag "ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest" \
+        #   --platform="${{ matrix.platform }}" \
+        #   --push \
+        #   --file /tmp/archlinux-${{ matrix.platform }}-Dockerfile .        
         # docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
         
         docker buildx build \
           --build-arg ARCH=${{ matrix.platform }} \
           --platform "${{ matrix.platform }}" \
-          --file ./tools/container-build/base-devel/Containerfile \
-          --tag archlinux-${{ matrix.platform }}:base-devel \
           --tag ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel \
           --pull=false \
           --push \
+          --file ./tools/container-build/base-devel/Containerfile.from-rootfs-tarball \
           ./tools/container-build/base-devel
       
     # - name: Build base-devel ArchLinux ARM image
