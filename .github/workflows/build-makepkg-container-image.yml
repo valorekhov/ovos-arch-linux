@@ -82,7 +82,8 @@ jobs:
         gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
         # docker import "ArchLinuxARM-$arch-latest.tar" archlinux-${{ matrix.platform }}:latest
 
-        echo -e 'FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD ["bash"]' | docker build -t "archlinux-${{ matrix.platform }}:latest" --platform="$platform" -f- .
+        echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]"
+        echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" | docker build -t "archlinux-${{ matrix.platform }}:latest" --platform="$platform" -f- .
         docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
         
         # docker build -t archlinux-${{ matrix.platform }}:base-devel -f ./tools/container-build/base-devel/Containerfile ./tools/container-build/base-devel
