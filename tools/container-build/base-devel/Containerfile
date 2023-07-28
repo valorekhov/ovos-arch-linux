@@ -5,7 +5,7 @@
 ## pacman -S qemu-user-static qemu-user-static-binfmt
 ## ```
 ARG ARCH=arm64v8
-FROM archlinux-$ARCH:latest AS build
+FROM ghcr.io/valorekhov/archlinux-$ARCH:latest AS build
 #VOLUME /build
 
 WORKDIR /archlinux
