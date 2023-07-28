@@ -18,6 +18,8 @@ jobs:
     name: Build archlinux-${{ matrix.platform }}:base-devel images
     # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
     strategy:
+      fail-fast: true
+      max-parallel: 1  # GH seeems to be spuriously cancelling pulls. Will try this workaround
       matrix:
         platform:
         - aarch64
@@ -92,7 +94,7 @@ jobs:
         file: ./tools/container-build/base-devel/Containerfile.from-rootfs-tarball
         build-args: |
           ARCH=${{ matrix.platform }}
-        platforms: ${{ matrix.platform }}
+        platforms: "linux/${{ matrix.platform }}"
         tags: |
           ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
           ghcr.io/valorekhov/archlinux:base-devel-${{ matrix.platform }}
@@ -179,7 +181,7 @@ jobs:
         build-args: |
           ARCH_SUFFIX=${{ steps.setup_buildx_params.outputs.suffix }}
           REPO=${{ steps.setup_buildx_params.outputs.repo }}
-        platforms: ${{ matrix.platform }}
+        platforms: "linux/${{ matrix.platform }}"
         tags: |
           ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
           ghcr.io/valorekhov/archlinux:latest-${{ matrix.platform }}
