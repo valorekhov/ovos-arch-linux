@@ -3,7 +3,7 @@ ARG REPO=library
 ARG ARCH_SUFFIX
 ARG LABEL=base-devel
 
-FROM $REPO/archlinux:$LABEL$ARCH_SUFFIX
+FROM $REPO/archlinux$ARCH_SUFFIX:$LABEL
 
 # Install dependencies
 RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git arch-install-scripts jq wget \
