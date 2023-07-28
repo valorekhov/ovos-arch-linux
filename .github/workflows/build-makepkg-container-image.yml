@@ -28,7 +28,7 @@ jobs:
       id: check_registry
       run: |
         GHCR_TOKEN=$(echo $GITHUB_TOKEN | base64)
-        curl --head --fail -H "Authorization: Bearer $GHCR_TOKEN" https://ghcr.io/v2/valorekhov/archlinux-${{ matrix.platform }}/manifests/base-devel || exit 0
+        curl --head --fail -H "Authorization: Bearer $GHCR_TOKEN" https://ghcr.io/v2/valorekhov/archlinux-${{ matrix.platform }}/tags/list | grep -q '"base-devel"' || exit 0
 
         # docker manifest inspect "ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel" || exit 0
         echo "registry_has_base_devel_image=true"
