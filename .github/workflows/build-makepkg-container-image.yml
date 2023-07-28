@@ -72,10 +72,11 @@ jobs:
 
         echo -e "FROM scratch\nADD ArchLinuxARM-$arch-latest.tar /\nCMD [\"bash\"]" > /tmp/archlinux-${{ matrix.platform }}-Dockerfile 
         
-        docker buidlx build \
+        docker buildx build \
           --tag "archlinux-${{ matrix.platform }}:latest" \
           --platform="${{ matrix.platform }}" \
           --file /tmp/archlinux-${{ matrix.platform }}-Dockerfile .
+        
         # docker image inspect --format='{{.Architecture}}' "archlinux-${{ matrix.platform }}:latest"
         
         docker buildx build \
