@@ -15,7 +15,7 @@ on:
 jobs:
   build-basedevel-arm-images:
     runs-on: ubuntu-latest
-    name: Build ARM archlinux-{aarch64, armv7hf}:base-devel images
+    name: Build archlinux-${{ matrix.platform }}:base-devel images
     # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
     strategy:
       matrix:
