@@ -22,8 +22,8 @@ jobs:
       max-parallel: 1  # GH seeems to be spuriously cancelling pulls. Will try this workaround
       matrix:
         platform:
-        - aarch64
         - arm32v7
+        - aarch64
     steps:
     - name: Check if `archlinux-${{ matrix.platform }}:base-devel` image is available in the `ghcr` registry
       if: github.event.inputs.rebuild_basedevel != 'true'
