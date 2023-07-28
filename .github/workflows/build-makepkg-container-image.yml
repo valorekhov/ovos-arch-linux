@@ -64,7 +64,7 @@ jobs:
         esac
         case "${{ matrix.platform }}" in
             "arm64v8")
-                platform="linux/amd64"
+                platform="linux/arm64"
                 ;;
             "armv7hf")
                 platform="linux/arm/v7"
