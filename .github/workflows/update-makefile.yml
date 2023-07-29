@@ -259,27 +259,34 @@ jobs:
           jq --compact-output --null-input '$ARGS.positional' --args -- "${native_pkgbuilds[@]}" >> /tmp/pkgbuilds.json
           printf "," >> /tmp/pkgbuilds.json
         done
-        printf "\"_all\"=true}" >> /tmp/pkgbuilds.json
+        printf "\"_all\"=[]}" >> /tmp/pkgbuilds.json
         json=$(cat /tmp/pkgbuilds.json)
         echo "pkgbuilds=$json"
         echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
 
+    - name: "Select ARM matrix archs" 
+      id: select_arm_matrix_archs
+      run: |
+        $json=Get-Content -Path /tmp/pkgbuilds.json -Raw | ConvertFrom-Json | ForEach-Object {
+           $_.psobject.Properties | Where-Object { -not $_.Name.StartsWith('_') -and $_.Value.Count -gt 0 } | %{ $_.Name }
+        } | ConvertTo-Json -Compress 
+        Write-Host "archs=$json"
+        $json | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      shell: pwsh
 
     outputs:
       pkgbuilds: ${{ steps.select_native_arm_packages.outputs.pkgbuilds }}
+      matrix_arm_archs: ${{ steps.select_arm_matrix_archs.outputs.archs }}
 
   package-build-arm:
     needs: 
       - check
       - package-build-amd64
-    # if: needs.package-build-amd64.outputs.pkgbuilds != ''
     runs-on: ubuntu-latest
     name: Build ARM packages
     strategy:
       matrix:
-        arch: 
-        - aarch64
-        - armv7h #Based on majority of refs being in the ArchLinux arch format, we will not use arm32v7 but armv7h and will remap it below
+        arch: ${{ fromJson(needs.package-build-amd64.outputs.matrix_arm_archs) }}
     steps:
     - name: "Checkout repository"
       uses: actions/checkout@v3
@@ -294,6 +301,7 @@ jobs:
         wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/${{ matrix.arch }}/ovos-arch.db.tar.gz -O .repo/${{ matrix.arch }}/ovos-arch.db.tar.gz
 
     - name: Remap ArchLinux arch to docker arch
+      id: arch_remap
       run: |
         case '${{ matrix.arch }}' in
           aarch64)
@@ -310,10 +318,10 @@ jobs:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
       with:
-        platforms: ${{ steps.check.outputs.docker_arch }}
+        platforms: ${{ steps.arch_remap.outputs.docker_arch }}
          
     - name: "Build on ${{ matrix.arch }}"
-      # uses: ghcr.io/valorekhov/gha-makepkg-${{ steps.check.outputs.docker_arch }}:latest
+      # uses: ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
       # with:
       #   operation: repo-build
       #   packages: ${{ needs.package-build-amd64.outputs['pkgbuilds_' + matrix.arch] }}
@@ -323,7 +331,7 @@ jobs:
           -e INPUT_OPERATION=repo-build \
           -e INPUT_PACKAGES='${{ toJSON( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch] ) }}' \
           -e INPUT_REPOURL=https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch \
-          ghcr.io/valorekhov/gha-makepkg-${{ steps.check.outputs.docker_arch }}:latest
+          ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
 
     - name: "Preparing native ${{ matrix.arch }} packages"
       id: identify_available_packages
