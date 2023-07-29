@@ -309,10 +309,12 @@ jobs:
           aarch64)
             echo "docker_arch=arm64v8"
             echo "docker_arch=arm64v8" >> $GITHUB_OUTPUT
+            echo "qemu_platform=linux/arm64" >> $GITHUB_OUTPUT
             ;;
           armv7h)
             echo "docker_arch=arm32v7"
             echo "docker_arch=arm32v7" >> $GITHUB_OUTPUT
+            echo "qemu_platform=linux/arm/v7" >> $GITHUB_OUTPUT
             ;;
           *)
             echo "Unknown arch: ${{ matrix.arch }}"
@@ -326,7 +328,7 @@ jobs:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
       with:
-        platforms: ${{ steps.arch_remap.outputs.docker_arch }}
+        platforms: ${{ steps.arch_remap.outputs.qemu_platform }}
          
     - name: "Build on ${{ matrix.arch }}"
       # uses: ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
@@ -340,7 +342,7 @@ jobs:
           -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
           -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
-          --platform "linux/${{ steps.arch_remap.outputs.docker_arch }}" \
+          --platform '${{ steps.arch_remap.outputs.qemu_platform }}' \
           ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
 
     - name: "Preparing native ${{ matrix.arch }} packages"
