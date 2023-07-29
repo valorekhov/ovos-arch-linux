@@ -37,6 +37,7 @@ uninstall:
 	@pacman -Qq | sort | comm -12 - <(echo "$(ALL_PACKAGES)" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm
 
 repo: create-repo aur-repo
+	@echo "All architecure repos created..."
 
 create-repo:
 	@mkdir -p "$(REPO_DIR)/"
