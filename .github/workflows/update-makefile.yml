@@ -84,7 +84,7 @@ jobs:
       - if: (steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true') && steps.makepkg-cached.outputs.cache-hit != 'true'
         run: |
             docker pull ghcr.io/valorekhov/gha-makepkg-amd64:latest
-            mdkir -p ~/image-cache/makepkg/amd64/
+            mkdir -p ~/image-cache/makepkg/amd64/
             docker save -o ~/image-cache/makepkg/amd64/image.tar ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
       - if: steps.makepkg-cached.outputs.cache-hit == 'true'
@@ -167,7 +167,7 @@ jobs:
     - if: steps.makepkg-cached.outputs.cache-hit != 'true'
       run: |
           docker pull ghcr.io/valorekhov/gha-makepkg-amd64:latest
-          mdkir -p ~/image-cache/makepkg/amd64/
+          mkdir -p ~/image-cache/makepkg/amd64/
           docker save -o ~/image-cache/makepkg/amd64/image.tar ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
     - if: steps.makepkg-cached.outputs.cache-hit == 'true'
