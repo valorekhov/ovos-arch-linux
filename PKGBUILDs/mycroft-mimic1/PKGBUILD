@@ -27,7 +27,7 @@ sha256sums=('c17b8d56c928df97d6ae0f3a4b1e4f6b60d939d25718fed43d29ec0f82f36d59')
 build() {
     cd "$srcdir/$_gh_proj-$_commit"
     ./autogen.sh
-    ./configure --enable-shared --prefix="/usr" #--with-audio=alsa
+    ./configure --enable-shared --prefix="/usr" CFLAGS="-Wno-free-nonheap-object" #--with-audio=alsa
     make
 }
 
