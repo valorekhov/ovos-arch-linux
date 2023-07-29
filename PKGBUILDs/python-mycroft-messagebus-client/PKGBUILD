@@ -18,6 +18,7 @@ checkdepends=()
 provides=()
 conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 
+
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-websocket-client>=0.54.0' # websocket-client>=0.54.0
