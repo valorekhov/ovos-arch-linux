@@ -154,7 +154,7 @@ jobs:
         do
             echo "Downloading repo DB for $arch..."
             mkdir -p .repo/"$arch"
-            wget "https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/$arch/ovos-arch.db.tar.gz" -O .repo/"$arch"/ovos-arch.db.tar.gz
+            wget "https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch/$arch/ovos-arch.db.tar.gz" -O .repo/"$arch"/ovos-arch.db.tar.gz
         done        
 
     - name: Cache makepkg image
@@ -178,13 +178,13 @@ jobs:
       # with:
       #   operation: repo-build
       #   packages: ${{ needs.check.outputs.pkgbuilds }}
-      #   repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
+      #   repourl: https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch
       run: | 
         docker run --rm  -v $PWD:/build \
           -e INPUT_ARCH='x86_64' \
           -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' \
-          -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
+          -e INPUT_REPOURL='https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch' \
           ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
     # - name: "Identifying prepared arch packages"
@@ -215,9 +215,9 @@ jobs:
             if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
               echo "Uploading packages for $arch..."
               ls ".repo/$arch/"*.pkg.tar.*
-              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
+              az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
               echo "Uploaded DB files from .repo/$arch ..."
-              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite
+              az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite
               echo "Uploaded packages from .repo/$arch ..." 
             fi
           done 
@@ -310,7 +310,7 @@ jobs:
       run: |
         echo "Downloading repo DB..."
         mkdir -p .repo/${{ matrix.arch }}        
-        wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/${{ matrix.arch }}/ovos-arch.db.tar.gz -O .repo/${{ matrix.arch }}/ovos-arch.db.tar.gz
+        wget https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch/${{ matrix.arch }}/ovos-arch.db.tar.gz -O .repo/${{ matrix.arch }}/ovos-arch.db.tar.gz
 
     - name: Remap ArchLinux arch to docker arch
       id: arch_remap
@@ -345,14 +345,14 @@ jobs:
       # with:
       #   operation: repo-build
       #   packages: ${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}
-      #   repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
+      #   repourl: https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch
       run: | 
         docker run --rm \
           -v $PWD:/build \
           -e INPUT_ARCH='${{ matrix.arch }}' \
           -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
-          -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
+          -e INPUT_REPOURL='https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch' \
           --platform 'linux/${{ steps.arch_remap.outputs.docker_arch }}' \
           ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
 
@@ -371,7 +371,7 @@ jobs:
       with:
         azcliversion: 2.50.0
         inlineScript: |
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path ${{ matrix.arch }} --source .repo/${{ matrix.arch }} --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite 
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path ${{ matrix.arch }} --source .repo/${{ matrix.arch }} --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+          az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path ${{ matrix.arch }} --source .repo/${{ matrix.arch }} --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite 
+          az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path ${{ matrix.arch }} --source .repo/${{ matrix.arch }} --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
       env:
         AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"

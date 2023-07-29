@@ -87,7 +87,7 @@ Edit `/etc/pacman.conf` and add the following repository:
 ```
 [ovos-arch]
 SigLevel = Optional TrustAll
-Server = https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/$arch
+Server = https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch/$arch
 ```
 Run `pacman -Sy ovos-enclosure-base` to download the ovos-arch repo and install the base system. You may replace `ovos-enclosure-base` with `ovos-enclosure-rpi4-mark2` if you are installing on a Mark II device.
 The installation process will guide you through selection of a few options. Be sure to select:
