@@ -307,10 +307,16 @@ jobs:
       run: |
         case '${{ matrix.arch }}' in
           aarch64)
+            echo "docker_arch=arm64v8"
             echo "docker_arch=arm64v8" >> $GITHUB_OUTPUT
             ;;
           armv7h)
-            export "docker_arch=arm32v7" >> $GITHUB_OUTPUT
+            echo "docker_arch=arm32v7"
+            echo "docker_arch=arm32v7" >> $GITHUB_OUTPUT
+            ;;
+          *)
+            echo "Unknown arch: ${{ matrix.arch }}"
+            exit 1
             ;;
         esac
         
@@ -330,9 +336,9 @@ jobs:
       #   repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
       run: | 
         docker run --rm -v $PWD:/build \
-          -e INPUT_OPERATION=repo-build \
+          -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
-          -e INPUT_REPOURL=https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch \
+          -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
           ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
 
     - name: "Preparing native ${{ matrix.arch }} packages"
