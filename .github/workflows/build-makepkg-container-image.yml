@@ -1,0 +1,191 @@
+name: Build `archlinux-{arm64v8,armv7hf}:base-devel` and `gha-makepkg:latest` multi-arch images
+on: 
+  workflow_dispatch:
+    inputs:
+      rebuild_basedevel:
+        description: 'Rebuild base-devel'
+        type: boolean
+        required: false
+  push:
+    paths:
+    - ./.github/actions/makepkg/**
+    branches:
+    - main
+
+jobs:
+  build-basedevel-arm-images:
+    runs-on: ubuntu-latest
+    name: Build archlinux-${{ matrix.platform }}:base-devel images
+    # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
+    strategy:
+      fail-fast: true
+      max-parallel: 1  # GH seeems to be spuriously cancelling pulls. Will try this workaround
+      matrix:
+        platform:
+        - arm32v7
+        - aarch64
+    steps:
+    - name: Check if `archlinux-${{ matrix.platform }}:base-devel` image is available in the `ghcr` registry
+      if: github.event.inputs.rebuild_basedevel != 'true'
+      id: check_registry
+      run: |
+        GHCR_TOKEN=$(echo $GITHUB_TOKEN | base64)
+        curl --fail -H "Authorization: Bearer $GHCR_TOKEN" https://ghcr.io/v2/valorekhov/archlinux-${{ matrix.platform }}/tags/list | grep -q '"base-devel"' || exit 0
+
+        # docker manifest inspect "ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel" || exit 0
+        echo "registry_has_base_devel_image=true"
+        echo "registry_has_base_devel_image=true" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout Repository
+      if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
+      uses: actions/checkout@v3
+
+    - name: Set up QEMU
+      if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
+      uses: docker/setup-qemu-action@v2
+
+    - name: Login to GitHub docker registry
+      if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Docker Buildx
+      if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
+      uses: docker/setup-buildx-action@v2
+
+    - name: Prepare rootfs tarball
+      id: prepare_image
+      if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
+      run: |
+        # Convert docker ARCH to archlinux-arm ARCH
+        case "${{ matrix.platform }}" in
+            "arm64v8")
+                arch="aarch64"
+                ;;
+            "aarch64")
+                arch="aarch64"
+                ;;
+            "armv7hf")
+                arch="armv7"
+                ;;
+            "arm32v7")
+                arch="armv7"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
+
+        wget "http://os.archlinuxarm.org/os/ArchLinuxARM-$arch-latest.tar.gz"
+        gzip -d "ArchLinuxARM-$arch-latest.tar.gz"
+        mv "ArchLinuxARM-$arch-latest.tar" "./tools/container-build/base-devel/ArchLinuxARM-latest.tar"
+
+    - name: Build archlinux-${{ matrix.platform }}:base-devel image
+      if: steps.check_registry.outputs.registry_has_base_devel_image != 'true'
+      uses: docker/build-push-action@v4
+      with:
+        context: ./tools/container-build/base-devel
+        file: ./tools/container-build/base-devel/Containerfile.from-rootfs-tarball
+        build-args: |
+          ARCH=${{ matrix.platform }}
+        platforms: "linux/${{ matrix.platform }}"
+        tags: |
+          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:base-devel
+          ghcr.io/valorekhov/archlinux:base-devel-${{ matrix.platform }}
+        pull: false
+        # cache-from: archlinux-${{ matrix.platform }}:latest
+        # cache-to: type=gha,mode=max
+        push: true
+
+  build-makepkg-image:
+    needs: build-basedevel-arm-images
+    runs-on: ubuntu-latest
+    name: Build gha-makepkg-${{ matrix.platform }}:latest image
+    # if: github.event.inputs.arch == '' || github.event.inputs.arch == null || github.event.inputs.arch == matrix.platform
+    strategy:
+      fail-fast: false
+      # max-parallel: 1  GH seeems to be spuriously cancelling pulls. Will try this workaround
+      matrix:
+        platform: 
+        - amd64
+        - aarch64
+        - arm32v7
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up QEMU
+      if: matrix.platform != 'amd64'
+      uses: docker/setup-qemu-action@v2
+
+    - name: Login to GitHub docker registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Configure buildx args for ${{ matrix.platform }}
+      id: setup_buildx_params
+      run: |
+        case "${{ matrix.platform }}" in
+            "amd64")
+                repo="library"
+                ;;
+            "aarch64")
+                repo="ghcr.io/valorekhov"
+                ;;
+            "arm32v7")
+                repo="ghcr.io/valorekhov"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
+        echo "repo=$repo" 
+        echo "repo=$repo" >> $GITHUB_OUTPUT
+
+        case "${{ matrix.platform }}" in
+            "amd64")
+                suffix=""
+                ;;
+            "aarch64")
+                suffix="-aarch64"
+                ;;
+            "arm32v7")
+                suffix="-arm32v7"
+                ;;
+            *)
+                echo "Invalid architecture"
+                exit 1
+                ;;
+        esac
+        echo "suffix=$suffix"
+        echo "suffix=$suffix" >> $GITHUB_OUTPUT
+
+    - name: Build gha-makepkg-${{ matrix.platform }}:latest image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./.github/actions/makepkg
+        file: ./.github/actions/makepkg/Dockerfile
+        build-args: |
+          ARCH_SUFFIX=${{ steps.setup_buildx_params.outputs.suffix }}
+          REPO=${{ steps.setup_buildx_params.outputs.repo }}
+        platforms: "linux/${{ matrix.platform }}"
+        tags: |
+          ghcr.io/valorekhov/gha-makepkg-${{ matrix.platform }}:latest
+          ghcr.io/valorekhov/gha-makepkg:latest-${{ matrix.platform }}
+        pull: false
+        # cache-from: type=gha
+        # cache-to: type=gha,mode=max
+        push: true

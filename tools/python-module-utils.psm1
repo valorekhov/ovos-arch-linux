@@ -50,6 +50,10 @@ function ConvertFrom-PythonModuleDependencies([string]$path, $packageMap){
         $whl = Get-ChildItem -Path ./dist -Filter *.whl
         $moduleName = $whl.Name -replace '-.*$'
         $deps = $pyDepCode.Replace("{{pkgname}}", $moduleName) | python | ConvertFrom-Json
+
+        # Write-Host "Found $($deps.Count) dependencies for '$moduleName'"
+        # Write-Host $deps
+
         $depends=New-Object System.Collections.ArrayList
         $conflicts=New-Object System.Collections.ArrayList
         $optdepends=New-Object System.Collections.ArrayList
@@ -73,7 +77,14 @@ function ConvertFrom-PythonModuleDependencies([string]$path, $packageMap){
                     } elseif ($spec.op.StartsWith('<')) {
                         $conflicts += "'$packageName>=$($spec.ver)' # $($dep.__str)"
                     } elseif ($spec.op.StartsWith('~')) {
-                        # This is a tilde requirement, which we skip
+                        if ($dep.specs.Count -eq 1){
+                            if ($dep.marker) {
+                                $optdepends += "'$packageName>=$($spec.ver)' # $($dep.__str)"
+                            } else {
+                                $depends += "'$packageName>=$($spec.ver)' # $($dep.__str)"
+                            }
+                        }
+                        # Otherwise, this is a tilde requirement, among others and which we skip it
                     } else {
                         $comments += "# $($packageName): $($dep.__str)"
                     }

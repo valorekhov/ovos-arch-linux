@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-official-news
 	pkgdesc = News Streams from around the globe
-	pkgver = 0.0.1
-	pkgrel = 1
+	pkgver = 0.0.3
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/skill-ovos-news/
 	arch = any
 	license = Apache License 2.0
@@ -11,13 +11,12 @@ pkgbase = ovos-skill-official-news
 	makedepends = python-setuptools
 	depends = python
 	depends = python-beautifulsoup4
-	depends = python-feedparser
-	depends = python-ovos-ocp-audio-plugin
-	depends = python-ovos-workshop
+	depends = python-ovos-ocp-audio-plugin>=0.0.3
+	depends = python-ovos-workshop>=0.0.10
 	depends = python-pytz
 	provides = ovos-skill-official-news
 	conflicts = ovos-skill-official-news
-	source = https://github.com/OpenVoiceOS/skill-ovos-news/archive/392d32ebea4cc9cc3ba3371c1fe63c72426d0070.tar.gz
-	sha256sums = 974fb71bf9f0bc652cef1c818efe24e96fc89d4663154e8d3574675a8063fbbb
+	source = https://github.com/OpenVoiceOS/skill-ovos-news/archive/90718d2b337df81c5312bb0c657db7888d45edf7.tar.gz
+	sha256sums = d762a1f7b44683621b8c13ea09e20c561a8c5856da24bc72ae9e26e712a0643c
 
 pkgname = ovos-skill-official-news

@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   branches:
-  #     - main
+  pull_request:
+    branches:
+      - main
 
 
 jobs:
@@ -14,20 +14,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
+        if: github.event_name != 'pull_request'
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # - name: Check for PR trigger
-      #   if: github.event_name == 'pull_request'
-      #   run: echo "DISABLE_DEPLOY=true" >> $GITHUB_OUTPUT
-        
+      - name: Checkout repository (PR)
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
       - uses: nrwl/nx-set-shas@v3
         id: last_successful_commit
+        # if: github.event_name != 'pull_request'
         with:
           main-branch-name: 'main'
           workflow-id: 'update-makefile.yml'
-          #github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check for changes in PKGBUILD folders
         id: check_assets
@@ -40,7 +44,15 @@ jobs:
             exit 0
           fi
 
-          git diff --name-only "${{ steps.last_successful_commit.outputs.base }}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
+          github_event_name=$(echo $GITHUB_EVENT_NAME | tr '[:upper:]' '[:lower:]') 
+          # if [ $github_event_name = "pull_request" ] ; then 
+          #   base_commit="main"
+          # else 
+            base_commit="${{ steps.last_successful_commit.outputs.base }}"
+          # fi 
+          echo "base_commit=$base_commit"
+
+          git diff --name-only "${base_commit}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
           if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
             echo "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
             pkgbuilds=()
@@ -54,37 +66,41 @@ jobs:
             echo "pkgbuilds=$json"
             echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
           fi
-          if git diff --name-only '${{ steps.last_successful_commit.outputs.base }}..HEAD' -- aur.lock | grep -q 'aur.lock'; then
+          if git diff --name-only "${base_commit}..HEAD" -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
             make aur-lock
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      # Restore the cache, if available
-      - name: Restore Docker cache
+      # A lot of ops in this workflow run on x86_64, so we optimize by caching the image
+      - name: Cache makepkg image
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
+        id: makepkg-cached
         uses: actions/cache@v3
         with:
-          path: ~/.docker
-          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
+            path: ~/image-cache/makepkg/amd64/
+            key: makepkg-cached-amd64-${{ runner.os }}
 
-      - name: Check for changes in Makefile
-        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
-        uses: ./.github/actions/makepkg
-        with:
-          operation: makefile-update
-          packages: ${{ steps.check_assets.outputs.pkgbuilds }}
-          rebuildall: false
+      - if: (steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true') && steps.makepkg-cached.outputs.cache-hit != 'true'
+        run: |
+            docker pull ghcr.io/valorekhov/gha-makepkg-amd64:latest
+            mkdir -p ~/image-cache/makepkg/amd64/
+            docker save -o ~/image-cache/makepkg/amd64/image.tar ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
-      # Save the Docker cache for future runs
-      - name: Save Docker cache
+      - if: steps.makepkg-cached.outputs.cache-hit == 'true'
+        run: docker load -i ~/image-cache/makepkg/amd64/image.tar
+
+      - name: "Check for changes in Makefile"
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
-        uses: actions/cache@v3
-        with:
-          path: ~/.docker
-          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+        # uses: ghcr.io/valorekhov/gha-makepkg-amd64:latest
+        # with:
+        #   operation: makefile-update
+        #   packages: ${{ steps.check_assets.outputs.pkgbuilds }}
+        run: | 
+          docker run --rm  -v $PWD:/build \
+            -e INPUT_OPERATION=makefile-update \
+            -e INPUT_PACKAGES='${{ steps.check_assets.outputs.pkgbuilds }}' \
+            ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
       - name: Rebuild Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
@@ -129,63 +145,84 @@ jobs:
       with:
         fetch-depth: 1
         ref: ${{ needs.check.outputs.commit_hash }}
+
     - name: "Download repo from Azure Blob Storage"
-      if: false
+      if: false && needs.check.outputs.has_PKGBUILD_changes == 'true'
       run: |
-        echo "Downloading repo DB..."
-        mkdir -p .repo/{x86_64,aarch64}        
-        wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/x86_64/ovos-arch.db.tar.gz -O .repo/x86_64/ovos-arch.db.tar.gz
-        wget https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch/aarch64/ovos-arch.db.tar.gz -O .repo/aarch64/ovos-arch.db.tar.gz
-        cp .repo/x86_64/ovos-arch.db.tar.gz .repo/x86_64/ovos-arch.db.tar.gz.bak
-        cp .repo/aarch64/ovos-arch.db.tar.gz .repo/aarch64/ovos-arch.db.tar.gz.bak
-    # Restore the cache, if available
-    - name: Restore Docker cache
+        archs=("x86_64" "aarch64" "armv7h")
+        for arch in "${archs[@]}"
+        do
+            echo "Downloading repo DB for $arch..."
+            mkdir -p .repo/"$arch"
+            wget "https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch/$arch/ovos-arch.db.tar.gz" -O .repo/"$arch"/ovos-arch.db.tar.gz
+        done        
+
+    - name: Cache makepkg image
+      id: makepkg-cached
       uses: actions/cache@v3
       with:
-        path: ~/.docker
-        key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
-        restore-keys: |
-          ${{ runner.os }}-docker-
-    - name: "Build on x86_64"
-      uses: ./.github/actions/makepkg
-      with:
-        operation: repo-build
-        packages: ${{ needs.check.outputs.pkgbuilds }}
-        rebuildall: false
-        repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
-    - name: "Preparing packages"
-      id: identify_available_packages
+          path: ~/image-cache/makepkg/amd64/
+          key: makepkg-cached-amd64-${{ runner.os }}
+
+    - if: steps.makepkg-cached.outputs.cache-hit != 'true'
       run: |
-        if ls .repo/x86_64/*.pkg.tar.* 1> /dev/null 2>&1 ; then
-          echo "upload_x86_64=true"
-          echo "upload_x86_64=true" >> $GITHUB_OUTPUT
-        fi
-        if ls .repo/aarch64/*.pkg.tar.* 1> /dev/null 2>&1 ; then
-          echo "upload_aarch64=true"
-          echo "upload_aarch64=true" >> $GITHUB_OUTPUT
-        fi
+          docker pull ghcr.io/valorekhov/gha-makepkg-amd64:latest
+          mkdir -p ~/image-cache/makepkg/amd64/
+          docker save -o ~/image-cache/makepkg/amd64/image.tar ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
-    - name: "Upload x86_64 packages to Azure Blob Storage"
-      if: steps.identify_available_packages.outputs.upload_x86_64 == 'true'
+    - if: steps.makepkg-cached.outputs.cache-hit == 'true'
+      run: docker load -i ~/image-cache/makepkg/amd64/image.tar
+
+    - name: "Build on x86_64"
+      # uses: ghcr.io/valorekhov/gha-makepkg-amd64:latest
+      # with:
+      #   operation: repo-build
+      #   packages: ${{ needs.check.outputs.pkgbuilds }}
+      #   repourl: https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch
+      run: | 
+        docker run --rm  -v $PWD:/build \
+          -e INPUT_ARCH='x86_64' \
+          -e INPUT_OPERATION='repo-build' \
+          -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' \
+          -e INPUT_REPOURL='https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch' \
+          ghcr.io/valorekhov/gha-makepkg-amd64:latest
+
+    # - name: "Identifying prepared arch packages"
+    #   id: identify_available_packages
+    #   if: github.event_name != 'pull_request'
+    #   run: |
+    #     archs=("x86_64" "aarch64" "armv7h")
+    #     out_archs=()
+    #     for arch in "${archs[@]}"
+    #     do
+    #       if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
+    #         out_archs+=("$arch")
+    #       fi
+    #     done  
+    #     echo "upload_archs=${out_archs[@]}" >> $GITHUB_OUTPUT
+
+    - name: "Upload packages to Azure Blob Storage"
+      if: github.event_name != 'pull_request'
       uses: azure/CLI@v1
       with:
         azcliversion: 2.50.0
         inlineScript: |
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path x86_64 --source .repo/x86_64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+          archs=("x86_64" "aarch64" "armv7h")
+          for arch in "${archs[@]}"
+          do
+            echo "Checking for packages for $arch..."
+            echo
+            if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
+              echo "Uploading packages for $arch..."
+              ls ".repo/$arch/"*.pkg.tar.*
+              az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
+              echo "Uploaded DB files from .repo/$arch ..."
+              az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite
+              echo "Uploaded packages from .repo/$arch ..." 
+            fi
+          done 
       env:
-        AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"
-
-    - name: "Upload aarch64 packages to Azure Blob Storage"
-      if: steps.identify_available_packages.outputs.upload_aarch64 == 'true'
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.50.0
-        inlineScript: |
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite 
-          az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path aarch64 --source .repo/aarch64 --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
-      env:
-        AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"
+        AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
 
     # At this point the .repo/aarch64/ folder will possibly contain -any.pkg.tar.{zst,xz} files
     # We need to filter out the -any packages from the `needs.check.outputs.pkgbuilds` array
@@ -197,45 +234,144 @@ jobs:
     - name: "Select native ARM packages to build"
       id: select_native_arm_packages
       run: |  
-        native_pkgbuilds=()
-        original_pkgbuilds=($(echo '${{ needs.check.outputs.pkgbuilds }}' | jq -r '.[]'))
-        echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
-        cd .repo/aarch64/
-        pkgfiles=( *-any.pkg.tar.* )
-        if (( ${#pkgfiles[@]} )); then
-          echo "pkgfiles='${pkgfiles[@]}'"
-          for pkg in $pkgfiles ; do
-            echo "pkg=$pkg"
-            pkgname=$(echo $pkg | rev | cut -d'-' -f4- | rev)
-            echo "pkgname=$pkgname"
-            for entry in $original_pkgbuilds ; do
-              echo "entry=$entry, pkgname=$pkgname"
-              if [[ $entry == *"/$pkgname/"* ]]; then
-                echo "$entry has already been built for ARM, skipping..."
-              else
-                native_pkgbuilds+=($entry)
-              fi
+        archs=("aarch64" "armv7h")
+        printf "{" > /tmp/pkgbuilds.json
+        for arch in "${archs[@]}"
+        do
+          native_pkgbuilds=()
+          original_pkgbuilds=($(echo '${{ needs.check.outputs.pkgbuilds }}' | jq -r '.[]'))
+          echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
+          pushd ".repo/$arch/"
+          pkgfiles=( *-any.pkg.tar.* )
+          if (( ${#pkgfiles[@]} )); then
+            echo "pkgfiles='${pkgfiles[@]}'"
+            for pkg in $pkgfiles ; do
+              echo "pkg=$pkg"
+              pkgname=$(echo $pkg | rev | cut -d'-' -f4- | rev)
+              echo "pkgname=$pkgname"
+              for entry in $original_pkgbuilds ; do
+                echo "entry=$entry, pkgname=$pkgname"
+                if [[ $entry == *"/$pkgname/"* ]]; then
+                  echo "$entry has already been built for ARM, skipping..."
+                else
+                  native_pkgbuilds+=($entry)
+                fi
+              done
             done
-          done
-        else
-          echo "Did not find any package files..."
-        fi
-        echo "pkgbuilds=${native_pkgbuilds[@]}"
-        echo "pkgbuilds=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
+          else
+            echo "Did not find any package files..."
+          fi
+          popd
+          # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}"
+          # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
+          printf "\"$arch\":" >> /tmp/pkgbuilds.json
+          jq -j --compact-output --null-input '$ARGS.positional' --args -- "${native_pkgbuilds[@]}" | tr -d '\n' >> /tmp/pkgbuilds.json
+          printf "," >> /tmp/pkgbuilds.json
+        done
+        printf "\"_foo\":[]}" >> /tmp/pkgbuilds.json
+        json=$(cat /tmp/pkgbuilds.json)
+        echo "pkgbuilds=$json"
+        echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
+
+    - name: "Select ARM matrix archs" 
+      id: select_arm_matrix_archs
+      run: |
+        [array]$arr=Get-Content -Path /tmp/pkgbuilds.json -Raw | ConvertFrom-Json | ForEach-Object {
+           $_.psobject.Properties | Where-Object { -not $_.Name.StartsWith('_') -and $_.Value.Count -gt 0 } | %{ $_.Name }
+        }
+        Write-Host $arr
+        $json = ConvertTo-Json $arr -Compress
+        Write-Host "archs=$json"
+        "archs=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      shell: pwsh
 
     outputs:
       pkgbuilds: ${{ steps.select_native_arm_packages.outputs.pkgbuilds }}
+      matrix_arm_archs: ${{ steps.select_arm_matrix_archs.outputs.archs }}
 
   package-build-arm:
-    needs: package-build-amd64
-    if: needs.package-build-amd64.outputs.pkgbuilds != ''
+    needs: 
+      - check
+      - package-build-amd64
+    if: needs.package-build-amd64.outputs.matrix_arm_archs != 'null' && needs.package-build-amd64.outputs.matrix_arm_archs 
     runs-on: ubuntu-latest
     name: Build ARM packages
-    # strategy:
-    #   matrix:
-    #     arch: ['aarch64']
+    strategy:
+      matrix:
+        arch: ${{ fromJson(needs.package-build-amd64.outputs.matrix_arm_archs) }}
     steps:
-    - name: "Building aarch64" # "Build on ${{ matrix.arch }}"
+    - name: "Checkout repository"
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        ref: ${{ needs.check.outputs.commit_hash }}
+
+    - name: "Download repo from Azure Blob Storage"
       run: |
-        echo "Building for aarch64: ${{ needs.package-build-amd64.outputs.pkgbuilds }}"
-        echo "TODO....."
+        echo "Downloading repo DB..."
+        mkdir -p .repo/${{ matrix.arch }}        
+        wget https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch/${{ matrix.arch }}/ovos-arch.db.tar.gz -O .repo/${{ matrix.arch }}/ovos-arch.db.tar.gz
+
+    - name: Remap ArchLinux arch to docker arch
+      id: arch_remap
+      run: |
+        case '${{ matrix.arch }}' in
+          aarch64)
+            echo "docker_arch=arm64v8"
+            echo "docker_arch=arm64v8" >> $GITHUB_OUTPUT
+            echo "qemu_platform=linux/arm64" >> $GITHUB_OUTPUT
+            ;;
+          armv7h)
+            echo "docker_arch=arm32v7"
+            echo "docker_arch=arm32v7" >> $GITHUB_OUTPUT
+            echo "qemu_platform=linux/arm/v7" >> $GITHUB_OUTPUT
+            ;;
+          *)
+            echo "Unknown arch: ${{ matrix.arch }}"
+            exit 1
+            ;;
+        esac
+        
+        echo "Packages to build for ${{ matrix.arch }}:"
+        echo "${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}"
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: ${{ steps.arch_remap.outputs.qemu_platform }}
+         
+    - name: "Build on ${{ matrix.arch }}"
+      # uses: ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
+      # with:
+      #   operation: repo-build
+      #   packages: ${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}
+      #   repourl: https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch
+      run: | 
+        docker run --rm \
+          -v $PWD:/build \
+          -e INPUT_ARCH='${{ matrix.arch }}' \
+          -e INPUT_OPERATION='repo-build' \
+          -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
+          -e INPUT_REPOURL='https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch' \
+          --platform 'linux/${{ steps.arch_remap.outputs.docker_arch }}' \
+          ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
+
+    - name: "Preparing native ${{ matrix.arch }} packages"
+      id: identify_available_packages
+      if: github.event_name != 'pull_request'
+      run: |
+        if ls .repo/${{ matrix.arch }}/*.pkg.tar.* 1> /dev/null 2>&1 ; then
+          echo "upload=true"
+          echo "upload=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: "Upload ${{ matrix.arch }} native packages to Azure Blob Storage"
+      if: steps.identify_available_packages.outputs.upload == 'true'
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.50.0
+        inlineScript: |
+          az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path ${{ matrix.arch }} --source .repo/${{ matrix.arch }} --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite 
+          az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path ${{ matrix.arch }} --source .repo/${{ matrix.arch }} --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+      env:
+        AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"

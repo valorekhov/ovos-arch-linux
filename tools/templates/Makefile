@@ -1,6 +1,6 @@
-.PHONY: all clean extra repo aur-repo rebuild uninstall
+.PHONY: all clean extra repo create-repo sync-repo aur-repo rebuild uninstall
 # MODE := "source"
-ARCH := $(shell uname -m)
+ARCH := $(shell if [ -n "$$ARCH" ]; then echo "$$ARCH"; else uname -m; fi)
 WORKSPACE_DIR := $(shell pwd)
 REPO_ROOT := $(WORKSPACE_DIR)/.repo
 REPO_DIR := $(REPO_ROOT)/$(ARCH)
@@ -36,7 +36,10 @@ rebuild:
 uninstall:
 	@pacman -Qq | sort | comm -12 - <(echo "$(ALL_PACKAGES)" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm
 
-repo: aur-repo
+repo: create-repo aur-repo
+	@echo "All architecure repos created..."
+
+create-repo:
 	@mkdir -p "$(REPO_DIR)/"
 	@if [ ! -f "$(REPO_DIR)/ovos-arch.db.tar.gz" ]; then \
 		if [ "$(INPUT_REBUILDALL)" != 1 ] && [ -n "$(ONLINE_REPO_URI)" ] ; then \
@@ -46,6 +49,9 @@ repo: aur-repo
 				mkdir -p "$(REPO_DIR)/../aarch64/"; \
 				wget "$(ONLINE_REPO_URI)/aarch64/ovos-arch.db" -O "$(REPO_DIR)/../aarch64/ovos-arch.db"; \
 				wget "$(ONLINE_REPO_URI)/aarch64/ovos-arch.db.tar.gz" -O "$(REPO_DIR)/../aarch64/ovos-arch.db.tar.gz"; \
+				mkdir -p "$(REPO_DIR)/../armv7h/"; \
+				wget "$(ONLINE_REPO_URI)/armv7h/ovos-arch.db" -O "$(REPO_DIR)/../armv7h/ovos-arch.db"; \
+				wget "$(ONLINE_REPO_URI)/armv7h/ovos-arch.db.tar.gz" -O "$(REPO_DIR)/../armv7h/ovos-arch.db.tar.gz"; \
 			fi; \
 		else \
 			repo-add "$(REPO_DIR)/ovos-arch.db.tar.gz"; \

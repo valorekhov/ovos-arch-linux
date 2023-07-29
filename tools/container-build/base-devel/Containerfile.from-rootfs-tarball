@@ -1,0 +1,37 @@
+## Build aarch64 image
+## Note: Unless ran on an aarch64 machine, this will require qemu-user-static to be installed
+## a la 
+## ```bash
+## pacman -S qemu-user-static qemu-user-static-binfmt
+## ```
+ARG ARCH=arm64v8
+FROM scratch AS build
+ADD "ArchLinuxARM-latest.tar" /
+#VOLUME /build
+
+WORKDIR /archlinux
+RUN mkdir -p /archlinux/rootfs
+COPY pacstrap-docker /archlinux/
+
+RUN pacman-key --init && pacman-key --populate archlinuxarm && pacman -Sy --noconfirm 
+RUN ./pacstrap-docker /archlinux/rootfs \
+        base base-devel \
+    && (pacman -r /archlinux/rootfs -S --noconfirm archlinuxarm-keyring || true) \
+    && rm -rf rootfs/var/lib/pacman/sync/*
+
+FROM scratch
+ARG ARCH=arm64v8
+
+COPY --from=0 /archlinux/rootfs/ /
+#COPY rootfs/common/ /
+#COPY rootfs/$ARCH/ /
+
+ENV LANG=en_US.UTF-8
+
+# This imsage is not meant for distribution, so we can pre-generate pacman keys
+RUN locale-gen && \
+    pacman-key --init && \
+    pacman-key --populate archlinux && \
+    (pacman-key --populate archlinuxarm || true)
+
+CMD ["/usr/bin/bash"]
