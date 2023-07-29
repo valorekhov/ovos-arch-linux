@@ -267,7 +267,7 @@ jobs:
     - name: "Select ARM matrix archs" 
       id: select_arm_matrix_archs
       run: |
-        $arr=Get-Content -Path /tmp/pkgbuilds.json -Raw | ConvertFrom-Json | ForEach-Object {
+        [array]$arr=Get-Content -Path /tmp/pkgbuilds.json -Raw | ConvertFrom-Json | ForEach-Object {
            $_.psobject.Properties | Where-Object { -not $_.Name.StartsWith('_') -and $_.Value.Count -gt 0 } | %{ $_.Name }
         }
         Write-Host $arr
