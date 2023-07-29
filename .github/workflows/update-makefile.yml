@@ -187,31 +187,37 @@ jobs:
           -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
           ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
-    - name: "Identifying prepared arch packages"
-      id: identify_available_packages
-      if: github.event_name != 'pull_request'
-      run: |
-        archs=("x86_64" "aarch64" "armv7h")
-        out_archs=()
-        for arch in "${archs[@]}"
-        do
-          if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
-            out_archs+=("$arch")
-          fi
-        done  
-        echo "upload_archs=${out_archs[@]}" >> $GITHUB_OUTPUT
+    # - name: "Identifying prepared arch packages"
+    #   id: identify_available_packages
+    #   if: github.event_name != 'pull_request'
+    #   run: |
+    #     archs=("x86_64" "aarch64" "armv7h")
+    #     out_archs=()
+    #     for arch in "${archs[@]}"
+    #     do
+    #       if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
+    #         out_archs+=("$arch")
+    #       fi
+    #     done  
+    #     echo "upload_archs=${out_archs[@]}" >> $GITHUB_OUTPUT
 
-    - name: "Upload ${{ steps.identify_available_packages.outputs.upload_archs }} packages to Azure Blob Storage"
-      if: steps.identify_available_packages.outputs.upload_archs != ''
+    - name: "Upload packages to Azure Blob Storage"
+      if: github.event_name != 'pull_request'
       uses: azure/CLI@v1
       with:
         azcliversion: 2.50.0
         inlineScript: |
-          IFS=' ' read -ra archs <<< "${{ steps.identify_available_packages.outputs.upload_archs }}"
+          archs=("x86_64" "aarch64" "armv7h")
           for arch in "${archs[@]}"
           do
-            az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
-            az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+            echo "Checking for packages for $arch..."
+            ls ".repo/$arch/"*.pkg.tar.*
+            echo
+            if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
+              echo "Uploading packages for $arch..."
+              #az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
+              #az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+            fi
           done 
       env:
         AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"
