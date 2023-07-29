@@ -6,6 +6,8 @@ WORKDIR="$1"
 export ONLINE_REPO_URI="$INPUT_REPOURL"
 export SKIP_LOCAL_PKG_CHECK=1
 
+echo "Building repo with arch $INPUT_ARCH and repo url: $ONLINE_REPO_URI"
+
 ARCH="$INPUT_ARCH" MODE="repo" make -C "$WORKDIR" -f "$WORKDIR/Makefile" repo
 sudo make -C "$WORKDIR" -f "$WORKDIR/Makefile" sync-repo
 

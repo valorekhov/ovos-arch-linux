@@ -1,6 +1,6 @@
 .PHONY: all clean extra repo aur-repo rebuild uninstall
 # MODE := "source"
-ARCH := $(shell uname -m)
+ARCH := $(shell if [ -n "$$ARCH" ]; then echo "$$ARCH"; else uname -m; fi)
 WORKSPACE_DIR := $(shell pwd)
 REPO_ROOT := $(WORKSPACE_DIR)/.repo
 REPO_DIR := $(REPO_ROOT)/$(ARCH)
