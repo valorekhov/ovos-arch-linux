@@ -81,6 +81,14 @@ jobs:
             path: ~/image-cache/makepkg/amd64/
             key: makepkg-cached-amd64-${{ runner.os }}
 
+      - name: Login to GitHub docker registry
+        if:  (steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true') && steps.makepkg-cached.outputs.cache-hit != 'true'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - if: (steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true') && steps.makepkg-cached.outputs.cache-hit != 'true'
         run: |
             docker pull ghcr.io/valorekhov/gha-makepkg-amd64:latest
@@ -162,6 +170,14 @@ jobs:
       with:
           path: ~/image-cache/makepkg/amd64/
           key: makepkg-cached-amd64-${{ runner.os }}
+
+    - name: Login to GitHub docker registry
+      if:  steps.makepkg-cached.outputs.cache-hit != 'true'
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - if: steps.makepkg-cached.outputs.cache-hit != 'true'
       run: |
