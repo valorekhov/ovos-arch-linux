@@ -46,6 +46,9 @@ repo: aur-repo
 				mkdir -p "$(REPO_DIR)/../aarch64/"; \
 				wget "$(ONLINE_REPO_URI)/aarch64/ovos-arch.db" -O "$(REPO_DIR)/../aarch64/ovos-arch.db"; \
 				wget "$(ONLINE_REPO_URI)/aarch64/ovos-arch.db.tar.gz" -O "$(REPO_DIR)/../aarch64/ovos-arch.db.tar.gz"; \
+				mkdir -p "$(REPO_DIR)/../armv7h/"; \
+				wget "$(ONLINE_REPO_URI)/armv7h/ovos-arch.db" -O "$(REPO_DIR)/../armv7h/ovos-arch.db"; \
+				wget "$(ONLINE_REPO_URI)/armv7h/ovos-arch.db.tar.gz" -O "$(REPO_DIR)/../armv7h/ovos-arch.db.tar.gz"; \
 			fi; \
 		else \
 			repo-add "$(REPO_DIR)/ovos-arch.db.tar.gz"; \
