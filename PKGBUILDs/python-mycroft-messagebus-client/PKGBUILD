@@ -11,7 +11,7 @@ pkgdesc='Mycroft Messagebus Client'
 arch=(any)
 url=https://github.com/MycroftAI/mycroft-messagebus-client
 license=(Apache)
-depends=(python python-pyee python-websocket-client)
+depends=(python)
 ## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
@@ -21,8 +21,9 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-websocket-client>=0.54.0' # websocket-client>=0.54.0
+'python-pyee>=8.1.0' 
 )
-# python-pyee: pyee==8.1.0
+
 #### End of automatically generated dependencies.
 
 source=(PKGBUILD_EXTRAS)
