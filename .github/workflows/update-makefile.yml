@@ -159,9 +159,9 @@ jobs:
     - name: Cache makepkg image
       id: makepkg-cached
       uses: actions/cache@v2
-        with:
-            path: ~/image-cache/makepkg/amd64/
-            key: makepkg-cached-amd64-${{ runner.os }}
+      with:
+          path: ~/image-cache/makepkg/amd64/
+          key: makepkg-cached-amd64-${{ runner.os }}
 
     - if: steps.makepkg-cached.outputs.cache-hit != 'true'
       run: |
