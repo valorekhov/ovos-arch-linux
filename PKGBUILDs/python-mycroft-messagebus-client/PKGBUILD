@@ -23,7 +23,6 @@ depends+=(
 'python-websocket-client>=0.54.0' # websocket-client>=0.54.0
 'python-pyee>=8.1.0' 
 )
-
 #### End of automatically generated dependencies.
 
 source=(PKGBUILD_EXTRAS)
