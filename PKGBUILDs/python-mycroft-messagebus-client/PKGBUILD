@@ -5,18 +5,26 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-mycroft-messagebus-client
 epoch=
-pkgver=0.10.1
+pkgver='0.9.5'
 pkgrel=00
 pkgdesc='Mycroft Messagebus Client'
 arch=(any)
 url=https://github.com/MycroftAI/mycroft-messagebus-client
 license=(Apache)
-depends=(python python-pyee python-websocket-client)
+depends=(python)
 ## EXTRA_DEPENDS ##
 makedepends=()
 checkdepends=()
 provides=()
 conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
+
+#### Automatically generated dependencies. Do not edit below this line. 
+depends+=(
+'python-websocket-client>=0.54.0' # websocket-client>=0.54.0
+'python-pyee>=8.1.0' 
+)
+#### End of automatically generated dependencies.
+
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
