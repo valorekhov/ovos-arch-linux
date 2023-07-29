@@ -183,8 +183,8 @@ jobs:
           REPO=${{ steps.setup_buildx_params.outputs.repo }}
         platforms: "linux/${{ matrix.platform }}"
         tags: |
-          ghcr.io/valorekhov/archlinux-${{ matrix.platform }}:latest
-          ghcr.io/valorekhov/archlinux:latest-${{ matrix.platform }}
+          ghcr.io/valorekhov/gha-makepkg-${{ matrix.platform }}:latest
+          ghcr.io/valorekhov/gha-makepkg:latest-${{ matrix.platform }}
         pull: false
         # cache-from: type=gha
         # cache-to: type=gha,mode=max
