@@ -342,7 +342,7 @@ jobs:
           -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
           -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
-          --platform '${{ steps.arch_remap.outputs.qemu_platform }}' \
+          --platform 'linux/${{ steps.arch_remap.outputs.docker_arch }}' \
           ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
 
     - name: "Preparing native ${{ matrix.arch }} packages"
