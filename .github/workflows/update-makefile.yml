@@ -224,6 +224,7 @@ jobs:
       id: select_native_arm_packages
       run: |  
         archs=("aarch64" "armv7h")
+        printf "pkgbuilds={" > /tmp/pkgbuilds.json
         for arch in "${archs[@]}"
         do
           native_pkgbuilds=()
@@ -249,13 +250,20 @@ jobs:
           else
             echo "Did not find any package files..."
           fi
-          echo "pkgbuilds_$arch=${native_pkgbuilds[@]}"
-          echo "pkgbuilds_$arch=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
+          # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}"
+          # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
+          printf "$arch=" >> /tmp/pkgbuilds.json
+          jq --compact-output --null-input '$ARGS.positional' --args -- "${native_pkgbuilds[@]}" >> /tmp/pkgbuilds.json
+          printf "," >> /tmp/pkgbuilds.json
         done
+        printf "_all=true}" >> /tmp/pkgbuilds.json
+        json=$(cat /tmp/pkgbuilds.json)
+        echo "pkgbuilds=$json"
+        echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
+
 
     outputs:
-      pkgbuilds_aarch64: ${{ steps.select_native_arm_packages.outputs.pkgbuilds_aarch64 }}
-      pkgbuilds_armv7h: ${{ steps.select_native_arm_packages.outputs.pkgbuilds_armv7h }}
+      pkgbuilds: ${{ steps.select_native_arm_packages.outputs.pkgbuilds }}
 
   package-build-arm:
     needs: 
@@ -292,7 +300,9 @@ jobs:
             export "docker_arch=arm32v7" >> $GITHUB_OUTPUT
             ;;
         esac
-        echo "Packages to build for ${{ matrix.arch }}: ${{ needs.package-build-amd64.outputs['pkgbuilds_' + matrix.arch] }}"
+        
+        echo "Packages to build for ${{ matrix.arch }}:"
+        echo "${{ toJSON( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch] ) }}"
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -308,7 +318,7 @@ jobs:
       run: | 
         docker run --rm -v $PWD:/build \
           -e INPUT_OPERATION=repo-build \
-          -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' \
+          -e INPUT_PACKAGES='${{ toJSON( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch] ) }}' \
           -e INPUT_REPOURL=https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch \
           ghcr.io/valorekhov/gha-makepkg-${{ steps.check.outputs.docker_arch }}:latest
 
