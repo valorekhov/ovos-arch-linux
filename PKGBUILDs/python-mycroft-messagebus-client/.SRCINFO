@@ -1,13 +1,13 @@
 pkgbase = python-mycroft-messagebus-client
 	pkgdesc = Mycroft Messagebus Client
-	pkgver = 0.10.1
+	pkgver = 0.9.5
 	pkgrel = 00
 	url = https://github.com/MycroftAI/mycroft-messagebus-client
 	arch = any
 	license = Apache
 	depends = python
-	depends = python-pyee
-	depends = python-websocket-client
+	depends = python-websocket-client>=0.54.0
+	depends = python-pyee>=8.1.0
 	noextract = mycroft_messagebus_client-0.10.1-py3-none-any.whl
 	source = PKGBUILD_EXTRAS
 	source = https://files.pythonhosted.org/packages/b3/a4/5cd6333bf3ebd700abb8be59540f97dbb7bdf703195f9beb130a601c5867/mycroft_messagebus_client-0.10.1-py3-none-any.whl
