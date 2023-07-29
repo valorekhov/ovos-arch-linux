@@ -211,12 +211,12 @@ jobs:
           for arch in "${archs[@]}"
           do
             echo "Checking for packages for $arch..."
-            ls ".repo/$arch/"*.pkg.tar.*
             echo
             if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
               echo "Uploading packages for $arch..."
-              #az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
-              #az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+              ls ".repo/$arch/"*.pkg.tar.*
+              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
+              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
             fi
           done 
       env:
@@ -291,6 +291,7 @@ jobs:
     needs: 
       - check
       - package-build-amd64
+    if: needs.package-build-amd64.outputs.matrix_arm_archs != 'null' && needs.package-build-amd64.outputs.matrix_arm_archs 
     runs-on: ubuntu-latest
     name: Build ARM packages
     strategy:
