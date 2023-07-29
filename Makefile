@@ -1,4 +1,4 @@
-.PHONY: all clean extra repo aur-repo rebuild uninstall
+.PHONY: all clean extra repo create-repo sync-repo aur-repo rebuild uninstall
 # MODE := "source"
 ARCH := $(shell if [ -n "$$ARCH" ]; then echo "$$ARCH"; else uname -m; fi)
 WORKSPACE_DIR := $(shell pwd)
@@ -36,7 +36,9 @@ rebuild:
 uninstall:
 	@pacman -Qq | sort | comm -12 - <(echo "$(ALL_PACKAGES)" | tr ' ' '\n' | sort) | xargs sudo pacman -Rcns --noconfirm
 
-repo: aur-repo
+repo: create-repo aur-repo
+
+create-repo:
 	@mkdir -p "$(REPO_DIR)/"
 	@if [ ! -f "$(REPO_DIR)/ovos-arch.db.tar.gz" ]; then \
 		if [ "$(INPUT_REBUILDALL)" != 1 ] && [ -n "$(ONLINE_REPO_URI)" ] ; then \

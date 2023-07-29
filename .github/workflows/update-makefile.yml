@@ -215,12 +215,14 @@ jobs:
             if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
               echo "Uploading packages for $arch..."
               ls ".repo/$arch/"*.pkg.tar.*
-              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
-              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path $arch --source .repo/$arch --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite 
+              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
+              echo "Uploaded DB files from .repo/$arch ..."
+              az storage blob upload-batch --account-name ovosarchlinuxpkgs --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "*.pkg.tar.*" --content-encoding "gzip" --overwrite
+              echo "Uploaded packages from .repo/$arch ..." 
             fi
           done 
       env:
-        AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"
+        AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
 
     # At this point the .repo/aarch64/ folder will possibly contain -any.pkg.tar.{zst,xz} files
     # We need to filter out the -any packages from the `needs.check.outputs.pkgbuilds` array

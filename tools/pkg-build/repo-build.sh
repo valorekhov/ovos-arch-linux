@@ -97,4 +97,4 @@ if [ -f "$LOCAL_PACMAN" ] && [ -z "$ONLINE_REPO_URI" ] ; then
         sudo "$LOCAL_PACMAN" -Syy 
 fi
 
-echo "#####  Package successfully built and added to the repo"
+echo "#####  Package successfully built and added to the local repo DBs"
