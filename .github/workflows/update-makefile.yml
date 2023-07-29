@@ -256,7 +256,7 @@ jobs:
           # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}"
           # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
           printf "\"$arch\":" >> /tmp/pkgbuilds.json
-          jq --compact-output --null-input '$ARGS.positional' --args -- "${native_pkgbuilds[@]}" >> /tmp/pkgbuilds.json
+          jq -j --compact-output --null-input '$ARGS.positional' --args -- "${native_pkgbuilds[@]}" | tr -d '\n' >> /tmp/pkgbuilds.json
           printf "," >> /tmp/pkgbuilds.json
         done
         printf "\"_foo\":[]}" >> /tmp/pkgbuilds.json
