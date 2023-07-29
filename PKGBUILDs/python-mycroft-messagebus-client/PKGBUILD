@@ -17,18 +17,14 @@ makedepends=()
 checkdepends=()
 provides=()
 conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
+
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-websocket-client>=0.54.0' # websocket-client>=0.54.0
 )
-conflicts+=(
-
-)
-optdepends+=(
-
-)
 # python-pyee: pyee==8.1.0
 #### End of automatically generated dependencies.
+
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
