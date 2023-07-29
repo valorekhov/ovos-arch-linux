@@ -26,7 +26,11 @@ inputs:
     description: 'The URL of the repository online to use as a source of prebuilt packages'
     required: false
     default: ''
-  
+  arch:
+    description: 'ARCH to target'
+    required: false
+    default: ''
+
 
 runs:
   using: 'docker'

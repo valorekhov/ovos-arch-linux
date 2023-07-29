@@ -181,7 +181,8 @@ jobs:
       #   repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
       run: | 
         docker run --rm  -v $PWD:/build \
-          -e INPUT_OPERATION=repo-build \
+          -e INPUT_ARCH='x86_64' \
+          -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' \
           -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
           ghcr.io/valorekhov/gha-makepkg-amd64:latest
@@ -339,6 +340,7 @@ jobs:
       run: | 
         docker run --rm \
           -v $PWD:/build \
+          -e INPUT_ARCH='${{ matrix.arch }}' \
           -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
           -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
