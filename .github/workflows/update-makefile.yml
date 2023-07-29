@@ -100,7 +100,7 @@ jobs:
           docker run --rm  -v $PWD:/build \
             -e INPUT_OPERATION=makefile-update \
             -e INPUT_PACKAGES='${{ steps.check_assets.outputs.pkgbuilds }}' \
-            gha-makepkg-amd64:latest
+            ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
       - name: Rebuild Makefile
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
@@ -184,7 +184,7 @@ jobs:
           -e INPUT_OPERATION=repo-build \
           -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' \
           -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
-          gha-makepkg-x86_64:latest
+          ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
     - name: "Identifying prepared arch packages"
       id: identify_available_packages
