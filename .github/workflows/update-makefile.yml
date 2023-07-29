@@ -315,7 +315,7 @@ jobs:
         esac
         
         echo "Packages to build for ${{ matrix.arch }}:"
-        echo "${{ toJSON( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch] ) }}"
+        echo "${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}"
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -326,12 +326,12 @@ jobs:
       # uses: ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
       # with:
       #   operation: repo-build
-      #   packages: ${{ needs.package-build-amd64.outputs['pkgbuilds_' + matrix.arch] }}
+      #   packages: ${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}
       #   repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
       run: | 
         docker run --rm -v $PWD:/build \
           -e INPUT_OPERATION=repo-build \
-          -e INPUT_PACKAGES='${{ toJSON( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch] ) }}' \
+          -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
           -e INPUT_REPOURL=https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch \
           ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
 
