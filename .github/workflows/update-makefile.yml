@@ -255,11 +255,11 @@ jobs:
           popd
           # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}"
           # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
-          printf "\"$arch\"=" >> /tmp/pkgbuilds.json
+          printf "\"$arch\":" >> /tmp/pkgbuilds.json
           jq --compact-output --null-input '$ARGS.positional' --args -- "${native_pkgbuilds[@]}" >> /tmp/pkgbuilds.json
           printf "," >> /tmp/pkgbuilds.json
         done
-        printf "\"_all\"=[]}" >> /tmp/pkgbuilds.json
+        printf "\"_foo\":[]}" >> /tmp/pkgbuilds.json
         json=$(cat /tmp/pkgbuilds.json)
         echo "pkgbuilds=$json"
         echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
