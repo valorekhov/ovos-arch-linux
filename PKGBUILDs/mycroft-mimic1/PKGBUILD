@@ -12,7 +12,7 @@ depends=()
 makedepends=(gcc make pkg-config automake libtool)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('2f76d7667b44065252a1bb9745308802fe21c0a07a5a80f581c07ea38e039203')
+sha256sums=('c17b8d56c928df97d6ae0f3a4b1e4f6b60d939d25718fed43d29ec0f82f36d59')
 
 # prepare() {
 #     cd "$srcdir"
