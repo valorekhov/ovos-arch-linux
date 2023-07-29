@@ -317,8 +317,8 @@ jobs:
       run: |
         case '${{ matrix.arch }}' in
           aarch64)
-            echo "docker_arch=arm64v8"
-            echo "docker_arch=arm64v8" >> $GITHUB_OUTPUT
+            echo "docker_arch=aarch64"
+            echo "docker_arch=aarch64" >> $GITHUB_OUTPUT
             echo "qemu_platform=linux/arm64" >> $GITHUB_OUTPUT
             ;;
           armv7h)
