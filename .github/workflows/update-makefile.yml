@@ -335,10 +335,12 @@ jobs:
       #   packages: ${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}
       #   repourl: https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch
       run: | 
-        docker run --rm -v $PWD:/build \
+        docker run --rm \
+          -v $PWD:/build \
           -e INPUT_OPERATION='repo-build' \
           -e INPUT_PACKAGES='${{ join( fromJSON(needs.package-build-amd64.outputs.pkgbuilds)[matrix.arch], ' ' ) }}' \
           -e INPUT_REPOURL='https://ovosarchlinuxpkgs.blob.core.windows.net/ovos-arch' \
+          --platform "linux/${{ steps.arch_remap.outputs.docker_arch }}" \
           ghcr.io/valorekhov/gha-makepkg-${{ steps.arch_remap.outputs.docker_arch }}:latest
 
     - name: "Preparing native ${{ matrix.arch }} packages"
