@@ -147,7 +147,7 @@ jobs:
         ref: ${{ needs.check.outputs.commit_hash }}
 
     - name: "Download repo from Azure Blob Storage"
-      if: needs.check.outputs.has_PKGBUILD_changes == 'true'
+      if: false && needs.check.outputs.has_PKGBUILD_changes == 'true'
       run: |
         archs=("x86_64" "aarch64" "armv7h")
         for arch in "${archs[@]}"
@@ -232,7 +232,7 @@ jobs:
           native_pkgbuilds=()
           original_pkgbuilds=($(echo '${{ needs.check.outputs.pkgbuilds }}' | jq -r '.[]'))
           echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
-          cd ".repo/$arch/"
+          pushd ".repo/$arch/"
           pkgfiles=( *-any.pkg.tar.* )
           if (( ${#pkgfiles[@]} )); then
             echo "pkgfiles='${pkgfiles[@]}'"
@@ -252,6 +252,7 @@ jobs:
           else
             echo "Did not find any package files..."
           fi
+          popd
           # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}"
           # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
           printf "$arch=" >> /tmp/pkgbuilds.json
