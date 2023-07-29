@@ -147,7 +147,7 @@ jobs:
         ref: ${{ needs.check.outputs.commit_hash }}
 
     - name: "Download repo from Azure Blob Storage"
-      if: false
+      if: needs.check.outputs.has_PKGBUILD_changes == 'true'
       run: |
         archs=("x86_64" "aarch64" "armv7h")
         for arch in "${archs[@]}"
@@ -232,7 +232,6 @@ jobs:
           native_pkgbuilds=()
           original_pkgbuilds=($(echo '${{ needs.check.outputs.pkgbuilds }}' | jq -r '.[]'))
           echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
-          mkdir -p ".repo/$arch/" # to avoid errors in PR branches where older copy of Makefile exists
           cd ".repo/$arch/"
           pkgfiles=( *-any.pkg.tar.* )
           if (( ${#pkgfiles[@]} )); then
