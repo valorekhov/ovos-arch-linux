@@ -1,10 +1,10 @@
 pkgbase = python-ovos-gui
 	pkgdesc = GUI messagebus service, manages GUI state and implements the gui protocol
-	pkgver = 0.0.3a2
-	pkgrel = 6
+	pkgver = 0.0.3
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-gui/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
