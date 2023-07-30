@@ -3,22 +3,34 @@ _gh_proj=ovos-stt-http-server
 pkgname=python-ovos-stt-http-server
 _name=ovos-stt-http-server
 _base_ver='57c656242e44f8d1d4b60574775dc29167cf314f'
-pkgver=0.0.2a5
-pkgrel=1
+pkgver='0.0.2'
+pkgrel=00
 pkgdesc='Turn any OVOS STT plugin into a micro service'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-http-server/'
 license=('')
 depends=(python \
-'python-fastapi' \
-'python-ovos-plugin-manager' \
-'python-ovos-utils' \
-'python-uvicorn' \
 )
 optdepends=('python-gradio: for Gradio-compatible GUI')
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-fastapi>=0.95' # fastapi~=0.95
+'python-gradio>=3.28' # gradio~=3.28
+'python-ovos-plugin-manager>=0.0.18' # ovos-plugin-manager~=0.0.18
+'python-ovos-utils>=0.0.32' # ovos-utils~=0.0.32
+'python-uvicorn>=0.22' # uvicorn~=0.22
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=(
    #python-ovos-stt-http-server-57c656242e44f8d1d4b60574775dc29167cf314f.tar.gz \
