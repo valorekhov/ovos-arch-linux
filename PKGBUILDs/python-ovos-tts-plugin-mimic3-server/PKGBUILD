@@ -2,15 +2,14 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-tts-plugin-mimic3-server
 pkgname=python-ovos-tts-plugin-mimic3-server
 _name=ovos-tts-plugin-mimic3-server
-_base_ver='9a31cc1505d7c1520ff6d885b3b443077611f478'
+_commit='80a715012de08c844ef81f4443961322ed86da05'
 pkgver='0.0.1'
 pkgrel=00
 pkgdesc='OVOS Server TTS plugin for Mimic3'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic3-server/'
-license=('')
-depends=(python \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
@@ -28,33 +27,33 @@ optdepends+=(
 )
 
 #### End of automatically generated dependencies.
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-tts-plugin-mimic3-server-9a31cc1505d7c1520ff6d885b3b443077611f478.tar.gz \
-   e4fbbfc8ef15d6987db4c7a9e40d03dec345761eed40fb4d1746bb3c8df23382)
+   a95e0fea5694fed54830b228bb327ca1f33812e7ed7dfd160200b0b507407760)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -64,7 +63,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -87,21 +86,5 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # python-ovos-tts-plugin-mimic3-server
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_TTS_PLUGIN_MIMIC3_SERVER_VERSION = 9a31cc1505d7c1520ff6d885b3b443077611f478
-# PYTHON_OVOS_TTS_PLUGIN_MIMIC3_SERVER_SITE = $(call github,OpenVoiceOS,ovos-tts-plugin-mimic3-server,$(PYTHON_OVOS_TTS_PLUGIN_MIMIC3_SERVER_VERSION))
-# PYTHON_OVOS_TTS_PLUGIN_MIMIC3_SERVER_SETUP_TYPE = setuptools
-# PYTHON_OVOS_TTS_PLUGIN_MIMIC3_SERVER_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
 
 
