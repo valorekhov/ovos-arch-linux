@@ -4,24 +4,33 @@ pkgname=python-ovos-gui
 _name=ovos-gui
 _unit_name="ovos-gui-messagebus"
 _base_ver='502dec01d0055c54998280ffaa76d5f54961173f'
-pkgver=0.0.3a2
-pkgrel=6
-pkgdesc='GUI messagebus service, manages GUI state
-and implements the gui protocol'
+pkgver='0.0.3'
+pkgrel=00
+pkgdesc='GUI messagebus service, manages GUI state and implements the gui protocol'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-gui/'
-license=('')
-depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
-'python-ovos-backend-client' \
-'python-ovos-bus-client>=0.0.4a5' #>=0.0.4a5,~=0.0 \
-'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
-'python-ovos-utils>=0.0.31a5' #>=0.0.31a5,~=0.0 \
-'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
-)
+license=('Apache License 2.0')
+depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify')
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name")
 conflicts=("$_unit_name")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-backend-client' # ovos-backend-client
+'python-ovos-bus-client>=0.0.4a5' # ovos-bus-client>=0.0.4a5,~=0.0
+'python-ovos-config>=0.0.8a3' # ovos-config>=0.0.8a3,~=0.0
+'python-ovos-utils>=0.0.31a5' # ovos-utils>=0.0.31a5,~=0.0
+'python-tornado>=6.0.3' # tornado>=6.0.3,~=6.0
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
     "$_unit_name.service" \
     "ovos-systemd_gui_messagebus.py" \

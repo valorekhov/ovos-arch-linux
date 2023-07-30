@@ -147,6 +147,7 @@ function Get-GithubRelease([string]$url){
 
 function Set-PkgbuildVersion([System.IO.FileInfo]$path, [string]$version, [string]$commit) {
     $pkgbuildContent = Get-Content $pkgbuild
+    $baseVerLegacyDetected = $false
     $pkgbuildContent = $pkgbuildContent | ForEach-Object {
         if ($_ -match '^\s*pkgver=') {
             "pkgver='$version'"
@@ -154,11 +155,18 @@ function Set-PkgbuildVersion([System.IO.FileInfo]$path, [string]$version, [strin
             "pkgrel=00"
         } elseif ($_ -match '^\s*_commit=') {
             "_commit='$commit'"
+        } elseif ($_ -match '^\s*_base_ver=') {
+            $baseVerLegacyDetected = $true
+            "_commit='$commit'"
         } else {
             $_
         }
     }
     $pkgbuildContent | Set-Content $pkgbuild
+    if ($baseVerLegacyDetected) {
+        Write-Host "WARNING: Legacy _base_ver variable detected. Changed refs to _commit" -ForegroundColor Yellow
+        (Get-Content $pkgbuild -Raw) -replace '_base_ver', '_commit' | Set-Content $pkgbuild 
+    }
 }
 
 function Set-PkgbuildDependencies([System.IO.FileInfo]$pkgbuild, $newDeps) {

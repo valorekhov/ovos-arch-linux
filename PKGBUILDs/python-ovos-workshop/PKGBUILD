@@ -1,29 +1,37 @@
 pkgname=python-ovos-workshop
+_gh_org=OpenVoiceOS
+_gh_proj=OVOS-workshop
 _name=OVOS-workshop
 _base_ver='13cab11cb79146dd1b4666a44eaa62c3be0224c4'
-pkgver=0.0.12a27
-pkgrel=1
-pkgdesc='frameworks, templates and patches for the
-mycroft universe'
+pkgver='0.0.12'
+pkgrel=00
+pkgdesc='frameworks, templates and patches for the mycroft universe'
 arch=('any')
 url='https://github.com/OpenVoiceOS/OVOS-workshop/'
 license=('Apache License 2.0')
-depends=(python \
-'python-ovos-backend-client>=0.0.6' #<0.1.0,>=0.0.6 \
-'python-ovos-config>=0.0.4' #<0.1.0,>=0.0.4 \
-'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
-'python-ovos-lingua-franca>=0.4.6' #>=0.4.6,~=0.4 \
-'python-ovos-utils>=0.0.33a7' #<0.1.0,>=0.0.33a7 \
-'python-rapidfuzz' \
-)
-conflicts=( 
- 'python-ovos-backend-client>=0.1.0' 
- 'python-ovos-config>=0.1.0' 
- 'python-ovos-bus-client>=0.1.0' 
- 'python-ovos-utils>=0.1.0'
-)
+depends=(python)
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-backend-client>=0.0.6' # ovos_backend_client<0.1.0,>=0.0.6
+'python-ovos-bus-client>=0.0.3' # ovos-bus-client<0.1.0,>=0.0.3
+'python-ovos-config>=0.0.4' # ovos_config<0.1.0,>=0.0.4
+'python-ovos-lingua-franca>=0.4.6' # ovos-lingua-franca>=0.4.6,~=0.4
+'python-ovos-utils>=0.0.33a7' # ovos-utils<0.1.0,>=0.0.33a7
+'python-rapidfuzz' # rapidfuzz
+)
+conflicts+=(
+'python-ovos-backend-client>=0.1.0' # ovos_backend_client<0.1.0,>=0.0.6
+'python-ovos-bus-client>=0.1.0' # ovos-bus-client<0.1.0,>=0.0.3
+'python-ovos-config>=0.1.0' # ovos_config<0.1.0,>=0.0.4
+'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0,>=0.0.33a7
+)
+optdepends+=(
+'python-ovos-ocp-audio-plugin' # ovos_plugin_common_play; extra == "ocp"
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=(
    #python-ovos-workshop-13cab11cb79146dd1b4666a44eaa62c3be0224c4.tar.gz \

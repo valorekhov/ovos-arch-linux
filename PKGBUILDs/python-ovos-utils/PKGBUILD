@@ -2,52 +2,61 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos_utils
 pkgname=python-ovos-utils
 _name=ovos-utils
-_base_ver='5e43850e138150247da5d151ed4bd2e65a6bb455'
-pkgver=0.0.33a8
-pkgrel=1
+_commit='420f363ca8b6c24840fa57aa96bc1e588be1b53c'
+pkgver='0.0.35'
+pkgrel=00
 pkgdesc='collection of simple utilities for use
 across the mycroft ecosystem'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_utils/'
-license=('')
-depends=(python \
-'python-json-database' \
-'python-kthread' \
-'python-pexpect' \
-'python-pyee' \
-'python-requests' \
-'python-watchdog' \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-utils-5e43850e138150247da5d151ed4bd2e65a6bb455.tar.gz \
-   8c3ea3d7f1fe1c54bd070a71b59f7ef0ff8ba62879f0da4d26dc7422bb65faf3)
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-json-database>=0.7' # json_database~=0.7
+'python-kthread>=0.2' # kthread~=0.2
+'python-pexpect>=4.8' # pexpect~=4.8
+'python-pyee' # pyee
+'python-requests>=2.26' # requests~=2.26
+'python-watchdog' # watchdog
+)
+conflicts+=(
+'python-ovos-bus-client>=0.1.0' # ovos-bus-client<0.1.0; extra == "extras"
+'python-ovos-config>=0.1.0' # ovos-config<0.1.0; extra == "extras"
+)
+optdepends+=(
+'python-rapidfuzz>=2.0' # rapidfuzz~=2.0; extra == "extras"
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('b6dc8b7d308443b431042134f05864178d6da238430170705b36d31e0200f0a1')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -57,7 +66,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -80,22 +89,3 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # python-ovos-utils
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_UTILS_VERSION = 5e43850e138150247da5d151ed4bd2e65a6bb455
-# PYTHON_OVOS_UTILS_SITE = $(call github,OpenVoiceOS,ovos_utils,$(PYTHON_OVOS_UTILS_VERSION))
-# PYTHON_OVOS_UTILS_SETUP_TYPE = setuptools
-# PYTHON_OVOS_UTILS_LICENSE_FILES = LICENSE
-# PYTHON_OVOS_UTILS_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
-
