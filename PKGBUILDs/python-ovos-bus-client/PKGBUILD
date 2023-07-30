@@ -29,7 +29,6 @@ depends+=(
 conflicts+=(
 'python-ovos-config>=0.1.0' # ovos-config<0.1.0,>=0.0.8
 'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0,>=0.0.32
-'python-pyee>=9.0.0' # pyee<9.0.0,>=8.1.0
 )
 optdepends+=(
 
