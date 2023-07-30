@@ -6,13 +6,11 @@ _unit_name="ovos-gui-messagebus"
 _base_ver='502dec01d0055c54998280ffaa76d5f54961173f'
 pkgver='0.0.3'
 pkgrel=00
-pkgdesc='GUI messagebus service, manages GUI state
-and implements the gui protocol'
+pkgdesc='GUI messagebus service, manages GUI state and implements the gui protocol'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-gui/'
-license=('')
-depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
-)
+license=('Apache License 2.0')
+depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify')
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name")
 conflicts=("$_unit_name")
