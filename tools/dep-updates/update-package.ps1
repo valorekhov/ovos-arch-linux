@@ -2,7 +2,8 @@ param(
     [Parameter(Mandatory = $true)]
     [System.IO.FileInfo]$Path, 
     [Parameter(Mandatory = $true)]
-    $PackageMap
+    $PackageMap,
+    [switch]$Force = $false
 )
 
 Import-Module "$PSScriptRoot/dep-update-utils.psm1"
@@ -19,7 +20,7 @@ if ($null -eq $releaseInfo) {
     return 
 }
 
-if (-not $releaseInfo.isDraft -and -not $releaseInfo.isPrerelease `
--and $versionInfo.pkgver -ne $releaseInfo.version) {
+if ($Force -or (-not $releaseInfo.isDraft -and -not $releaseInfo.isPrerelease `
+-and $versionInfo.pkgver -ne $releaseInfo.version)) {
     return Update-Pkgbuild -VersionInfo $versionInfo -ReleaseInfo $releaseInfo -PackageMap $PackageMap 
 }
