@@ -2,7 +2,7 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos_utils
 pkgname=python-ovos-utils
 _name=ovos-utils
-_base_ver='5e43850e138150247da5d151ed4bd2e65a6bb455'
+_commit='420f363ca8b6c24840fa57aa96bc1e588be1b53c'
 pkgver='0.0.35'
 pkgrel=00
 pkgdesc='collection of simple utilities for use
@@ -32,7 +32,7 @@ optdepends+=(
 )
 
 #### End of automatically generated dependencies.
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-utils-5e43850e138150247da5d151ed4bd2e65a6bb455.tar.gz \
    8c3ea3d7f1fe1c54bd070a71b59f7ef0ff8ba62879f0da4d26dc7422bb65faf3)
@@ -42,23 +42,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -68,7 +68,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
