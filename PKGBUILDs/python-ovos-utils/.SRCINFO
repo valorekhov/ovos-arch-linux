@@ -19,7 +19,7 @@ pkgbase = python-ovos-utils
 	optdepends = python-rapidfuzz>=2.0
 	conflicts = python-ovos-bus-client>=0.1.0
 	conflicts = python-ovos-config>=0.1.0
-	source = https://github.com/OpenVoiceOS/ovos_utils/archive/5e43850e138150247da5d151ed4bd2e65a6bb455.tar.gz
+	source = https://github.com/OpenVoiceOS/ovos_utils/archive/420f363ca8b6c24840fa57aa96bc1e588be1b53c.tar.gz
 	sha256sums = 8c3ea3d7f1fe1c54bd070a71b59f7ef0ff8ba62879f0da4d26dc7422bb65faf3
 
 pkgname = python-ovos-utils

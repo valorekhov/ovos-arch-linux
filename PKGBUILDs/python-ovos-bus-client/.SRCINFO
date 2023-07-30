@@ -12,7 +12,8 @@ pkgbase = python-ovos-bus-client
 	depends = python-websocket-client>=0.54.0
 	conflicts = python-ovos-config>=0.1.0
 	conflicts = python-ovos-utils>=0.1.0
-	source = https://github.com/OpenVoiceOS/ovos-bus-client/archive/94fbd69ff165ddcd645f02dd28cdd05cb4326bf8.tar.gz
+	conflicts = python-pyee>=9.0.0
+	source = https://github.com/OpenVoiceOS/ovos-bus-client/archive/2a9f83ef91de12f45960d290a03322bdafbaa485.tar.gz
 	source = 0001-Loosen-requirements.patch
 	sha256sums = 6be39206814b1ce4061067aced354b304db2b32cbeaa0b00b7ae8143cac8de7e
 	sha256sums = D96BE312783BBCB91A90337A409491055A08123EF6749BEFDEBC7C93487550B3
