@@ -1,10 +1,12 @@
-name: Conditional Makefile rebuild
+name: Package Build
 
 on:
   push:
     branches:
       - main
   pull_request:
+    types:
+      - opened
     branches:
       - main
 
