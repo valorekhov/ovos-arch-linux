@@ -20,7 +20,7 @@ pkgbase = python-ovos-workshop
 	conflicts = python-ovos-config>=0.1.0
 	conflicts = python-ovos-bus-client>=0.1.0
 	conflicts = python-ovos-utils>=0.1.0
-	source = https://github.com///archive/13cab11cb79146dd1b4666a44eaa62c3be0224c4.tar.gz
+	source = https://github.com/OpenVoiceOS/OVOS-workshop/archive/13cab11cb79146dd1b4666a44eaa62c3be0224c4.tar.gz
 	sha256sums = a52ddca1dc57a2a3ebe2b7489084d553827558b6b0c1015e72a1d584ce430241
 
 pkgname = python-ovos-workshop
