@@ -3,24 +3,27 @@ _gh_proj=ovos-PHAL-plugin-alsa
 pkgname=python-ovos-phal-plugin-alsa
 _name=ovos-PHAL-plugin-alsa
 _base_ver='1ccbc7a6bfad49ba3b384d99b716aa22d266b1e4'
-pkgver=0.0.2a1
-pkgrel=1
+pkgver='0.0.3'
+pkgrel=00
 pkgdesc='OVOS-PHAL Alsa volume control'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-alsa/'
-license=('')
-depends=(python \
-'python-json-database' \
-'python-ovos-plugin-manager' \
-'python-pyalsaaudio' \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-json-database>=0.7' # json_database~=0.7
+'python-ovos-plugin-manager>=0.0' # ovos-plugin-manager~=0.0
+'python-pyalsaaudio>=0.9' # pyalsaaudio~=0.9
+)
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=(
-   #python-ovos-phal-plugin-alsa-1ccbc7a6bfad49ba3b384d99b716aa22d266b1e4.tar.gz \
-   0d4ad5d000219a6f2f8f250dd96db287d7c65b64a545c0123d91880014ee228a)
+   "0d4ad5d000219a6f2f8f250dd96db287d7c65b64a545c0123d91880014ee228a"
+)
 
 prepare() {
     cd "$srcdir"
