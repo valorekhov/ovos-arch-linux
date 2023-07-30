@@ -1,14 +1,10 @@
 pkgbase = python-ovos-bus-client
 	pkgdesc = This module is a simple interface for the mycroft messagebus and can be used to connect to ovos, send messages and react to messages sent by the OpenVoiceOS system. This module extends the mycroft-messagebus-client with a Session implementation
-	pkgver = 0.0.4a12
-	pkgrel = 1
+	pkgver = 0.0.5
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-bus-client/
 	arch = any
 	license = Apache-2.0
-	makedepends = python-build
-	makedepends = python-installer
-	makedepends = python-wheel
-	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-config>=0.0.8
 	depends = python-ovos-utils>=0.0.32
@@ -16,6 +12,7 @@ pkgbase = python-ovos-bus-client
 	depends = python-websocket-client>=0.54.0
 	conflicts = python-ovos-config>=0.1.0
 	conflicts = python-ovos-utils>=0.1.0
+	conflicts = python-pyee>=9.0.0
 	source = https://github.com/OpenVoiceOS/ovos-bus-client/archive/94fbd69ff165ddcd645f02dd28cdd05cb4326bf8.tar.gz
 	source = 0001-Loosen-requirements.patch
 	sha256sums = 6be39206814b1ce4061067aced354b304db2b32cbeaa0b00b7ae8143cac8de7e
