@@ -65,7 +65,7 @@ foreach ($pkgbuild in $pkgbuilds) {
     $commitSha = $releaseInfo.commit.Substring(0, 7)
     $pkgbase = $versionInfo.pkgbase
 
-    check if a PR already exists for this version and commitSha
+    # check if a PR already exists for this version and commitSha
     $pr = gh pr list --search "$commitSha" --json number | ConvertFrom-Json
     if ($pr) {
         Write-Host "PR already exists for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
