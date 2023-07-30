@@ -278,7 +278,7 @@ python-ovos-phal-plugin-gpsd:  PKGBUILDs/python-ovos-phal-plugin-gpsd/*.pkg.tar.
 
 python-ovos-phal-plugin-gui-network-client: python-ovos-plugin-manager PKGBUILDs/python-ovos-phal-plugin-gui-network-client/*.pkg.tar.zst
 
-python-ovos-phal-plugin-homeassistant: python-mycroft-messagebus-client python-nested-lookup python-ovos-config python-ovos-phal-plugin-oauth python-ovos-plugin-manager python-ovos-utils python-pytube python-youtube-search PKGBUILDs/python-ovos-phal-plugin-homeassistant/*.pkg.tar.zst
+python-ovos-phal-plugin-homeassistant: python-nested-lookup python-ovos-bus-client python-ovos-config python-ovos-phal-plugin-oauth python-ovos-plugin-manager python-ovos-utils python-pytube python-youtube-search PKGBUILDs/python-ovos-phal-plugin-homeassistant/*.pkg.tar.zst
 
 python-ovos-phal-plugin-ipgeo: python-ovos-plugin-manager PKGBUILDs/python-ovos-phal-plugin-ipgeo/*.pkg.tar.zst
 
