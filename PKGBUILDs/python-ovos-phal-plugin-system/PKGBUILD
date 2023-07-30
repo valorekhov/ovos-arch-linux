@@ -3,20 +3,31 @@ _gh_proj=ovos-PHAL-plugin-system
 pkgname=python-ovos-phal-plugin-system
 _name=ovos-PHAL-plugin-system
 _base_ver='6bd785611cd2e266d1cbec395c29a51525dd6d13'
-pkgver=0.0.4a2
-pkgrel=1
+pkgver='0.0.4'
+pkgrel=00
 pkgdesc='OVOS-PHAL System events'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-system/'
 license=('')
 depends=(python \
-'python-ovos-config>=0.0.5' #>=0.0.5,~=0.0 \
-'python-ovos-plugin-manager' \
-'python-ovos-utils>=0.0.30' #>=0.0.30,~=0.0 \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-config>=0.0.5' # ovos_config>=0.0.5,~=0.0
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager~=0.0.1
+'python-ovos-utils>=0.0.30' # ovos-utils>=0.0.30,~=0.0
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=(
    #python-ovos-phal-plugin-system-6bd785611cd2e266d1cbec395c29a51525dd6d13.tar.gz \
