@@ -3,29 +3,39 @@ _gh_proj=ovos-messagebus
 pkgname=python-ovos-messagebus
 _name=ovos-messagebus
 _unit_name="ovos-messagebus"
-_base_ver='034ef0b14aeab33152fc97b3fea0e445051a828a'
-pkgver=0.0.3a1
-pkgrel=1
+_commit='6c156753a29fd807ec2323b7f8995a60a29527ce'
+pkgver='0.0.3'
+pkgrel=00
 pkgdesc='messagebus service, the nervous system of OpenVoiceOS'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-messagebus/'
-license=('')
-depends=('ovos-service-base' 'python' 'python-sdnotify' \
-'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
-'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
-'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
-)
+license=('Apache License 2.0')
+depends=('ovos-service-base' 'python' 'python-sdnotify')
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name-server")
 conflicts=("ovos-bus-server")
 # install=python-ovos-messagebus.install
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-config>=0.0.8' # ovos-config>=0.0.8,~=0.0
+'python-ovos-utils>=0.0.32' # ovos-utils>=0.0.32,~=0.0
+'python-tornado>=6.0.3' # tornado>=6.0.3,~=6.0
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "$_unit_name.service" \
     "ovos-systemd_messagebus.py" \
     "python-$_unit_name.install")
-sha256sums=('49256ffac0fa8606f36b9ef099be89c408878b8b291e190fa008e7c1e387ef58'
+sha256sums=('52dfdfb3ec31dce89991afb26ec6dd1fa57a1a3f2061d69cf778baf388115468'
             '8d6ee0d4b5cbd91fa80218f0d6fe4d066024ca89581ca9b213236882073fc26b'
             'f1732d6858fd0c74e91304e92db30b0ee4a9c4a3e32d98d97bf3564a8197c685'
             'd2208a11d02faee1acf63a0f5b871a41b7005eb26f86a56552c6425b918409fa')
@@ -35,23 +45,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -61,7 +71,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package

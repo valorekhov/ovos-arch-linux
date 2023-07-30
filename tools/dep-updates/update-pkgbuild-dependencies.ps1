@@ -94,10 +94,7 @@ foreach ($pkgbuild in $pkgbuilds) {
             --title "BUMP: $pkgbase to version $latestVersion [$commitSha]" `
             --body "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.url)`ntag: $($releaseInfo.tagName)`ncommit: $commitSha"
 
-        Write-Host "Created PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
-
-        # TODO: Uncomment this once we confirm PR creation works
-        break        
+        Write-Host "Created PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green      
     } finally {
         git checkout main
     }
