@@ -8,9 +8,8 @@ pkgrel=00
 pkgdesc='OVOS-PHAL System events'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-system/'
-license=('')
-depends=(python \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
