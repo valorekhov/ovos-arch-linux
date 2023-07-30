@@ -286,7 +286,7 @@ python-ovos-phal-plugin-mk1:  PKGBUILDs/python-ovos-phal-plugin-mk1/*.pkg.tar.zs
 
 python-ovos-phal-plugin-mk2: python-ovos-plugin-manager python-rpi.gpio python-smbus2 PKGBUILDs/python-ovos-phal-plugin-mk2/*.pkg.tar.zst
 
-python-ovos-phal-plugin-network-manager: python-mycroft-messagebus-client python-ovos-utils python-ovos-plugin-manager PKGBUILDs/python-ovos-phal-plugin-network-manager/*.pkg.tar.zst
+python-ovos-phal-plugin-network-manager: python-ovos-bus-client python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-phal-plugin-network-manager/*.pkg.tar.zst
 
 python-ovos-phal-plugin-notification-widgets: python-mycroft-messagebus-client python-ovos-utils python-ovos-plugin-manager PKGBUILDs/python-ovos-phal-plugin-notification-widgets/*.pkg.tar.zst
 
