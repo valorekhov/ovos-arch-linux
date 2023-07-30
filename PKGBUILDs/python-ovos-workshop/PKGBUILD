@@ -1,4 +1,6 @@
 pkgname=python-ovos-workshop
+_gh_org=OpenVoiceOS
+_gh_proj=OVOS-workshop
 _name=OVOS-workshop
 _base_ver='13cab11cb79146dd1b4666a44eaa62c3be0224c4'
 pkgver=0.0.12a27
