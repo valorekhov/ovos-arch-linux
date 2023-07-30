@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-network-manager
 	pkgdesc = NetworkManager plugin for PHAL
-	pkgver = 1.0.1a2
-	pkgrel = 1
+	pkgver = 1.1.0
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/
 	arch = any
 	license = 
@@ -11,10 +11,10 @@ pkgbase = python-ovos-phal-plugin-network-manager
 	makedepends = python-setuptools
 	depends = python
 	depends = python-dbus-next
-	depends = python-mycroft-messagebus-client
-	depends = python-ovos-utils
-	depends = python-ovos-plugin-manager>=0.0.1
-	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/archive/1ab1407599182db0d96ad93dc7f40bc0cdb383c8.tar.gz
-	sha256sums = 8ff12ce1b22bcd308db7b66c0cb7845223e6893b3918f7b96d973859764bc905
+	depends = python-ovos-bus-client>=0.0.3
+	depends = python-ovos-plugin-manager>=0.0.22
+	depends = python-ovos-utils>=0.0.32
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/archive/0622b21f8c6cc2c560e015dae8c3cc131ae073d8.tar.gz
+	sha256sums = f5bdd56d6ead7817340f4225bec664294d7cd9c2fb88b433b4fe9084a90e4989
 
 pkgname = python-ovos-phal-plugin-network-manager

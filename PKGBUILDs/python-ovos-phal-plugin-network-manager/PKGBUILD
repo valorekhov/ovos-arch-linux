@@ -2,49 +2,60 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-network-manager
 pkgname=python-ovos-phal-plugin-network-manager
 _name=ovos-PHAL-plugin-network-manager
-_base_ver='1ab1407599182db0d96ad93dc7f40bc0cdb383c8'
-pkgver=1.0.1a2
-pkgrel=1
+_commit='0622b21f8c6cc2c560e015dae8c3cc131ae073d8'
+pkgver='1.1.0'
+pkgrel=00
 pkgdesc='NetworkManager plugin for PHAL'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/'
 license=('')
 depends=(python \
-'python-dbus-next' \
-'python-mycroft-messagebus-client' \
-'python-ovos-utils' \
-'python-ovos-plugin-manager>=0.0.1' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-dbus-next' # dbus-next
+'python-ovos-bus-client>=0.0.3' # ovos-bus-client~=0.0.3
+'python-ovos-plugin-manager>=0.0.22' # ovos-plugin-manager~=0.0.22
+'python-ovos-utils>=0.0.32' # ovos-utils~=0.0.32
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-phal-plugin-network-manager-1ab1407599182db0d96ad93dc7f40bc0cdb383c8.tar.gz \
-   8ff12ce1b22bcd308db7b66c0cb7845223e6893b3918f7b96d973859764bc905)
+   f5bdd56d6ead7817340f4225bec664294d7cd9c2fb88b433b4fe9084a90e4989)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -54,7 +65,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -77,22 +88,3 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # python-ovos-phal-plugin-network-manager
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_PHAL_PLUGIN_NETWORK_MANAGER_VERSION = 1ab1407599182db0d96ad93dc7f40bc0cdb383c8
-# PYTHON_OVOS_PHAL_PLUGIN_NETWORK_MANAGER_SITE = $(call github,OpenVoiceOS,ovos-PHAL-plugin-network-manager,$(PYTHON_OVOS_PHAL_PLUGIN_NETWORK_MANAGER_VERSION))
-# PYTHON_OVOS_PHAL_PLUGIN_NETWORK_MANAGER_SETUP_TYPE = setuptools
-# PYTHON_OVOS_PHAL_PLUGIN_NETWORK_MANAGER_LICENSE_FILES = LICENSE
-# PYTHON_OVOS_PHAL_PLUGIN_NETWORK_MANAGER_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
-
