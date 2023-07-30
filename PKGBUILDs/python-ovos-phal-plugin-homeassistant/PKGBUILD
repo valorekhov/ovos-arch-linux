@@ -2,7 +2,7 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-homeassistant
 pkgname=python-ovos-phal-plugin-homeassistant
 _name=ovos-PHAL-plugin-homeassistant
-_base_ver='df606469ed56965a3274ff5d7b62ec20c4b22f75'
+_commit='02f034168f35da8a4bac678b757072b52f60110c'
 pkgver='0.0.3'
 pkgrel=00
 pkgdesc='HomeAssistant PHAL Plugin for OpenVoiceOS'
@@ -15,42 +15,43 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-mycroft-messagebus-client>=0.10' # mycroft-messagebus-client~=0.10
 'python-nested-lookup>=0.2' # nested-lookup~=0.2
+'python-ovos-bus-client>=0.0.3' # ovos-bus-client~=0.0.3
 'python-ovos-config>=0.0.5' # ovos-config~=0.0.5
 'python-ovos-phal-plugin-oauth>=0.0.1' # ovos-PHAL-plugin-oauth~=0.0.1
-'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager~=0.0.1
+'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager~=0.0.23
 'python-ovos-utils>=0.0.27' # ovos-utils~=0.0.27
 'python-pytube>=12.1' # pytube~=12.1
+'python-webcolors>=1.13' # webcolors~=1.13
 'python-websockets>=10.4' # websockets~=10.4
 'python-youtube-search>=2.1' # youtube-search~=2.1
 )
 #### End of automatically generated dependencies.
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=('4a89246be54232243a0450906186aea67467c8d378ec5eeb5bc9eefbf498aaad')
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('c3d0aa941470f0090ddcff2af07bc42349c62ad47747199532ab9eaf4b575ed1')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -60,7 +61,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -83,3 +84,4 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
+
