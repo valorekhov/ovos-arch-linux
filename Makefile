@@ -296,7 +296,7 @@ python-ovos-phal-plugin-respeaker-2mic:  PKGBUILDs/python-ovos-phal-plugin-respe
 
 python-ovos-phal-plugin-respeaker-4mic:  PKGBUILDs/python-ovos-phal-plugin-respeaker-4mic/*.pkg.tar.zst
 
-python-ovos-phal-plugin-system: python-ovos-config python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-phal-plugin-system/*.pkg.tar.zst
+python-ovos-phal-plugin-system: python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-phal-plugin-system/*.pkg.tar.zst
 
 python-ovos-phal-plugin-wallpaper-manager: python-mycroft-messagebus-client python-ovos-plugin-manager python-ovos-utils python-wallpaper-finder PKGBUILDs/python-ovos-phal-plugin-wallpaper-manager/*.pkg.tar.zst
 
