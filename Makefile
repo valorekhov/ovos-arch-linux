@@ -310,7 +310,7 @@ python-ovos-skill-manager: python-bs4 python-combo-lock python-json-database pyt
 
 python-ovos-skills-manager: python-bs4 python-combo-lock python-json-database python-ovos-config python-ovos-skill-installer python-ovos-utils python-pako python-requests-cache PKGBUILDs/python-ovos-skills-manager/*.pkg.tar.zst
 
-python-ovos-stt-http-server: python-gradio python-ovos-plugin-manager python-ovos-utils python-uvicorn PKGBUILDs/python-ovos-stt-http-server/*.pkg.tar.zst
+python-ovos-stt-http-server: python-ovos-plugin-manager python-ovos-utils python-uvicorn PKGBUILDs/python-ovos-stt-http-server/*.pkg.tar.zst
 
 python-ovos-stt-plugin-chromium: python-ovos-utils python-ovos-plugin-manager PKGBUILDs/python-ovos-stt-plugin-chromium/*.pkg.tar.zst
 

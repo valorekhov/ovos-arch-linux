@@ -1,5 +1,5 @@
 pkgbase = python-ovos-stt-http-server
-	pkgdesc = Turn any OVOS STT plugin into a micro service
+	pkgdesc = Turn any OVOS STT plugin into a micro service.
 	pkgver = 0.0.2
 	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-stt-http-server/
@@ -12,7 +12,6 @@ pkgbase = python-ovos-stt-http-server
 	depends = python
 	depends = python-fastapi>=0.95
 	depends = python-flask
-	depends = python-gradio>=3.28
 	depends = python-ovos-plugin-manager>=0.0.18
 	depends = python-ovos-utils>=0.0.32
 	depends = python-uvicorn>=0.22
