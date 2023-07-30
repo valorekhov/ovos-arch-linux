@@ -1,24 +1,24 @@
 pkgbase = python-ovos-phal-plugin-homeassistant
 	pkgdesc = HomeAssistant PHAL Plugin for OpenVoiceOS
-	pkgver = 0.0.2a1
-	pkgrel = 1
+	pkgver = 0.0.3
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-homeassistant/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	makedepends = python-setuptools
 	depends = python
-	depends = python-mycroft-messagebus-client
-	depends = python-nested-lookup
-	depends = python-ovos-config
-	depends = python-ovos-phal-plugin-oauth
-	depends = python-ovos-plugin-manager
-	depends = python-ovos-utils
-	depends = python-pytube
-	depends = python-websockets
-	depends = python-youtube-search
+	depends = python-mycroft-messagebus-client>=0.10
+	depends = python-nested-lookup>=0.2
+	depends = python-ovos-config>=0.0.5
+	depends = python-ovos-phal-plugin-oauth>=0.0.1
+	depends = python-ovos-plugin-manager>=0.0.1
+	depends = python-ovos-utils>=0.0.27
+	depends = python-pytube>=12.1
+	depends = python-websockets>=10.4
+	depends = python-youtube-search>=2.1
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-homeassistant/archive/df606469ed56965a3274ff5d7b62ec20c4b22f75.tar.gz
 	sha256sums = 4a89246be54232243a0450906186aea67467c8d378ec5eeb5bc9eefbf498aaad
 
