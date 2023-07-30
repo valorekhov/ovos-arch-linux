@@ -8,21 +8,24 @@ pkgrel=00
 pkgdesc='HomeAssistant PHAL Plugin for OpenVoiceOS'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-homeassistant/'
-license=('')
-depends=(python \
-'python-mycroft-messagebus-client' \
-'python-nested-lookup' \
-'python-ovos-config' \
-'python-ovos-phal-plugin-oauth' \
-'python-ovos-plugin-manager' \
-'python-ovos-utils' \
-'python-pytube' \
-'python-websockets' \
-'python-youtube-search' \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-mycroft-messagebus-client>=0.10' # mycroft-messagebus-client~=0.10
+'python-nested-lookup>=0.2' # nested-lookup~=0.2
+'python-ovos-config>=0.0.5' # ovos-config~=0.0.5
+'python-ovos-phal-plugin-oauth>=0.0.1' # ovos-PHAL-plugin-oauth~=0.0.1
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager~=0.0.1
+'python-ovos-utils>=0.0.27' # ovos-utils~=0.0.27
+'python-pytube>=12.1' # pytube~=12.1
+'python-websockets>=10.4' # websockets~=10.4
+'python-youtube-search>=2.1' # youtube-search~=2.1
+)
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=('4a89246be54232243a0450906186aea67467c8d378ec5eeb5bc9eefbf498aaad')
 
@@ -80,22 +83,3 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # python-ovos-phal-plugin-homeassistant
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_PHAL_PLUGIN_HOMEASSISTANT_VERSION = df606469ed56965a3274ff5d7b62ec20c4b22f75
-# PYTHON_OVOS_PHAL_PLUGIN_HOMEASSISTANT_SITE = $(call github,OpenVoiceOS,ovos-PHAL-plugin-homeassistant,$(PYTHON_OVOS_PHAL_PLUGIN_HOMEASSISTANT_VERSION))
-# PYTHON_OVOS_PHAL_PLUGIN_HOMEASSISTANT_SETUP_TYPE = setuptools
-# PYTHON_OVOS_PHAL_PLUGIN_HOMEASSISTANT_LICENSE_FILES = LICENSE
-# PYTHON_OVOS_PHAL_PLUGIN_HOMEASSISTANT_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
-
