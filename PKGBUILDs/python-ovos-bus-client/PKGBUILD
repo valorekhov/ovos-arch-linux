@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-bus-client
 pkgname=python-ovos-bus-client
 _name=${pkgname#python-}
-_base_ver='94fbd69ff165ddcd645f02dd28cdd05cb4326bf8'
-pkgver=0.0.4a12
-pkgrel=1
+_commit='2a9f83ef91de12f45960d290a03322bdafbaa485'
+pkgver='0.0.5'
+pkgrel=01
 pkgdesc='This module is a simple interface for the mycroft
 messagebus and can be used to connect to ovos, send
 messages and react to messages sent by the OpenVoiceOS
@@ -14,47 +14,54 @@ This module extends the mycroft-messagebus-client with
 a Session implementation'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-bus-client/'
-license=('Apache-2.0')
-depends=(python \
-'python-ovos-config>=0.0.8' #<0.1.0,>=0.0.8 \
-'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
-'python-pyee>=8.1.0' \
-'python-websocket-client>=0.54.0' \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=( 'python-ovos-config>=0.1.0' \
- 'python-ovos-utils>=0.1.0')
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-config>=0.0.8' # ovos-config<0.1.0,>=0.0.8
+'python-ovos-utils>=0.0.32' # ovos-utils<0.1.0,>=0.0.32
+'python-pyee>=8.1.0' # pyee<9.0.0,>=8.1.0
+'python-websocket-client>=0.54.0' # websocket-client>=0.54.0
+)
+conflicts+=(
+'python-ovos-config>=0.1.0' # ovos-config<0.1.0,>=0.0.8
+'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0,>=0.0.32
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
    0001-Loosen-requirements.patch)
-sha256sums=(
-   #python-ovos-bus-client-94fbd69ff165ddcd645f02dd28cdd05cb4326bf8.tar.gz \
-   6be39206814b1ce4061067aced354b304db2b32cbeaa0b00b7ae8143cac8de7e \
-   #0001-Loosen-requirements.patch \
-   'D96BE312783BBCB91A90337A409491055A08123EF6749BEFDEBC7C93487550B3')
+sha256sums=('43f5d5214d903ab4b4bd479bd7eb12d8762c7bcdf78510d9a9449a012db1a1fb'
+            'd96be312783bbcb91a90337a409491055a08123ef6749befdebc7c93487550b3')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -64,7 +71,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -104,6 +111,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
