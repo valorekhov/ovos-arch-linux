@@ -1,21 +1,23 @@
 pkgbase = python-ovos-stt-http-server
 	pkgdesc = Turn any OVOS STT plugin into a micro service
-	pkgver = 0.0.2a5
-	pkgrel = 1
+	pkgver = 0.0.2
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-stt-http-server/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	makedepends = python-setuptools
 	depends = python
-	depends = python-fastapi
-	depends = python-ovos-plugin-manager
-	depends = python-ovos-utils
-	depends = python-uvicorn
+	depends = python-fastapi>=0.95
+	depends = python-flask
+	depends = python-gradio>=3.28
+	depends = python-ovos-plugin-manager>=0.0.18
+	depends = python-ovos-utils>=0.0.32
+	depends = python-uvicorn>=0.22
 	optdepends = python-gradio: for Gradio-compatible GUI
-	source = https://github.com/OpenVoiceOS/ovos-stt-http-server/archive/57c656242e44f8d1d4b60574775dc29167cf314f.tar.gz
-	sha256sums = 9b93a3b9cd97810874084f14ac6957e711da822ab399c8f164f6e8173872da79
+	source = https://github.com/OpenVoiceOS/ovos-stt-http-server/archive/add03f12957290b6394d71b19d70f3fb21d59e4e.tar.gz
+	sha256sums = 88b47f3806d5b40478d75efe8a3708b4a25899c0d7f7d6800bbd45153c5e98cf
 
 pkgname = python-ovos-stt-http-server
