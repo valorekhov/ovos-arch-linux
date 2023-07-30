@@ -4,16 +4,13 @@ pkgname=python-ovos-messagebus
 _name=ovos-messagebus
 _unit_name="ovos-messagebus"
 _base_ver='034ef0b14aeab33152fc97b3fea0e445051a828a'
-pkgver=0.0.3a1
-pkgrel=1
+pkgver='0.0.3'
+pkgrel=00
 pkgdesc='messagebus service, the nervous system of OpenVoiceOS'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-messagebus/'
 license=('')
 depends=('ovos-service-base' 'python' 'python-sdnotify' \
-'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
-'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
-'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
@@ -21,6 +18,20 @@ provides=("$_unit_name-server")
 conflicts=("ovos-bus-server")
 # install=python-ovos-messagebus.install
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-config>=0.0.8a2' # ovos-config>=0.0.8a2,~=0.0
+'python-ovos-utils>=0.0.31a3' # ovos-utils>=0.0.31a3,~=0.0
+'python-tornado>=6.0.3' # tornado>=6.0.3,~=6.0
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
     "$_unit_name.service" \
     "ovos-systemd_messagebus.py" \
