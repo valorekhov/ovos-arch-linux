@@ -14,9 +14,8 @@ This module extends the mycroft-messagebus-client with
 a Session implementation'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-bus-client/'
-license=('Apache-2.0')
-depends=(python \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=( 'python-ovos-config>=0.1.0' \
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
@@ -30,7 +29,6 @@ depends+=(
 conflicts+=(
 'python-ovos-config>=0.1.0' # ovos-config<0.1.0,>=0.0.8
 'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0,>=0.0.32
-'python-pyee>=9.0.0' # pyee<9.0.0,>=8.1.0
 )
 optdepends+=(
 
