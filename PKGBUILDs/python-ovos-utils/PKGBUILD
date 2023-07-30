@@ -9,9 +9,8 @@ pkgdesc='collection of simple utilities for use
 across the mycroft ecosystem'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_utils/'
-license=('')
-depends=(python \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
@@ -92,22 +91,3 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # python-ovos-utils
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_UTILS_VERSION = 5e43850e138150247da5d151ed4bd2e65a6bb455
-# PYTHON_OVOS_UTILS_SITE = $(call github,OpenVoiceOS,ovos_utils,$(PYTHON_OVOS_UTILS_VERSION))
-# PYTHON_OVOS_UTILS_SETUP_TYPE = setuptools
-# PYTHON_OVOS_UTILS_LICENSE_FILES = LICENSE
-# PYTHON_OVOS_UTILS_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
-
