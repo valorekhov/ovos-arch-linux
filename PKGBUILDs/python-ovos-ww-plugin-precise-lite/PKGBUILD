@@ -2,15 +2,14 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ww-plugin-precise-lite
 pkgname=python-ovos-ww-plugin-precise-lite
 _name=ovos-ww-plugin-precise-lite
-_base_ver='485f1c39cbb9542c9b0885207f33df91313ed565'
+_commit='485f1c39cbb9542c9b0885207f33df91313ed565'
 pkgver='0.1.2'
 pkgrel=00
 pkgdesc='This adds a plugin for precise-lite'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/'
-license=('')
-depends=(python 'ovos-precise-lite-models' \
-)
+license=('Apache License 2.0')
+depends=(python 'ovos-precise-lite-models')
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
@@ -29,7 +28,7 @@ optdepends+=(
 )
 
 #### End of automatically generated dependencies.
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-ww-plugin-precise-lite-485f1c39cbb9542c9b0885207f33df91313ed565.tar.gz \
    8e314a786bbd3a0d2b139463f16a1ebe3272e195724ac4279797c9a41575c04c)
@@ -39,23 +38,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -65,7 +64,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -88,21 +87,3 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # python-ovos-ww-plugin-precise
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_WW_PLUGIN_PRECISE_LITE_VERSION = 485f1c39cbb9542c9b0885207f33df91313ed565
-# PYTHON_OVOS_WW_PLUGIN_PRECISE_LITE_SITE = $(call github,OpenVoiceOS,ovos-ww-plugin-precise-lite,$(PYTHON_OVOS_WW_PLUGIN_PRECISE_LITE_VERSION))
-# PYTHON_OVOS_WW_PLUGIN_PRECISE_LITE_SETUP_TYPE = setuptools
-# PYTHON_OVOS_WW_PLUGIN_PRECISE_LITE_LICENSE_FILES = LICENSE
-# 
-# $(eval $(python-package))
-# 
-
-
-
