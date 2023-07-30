@@ -2,9 +2,9 @@ pkgbase=mycroft-mimic1
 _gh_org=MycroftAI
 _gh_proj=mimic1
 pkgname=("mycroft-mimic1" "mycroft-mimic1-voices")
-_commit="eba879c6e4ece50ca6de9b4966f2918ed89148bd"
-pkgver="1.3.0"
-pkgrel=1
+_commit='adf655da0399530ac1b586590257847eb61be232'
+pkgver='1.3.0.1'
+pkgrel=00
 arch=('x86_64' 'aarch64' 'armv7h')
 url="https://github.com/MycroftAI/$_gh_proj"
 license=('see https://github.com/MycroftAI/mimic1/blob/master/COPYING')
@@ -12,7 +12,7 @@ depends=()
 makedepends=(gcc make pkg-config automake libtool)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('3b0afee54dc4f2eef6e64d81d9d2373c090aab894993ef8921216a0147b9feff')
+sha256sums=('c17b8d56c928df97d6ae0f3a4b1e4f6b60d939d25718fed43d29ec0f82f36d59')
 
 # prepare() {
 #     cd "$srcdir"
@@ -27,7 +27,7 @@ sha256sums=('3b0afee54dc4f2eef6e64d81d9d2373c090aab894993ef8921216a0147b9feff')
 build() {
     cd "$srcdir/$_gh_proj-$_commit"
     ./autogen.sh
-    ./configure --enable-shared --prefix="/usr" #--with-audio=alsa
+    ./configure --enable-shared --prefix="/usr" CFLAGS="-Wno-free-nonheap-object" #--with-audio=alsa
     make
 }
 
