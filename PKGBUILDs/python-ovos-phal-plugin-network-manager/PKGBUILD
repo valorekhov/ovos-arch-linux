@@ -3,21 +3,32 @@ _gh_proj=ovos-PHAL-plugin-network-manager
 pkgname=python-ovos-phal-plugin-network-manager
 _name=ovos-PHAL-plugin-network-manager
 _base_ver='1ab1407599182db0d96ad93dc7f40bc0cdb383c8'
-pkgver=1.0.1a2
-pkgrel=1
+pkgver='1.1.0'
+pkgrel=00
 pkgdesc='NetworkManager plugin for PHAL'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/'
 license=('')
 depends=(python \
-'python-dbus-next' \
-'python-mycroft-messagebus-client' \
-'python-ovos-utils' \
-'python-ovos-plugin-manager>=0.0.1' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-dbus-next' # dbus-next
+'python-mycroft-messagebus-client' # mycroft-messagebus-client
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager>=0.0.1
+'python-ovos-utils' # ovos_utils
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
 sha256sums=(
    #python-ovos-phal-plugin-network-manager-1ab1407599182db0d96ad93dc7f40bc0cdb383c8.tar.gz \
