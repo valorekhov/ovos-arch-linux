@@ -4,7 +4,7 @@ pkgname=python-ovos-bus-client
 _name=${pkgname#python-}
 _base_ver='94fbd69ff165ddcd645f02dd28cdd05cb4326bf8'
 pkgver='0.0.5'
-pkgrel=00
+pkgrel=01
 pkgdesc='This module is a simple interface for the mycroft
 messagebus and can be used to connect to ovos, send
 messages and react to messages sent by the OpenVoiceOS
