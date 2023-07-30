@@ -5,7 +5,7 @@ _name=ovos-stt-http-server
 _commit='add03f12957290b6394d71b19d70f3fb21d59e4e'
 pkgver='0.0.2'
 pkgrel=00
-pkgdesc='Turn any OVOS STT plugin into a micro service'
+pkgdesc='Turn any OVOS STT plugin into a micro service.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-http-server/'
 license=('Apache License 2.0')
@@ -18,7 +18,6 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 depends+=(
 'python-fastapi>=0.95' # fastapi~=0.95
 'python-flask' # flask
-'python-gradio>=3.28' # gradio~=3.28
 'python-ovos-plugin-manager>=0.0.18' # ovos-plugin-manager~=0.0.18
 'python-ovos-utils>=0.0.32' # ovos-utils~=0.0.32
 'python-uvicorn>=0.22' # uvicorn~=0.22
