@@ -47,7 +47,7 @@ function ConvertFrom-PythonModuleDependencies([string]$path, $packageMap){
     Push-Location $path | Out-Null
     try {
         python -m build --wheel --no-isolation
-        $whl = Get-ChildItem -Path ./dist -Filter *.whl
+        $whl = Get-ChildItem -Path ./dist -Filter *.whl | Select-Object -First 1
         $moduleName = $whl.Name -replace '-.*$'
         $deps = $pyDepCode.Replace("{{pkgname}}", $moduleName) | python | ConvertFrom-Json
 
