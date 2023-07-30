@@ -13,7 +13,7 @@ depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-#### Automatically generated dependencies. Do not edit.
+#### Automatically generated dependencies. Do not edit. 
 depends+=(
 'python-json-database>=0.7' # json_database~=0.7
 'python-ovos-plugin-manager>=0.0' # ovos-plugin-manager~=0.0
