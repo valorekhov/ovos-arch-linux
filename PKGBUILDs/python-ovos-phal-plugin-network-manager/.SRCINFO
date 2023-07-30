@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-network-manager
 	pkgdesc = NetworkManager plugin for PHAL
 	pkgver = 1.1.0
-	pkgrel = 00
+	pkgrel = 01
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-network-manager/
 	arch = any
 	license = 
