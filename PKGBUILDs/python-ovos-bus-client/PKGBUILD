@@ -37,11 +37,8 @@ optdepends+=(
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
    0001-Loosen-requirements.patch)
-sha256sums=(
-   #python-ovos-bus-client-94fbd69ff165ddcd645f02dd28cdd05cb4326bf8.tar.gz \
-   6be39206814b1ce4061067aced354b304db2b32cbeaa0b00b7ae8143cac8de7e \
-   #0001-Loosen-requirements.patch \
-   'D96BE312783BBCB91A90337A409491055A08123EF6749BEFDEBC7C93487550B3')
+sha256sums=('43f5d5214d903ab4b4bd479bd7eb12d8762c7bcdf78510d9a9449a012db1a1fb'
+            'd96be312783bbcb91a90337a409491055a08123ef6749befdebc7c93487550b3')
 
 prepare() {
     cd "$srcdir"

@@ -33,9 +33,7 @@ optdepends+=(
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=(
-   #python-ovos-utils-5e43850e138150247da5d151ed4bd2e65a6bb455.tar.gz \
-   8c3ea3d7f1fe1c54bd070a71b59f7ef0ff8ba62879f0da4d26dc7422bb65faf3)
+sha256sums=('b6dc8b7d308443b431042134f05864178d6da238430170705b36d31e0200f0a1')
 
 prepare() {
     cd "$srcdir"
