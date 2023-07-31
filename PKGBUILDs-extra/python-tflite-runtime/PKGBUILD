@@ -3,7 +3,7 @@ pkgname=python-tflite-runtime
 pkgver=2.14.0.dev
 pkgrel=20230729
 pkgdesc='TensorFlow Lite Python bindings'
-arch=('x86_64' 'aarch64' armv7h)
+arch=('x86_64' 'aarch64' 'armv7h')
 url='https://www.tensorflow.org/lite/'
 license=('Apache')
 #depends=('python-tensorflow')
@@ -27,12 +27,12 @@ tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_armv7l.whl
 
 package() {
     cd "$_name-$_commit"
-    $_arch=$CARCH
+    local pkg_arch="$CARCH"
     if [ "$CARCH" = "armv7h" ]; then
-        $_arch="armv7l"
+        pkg_arch="armv7l"
     fi
 
-    echo "Installing $pkgname to $pkgdir with arch $CARCH / $_arch"
+    echo "Installing $pkgname to $pkgdir with arch $CARCH / $pkg_arch"
     # some packages produce multiple wheels, install the one specific to the version of the package
-    python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_$_arch.whl"
+    python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_$pkg_arch.whl"
 }
