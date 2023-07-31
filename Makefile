@@ -372,7 +372,7 @@ python-pocketsphinx:  PKGBUILDs-extra/python-pocketsphinx/*.pkg.tar.zst
 
 python-pprintpp:  PKGBUILDs-extra/python-pprintpp/*.pkg.tar.zst
 
-python-precise-lite-runner: python-sonopy python-tflite-runtime PKGBUILDs-extra/python-precise-lite-runner/*.pkg.tar.zst
+python-precise-lite-runner: python-sonopy python-tflite-runtime PKGBUILDs/python-precise-lite-runner/*.pkg.tar.zst
 
 python-precise-runner:  PKGBUILDs-extra/python-precise-runner/*.pkg.tar.zst
 
