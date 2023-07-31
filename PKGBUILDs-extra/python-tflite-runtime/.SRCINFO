@@ -6,6 +6,7 @@ pkgbase = python-tflite-runtime
 	arch = x86_64
 	arch = aarch64
 	arch = armv7h
+	arch = armv7l
 	license = Apache
 	makedepends = python
 	makedepends = python-installer
@@ -18,5 +19,7 @@ pkgbase = python-tflite-runtime
 	sha256sums_aarch64 = 1440a727743c1664574f31abfdef5606e7b80a5d1a9665522d1de73c8b6fd706
 	source_armv7h = https://files.pythonhosted.org/packages/dd/98/31740ac5b72839ea0586918ce630a152352eb0a6379fae1ea8269d863ac5/tflite_runtime_nightly-2.14.0.dev20230729-cp311-cp311-manylinux_2_34_armv7l.whl
 	sha256sums_armv7h = f6dac637b7fcbff21942cf34eac200274020353c20707b76b99b493cf13c53c2
+	source_armv7l = https://files.pythonhosted.org/packages/dd/98/31740ac5b72839ea0586918ce630a152352eb0a6379fae1ea8269d863ac5/tflite_runtime_nightly-2.14.0.dev20230729-cp311-cp311-manylinux_2_34_armv7l.whl
+	sha256sums_armv7l = f6dac637b7fcbff21942cf34eac200274020353c20707b76b99b493cf13c53c2
 
 pkgname = python-tflite-runtime
