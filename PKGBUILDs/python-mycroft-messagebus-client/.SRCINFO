@@ -1,7 +1,7 @@
 pkgbase = python-mycroft-messagebus-client
 	pkgdesc = Mycroft Messagebus Client
-	pkgver = 0.9.5
-	pkgrel = 00
+	pkgver = 0.10.1
+	pkgrel = 01
 	url = https://github.com/MycroftAI/mycroft-messagebus-client
 	arch = any
 	license = Apache
