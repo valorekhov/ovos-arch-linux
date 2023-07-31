@@ -3,7 +3,7 @@ pkgname=python-tflite-runtime
 pkgver=2.14.0.dev
 pkgrel=20230729
 pkgdesc='TensorFlow Lite Python bindings'
-arch=('x86_64' 'aarch64' 'armv7h')
+arch=('x86_64' 'aarch64' 'armv7h' 'armv7l')
 url='https://www.tensorflow.org/lite/'
 license=('Apache')
 #depends=('python-tensorflow')
@@ -13,10 +13,12 @@ source_x86_64=("https://files.pythonhosted.org/packages/03/f8/8cb7cb19e683a4e626
 sha256sums_x86_64=('917ee80bcf142e36f4d858557e687244b72484c7f7fe80c644ea71118b7ee3ad')
 sha256sums_aarch64=('1440a727743c1664574f31abfdef5606e7b80a5d1a9665522d1de73c8b6fd706')
 sha256sums_armv7h=('f6dac637b7fcbff21942cf34eac200274020353c20707b76b99b493cf13c53c2')
+sha256sums_armv7l=('f6dac637b7fcbff21942cf34eac200274020353c20707b76b99b493cf13c53c2')
 
 source_aarch64=("https://files.pythonhosted.org/packages/25/bc/3f7040ff6f613e4284e01c681654e3e151d09203c5db7c84fba2ca560770/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux_2_34_aarch64.whl")
 
 source_armv7h=("https://files.pythonhosted.org/packages/dd/98/31740ac5b72839ea0586918ce630a152352eb0a6379fae1ea8269d863ac5/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux_2_34_armv7l.whl")
+source_armv7l=("https://files.pythonhosted.org/packages/dd/98/31740ac5b72839ea0586918ce630a152352eb0a6379fae1ea8269d863ac5/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux_2_34_armv7l.whl")
 
 noextract=(
 tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_x86_64.whl
@@ -34,5 +36,9 @@ package() {
 
     echo "Installing $pkgname to $pkgdir with arch $CARCH / $pkg_arch"
     # some packages produce multiple wheels, install the one specific to the version of the package
-    python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_$pkg_arch.whl"
+    if [ "$CARCH" = "x86_64" ]; then
+        python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux2014_$pkg_arch.whl"
+    else
+        python -m installer --destdir="$pkgdir" "$srcdir/tflite_runtime_nightly-$pkgver$pkgrel-cp311-cp311-manylinux_2_34_$pkg_arch.whl"
+    fi
 }
