@@ -6,7 +6,7 @@ _base_ver='fb4363ee91e77566dc94835f0179f7453801323a'
 pkgver=0.2.4
 pkgrel=1
 pkgdesc='Mycroft mimic3'
-arch=(x86_64 aarch64 armv7hf)
+arch=(x86_64 aarch64 armv7h)
 url='https://github.com/MycroftAI/mimic3'
 license=('AGPL3')
 depends=()
@@ -18,12 +18,12 @@ options=("!strip")
 source=("https://raw.githubusercontent.com/MycroftAI/mimic3/master/LICENSE")
 source_x86_64=("https://github.com/MycroftAI/mimic3/releases/download/release/v${pkgver}/mycroft-mimic3-tts_${pkgver}_amd64.deb")
 source_aarch64=("https://github.com/MycroftAI/mimic3/releases/download/release/v${pkgver}/mycroft-mimic3-tts_${pkgver}_arm64.deb")
-source_armv7hf=("https://github.com/MycroftAI/mimic3/releases/download/release/v${pkgver}/mycroft-mimic3-tts_${pkgver}_armhf.deb")
+source_armv7h=("https://github.com/MycroftAI/mimic3/releases/download/release/v${pkgver}/mycroft-mimic3-tts_${pkgver}_armhf.deb")
 
 sha256sums=('0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0')
 sha256sums_x86_64=('a622280d00742c9bfc20b9c075c619c23b4184c757abecc3021397009c01e315')
 sha256sums_aarch64=('57069d2e207c8d2e899b974d13e4985e4d5866a977ed9499bd2d229ddedddee8')
-sha256sums_armv7hf=('a0a32d9ad3e8b06e47cffc0d2fe88cd2acdb86dd33f1c5efd1fd03f5f5e8f22f')
+sha256sums_armv7h=('a0a32d9ad3e8b06e47cffc0d2fe88cd2acdb86dd33f1c5efd1fd03f5f5e8f22f')
 
 prepare(){
  tar -xf "data.tar.xz"
