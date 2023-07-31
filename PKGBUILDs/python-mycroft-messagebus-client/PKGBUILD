@@ -5,8 +5,8 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-mycroft-messagebus-client
 epoch=
-pkgver='0.10.1'
-pkgrel=01
+pkgver='0.9.5'
+pkgrel=00
 pkgdesc='Mycroft Messagebus Client'
 arch=(any)
 url=https://github.com/MycroftAI/mycroft-messagebus-client
