@@ -57,9 +57,9 @@ function Find-MissingPackageInRepo([System.IO.DirectoryInfo]$pkgDir){
         if ($missingArchs.Count -gt 0){
             Write-Host "Package $version not found in online repo(s): $missingArchs`nClosest matches:" -ForegroundColor Red
             foreach($arch in $missingArchs){
-                $title = "[${arch}] $version not found in OVOS-Arch repo"
-                $body = "The package $version was not found in the OVOS-Arch repo for the $arch architecture. Current versions:" `
-                + ($archPackages[$arch] | Where-Object { $_.StartsWith($pkgname) } | Sort-Object)
+                $title = "[${arch}] $pkgname-$pkgver-$pkgrel not found in the OVOS-Arch repo"
+                $body = "The package $pkgname-$pkgver-$pkgrel was not found in the OVOS-Arch repo for the $arch architecture. Current versions:" `
+                + ($archPackages[$arch] | Where-Object { $_.StartsWith($pkgname) } | Sort-Object | ForEach-Object {"* $_"} | Join-String -Separator "`n")
 
                 # check if an issue already exists for this version and architecure,
                 # if not create one
