@@ -4,13 +4,12 @@ pkgname=ovos-skill-official-news
 _name=skill-ovos-news
 _commit='90718d2b337df81c5312bb0c657db7888d45edf7'
 pkgver='0.0.3'
-pkgrel=00
+pkgrel=01
 pkgdesc='News Streams from around the globe'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-news/'
 license=('Apache License 2.0')
-depends=(python
-)
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")

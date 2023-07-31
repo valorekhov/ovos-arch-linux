@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-official-news
 	pkgdesc = News Streams from around the globe
 	pkgver = 0.0.3
-	pkgrel = 00
+	pkgrel = 01
 	url = https://github.com/OpenVoiceOS/skill-ovos-news/
 	arch = any
 	license = Apache License 2.0

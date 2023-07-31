@@ -26,5 +26,5 @@ else
     done
 
     echo "Building packages: $pkglist"
-    ARCH="$INPUT_ARCH" MODE="repo" make -C "$WORKDIR" -f "$WORKDIR/Makefile" "$pkglist"
+    ARCH="$INPUT_ARCH" MODE="repo" make -C "$WORKDIR" -f "$WORKDIR/Makefile" "${pkglist[@]}"
 fi

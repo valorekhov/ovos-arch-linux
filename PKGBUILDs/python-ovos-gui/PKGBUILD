@@ -3,31 +3,40 @@ _gh_proj=ovos-gui
 pkgname=python-ovos-gui
 _name=ovos-gui
 _unit_name="ovos-gui-messagebus"
-_base_ver='502dec01d0055c54998280ffaa76d5f54961173f'
-pkgver=0.0.3a2
-pkgrel=6
-pkgdesc='GUI messagebus service, manages GUI state
-and implements the gui protocol'
+_commit='3340c6e1de2a9f1a6fcfff4d7a3cc742da3e911b'
+pkgver='0.0.3'
+pkgrel=00
+pkgdesc='GUI messagebus service, manages GUI state and implements the gui protocol'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-gui/'
-license=('')
-depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
-'python-ovos-backend-client' \
-'python-ovos-bus-client>=0.0.4a5' #>=0.0.4a5,~=0.0 \
-'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
-'python-ovos-utils>=0.0.31a5' #>=0.0.31a5,~=0.0 \
-'python-tornado>=6.0.3' #>=6.0.3,~=6.0 \
-)
+license=('Apache License 2.0')
+depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify')
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name")
 conflicts=("$_unit_name")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=0.0.5' # ovos-bus-client>=0.0.5,~=0.0
+'python-ovos-config>=0.0.10' # ovos-config>=0.0.10,~=0.0
+'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager>=0.0.23
+'python-ovos-utils>=0.0.34' # ovos-utils>=0.0.34,~=0.0
+'python-tornado>=6.0.3' # tornado>=6.0.3,~=6.0
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "$_unit_name.service" \
     "ovos-systemd_gui_messagebus.py" \
     # "python-ovos-gui.install" \
     )
-sha256sums=('09488c55a2617bf3d2807a84c4f2a8f636ce1b8a547a0ce5c685bba3f8742e96'
+sha256sums=('295732ec5d1dbfe9dfa01c1440a9cbcf1f7d283dae6062d63b34c54c87d995d3'
             'b8418c1ba00a7ee9fb28a0a188a0ea7e39cbc5dfbfd21e3715797dfef23e78a9'
             '91183c0c107817a3e95a17dc3a68dbc2b84341373c645d762b1e2bc2f10dbbc9')
 
@@ -36,23 +45,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -62,7 +71,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -91,22 +100,4 @@ package() {
     mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
     install -Dm644 "$srcdir/ovos-systemd_gui_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
-
-
-################################################################################
-# #
-# # python-ovos-gui
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_GUI_VERSION = 502dec01d0055c54998280ffaa76d5f54961173f
-# PYTHON_OVOS_GUI_SITE = $(call github,OpenVoiceOS,ovos-gui,$(PYTHON_OVOS_GUI_VERSION))
-# PYTHON_OVOS_GUI_SETUP_TYPE = setuptools
-# PYTHON_OVOS_GUI_LICENSE_FILES = LICENSE
-# PYTHON_OVOS_GUI_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
 

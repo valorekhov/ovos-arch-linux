@@ -1,56 +1,61 @@
 pkgname=python-ovos-workshop
+_gh_org=OpenVoiceOS
+_gh_proj=OVOS-workshop
 _name=OVOS-workshop
-_base_ver='13cab11cb79146dd1b4666a44eaa62c3be0224c4'
-pkgver=0.0.12a27
-pkgrel=1
-pkgdesc='frameworks, templates and patches for the
-mycroft universe'
+_commit='e8540c0c68345d7f230a71e836b13a387ea2b477'
+pkgver='0.0.12'
+pkgrel=00
+pkgdesc='frameworks, templates and patches for the mycroft universe'
 arch=('any')
 url='https://github.com/OpenVoiceOS/OVOS-workshop/'
 license=('Apache License 2.0')
-depends=(python \
-'python-ovos-backend-client>=0.0.6' #<0.1.0,>=0.0.6 \
-'python-ovos-config>=0.0.4' #<0.1.0,>=0.0.4 \
-'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
-'python-ovos-lingua-franca>=0.4.6' #>=0.4.6,~=0.4 \
-'python-ovos-utils>=0.0.33a7' #<0.1.0,>=0.0.33a7 \
-'python-rapidfuzz' \
-)
-conflicts=( 
- 'python-ovos-backend-client>=0.1.0' 
- 'python-ovos-config>=0.1.0' 
- 'python-ovos-bus-client>=0.1.0' 
- 'python-ovos-utils>=0.1.0'
-)
+depends=(python)
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-workshop-13cab11cb79146dd1b4666a44eaa62c3be0224c4.tar.gz \
-   a52ddca1dc57a2a3ebe2b7489084d553827558b6b0c1015e72a1d584ce430241)
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-backend-client>=0.0.6' # ovos_backend_client>=0.0.6,~=0.0
+'python-ovos-bus-client>=0.0.5' # ovos-bus-client<0.1.0,>=0.0.5
+'python-ovos-config>=0.0.10' # ovos_config<0.1.0,>=0.0.10
+'python-ovos-lingua-franca>=0.4.6' # ovos-lingua-franca>=0.4.6,~=0.4
+'python-ovos-utils>=0.0.35' # ovos-utils<0.1.0,>=0.0.35
+'python-rapidfuzz' # rapidfuzz
+)
+conflicts+=(
+'python-ovos-bus-client>=0.1.0' # ovos-bus-client<0.1.0,>=0.0.5
+'python-ovos-config>=0.1.0' # ovos_config<0.1.0,>=0.0.10
+'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0,>=0.0.35
+)
+optdepends+=(
+'python-ovos-ocp-audio-plugin' # ovos_plugin_common_play; extra == "ocp"
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('ca4cf6afbf5a6138335ac37381a1954fc4fbf1861a2272023451c7c9660f068b')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -60,7 +65,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package

@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-alsa
 	pkgdesc = OVOS-PHAL Alsa volume control
 	pkgver = 0.0.3
-	pkgrel = 00
+	pkgrel = 01
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-alsa/
 	arch = any
 	license = Apache License 2.0
@@ -11,9 +11,10 @@ pkgbase = python-ovos-phal-plugin-alsa
 	makedepends = python-setuptools
 	depends = python
 	depends = python-json-database>=0.7
+	depends = python-ovos-bus-client>=0.0.4
 	depends = python-ovos-plugin-manager>=0.0
 	depends = python-pyalsaaudio>=0.9
-	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-alsa/archive/1ccbc7a6bfad49ba3b384d99b716aa22d266b1e4.tar.gz
-	sha256sums = 0d4ad5d000219a6f2f8f250dd96db287d7c65b64a545c0123d91880014ee228a
+	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-alsa/archive/7683146ebd4e1b405e01d3fb47a9b165a42499c9.tar.gz
+	sha256sums = 0f8a412c5052cc398fdc62afbd6accd8192e6e01236701358131c84ef3b24852
 
 pkgname = python-ovos-phal-plugin-alsa
