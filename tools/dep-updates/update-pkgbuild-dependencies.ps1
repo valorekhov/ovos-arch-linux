@@ -8,6 +8,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 Import-Module "$PSScriptRoot/dep-update-utils.psm1"
+Import-Module "$PSScriptRoot/../config-parser.psm1"
 
 # Canonicalized repo root
 $RepoRoot = (Get-Item -Path "$PSScriptRoot/../..").FullName
@@ -15,11 +16,72 @@ $PackageMap = Get-ParsedConfig -Path "$RepoRoot/package-map.txt"
 
 $pkgbuilds = (Get-ChildItem -Path "$Path/PKGBUILDs/*/PKGBUILD" -Recurse)
 
+$archPackages = @{}
+mkdir -p "/tmp/ovos-updater"
+foreach($arch in @("x86_64", "aarch64", "armv7h") ){
+    if (-not (Test-Path "/tmp/ovos-updater/ovos-arch.db.$arch.tar.gz")){
+        Invoke-WebRequest -Uri "https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch/$arch/ovos-arch.db.tar.gz" -OutFile "/tmp/ovos-updater/ovos-arch.db.$arch.tar.gz"
+    }
+    $archPackages[$arch] = tar -tf "/tmp/ovos-updater/ovos-arch.db.$arch.tar.gz" | Where-Object { -not $_.EndsWith("/desc") }
+}
+
+function Find-MissingPackageInRepo([System.IO.DirectoryInfo]$pkgDir){
+    $srcInfo = Join-Path $pkgDir ".SRCINFO"
+    $sections = (ConvertFrom-SrcInfo -lines (Get-Content $srcInfo))
+    $sections | ForEach-Object {
+        $pkgname = $_.pkgname
+        $pkgver = $_.pkgver
+        $pkgrel = $_.pkgrel
+        $version = "$pkgname-$pkgver-$pkgrel/"
+        # Write-Host "Checking for $version"
+        [array]$archs = $_.arch
+        $missingArchs = @()
+        foreach($arch in $archs){
+            if ($arch -ne 'any' -and -not $archPackages.ContainsKey($arch)){
+                Write-Host "$($pkgname): Arch $arch not found in online repo(s)" -ForegroundColor Red
+                continue
+            }
+            if ($arch -eq "any"){
+                $archPackages.Keys | ForEach-Object {
+                    if (-not ($archPackages[$_] -contains $version)){
+                        $missingArchs += $_
+                    }
+                }
+            } else {
+                if (-not ($archPackages[$arch] -contains $version)){
+                    $missingArchs += $arch
+                }
+            } 
+        }
+        $missingArchs = $missingArchs | Sort-Object -Unique
+        if ($missingArchs.Count -gt 0){
+            Write-Host "Package $version not found in online repo(s): $missingArchs`nClosest matches:" -ForegroundColor Red
+            foreach($arch in $missingArchs){
+                $title = "[${arch}] $version not found in OVOS-Arch repo"
+                $body = "The package $version was not found in the OVOS-Arch repo for the $arch architecture. Current versions:" `
+                + ($archPackages[$arch] | Where-Object { $_.StartsWith($pkgname) } | Sort-Object)
+
+                # check if an issue already exists for this version and architecure,
+                # if not create one
+                $issue = gh issue list --search "$title" --json number | ConvertFrom-Json
+                if ($issue.Count -eq 0){
+                    Write-Host "Creating issue for $version on $arch" -ForegroundColor Yellow
+                    gh issue create --title "$title" --body "$body"
+                } else {
+                    Write-Host "Issue already exists for $version on $arch" -ForegroundColor Yellow
+                }
+            }
+        }
+    }
+}
+
 foreach ($pkgbuild in $pkgbuilds) {
     if ($SkipRecentlyModified -and (Get-Item $pkgbuild.FullName).LastWriteTime -gt (Get-Date).AddDays(-1)) {
         Write-Host "Skipping $pkgbuild because it was recently modified" -ForegroundColor Yellow
         continue
     }
+
+    Find-MissingPackageInRepo -PkgDir $pkgbuild.Directory.FullName
 
     Write-Host "Checking $($pkgbuild) for updates" -ForegroundColor Cyan
 
