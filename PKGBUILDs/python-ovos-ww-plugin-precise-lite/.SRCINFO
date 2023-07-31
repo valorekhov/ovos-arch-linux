@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ww-plugin-precise-lite
 	pkgdesc = This adds a plugin for precise-lite
-	pkgver = 0.1.2
-	pkgrel = 00
+	pkgver = 0.1.2a4
+	pkgrel = 02
 	url = https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/
 	arch = any
 	license = Apache License 2.0
