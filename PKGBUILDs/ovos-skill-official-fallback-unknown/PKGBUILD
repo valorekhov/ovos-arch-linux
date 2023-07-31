@@ -4,7 +4,7 @@ pkgname=ovos-skill-official-fallback-unknown
 _name=skill-ovos-fallback-unknown
 _commit='185f029f7777d320fb713e04b11b295c4549e103'
 pkgver=0.0.2
-pkgrel=1
+pkgrel=02
 pkgdesc='Mycroft AI official Unknown Fallback Skill -
 used if no Intent is matched to an Utterance'
 arch=('any')
