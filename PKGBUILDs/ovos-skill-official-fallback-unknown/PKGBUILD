@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-skill-fallback-unknown
 pkgname=ovos-skill-official-fallback-unknown
 _name=skill-ovos-fallback-unknown
-_commit='185f029f7777d320fb713e04b11b295c4549e103'
-pkgver=0.0.2
-pkgrel=02
+_commit='9e0634e87e74ef7e674ae95753bd34601ee42d98'
+pkgver='0.0.3'
+pkgrel=00
 pkgdesc='Mycroft AI official Unknown Fallback Skill -
 used if no Intent is matched to an Utterance'
 arch=('any')
@@ -20,7 +20,7 @@ provides=("$pkgname")
 conflicts+=("$pkgname")
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('42ed1b020014615893c05524a15db73b6e1870c2a42fe1bae30d639a9b849fcb')
+sha256sums=('ba91749856fbd1fbe22b90bafb8823869287a7436ae2bd8e0de685346bacc861')
 
 prepare() {
     cd "$srcdir"
