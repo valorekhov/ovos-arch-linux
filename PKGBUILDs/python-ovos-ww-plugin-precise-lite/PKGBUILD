@@ -19,9 +19,6 @@ depends+=(
 'python-ovos-utils>=0.0.14' # ovos-utils>=0.0.14
 'python-precise-lite-runner>=0.4.1' # precise_lite_runner>=0.4.1,~=0.4
 )
-conflicts+=(
-
-)
 optdepends+=(
 'python-tensorflow' # tensorflow; extra == "full"
 'python-tflite-runtime' # tflite-runtime; extra == "tflite"
