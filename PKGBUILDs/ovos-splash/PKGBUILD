@@ -3,7 +3,7 @@ _gh_proj=ovos-shell
 _psplash=psplash-0a902f7cd875ccf018456451be369f05fa55f962
 pkgname=ovos-splash
 pkgver='1.0'
-pkgrel=0
+pkgrel=1
 pkgdesc='OpenVoiceOS splash screen:
 	  Show OVOS branded splash screens during 
 	  boot/halt process based on psplash.
@@ -39,16 +39,15 @@ license=('GPL-2.0+')
 depends=(systemd)
 makedepends=("autoconf" "automake" "libtool")
 
-source=("http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot/$_psplash.tar.gz" \
-        "ovos-splash-start.service" \
-        "ovos-splash-quit.service" \
-        "ovos-splash-systemd.service" \
-        "psplash-colors.h" \
-        "psplash-config.h" \
-        # TODO: The
-        "psplash-bar.png" \
-        "psplash-hand.png" \
-        "psplash-poky.png" \
+source=("http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot/$_psplash.tar.gz"
+        "ovos-splash-start.service"
+        "ovos-splash-quit.service"
+        "ovos-splash-systemd.service"
+        "psplash-colors.h"
+        "psplash-config.h"
+        "psplash-bar.png"
+        "psplash-hand.png"
+        "psplash-poky.png" 
         )
 sha256sums=('8fc1782873a1d778ab979c79a37cd0eb762ef180fa6ff01806ff08ba3fb334a6'
             '6a8221ef125e47a64755165f275472ae87435437512cbd6f4463ba3dfda443e1'
