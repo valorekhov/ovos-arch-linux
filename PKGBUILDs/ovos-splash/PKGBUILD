@@ -37,7 +37,7 @@ arch=('x86_64' 'aarch64' 'armv7h')
 url='http://yoctoproject.org/'
 license=('GPL-2.0+')
 depends=(systemd)
-makedepends=("autoconf" "automake" "libtool")
+makedepends=("autoconf" "automake" "libtool" "gdk-pixbuf2")
 
 source=("http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot/$_psplash.tar.gz"
         "ovos-splash-start.service"
@@ -108,11 +108,6 @@ package() {
         cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
         chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
     fi
-    
-    # Optional: Remove unused files or directories
-    # For example, removing unneeded binaries, license files, etc.
-    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
-    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
 
     # Search for license files in the original source directory
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
