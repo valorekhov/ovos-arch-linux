@@ -3,8 +3,8 @@ _gh_proj=ovos-ww-plugin-precise-lite
 pkgname=python-ovos-ww-plugin-precise-lite
 _name=ovos-ww-plugin-precise-lite
 _commit='485f1c39cbb9542c9b0885207f33df91313ed565'
-pkgver=0.1.2a4
-pkgrel=02
+pkgver='0.1.2'
+pkgrel=00
 pkgdesc='This adds a plugin for precise-lite'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/'
@@ -18,9 +18,6 @@ depends+=(
 'python-ovos-plugin-manager>=0.0.4' # ovos-plugin-manager>=0.0.4
 'python-ovos-utils>=0.0.14' # ovos-utils>=0.0.14
 'python-precise-lite-runner>=0.4.1' # precise_lite_runner>=0.4.1,~=0.4
-)
-conflicts+=(
-
 )
 optdepends+=(
 'python-tensorflow' # tensorflow; extra == "full"
