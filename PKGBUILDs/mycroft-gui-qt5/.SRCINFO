@@ -23,7 +23,6 @@ pkgbase = mycroft-gui-qt5
 	depends = qt5-base
 	optdepends = qt5-lottie: QT5 animation support
 	optdepends = qt5-webview: webview support
-	optdepends = qt5-webengine: for web scenarios
 	provides = mycroft-gui
 	conflicts = mycroft-gui
 	source = https://github.com/OpenVoiceOS/mycroft-gui-qt5/archive/e3e87b22be62e009ff227a86d6e4731e4ad5a5d8.tar.gz
