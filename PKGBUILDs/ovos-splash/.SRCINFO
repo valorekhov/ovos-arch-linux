@@ -1,7 +1,7 @@
 pkgbase = ovos-splash
 	pkgdesc = OpenVoiceOS splash screen: Show OVOS branded splash screens during boot/halt process based on psplash. PSplash is a userspace graphical boot splash screen for mainly embedded Linux devices supporting a 16bpp or 32bpp framebuffer. It has few dependencies (just libc), supports basic images and text and handles rotation. Its visual look is configurable by basic source changes. Also included is a 'client' command utility for sending information to psplash such as boot progress information. Start the drawing process with 'psplash -n&' as early as possible. Note: psplash creates a FIFO in /tmp for communication with psplash-write. Usage: * Set progress bar to 50 percent: psplash-write "PROGRESS 50" * Display message "foobar" above progress bar: psplash-write "MSG foobar" * Terminate psplash: psplash-write "QUIT" http://git.yoctoproject.org/cgit/cgit.cgi/psplash/
 	pkgver = 1.0
-	pkgrel = 0
+	pkgrel = 1
 	url = http://yoctoproject.org/
 	arch = x86_64
 	arch = aarch64
