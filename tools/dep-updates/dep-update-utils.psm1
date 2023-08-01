@@ -35,25 +35,25 @@ function Compare-PackageVersions {
     #Write-Host  ($version2Parts)
     
     # Compare major version
-    if ($version1Parts[0] -gt $version2Parts[0]) {
+    if ([int]$version1Parts[0] -gt [int]$version2Parts[0]) {
         return 1
     }
-    elseif ($version1Parts[0] -lt $version2Parts[0]) {
+    elseif ([int]$version1Parts[0] -lt [int]$version2Parts[0]) {
         return -1
     }
 
     # Compare minor version
-    if ($version1Parts[1] -gt $version2Parts[1]) {
+    if ([int]$version1Parts[1] -gt [int]$version2Parts[1]) {
         return 1
     }
-    elseif ($version1Parts[1] -lt $version2Parts[1]) {
+    elseif ([int]$version1Parts[1] -lt [int]$version2Parts[1]) {
         return -1
     }
 
-    $version1Patch = $version1Parts[2]
+    $version1Patch = [int]$version1Parts[2]
     $version1PreRelease = $version1Parts[3]
 
-    $version2Patch = $version2Parts[2]
+    $version2Patch = [int]$version2Parts[2]
     $version2PreRelease = $version2Parts[3]
  
     # Compare patch version
