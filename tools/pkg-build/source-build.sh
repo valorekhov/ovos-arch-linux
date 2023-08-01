@@ -1,7 +1,12 @@
 PKG_ARCH=$(grep "arch =" ".SRCINFO" | sed 's/arch = //g')
 
-if ! echo "$PKG_ARCH" | grep -qE "(any|$(uname -m))" ; then
-    echo "##### Skipping build for $(uname -m) as arch is not supported"
+carch=${ARCH:-$(uname -m)}
+echo "##### Building for $carch"
+if [ "$carch" = "armv7l" ] ; then
+    carch="armv7h"
+fi
+if ! echo "$PKG_ARCH" | grep -qE "(any|$carch)" ; then
+    echo "##### Skipping build for $carch as arch is not supported"
     exit 0
 fi
 

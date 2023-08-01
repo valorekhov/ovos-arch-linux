@@ -39,7 +39,6 @@ license=('GPL-2.0+')
 depends=(systemd)
 makedepends=("autoconf" "automake" "libtool")
 
-
 source=("http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot/$_psplash.tar.gz" \
         "ovos-splash-start.service" \
         "ovos-splash-quit.service" \

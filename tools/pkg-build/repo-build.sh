@@ -35,9 +35,14 @@ else
     echo "##### No DB file NOT found: $REPO_DB_FILE"
 fi
 
+carch=${ARCH:-$(uname -m)}
+echo "##### Building for $carch"
+if [ "$carch" = "armv7l" ] ; then
+    carch="armv7h"
+fi
 # if PKG_ARCH array does not contain the current architecture or 'any', skip the build
-if ! echo "$PKG_ARCH" | grep -qE "(any|$(uname -m))" ; then
-    echo "##### Skipping build for $(uname -m) as arch is not supported"
+if ! echo "$PKG_ARCH" | grep -qE "(any|$carch)" ; then
+    echo "##### Skipping build for $carch as arch is not supported"
     exit 0
 fi
 
