@@ -141,20 +141,22 @@ foreach ($pkgbuild in $pkgbuilds) {
 
         Write-Host "Proceeding to open PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green
 
+        $prBranch = "BUMP/$pkgbase-$latestVersion-$commitSha"
         # Commit the changes to PKGBUILD
-        git checkout -b "BUMP/$pkgbase-$latestVersion-$commitSha"
+        git checkout -b $prBranch
         git add "$dir/"
         git commit -m "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.url)`ntag: $($releaseInfo.tagName)`ncommit: $commitSha"
         
-        git push origin --set-upstream "BUMP/$pkgbase-$latestVersion-$commitSha"
+        git push origin --set-upstream $prBranch
 
         Write-Host "Pushed branch 'BUMP/$pkgbase-$latestVersion-$commitSha' to origin" -ForegroundColor Green
 
-        # Create a pull request for the commit
+        # Create a pull request for the commit, and assign review to the maintainer        
         gh pr create --base main `
-            --head "BUMP/$pkgbase-$latestVersion-$commitSha" `
+            --head $prBranch `
             --title "BUMP: $pkgbase to version $latestVersion [$commitSha]" `
-            --body "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.url)`ntag: $($releaseInfo.tagName)`ncommit: $commitSha"
+            --body "BUMP $pkgbase to version $latestVersion`n`n$($updateInfo.url)`ntag: $($releaseInfo.tagName)`ncommit: $commitSha" `
+            --assignee "valorekhov"
 
         Write-Host "Created PR for '$pkgbase' version '$latestVersion' and commit '$commitSha'" -ForegroundColor Green      
     } finally {
