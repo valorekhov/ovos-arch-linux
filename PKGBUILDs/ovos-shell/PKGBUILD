@@ -16,6 +16,7 @@ depends=(mycroft-gui
 kio kio-extras plasma-framework 
 qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base qt5-virtualkeyboard qt5-lottie
 breeze-icons
+
 # possibly needed:
 gst-plugin-va libva libva-utils 
 python-ovos-phal-plugin-alsa
