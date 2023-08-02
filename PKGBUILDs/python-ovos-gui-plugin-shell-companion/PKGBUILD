@@ -30,7 +30,6 @@ depends=('python'
 )
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=('767495e5d7fc02a19b60eb9285616496c2dafdba380137afb79c19d388653e92')
 
