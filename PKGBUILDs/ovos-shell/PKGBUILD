@@ -3,7 +3,7 @@ _gh_proj=ovos-shell
 pkgname=ovos-shell
 _commit='0f3335b0aa3a806b130a6a79299d79c75bc12c0e'
 pkgver=0.0.1
-pkgrel=0
+pkgrel=01
 pkgdesc='OpenVoiceOS Shell on EGLFS:
 	  This is a minimal shell which is intended 
 	  to run on low power hardware either as "single 
@@ -16,20 +16,20 @@ depends=(mycroft-gui
 kio kio-extras plasma-framework 
 qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base qt5-virtualkeyboard qt5-lottie
 breeze-icons
+python-ovos-gui-plugin-shell-companion
 # possibly needed:
 gst-plugin-va libva libva-utils 
 python-ovos-phal-plugin-alsa
 python-ovos-phal-plugin-system
-python-ovos-phal-plugin-configuration-provider
 )
 optdepends=(
-python-ovos-phal-plugin-notification-widgets
+#python-ovos-phal-plugin-notification-widgets
 python-ovos-phal-plugin-network-manager
 python-ovos-phal-plugin-gui-network-client
 python-ovos-phal-plugin-wifi-setup
-python-ovos-phal-plugin-dashboard
-python-ovos-phal-plugin-brightness-control-rpi
-python-ovos-phal-plugin-color-scheme-manager
+#python-ovos-phal-plugin-dashboard
+#python-ovos-phal-plugin-brightness-control-rpi
+#python-ovos-phal-plugin-color-scheme-manager
 )
 makedepends=(pkgconf cmake extra-cmake-modules)
 
@@ -86,4 +86,3 @@ package() {
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
     find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
