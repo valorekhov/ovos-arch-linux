@@ -13,6 +13,7 @@ Import-Module "$PSScriptRoot/../config-parser.psm1"
 # Canonicalized repo root
 $RepoRoot = (Get-Item -Path "$PSScriptRoot/../..").FullName
 $PackageMap = Get-ParsedConfig -Path "$RepoRoot/package-map.txt"
+$PackageIgnore = Get-Content -Path "$RepoRoot/package-ignore.txt"
 
 $pkgbuilds = (Get-ChildItem -Path "$Path/PKGBUILDs/*/PKGBUILD" -Recurse)
 
@@ -63,12 +64,12 @@ function Find-MissingPackageInRepo([System.IO.DirectoryInfo]$pkgDir){
 
                 # check if an issue already exists for this version and architecure,
                 # if not create one
-                $issue = gh issue list --search "$title" --json number | ConvertFrom-Json
+                $issue = gh issue list --search "$title" --state all --json number | ConvertFrom-Json
                 if ($issue.Count -eq 0){
-                    Write-Host "Creating issue for $version on $arch" -ForegroundColor Yellow
+                    Write-Host "Creating issue for $pkgname-$pkgver-$pkgrel on $arch" -ForegroundColor Yellow
                     gh issue create --title "$title" --body "$body"
                 } else {
-                    Write-Host "Issue already exists for $version on $arch" -ForegroundColor Yellow
+                    Write-Host "Issue already exists for $pkgname-$pkgver-$pkgrel on $arch" -ForegroundColor Yellow
                 }
             }
         }
@@ -76,6 +77,11 @@ function Find-MissingPackageInRepo([System.IO.DirectoryInfo]$pkgDir){
 }
 
 foreach ($pkgbuild in $pkgbuilds) {
+    if ($PackageIgnore -contains $pkgbuild.DirectoryName) {
+        Write-Host "Skipping $pkgbuild because it is in the ignore list" -ForegroundColor Yellow
+        continue
+    }
+
     if ($SkipRecentlyModified -and (Get-Item $pkgbuild.FullName).LastWriteTime -gt (Get-Date).AddDays(-1)) {
         Write-Host "Skipping $pkgbuild because it was recently modified" -ForegroundColor Yellow
         continue
