@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-dashboard
-	pkgdesc = OVOS-PHAL Dashboard
+	pkgdesc = DEPRECATED: Replaced by `python-ovos-gui-plugin-shell-companion`. OVOS-PHAL Dashboard.
 	pkgver = 0.0.2a3
-	pkgrel = 1
+	pkgrel = 02
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-dashboard/
 	arch = any
 	license = 

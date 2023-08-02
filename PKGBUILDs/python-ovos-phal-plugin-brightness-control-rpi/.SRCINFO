@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-brightness-control-rpi
-	pkgdesc = OVOS PHAL BRIGHTNESS CONTROL PLUGIN FOR RPI
+	pkgdesc = DEPRECATED: Replaced by `python-ovos-gui-plugin-shell-companion`. OVOS PHAL BRIGHTNESS CONTROL PLUGIN FOR RPI
 	pkgver = 1.0.1
-	pkgrel = 1
+	pkgrel = 02
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-brightness-control-rpi/
 	arch = any
 	license = 
