@@ -63,7 +63,7 @@ jobs:
             done < /tmp/changed_PKGBUILDs.txt
             echo "has_PKGBUILD_changes=true"
             echo "has_PKGBUILD_changes=true" >> $GITHUB_OUTPUT
-            json=$(echo "${pkgbuilds[@]}" | jq -R . | jq --indent 0 -s .) # encode array as json
+            json=$(printf '%s\n' "${pkgbuilds[@]}" | jq -R . | jq -s .) # encode array as json
             echo "pkgbuilds=$json"
             echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
           fi
