@@ -70,8 +70,10 @@ add_to_repo() {
     fi
 }
 
+shopt -s nullglob 
 pkg_files=( *.pkg.tar.zst )
 pkg_files+=( *.pkg.tar.xz )
+shopt -u nullglob 
 if (( ${#pkg_files[@]} )) ; then
     for pkg in $pkg_files; do
         add_to_repo "$REPO_DIR" "$pkg"

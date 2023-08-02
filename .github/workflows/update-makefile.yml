@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - main
+  pull_request_review:
+    types: [submitted]
   pull_request:
-    types:
-      - opened
-      - synchronize
-    branches:
-      - main
+    types: [opened]
 
 
 jobs:
@@ -237,60 +235,28 @@ jobs:
     - name: "Select native ARM packages to build"
       id: select_native_arm_packages
       run: |  
-        archs=("aarch64" "armv7h")
-        printf "{" > /tmp/pkgbuilds.json
-        for arch in "${archs[@]}"
-        do
-          native_pkgbuilds=()
-          original_pkgbuilds=($(echo '${{ needs.check.outputs.pkgbuilds }}' | jq -r '.[]'))
-          echo "original_pkgbuilds='${original_pkgbuilds[@]}'"
-          pushd ".repo/$arch/"
-          pkgfiles=( *-any.pkg.tar.* )
-          if (( ${#pkgfiles[@]} )); then
-            echo "pkgfiles='${pkgfiles[@]}'"
-            for pkg in $pkgfiles ; do
-              echo "pkg=$pkg"
-              pkgname=$(echo $pkg | rev | cut -d'-' -f4- | rev)
-              echo "pkgname=$pkgname"
-              for entry in $original_pkgbuilds ; do
-                echo "entry=$entry, pkgname=$pkgname"
-                if [[ $entry == *"/$pkgname/"* ]]; then
-                  echo "$entry has already been built for ARM, skipping..."
-                else
-                  native_pkgbuilds+=($entry)
-                fi
-              done
-            done
-          else
-            echo "Did not find any package files..."
-          fi
-          popd
-          # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}"
-          # echo "pkgbuilds_$arch=${native_pkgbuilds[@]}" >> $GITHUB_OUTPUT
-          printf "\"$arch\":" >> /tmp/pkgbuilds.json
-          jq -j --compact-output --null-input '$ARGS.positional' --args -- "${native_pkgbuilds[@]}" | tr -d '\n' >> /tmp/pkgbuilds.json
-          printf "," >> /tmp/pkgbuilds.json
-        done
-        printf "\"_foo\":[]}" >> /tmp/pkgbuilds.json
-        json=$(cat /tmp/pkgbuilds.json)
-        echo "pkgbuilds=$json"
-        echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
+        $original_pkgbuilds = '${{ needs.check.outputs.pkgbuilds }}' | ConvertFrom-Json
+        Write-Host "original_pkgbuilds='$original_pkgbuilds'"
 
-    - name: "Select ARM matrix archs" 
-      id: select_arm_matrix_archs
-      run: |
-        [array]$arr=Get-Content -Path /tmp/pkgbuilds.json -Raw | ConvertFrom-Json | ForEach-Object {
-           $_.psobject.Properties | Where-Object { -not $_.Name.StartsWith('_') -and $_.Value.Count -gt 0 } | %{ $_.Name }
-        }
-        Write-Host $arr
-        $json = ConvertTo-Json $arr -Compress
+        $pkgbuildsDict = ./tools/dep-updates/select-native-packages-to-build.ps1 -pkgbuilds $original_pkgbuilds -packageRepoDir ./.repo -nativeArchitectures @("aarch64", "armv7h")
+        
+        # Convert the hashtable to JSON format
+        $json = $pkgbuildsDict | ConvertTo-Json
+
+        # Output the final JSON containing all architecture package builds
+        Write-Host "pkgbuilds=$json"
+        Write-Host "pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+        $archsToBuild = $pkgbuildsDict.Keys | Where-Object { $pkgbuildsDict["$_"].Count -gt 0 }
+
+        $json = ConvertTo-Json $archsToBuild -Compress
         Write-Host "archs=$json"
         "archs=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       shell: pwsh
 
     outputs:
       pkgbuilds: ${{ steps.select_native_arm_packages.outputs.pkgbuilds }}
-      matrix_arm_archs: ${{ steps.select_arm_matrix_archs.outputs.archs }}
+      matrix_arm_archs: ${{ steps.select_native_arm_packages.outputs.archs }}
 
   package-build-arm:
     needs: 

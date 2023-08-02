@@ -10,6 +10,7 @@ pkgbase = ovos-splash
 	makedepends = autoconf
 	makedepends = automake
 	makedepends = libtool
+	makedepends = gdk-pixbuf2
 	depends = systemd
 	source = http://git.yoctoproject.org/cgit/cgit.cgi/psplash/snapshot/psplash-0a902f7cd875ccf018456451be369f05fa55f962.tar.gz
 	source = ovos-splash-start.service

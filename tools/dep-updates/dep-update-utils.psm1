@@ -227,6 +227,9 @@ $($newDeps.comments)
 
 function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
     $pkgbuild = $versionInfo.pkgbuild
+    $pkgDir = (Get-Item $pkgbuild).Directory.FullName
+    $srcInfo = Join-Path $pkgDir ".SRCINFO"
+
     Write-Host "Updating '$pkgbuild' from '$($versionInfo.pkgver)' to '$($releaseInfo.version)'" -ForegroundColor Green
 
     Set-PkgbuildVersion $pkgbuild $releaseInfo.version $releaseInfo.commit
@@ -241,6 +244,9 @@ function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
         Invoke-WebRequest -Uri $sourceUrl -OutFile "$tmpPath/$($versionInfo.pkgbase).tar.gz" -MaximumRedirection 10
     }
 
+    # Limited .SRCINFO updates. To perform a full update, `makepkg --printsrcinfo > .SRCINFO` is needed
+    ((Get-Content $srcInfo -Raw) -replace "pkgver = $($releaseInfo.version)") -replace "pkgrel = 00" | Set-Content $srcInfo
+
     if (Test-Path "$tmpPath/$($versionInfo.pkgbase).tar.gz" -PathType Leaf){
         tar -xzf "$tmpPath/$($versionInfo.pkgbase).tar.gz" -C $tmpPath --strip-components=1
         
@@ -248,6 +254,7 @@ function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
         $oldSha256 = bash -c "source `"$pkgbuild`"; echo `$sha256sums" | Select-Object -First 1
         Write-Host "Replacing sha256sum '$oldSha256' with '$newSha256'" 
         sed -i "s/$oldSha256/$newSha256/" "$pkgbuild"
+        sed -i "s/$oldSha256/$newSha256/" "$srcInfo"
     }
     
     if ((Test-Path "$tmpPath/setup.py") -or (Test-Path "$tmpPath/pyproject.toml")) {
