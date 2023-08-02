@@ -9,7 +9,7 @@ pkgrel=3
 pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core. Dinkum flavor'
 arch=('any')
 url="https://github.com/$_gh_org/$_gh_proj/"
-license=('Apache')
+license=('Apache License 2.0')
 depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'ovos-microphone-plugin' \
 'python-ovos-backend-client>=0.0.6' \
@@ -100,22 +100,3 @@ package() {
     mkdir -p "$pkgdir/etc/systemd/system/$_unit_name.d/"
     install -Dm644 "$srcdir/ovos-systemd_dinkum_listener_messagebus.py" "$pkgdir/etc/systemd/system/$_unit_name.d/"
 }
-
-
-################################################################################
-# #
-# # python-ovos-listener
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_LISTENER_VERSION = 2d6ba2b6dbfae1c48c1833079d4aa94fa5cf6af5
-# PYTHON_OVOS_LISTENER_SITE = $(call github,OpenVoiceOS,ovos-listener,$(PYTHON_OVOS_LISTENER_VERSION))
-# PYTHON_OVOS_LISTENER_SETUP_TYPE = setuptools
-# PYTHON_OVOS_LISTENER_LICENSE_FILES = LICENSE
-# PYTHON_OVOS_LISTENER_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
-
