@@ -53,7 +53,7 @@ if [ "$REPO_ARCH" != "x86_64" ] && [ $(echo "$PKG_NAMES" | wc -w) -eq 1 ] && [ -
     cp "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{zst,xz}" "$REPO_DIR/"
     cp "$REPO_DIR/../x86_64/$PKG_NAMES-$PKGVER-$PKGREL.any.pkg.tar.{xst,xz}.sig" "$REPO_DIR/" || true
 else
-    MAKEFLAGS="-j$(nproc)" PACMAN="$LOCAL_PACMAN" makepkg --syncdeps --noconfirm --force || exit 13
+    MAKEFLAGS="-j$(nproc)" PACMAN="$LOCAL_PACMAN" makepkg --syncdeps --install --noconfirm --force || exit 13
 fi
 
 add_to_repo() {
