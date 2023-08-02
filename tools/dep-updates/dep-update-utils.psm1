@@ -9,14 +9,22 @@ function Get-VersionParts {
     )
 
     $versionParts = $Version.Split('.')
-    $versionParts += '', ''  # Ensure at least 4 parts
+    $partCount = $versionParts.Count
 
-    $patchVersionRegex = '(\d+)([A-Za-z]?)(\d*)'
-    $versionParts[2] -match $patchVersionRegex | Out-Null
-    $patchVersion = $Matches[1]
-    $preReleaseSuffix = $Matches[2] + $Matches[3]
+    if ($partCount -eq 3) {
+        # Semver in the 1.2.3 format, possibly with python-style pre-release suffix a la 1.2.3a4
+        $patchVersionRegex = '(\d+)([A-Za-z]?)(\d*)'
+        if ($versionParts[2] -match $patchVersionRegex | Out-Null){
+            return $versionParts[0], $versionParts[1], $Matches[1], $Matches[2] + $Matches[3]
+        }
+        return $versionParts[0], $versionParts[1], $versionParts[2], '0'
+    } elseif ($partCount -eq 2) {
+        return $versionParts[0], $versionParts[1], '0', '0'
+    } elseif ($partCount -eq 1) {
+        return $versionParts[0], '0', '0', '0'
+    }
 
-    $versionParts[0..1] + @(,$patchVersion, $preReleaseSuffix) + $versionParts[3]
+    return $versionParts
 }
 
 function Compare-PackageVersions {
