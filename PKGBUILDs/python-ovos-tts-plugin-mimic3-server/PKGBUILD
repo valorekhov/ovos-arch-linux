@@ -1,6 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-tts-plugin-mimic3-server
 pkgname=python-ovos-tts-plugin-mimic3-server
+groups=(ovos-tts-plugins)
+provides=(ovos-tts-plugin)
 _name=ovos-tts-plugin-mimic3-server
 _commit='80a715012de08c844ef81f4443961322ed86da05'
 pkgver='0.0.1'

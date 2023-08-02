@@ -1,6 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-ww-plugin-vosk
 pkgname=python-ovos-ww-plugin-vosk
+groups=('ovos-ww-plugins')
+provides=('ovos-ww-plugin')
 _name=ovos-ww-plugin-vosk
 _base_ver='b106d28230443e31ce4d7dc4d3e579a69d3720cc'
 pkgver=0.1.2

@@ -1,6 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-stt-plugin-server
 pkgname=python-ovos-stt-plugin-server
+groups=(ovos-stt-plugins)
+provides=(ovos-stt-plugin)
 _name=ovos-stt-plugin-server
 _base_ver='8f440da949ced2f823383b87acb7c7e502cdb7ff'
 pkgver=0.0.4

@@ -1,6 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-tts-server-plugin
 pkgname=python-ovos-tts-server-plugin
+groups=(ovos-tts-plugins)
+provides=(ovos-tts-plugin)
 _name=ovos-tts-server-plugin
 _base_ver='17e8664cfad5c236bb1f6dd2a07c0604fe41d4a0'
 pkgver=0.0.2a1

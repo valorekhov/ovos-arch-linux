@@ -2,3 +2,6 @@ pip:PyYAML=python-yaml
 pip:ovos-local-backend=python-ovos-personal-backend
 pip:ovos-plugin-common-play=python-ovos-ocp-audio-plugin
 python-ovos-plugin-common-play=python-ovos-ocp-audio-plugin
+ovos-ww-plugin=python-ovos-ww-plugin-precise-lite
+ovos-stt-plugin=python-ovos-stt-plugin-server
+ovos-tts-plugin=python-ovos-tts-server-plugin
