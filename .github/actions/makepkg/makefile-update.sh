@@ -8,17 +8,22 @@ ensure_srcinfo() {
     local force_rebuild="${2:-${INPUT_REBUILDALL:-"0"}}"
     local src_info_path="${pkg_build%/*}/.SRCINFO"
 
-    src_info_last_write=$(stat -c %Y "$src_info_path")
+    if [ -f "$src_info_path" ]; then 
+        src_info_last_write=$(stat -c %Y "$src_info_path")
+    else
+        echo "$src_info_path does not exist, forcing rebuild"
+        force_rebuild=1
+    fi
     pkg_last_write=$(stat -c %Y "$pkg_build")
 
     if  [ $force_rebuild = 1 ]; then
         echo "Forcing rebuild of $pkg_build"
     fi
     
-    if [ "$pkg_last_write" -gt "$src_info_last_write" ] || [ "$force_rebuild" = 1 ]; then
+    if [ "$force_rebuild" = 1 ] || [ "$pkg_last_write" -gt "$src_info_last_write" ]; then
         pushd "${pkg_build%/*}" > /dev/null
         echo "Generating SRCINFO for ${pkg_build%/*}"
-        makepkg --printsrcinfo > "$src_info_path" 
+        makepkg --printsrcinfo > .SRCINFO 
         popd > /dev/null
     fi
 }
