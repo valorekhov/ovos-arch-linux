@@ -241,7 +241,7 @@ jobs:
         $pkgbuildsDict = ./tools/dep-updates/select-native-packages-to-build.ps1 -pkgbuilds $original_pkgbuilds -packageRepoDir ./.repo -nativeArchitectures @("aarch64", "armv7h")
         
         # Convert the hashtable to JSON format
-        $json = $pkgbuildsDict | ConvertTo-Json
+        $json = $pkgbuildsDict | ConvertTo-Json -Compress
 
         # Output the final JSON containing all architecture package builds
         Write-Host "pkgbuilds=$json"
