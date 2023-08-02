@@ -13,9 +13,9 @@ function Get-VersionParts {
 
     if ($partCount -eq 3) {
         # Semver in the 1.2.3 format, possibly with python-style pre-release suffix a la 1.2.3a4
-        $patchVersionRegex = '(\d+)([A-Za-z]?)(\d*)'
-        if ($versionParts[2] -match $patchVersionRegex | Out-Null){
-            return $versionParts[0], $versionParts[1], $Matches[1], $Matches[2] + $Matches[3]
+        $patchVersionRegex = '(\d+)([A-Za-z]*\d*)'
+        if ($versionParts[2] -match $patchVersionRegex){
+            return $versionParts[0], $versionParts[1], $Matches[1], $Matches[2]
         }
         return $versionParts[0], $versionParts[1], $versionParts[2], '0'
     } elseif ($partCount -eq 2) {
