@@ -9,8 +9,8 @@ _commit='d765138ecefc2004204d6a3fd817d30f8ccca1d8'
 # which creates an endless rebuild loop in this repo.
 # we therefore go to the current dev version of 0.1.3
 # Remove this notice when the upstream repo is fixed and the dust settles.
-pkgver='0.1.3a0'
-pkgrel=00
+pkgver='0.1.3'
+pkgrel=02
 pkgdesc='This adds a plugin for precise-lite'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/'
