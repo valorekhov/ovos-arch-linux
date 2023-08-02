@@ -245,7 +245,7 @@ jobs:
 
         # Output the final JSON containing all architecture package builds
         Write-Host "pkgbuilds=$json"
-        Write-Host "pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+        "pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
         $archsToBuild = $pkgbuildsDict.Keys | Where-Object { $pkgbuildsDict["$_"].Count -gt 0 }
 
