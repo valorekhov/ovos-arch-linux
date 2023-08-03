@@ -4,6 +4,7 @@ pkgbase = python-ovos-stt-plugin-chromium
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-chromium/
 	arch = any
+	groups = ovos-stt-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -13,6 +14,7 @@ pkgbase = python-ovos-stt-plugin-chromium
 	depends = python-ovos-utils>=0.0.8a3
 	depends = python-ovos-plugin-manager>=0.0.1a7
 	depends = python-requests
+	provides = ovos-stt-plugin
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-chromium/archive/f2ae0d54b962ddb3ee33f8178c367f1d4d8e6118.tar.gz
 	sha256sums = 4e2fe50d1f1b1dfdb0fdaa18c5ce3ee03346f8a4697706b13300cb4d064961d1
 

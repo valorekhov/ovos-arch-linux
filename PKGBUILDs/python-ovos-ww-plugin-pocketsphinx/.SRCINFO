@@ -4,6 +4,7 @@ pkgbase = python-ovos-ww-plugin-pocketsphinx
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-ww-plugin-pocketsphinx/
 	arch = any
+	groups = ovos-ww-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -14,6 +15,7 @@ pkgbase = python-ovos-ww-plugin-pocketsphinx
 	depends = python-phoneme-guesser
 	depends = python-pocketsphinx
 	depends = python-speechrecognition>=3.8.1
+	provides = ovos-ww-plugin
 	source = https://github.com/OpenVoiceOS/ovos-ww-plugin-pocketsphinx/archive/06183f4cf51e94cf0fd76cdb3f134789d787330a.tar.gz
 	sha256sums = 59f71a0def4dbcc176e874f2a375f8c55b5bcb690c37b1325463a844e42ef1e1
 

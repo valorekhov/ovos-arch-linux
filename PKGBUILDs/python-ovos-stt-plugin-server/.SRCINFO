@@ -4,6 +4,7 @@ pkgbase = python-ovos-stt-plugin-server
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-server/
 	arch = any
+	groups = ovos-stt-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -11,6 +12,7 @@ pkgbase = python-ovos-stt-plugin-server
 	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.5
+	provides = ovos-stt-plugin
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-server/archive/8f440da949ced2f823383b87acb7c7e502cdb7ff.tar.gz
 	sha256sums = e722f87a3e1b5c7ae89d690f9e924122fdaedb6aa4bf1e7470ce64b756ed33d0
 
