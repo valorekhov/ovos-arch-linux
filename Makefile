@@ -108,7 +108,7 @@ ovos-precise-lite-models:  PKGBUILDs/ovos-precise-lite-models/*.pkg.tar.zst
 
 ovos-service-base:  PKGBUILDs/ovos-service-base/*.pkg.tar.zst
 
-ovos-shell: mycroft-gui-qt5 python-ovos-phal-plugin-alsa python-ovos-phal-plugin-system python-ovos-phal-plugin-configuration-provider PKGBUILDs/ovos-shell/*.pkg.tar.zst
+ovos-shell: mycroft-gui-qt5 python-ovos-gui-plugin-shell-companion python-ovos-phal-plugin-alsa python-ovos-phal-plugin-system PKGBUILDs/ovos-shell/*.pkg.tar.zst
 
 ovos-shell-standalone: ovos-service-base ovos-shell PKGBUILDs/ovos-shell-standalone/*.pkg.tar.zst
 
@@ -223,6 +223,8 @@ python-ovos-core: ovos-service-base python-ovos-messagebus python-sdnotify pytho
 python-ovos-dinkum-listener: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-microphone-plugin-alsa python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-utils python-ovos-vad-plugin-webrtcvad python-speechrecognition PKGBUILDs/python-ovos-dinkum-listener/*.pkg.tar.zst
 
 python-ovos-gui: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-utils PKGBUILDs/python-ovos-gui/*.pkg.tar.zst
+
+python-ovos-gui-plugin-shell-companion: python-ovos-plugin-manager python-ovos-utils python-ovos-bus-client PKGBUILDs/python-ovos-gui-plugin-shell-companion/*.pkg.tar.zst
 
 python-ovos-lingua-franca: python-quebra-frases PKGBUILDs/python-ovos-lingua-franca/*.pkg.tar.zst
 

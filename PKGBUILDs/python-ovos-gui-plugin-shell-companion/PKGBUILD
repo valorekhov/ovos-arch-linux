@@ -1,0 +1,72 @@
+_gh_org=OpenVoiceOS
+_gh_proj=ovos-gui-plugin-shell-companion
+pkgname=python-ovos-gui-plugin-shell-companion
+replaces=(
+python-ovos-phal-plugin-dashboard
+python-ovos-phal-plugin-configuration-provider
+python-ovos-phal-plugin-notification-widgets
+python-ovos-phal-plugin-brightness-control-rpi
+python-ovos-phal-plugin-color-scheme-manager
+)
+conflicts=(python-ovos-phal-plugin-configuration-provider)
+_name=ovos-gui-plugin-shell-companion
+_unit_name="ovos-gui-messagebus"
+_commit='f703fbad650d314a9fb1457a3548cd6b715d7491'
+pkgver='0.0.0'
+pkgrel=00
+pkgdesc='Provides various bus APIs that integrate with ovos-shell:
+- color scheme manager
+- notifications widgets
+- configuration provider  (settings UI)
+- brightness control  (night mode etc)'
+arch=('any')
+url='https://github.com/OpenVoiceOS/ovos-gui-plugin-shell-companion/'
+license=('Apache License 2.0')
+depends=('python' 
+"python-ovos-plugin-manager>=0.0.23"
+"python-ovos-utils>=0.0.34"
+"python-ovos-bus-client>=0.0.3"
+"python-astral>=3.0"
+)
+makedepends=(python-build python-installer python-wheel python-setuptools)
+
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('767495e5d7fc02a19b60eb9285616496c2dafdba380137afb79c19d388653e92')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}

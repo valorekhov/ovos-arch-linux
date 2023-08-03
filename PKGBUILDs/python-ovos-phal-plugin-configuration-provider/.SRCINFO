@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-configuration-provider
-	pkgdesc = PHAL plugin to provide configuration in displayable GUI format
+	pkgdesc = DEPRECATED: Replaced by `python-ovos-gui-plugin-shell-companion`. PHAL plugin to provide configuration in displayable GUI format
 	pkgver = 1.0.1a1
-	pkgrel = 1
+	pkgrel = 02
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-configuration-provider/
 	arch = any
 	license = 
