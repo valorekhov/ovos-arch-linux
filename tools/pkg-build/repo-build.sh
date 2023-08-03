@@ -12,27 +12,36 @@ PKG_NAMES=$(grep "pkgname =" ".SRCINFO" | sed 's/pkgname = //g')
 PKG_ARCH=$(grep "arch =" ".SRCINFO" | sed 's/arch = //g')
 PKG_BASE=$(grep "pkgbase =" ".SRCINFO" | sed 's/pkgbase = //g')
 
-echo "$PKG_NAMES"
-
+echo "Package name(s): $PKG_NAMES"
+local do_build=0
 if test -f "$REPO_DB_FILE" ; then
     for PKGNAME in $PKG_NAMES; do
         echo "##### Checking if $PKGNAME-$PKGVER-$PKGREL is already stored in local or online repos"
         if [ "$SKIP_LOCAL_PKG_CHECK" != 1 ] && tar -tf "$REPO_DB_FILE" | grep -m1 -qF "$PKGNAME-$PKGVER-$PKGREL" ; then
             echo " ...... $PKGNAME-$PKGVER-$PKGREL exists in the DB"
-            exit 0
         else
             # Now, if $ONLINE_REPO_URI is defined, let's using pacman if the exact version of the package is already in the online repo
             # This is mostly needed to speed up CI builds where we only need to re-buidl the specific package targets that have changed
             # In this case, target dependencies will be pulled from the online repo, while the target will be built locally
             if [ -n "$ONLINE_REPO_URI" ] ; then
                 echo " ...... Checking if $PKGNAME-$PKGVER-$PKGREL is in the online repo: $ONLINE_REPO_URI"
-                "$LOCAL_PACMAN" -Sl "$REPO_NAME" | grep -m1 -qF "$PKGNAME $PKGVER-$PKGREL" && echo " ...... and it is found. Skipping build" && exit 0
+                if "$LOCAL_PACMAN" -Sl "$REPO_NAME" | grep -m1 -qF "$PKGNAME $PKGVER-$PKGREL"; then
+                    echo " ...... and it is found. Skipping build"
+                else 
+                    do_build=1
+                fi
             fi
             echo " ...... $PKGNAME-$PKGVER-$PKGREL is not found. Will rebuild the entire (split) package."
+            do_build=1
         fi
     done
 else
     echo "##### No DB file NOT found: $REPO_DB_FILE"
+fi
+
+if [ "$do_build" = 0 ] ; then
+    echo "##### Skipping build as the entire package base $PKGNAME-$PKGVER-$PKGREL is already in the repo"
+    exit 0
 fi
 
 carch=${ARCH:-$(uname -m)}

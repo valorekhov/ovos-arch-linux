@@ -14,16 +14,6 @@ makedepends=(gcc make pkg-config automake libtool)
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=('c17b8d56c928df97d6ae0f3a4b1e4f6b60d939d25718fed43d29ec0f82f36d59')
 
-# prepare() {
-#     cd "$srcdir"
-#     for patch in "../"*.patch; do
-#         if [ -f "$patch" ]; then
-#           echo "Applying patch $patch"
-#           patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_gh_proj}-${_commit}"
-#         fi
-#     done
-# }
-
 build() {
     cd "$srcdir/$_gh_proj-$_commit"
     ./autogen.sh
