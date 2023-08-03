@@ -74,8 +74,9 @@ shopt -s nullglob
 pkg_files=( *.pkg.tar.zst )
 pkg_files+=( *.pkg.tar.xz )
 shopt -u nullglob 
+echo "##### Found ${#pkg_files[@]} packages to add to the repo"
 if (( ${#pkg_files[@]} )) ; then
-    for pkg in $pkg_files; do
+    for pkg in "${pkg_files[@]}"; do
         add_to_repo "$REPO_DIR" "$pkg"
         # If we are building on/for x86_64, and the package is 'any', and if $REPO_DIR../{$ARM_ARCHS} exists, 
         # Distribute the new 'any' arcihtecture package to hose ARM repos as well so as to speed up CI builds.
