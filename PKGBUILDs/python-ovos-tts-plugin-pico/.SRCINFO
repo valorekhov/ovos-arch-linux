@@ -4,6 +4,7 @@ pkgbase = python-ovos-tts-plugin-pico
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-tts-plugin-pico/
 	arch = any
+	groups = ovos-tts-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -11,6 +12,7 @@ pkgbase = python-ovos-tts-plugin-pico
 	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.1a12
+	provides = ovos-tts-plugin
 	source = https://github.com/OpenVoiceOS/ovos-tts-plugin-pico/archive/2b1c96256751c6a1d6db4e88e471de02b38bcf62.tar.gz
 	sha256sums = 631416002c78f3477f10781a02940a723b512a96ac7b7aea5a31af7ffb9704fa
 

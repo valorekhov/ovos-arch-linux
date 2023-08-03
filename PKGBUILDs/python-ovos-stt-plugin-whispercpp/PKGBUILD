@@ -1,6 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-stt-plugin-whispercpp
 pkgname=python-ovos-stt-plugin-whispercpp
+groups=(ovos-stt-plugins)
+provides=(ovos-stt-plugin)
 _name=ovos-stt-plugin-whispercpp
 _base_ver='2eac10f51d6cc80c5d75894babbdc4f902d6273f'
 pkgver=0.0.0a6

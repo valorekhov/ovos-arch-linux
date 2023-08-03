@@ -4,6 +4,7 @@ pkgbase = python-ovos-stt-plugin-selene
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-selene/
 	arch = any
+	groups = ovos-stt-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -14,6 +15,7 @@ pkgbase = python-ovos-stt-plugin-selene
 	depends = python-ovos-backend-client
 	depends = python-ovos-plugin-manager
 	depends = python-requests
+	provides = ovos-stt-plugin
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-selene/archive/549f8583e706c44234257fcc39fa0f454c1e37b3.tar.gz
 	sha256sums = 05da48377aa4fcc752260a16af17cc7a467f7d1dac4e1e910d1bb6f70731d992
 

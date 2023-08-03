@@ -12,14 +12,15 @@ pkgbase = python-ovos-dinkum-listener
 	depends = ovos-core
 	depends = ovos-service-base
 	depends = ovos-messagebus-server
+	depends = ovos-ww-plugin
+	depends = ovos-stt-plugin
+	depends = ovos-microphone-plugin
 	depends = python
 	depends = python-sdnotify
-	depends = ovos-microphone-plugin
 	depends = python-ovos-backend-client>=0.0.6
 	depends = python-ovos-bus-client>=0.0.3a16
 	depends = python-ovos-config>=0.0.10
 	depends = python-ovos-plugin-manager>=0.0.23a5
-	depends = python-ovos-stt-plugin-server>=0.0.2
 	depends = python-ovos-utils>=0.0.33a8
 	depends = python-ovos-vad-plugin-webrtcvad
 	depends = python-speechrecognition>=3.9

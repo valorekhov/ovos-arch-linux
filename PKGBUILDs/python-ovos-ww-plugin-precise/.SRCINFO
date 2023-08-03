@@ -4,6 +4,7 @@ pkgbase = python-ovos-ww-plugin-precise
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-ww-plugin-precise/
 	arch = any
+	groups = ovos-ww-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -14,6 +15,7 @@ pkgbase = python-ovos-ww-plugin-precise
 	depends = python-ovos-utils>=0.0.14
 	depends = python-petact>=0.1.2
 	depends = python-precise-runner>=0.2.1
+	provides = ovos-ww-plugin
 	source = https://github.com/OpenVoiceOS/ovos-ww-plugin-precise/archive/4f6d460a146a02e33795d401c6de1a83701d762f.tar.gz
 	sha256sums = f37dde090d95af8034555fda266cbd80f30b533f0fbf3f52d512724cca9a0266
 

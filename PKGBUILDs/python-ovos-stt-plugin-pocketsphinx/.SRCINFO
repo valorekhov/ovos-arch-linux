@@ -4,6 +4,7 @@ pkgbase = python-ovos-stt-plugin-pocketsphinx
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-pocketsphinx/
 	arch = any
+	groups = ovos-stt-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -13,6 +14,7 @@ pkgbase = python-ovos-stt-plugin-pocketsphinx
 	depends = python-ovos-plugin-manager>=0.0.1a7
 	depends = python-pocketsphinx>=0.1.3
 	depends = python-speechrecognition>=3.8.1
+	provides = ovos-stt-plugin
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-pocketsphinx/archive/c11b940f64af87f95012605e65dfec9722c6afdd.tar.gz
 	sha256sums = c85dda8c969684ccb2192533ba5fb52ac05b58ef45c62d4294ef90dabdf53edf
 

@@ -5,11 +5,17 @@ pkgdesc='Base/Abstract package providing assets & functionality common to all en
 arch=('any')
 url='https://github.com/OpenVoiceOS/'
 license=('Apache License 2.0')
-depends=(ovos-core ovos-shell-standalone python-ovos-messagebus ovos-listener-messagebus
+depends=(ovos-core ovos-shell-standalone python-ovos-messagebus #ovos-listener-messagebus
 ovos-gui-messagebus ovos-phal-messagebus ovos-admin-phal-messagebus ovos-audio-messagebus 
 ovos-skills-messagebus
-python-ovos-tts-plugin-mimic
-python-ovos-tts-plugin-mimic3-server
+# Listener loop:
+python-ovos-dinkum-listener 
+ovos-ww-plugin
+# STT 
+ovos-stt-plugin 
+# TTS
+ovos-tts-plugin
+# Skills
 ovos-skill-official-homescreen
 ovos-skill-official-naptime
 ovos-skill-official-date-time

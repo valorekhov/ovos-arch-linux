@@ -10,18 +10,18 @@ pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD a
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-listener/'
 license=('')
-depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
+depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'ovos-stt-plugin' 'ovos-ww-plugin' 'python' 'python-sdnotify' \
 'python-ovos-backend-client>=0.0.7a2' #>=0.0.7a2,~=0.0 \
 'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
 'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
 'python-ovos-plugin-manager>=0.0.23a5' #>=0.0.23a5,~=0.0 \
-'python-ovos-stt-plugin-server>=0.0.2' #>=0.0.2,~=0.0 \
-'python-ovos-stt-plugin-vosk' \
+#'python-ovos-stt-plugin-server>=0.0.2' #>=0.0.2,~=0.0 \
+#'python-ovos-stt-plugin-vosk' \
 'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
 'python-ovos-vad-plugin-webrtcvad' \
-'python-ovos-ww-plugin-pocketsphinx>=0.1.3' #>=0.1.3,~=0.1 \
-'python-ovos-ww-plugin-precise-lite>=0.1.2a3' #>=0.1.2a3,~=0.1 \
-'python-ovos-ww-plugin-vosk' \
+#'python-ovos-ww-plugin-pocketsphinx>=0.1.3' #>=0.1.3,~=0.1 \
+#'python-ovos-ww-plugin-precise-lite>=0.1.2a3' #>=0.1.2a3,~=0.1 \
+#'python-ovos-ww-plugin-vosk' \
 'python-pyaudio' \
 'python-speechrecognition>=3.8.1' \
 )

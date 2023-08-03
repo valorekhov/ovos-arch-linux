@@ -1,6 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-stt-plugin-chromium
 pkgname=python-ovos-stt-plugin-chromium
+groups=(ovos-stt-plugins)
+provides=(ovos-stt-plugin)
 _name=ovos-stt-plugin-chromium
 _base_ver='f2ae0d54b962ddb3ee33f8178c367f1d4d8e6118'
 pkgver=0.1.1

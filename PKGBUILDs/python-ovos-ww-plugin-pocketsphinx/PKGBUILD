@@ -1,6 +1,8 @@
 _gh_org=OpenVoiceOS
 _gh_proj=ovos-ww-plugin-pocketsphinx
 pkgname=python-ovos-ww-plugin-pocketsphinx
+groups=('ovos-ww-plugins')
+provides=('ovos-ww-plugin')
 _name=ovos-ww-plugin-pocketsphinx
 _base_ver='06183f4cf51e94cf0fd76cdb3f134789d787330a'
 pkgver=0.1.4

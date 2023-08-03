@@ -4,6 +4,7 @@ pkgbase = python-ovos-tts-server-plugin
 	pkgrel = 1
 	url = https://github.com/OpenVoiceOS/ovos-tts-server-plugin/
 	arch = any
+	groups = ovos-tts-plugins
 	license = 
 	makedepends = python-build
 	makedepends = python-installer
@@ -11,6 +12,7 @@ pkgbase = python-ovos-tts-server-plugin
 	makedepends = python-setuptools
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.5
+	provides = ovos-tts-plugin
 	source = https://github.com/OpenVoiceOS/ovos-tts-server-plugin/archive/17e8664cfad5c236bb1f6dd2a07c0604fe41d4a0.tar.gz
 	sha256sums = fbd4db779e3b1ee713fbb2d1897fc0c9bfcd9ec6b1cf5eff634d0e07e052c797
 

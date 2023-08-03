@@ -2,6 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ww-plugin-precise-lite
 pkgname=python-ovos-ww-plugin-precise-lite
 _name=ovos-ww-plugin-precise-lite
+groups=('ovos-ww-plugins')
+provides=('ovos-ww-plugin')
 _commit='d765138ecefc2004204d6a3fd817d30f8ccca1d8'
 # the upstream repo has a mismatch between the release tag (0.1.2) in the commit hash (485f1c39cbb9542c9b0885207f33df91313ed565)
 # and the version file declaring an alpha version (0.1.2a4) 
