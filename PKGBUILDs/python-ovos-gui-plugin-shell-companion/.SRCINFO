@@ -1,0 +1,26 @@
+pkgbase = python-ovos-gui-plugin-shell-companion
+	pkgdesc = Provides various bus APIs that integrate with ovos-shell: - color scheme manager - notifications widgets - configuration provider (settings UI) - brightness control (night mode etc)
+	pkgver = 0.0.0
+	pkgrel = 00
+	url = https://github.com/OpenVoiceOS/ovos-gui-plugin-shell-companion/
+	arch = any
+	license = Apache License 2.0
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	makedepends = python-setuptools
+	depends = python
+	depends = python-ovos-plugin-manager>=0.0.23
+	depends = python-ovos-utils>=0.0.34
+	depends = python-ovos-bus-client>=0.0.3
+	depends = python-astral>=3.0
+	conflicts = python-ovos-phal-plugin-configuration-provider
+	replaces = python-ovos-phal-plugin-dashboard
+	replaces = python-ovos-phal-plugin-configuration-provider
+	replaces = python-ovos-phal-plugin-notification-widgets
+	replaces = python-ovos-phal-plugin-brightness-control-rpi
+	replaces = python-ovos-phal-plugin-color-scheme-manager
+	source = https://github.com/OpenVoiceOS/ovos-gui-plugin-shell-companion/archive/f703fbad650d314a9fb1457a3548cd6b715d7491.tar.gz
+	sha256sums = 767495e5d7fc02a19b60eb9285616496c2dafdba380137afb79c19d388653e92
+
+pkgname = python-ovos-gui-plugin-shell-companion
