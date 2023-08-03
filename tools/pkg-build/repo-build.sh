@@ -13,7 +13,7 @@ PKG_ARCH=$(grep "arch =" ".SRCINFO" | sed 's/arch = //g')
 PKG_BASE=$(grep "pkgbase =" ".SRCINFO" | sed 's/pkgbase = //g')
 
 echo "Package name(s): $PKG_NAMES"
-local do_build=0
+do_build=0
 if test -f "$REPO_DB_FILE" ; then
     for PKGNAME in $PKG_NAMES; do
         echo "##### Checking if $PKGNAME-$PKGVER-$PKGREL is already stored in local or online repos"
