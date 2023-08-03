@@ -2,7 +2,7 @@
 
 > Fleeting pre-built image delight, eternal OVOS Arch insight.
 
-This repository contains the Arch Linux packages required to run OpenVoiceOS on Arch Linux. Supported architectures are x86_64 and AArch64.
+This repository contains the Arch Linux packages required to run OpenVoiceOS on Arch Linux. Supported architectures are x86_64, aarch64 and armv7h.
 
 This is a community project and is not officially supported by the OpenVoiceOS project. Do not create issues in the OpenVoiceOS project 
 for issues related to this repository. 
@@ -80,7 +80,7 @@ To simpile the process, you can use the wired ethernet port on the RPi4 to conne
 wireless interface later. Use of a USB keyboard is also recommended before you are able to log in via SSH.
 
 ### Installing from the OVOS Arch package repository:
-Pre-built packages are available for architectures x86_64 and aarch64. This is a convenient way to install OVOS Arch on a new system and keeping it up to date.
+Pre-built packages are available for architectures x86_64, aarch64 and armv7h. This is a convenient way to install OVOS Arch on a new system and keeping it up to date.
 However, the package build facility is still being worked on, so do expect some instability as we work through the kinks.
 
 Edit `/etc/pacman.conf` and add the following repository:
