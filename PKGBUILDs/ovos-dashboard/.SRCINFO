@@ -1,5 +1,5 @@
 pkgbase = ovos-dashboard
-	pkgdesc = DEPRECATED: OpenVoiceOS Dashboard Application
+	pkgdesc = DEPRECATED (or mintained by the community?): OpenVoiceOS Dashboard Application
 	pkgver = 0.0.1
 	pkgrel = 0
 	url = https://github.com/OpenVoiceOS/OVOS-Dashboard
