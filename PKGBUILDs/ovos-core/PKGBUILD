@@ -1,6 +1,6 @@
 pkgname=ovos-core
 pkgver=0.0.1
-pkgrel=1
+pkgrel=02
 pkgdesc="OpenVoiceOS Core Configuration Package"
 arch=('any')
 url='https://github.com/OpenVoiceOS'
