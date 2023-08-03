@@ -34,7 +34,4 @@ package() {
     cp -r "usr" "$pkgdir"
     mkdir -p "${pkgdir}/usr/share/licenses/${pkgname}"
     install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
-
-    #chown root:root -vR "${pkgdir}/"
-    #chmod 755 -vR "${pkgdir}/"
 }
