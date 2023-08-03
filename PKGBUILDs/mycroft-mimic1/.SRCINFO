@@ -1,6 +1,6 @@
 pkgbase = mycroft-mimic1
 	pkgver = 1.3.0.1
-	pkgrel = 01
+	pkgrel = 02
 	url = https://github.com/MycroftAI/mimic1
 	arch = x86_64
 	arch = aarch64
