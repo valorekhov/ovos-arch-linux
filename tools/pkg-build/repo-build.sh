@@ -20,19 +20,21 @@ if test -f "$REPO_DB_FILE" ; then
         if [ "$SKIP_LOCAL_PKG_CHECK" != 1 ] && tar -tf "$REPO_DB_FILE" | grep -m1 -qF "$PKGNAME-$PKGVER-$PKGREL" ; then
             echo " ...... $PKGNAME-$PKGVER-$PKGREL exists in the DB"
         else
-            # Now, if $ONLINE_REPO_URI is defined, let's using pacman if the exact version of the package is already in the online repo
-            # This is mostly needed to speed up CI builds where we only need to re-buidl the specific package targets that have changed
+            # Now, if $ONLINE_REPO_URI is defined, let's check using pacman if the exact version of the package is already in the online repo
+            # This is mostly needed to speed up CI builds where we only need to re-build the specific package targets that have changed
             # In this case, target dependencies will be pulled from the online repo, while the target will be built locally
             if [ -n "$ONLINE_REPO_URI" ] ; then
                 echo " ...... Checking if $PKGNAME-$PKGVER-$PKGREL is in the online repo: $ONLINE_REPO_URI"
                 if "$LOCAL_PACMAN" -Sl "$REPO_NAME" | grep -m1 -qF "$PKGNAME $PKGVER-$PKGREL"; then
                     echo " ...... and it is found. Skipping build"
                 else 
+                    echo " ...... $PKGNAME-$PKGVER-$PKGREL is not found online. Will rebuild the entire (split) package."
                     do_build=1
                 fi
+            else
+                echo " ...... $PKGNAME-$PKGVER-$PKGREL is not found locally. Will rebuild the entire (split) package."
+                do_build=1
             fi
-            echo " ...... $PKGNAME-$PKGVER-$PKGREL is not found. Will rebuild the entire (split) package."
-            do_build=1
         fi
     done
 else
