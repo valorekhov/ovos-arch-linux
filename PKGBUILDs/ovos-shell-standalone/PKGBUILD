@@ -1,6 +1,6 @@
 pkgname=ovos-shell-standalone
 pkgver='1.0.0'
-pkgrel=1
+pkgrel=02
 pkgdesc='OpenVoiceOS Shell Standalone Service on EGLFS: Run OVOS-Shell as an unprivileged user in standalone mode without the need for a full Desktop Environment'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-shell/'
@@ -23,7 +23,7 @@ package() {
     cd "$srcdir"
 
     mkdir -p "$pkgdir/usr/lib/systemd/system"
-    mkdir -p "$pkgdir/home/ovos/.config/{ovos-shell,fontconfig,qt5ct}"
+    mkdir -p "$pkgdir/home/ovos/.config/"{ovos-shell,fontconfig,qt5ct}
     chmod 750 "$pkgdir/home/ovos/"
 
     install -Dm644 ovos-shell-standalone.service "$pkgdir/usr/lib/systemd/system"
