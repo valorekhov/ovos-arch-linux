@@ -1,0 +1,58 @@
+#ARG ARCH=amd64
+FROM library/archlinux:latest AS build
+ARG REPO_URL=https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch
+#ADD "ArchLinuxARM-latest.tar" /
+
+WORKDIR /archlinux
+RUN mkdir -p /archlinux/rootfs
+COPY pacstrap-docker /archlinux/
+RUN printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = ${REPO_URL}/\$arch" >> /etc/pacman.conf \
+    && tail /etc/pacman.conf && printf "\n\n" \
+    && echo "Server = http://mirror.umd.edu/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist 
+
+RUN pacman-key --init &&  pacman -Syyuu --noconfirm 
+    #&& pacman -S archiso --noconfirm
+# RUN cp -R /usr/share/archiso/configs/baseline/airootfs/* /archlinux/rootfs/
+RUN ./pacstrap-docker /archlinux/rootfs \
+        base linux linux-firmware archiso \
+        ufw networkmanager openssh gnu-free-fonts \ 
+        ovos-enclosure-base python-ovos-messagebus ovos-shell-standalone \
+        python-ovos-dinkum-listener python-ovos-microphone-plugin-alsa \
+        python-ovos-tts-plugin-mimic3 python-ovos-stt-plugin-server \ 
+    && rm -rf rootfs/var/lib/pacman/sync/*
+
+RUN cat /archlinux/rootfs/etc/mkinitcpio.d/linux.preset
+
+# Config the rest of the image (this step is similar to arch-chroot)
+FROM scratch
+#ARG ARCH=arm64v8
+
+COPY --from=0 /archlinux/rootfs/ /
+#COPY rootfs/common/ /
+#COPY rootfs/$ARCH/ /
+
+ENV LANG=en_US.UTF-8
+RUN locale-gen  
+#     pacman-key --init && \
+#     pacman-key --populate archlinux \
+
+RUN systemctl enable NetworkManager && systemctl enable sshd \
+    # && ufw enable && ufw allow ssh
+    && printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = ${REPO_URL}/\$arch" >> /etc/pacman.conf \
+    && mkinitcpio -P
+
+FROM library/archlinux:latest 
+VOLUME /output
+
+WORKDIR /archlinux
+RUN mkdir -p /archlinux/rootfs
+COPY --from=1 / /archlinux/rootfs/
+
+RUN pacman-key --init &&  pacman -Sy --noconfirm \
+    && pacman -S guestfs-tools --noconfirm 
+
+RUN ls -la /archlinux/rootfs/ && ls -la /archlinux/rootfs/boot/ && export KERNEL_PATH=/path/to/your/kernel="$(/archlinux/rootfs/boot/vmlinuz-*)" \
+    && echo $KERNEL_PATH \
+    && LIBGUESTFS_DEBUG=1 LIBGUESTFS_TRACE=1 virt-make-fs --format=qcow2 --type=ext4 --size=+2G /archlinux/rootfs /output/ovos-arch.vmdk
+
+CMD ["/usr/bin/bash"]

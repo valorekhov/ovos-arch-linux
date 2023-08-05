@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="http://schemas.dmtf.org/ovf/envelope/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ovf="http://schemas.dmtf.org/ovf/envelope/1" xmlns:cim="http://schemas.dmtf.org/wbem/wscim/1/common" xmlns:rasd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData" xmlns:vssd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData" xmlns:ovs="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/OMC_VirtualSystemSettingData" xmlns:vmw="http://www.vmware.com/schema/ovf" xmlns:ns9="http://www.vmware.com/vcloud/v1.5" xmlns:ovfenv="http://schemas.dmtf.org/ovf/environment/1" xmlns:ovfsec="http://schemas.dmtf.org/ovf/security/1" xmlns:ns12="http://www.vmware.com/vcloud/v1.5" ovf:version="1.1">
+  <References>
+    <File ovf:href="disk.vmdk" ovf:id="file1" ovf:size="SIZE_IN_BYTES"/>
+  </References>
+  <DiskSection>
+    <Info>Virtual disk information</Info>
+    <Disk ovf:capacity="SIZE_IN_BYTES" ovf:diskId="vmdisk1" ovf:fileRef="file1" ovf:format="http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized"/>
+  </DiskSection>
+  <NetworkSection>
+    <Info>The list of logical networks</Info>
+    <Network ovf:name="Network 1">
+      <Description>Sample network description</Description>
+    </Network>
+  </NetworkSection>
+  <VirtualSystem ovf:id="SampleVM">
+    <Info>A virtual machine</Info>
+    <Name>Sample Virtual Machine</Name>
+    <OperatingSystemSection ovf:id="1000">
+      <Info>The kind of installed guest operating system</Info>
+      <Description>Unknown OS</Description>
+    </OperatingSystemSection>
+    <VirtualHardwareSection>
+      <Info>Virtual hardware requirements</Info>
+      <System>
+        <vssd:ElementName>Virtual Hardware Family</vssd:ElementName>
+        <vssd:InstanceID>0</vssd:InstanceID>
+        <vssd:VirtualSystemType>vmx-08</vssd:VirtualSystemType>
+      </System>
+      <Item>
+        <rasd:AllocationUnits>hertz * 10^6</rasd:AllocationUnits>
+        <rasd:Description>Number of Virtual CPUs</rasd:Description>
+        <rasd:ElementName>2 virtual CPU(s)</rasd:ElementName>
+        <rasd:InstanceID>1</rasd:InstanceID>
+        <rasd:ResourceType>3</rasd:ResourceType>
+        <rasd:VirtualQuantity>2</rasd:VirtualQuantity>
+      </Item>
+      <Item>
+        <rasd:AllocationUnits>byte * 2^20</rasd:AllocationUnits>
+        <rasd:Description>Memory Size</rasd:Description>
+        <rasd:ElementName>2048 MB of memory</rasd:ElementName>
+        <rasd:InstanceID>2</rasd:InstanceID>
+        <rasd:ResourceType>4</rasd:ResourceType>
+        <rasd:VirtualQuantity>2048</rasd:VirtualQuantity>
+      </Item>
+      <Item>
+        <rasd:Address>0</rasd:Address>
+        <rasd:Caption>SCSI Controller</rasd:Caption>
+        <rasd:Description>SCSI Controller</rasd:Description>
+        <rasd:ElementName>SCSI Controller 0</rasd:ElementName>
+        <rasd:InstanceID>3</rasd:InstanceID>
+        <rasd:ResourceSubType>lsilogic</rasd:ResourceSubType>
+        <rasd:ResourceType>6</rasd:ResourceType>
+      </Item>
+      <Item>
+        <rasd:AddressOnParent>0</rasd:AddressOnParent>
+        <rasd:ElementName>Hard Disk 1</rasd:ElementName>
+        <rasd:HostResource>ovf:/disk/vmdisk1</rasd:HostResource>
+        <rasd:InstanceID>4</rasd:InstanceID>
+        <rasd:Parent>3</rasd:Parent>
+        <rasd:ResourceType>17</rasd:ResourceType>
+      </Item>
+      <Item>
+        <rasd:Address>0</rasd:Address>
+        <rasd:Caption>IDE Controller</rasd:Caption>
+        <rasd:Description>IDE Controller</rasd:Description>
+        <rasd:ElementName>IDE Controller 0</rasd:ElementName>
+        <rasd:InstanceID>5</rasd:InstanceID>
+        <rasd:ResourceType>5</rasd:ResourceType>
+      </Item>
+      <Item>
+        <rasd:AddressOnParent>0</rasd:AddressOnParent>
+        <rasd:ElementName>CD/DVD Drive 1</rasd:ElementName>
+        <rasd:InstanceID>6</rasd:InstanceID>
+        <rasd:Parent>5</rasd:Parent>
+        <rasd:ResourceSubType>vmware.cdrom.atapi</rasd:ResourceSubType>
+        <rasd:ResourceType>15</rasd:ResourceType>
+      </Item>
+    </VirtualHardwareSection>
+    <vmw:Config ovf:required="false" vmw:key="cpuHotAddEnabled" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="cpuHotRemoveEnabled" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="memoryHotAddEnabled" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="nestedHVEnabled" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="powerOpInfo.powerOffType" vmw:value="hard"/>
+    <vmw:Config ovf:required="false" vmw:key="powerOpInfo.resetType" vmw:value="hard"/>
+    <vmw:Config ovf:required="false" vmw:key="powerOpInfo.suspendType" vmw:value="hard"/>
+    <vmw:Config ovf:required="false" vmw:key="tools.afterPowerOn" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="tools.afterResume" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="tools.beforeGuestShutdown" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="tools.beforeGuestStandby" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="tools.syncTimeWithHost" vmw:value="false"/>
+    <vmw:Config ovf:required="false" vmw:key="toolsUpgradePolicy" vmw:value="manual"/>
+  </VirtualSystem>
+  <ovf:VirtualSystemCollection ovf:id="SC">
+    <ovf:Info>Sample Virtual Machine Collection</ovf:Info>
+    <ovf:Name>Sample Collection</ovf:Name>
+    <ovf:Section xsi:type="ovf:DiskSection_Type">
+      <ovf:Info>Virtual disk information</ovf:Info>
+      <ovf:Disk ovf:capacity="SIZE_IN_BYTES" ovf:diskId="vmdisk1" ovf:fileRef="file1" ovf:format="http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized"/>
+    </ovf:Section>
+    <ovf:Section xsi:type="ovf:NetworkSection_Type">
+      <ovf:Info>The list of logical networks</ovf:Info>
+      <ovf:Network ovf:name="Network 1">
+        <ovf:Description>Sample network description</ovf:Description>
+      </ovf:Network>
+    </ovf:Section>
+    <ovf:Section xsi:type="ovf:VirtualSystemSection_Type">
+      <ovf:Info>A virtual machine</ovf:Info>
+      <ovf:Name>Sample Virtual Machine</ovf:Name>
+      <ovf:OperatingSystemSection ovf:id="1000">
+        <ovf:Info>The kind of installed guest operating system</ovf:Info>
+        <ovf:Description>Unknown OS</ovf:Description>
+      </ovf:OperatingSystemSection>
+      <ovf:VirtualHardwareSection>
+        <ovf:Info>Virtual hardware requirements</ovf:Info>
+        <ovf:Item>
+          <rasd:AllocationUnits>hertz * 10^6</rasd:AllocationUnits>
+          <rasd:Description>Number of Virtual CPUs</rasd:Description>
+          <rasd:ElementName>2 virtual CPU(s)</rasd:ElementName>
+          <rasd:InstanceID>1</rasd:InstanceID>
+          <rasd:ResourceType>3</rasd:ResourceType>
+          <rasd:VirtualQuantity>2</rasd:VirtualQuantity>
+        </ovf:Item>
+        <ovf:Item>
+          <rasd:AllocationUnits>byte * 2^20</rasd:AllocationUnits>
+          <rasd:Description>Memory Size</rasd:Description>
+          <rasd:ElementName>2048 MB of memory</rasd:ElementName>
+          <rasd:InstanceID>2</rasd:InstanceID>
+          <rasd:ResourceType>4</rasd:ResourceType>
+          <rasd:VirtualQuantity>2048</rasd:VirtualQuantity>
+        </ovf:Item>
+        <ovf:Item>
+          <rasd:Address>0</rasd:Address>
+          <rasd:Caption>SCSI Controller</rasd:Caption>
+          <rasd:Description>SCSI Controller</rasd:Description>
+          <rasd:ElementName>SCSI Controller 0</rasd:ElementName>
+          <rasd:InstanceID>3</rasd:InstanceID>
+          <rasd:ResourceSubType>lsilogic</rasd:ResourceSubType>
+          <rasd:ResourceType>6</rasd:ResourceType>
+        </ovf:Item>
+        <ovf:Item>
+          <rasd:AddressOnParent>0</rasd:AddressOnParent>
+          <rasd:ElementName>Hard Disk 1</rasd:ElementName>
+          <rasd:HostResource>ovf:/disk/vmdisk1</rasd:HostResource>
+          <rasd:InstanceID>4</rasd:InstanceID>
+          <rasd:Parent>3</rasd:Parent>
+          <rasd:ResourceType>17</rasd:ResourceType>
+        </ovf:Item>
+        <ovf:Item>
+          <rasd:Address>0</rasd:Address>
+          <rasd:Caption>IDE Controller</rasd:Caption>
+          <rasd:Description>IDE Controller</rasd:Description>
+          <rasd:ElementName>IDE Controller 0</rasd:ElementName>
+          <rasd:InstanceID>5</rasd:InstanceID>
+          <rasd:ResourceType>5</rasd:ResourceType>
+        </ovf:Item>
+        <ovf:Item>
+          <rasd:AddressOnParent>0</rasd:AddressOnParent>
+          <rasd:ElementName>CD/DVD Drive 1</rasd:ElementName>
+          <rasd:InstanceID>6</rasd:InstanceID>
+          <rasd:Parent>5</rasd:Parent>
+          <rasd:ResourceSubType>vmware.cdrom.atapi</rasd:ResourceSubType>
+          <rasd:ResourceType>15</rasd:ResourceType>
+        </ovf:Item>
+      </ovf:VirtualHardwareSection>
+      <ovf:ProductSection ovf:class="product">
+        <ovf:Info>Product information</ovf:Info>
+        <ovf:Product/>
+        <ovf:Vendor/>
+        <ovf:Version/>
+        <ovf:FullVersion>1.0</ovf:FullVersion>
+        <ovf:ProductUrl/>
+        <ovf:VendorUrl/>
+        <ovf:AppUrl/>
+      </ovf:ProductSection>
+      <ovf:PropertySection ovf:class="class">
+        <ovf:Info>User-defined configuration properties</ovf:Info>
+      </ovf:PropertySection>
+      <ovf:PropertySection ovf:class="environment">
+        <ovf:Info>User-defined environment variables</ovf:Info>
+      </ovf:PropertySection>
+      <ovf:PropertySection ovf:class="snapshot">
+        <ovf:Info>Snapshot information</ovf:Info>
+      </ovf:PropertySection>
+      <ovf:PropertySection ovf:class="network">
+        <ovf:Info>Network information</ovf:Info>
+      </ovf:PropertySection>
+    </ovf:Section>
+  </ovf:VirtualSystemCollection>
+</Envelope>
