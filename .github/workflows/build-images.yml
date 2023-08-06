@@ -1,0 +1,56 @@
+name: Daily PKGBUILD Version Update
+on: 
+  workflow_dispatch:
+  schedule:
+    # run on the first day of every month at 00:30 UTC
+    - cron: "30 0 1 * *"
+
+jobs:
+  build_images:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: [amd64-ova]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nrwl/nx-set-shas@v3
+        id: last_successful_commit
+        with:
+          main-branch-name: 'main'
+          workflow-id: 'build-images.yml'
+      # Check if this run is a cron run, if so, check if the PKGBUILD has changed since the last run
+      - name: check-pkgbuild
+        if : ${{ github.event_name }} == 'schedule'
+        id: check-changes
+        run: |
+          echo "Checking if any PKGBUILDs changed since last run"
+          git diff --quiet ${{ steps.last_successful_commit.outputs.base }}..HEAD -- PKGBUILDs/*/PKGBUILD
+          if [ $? -eq 0 ]; then
+            echo "No changes to PKGBUILD, exiting"
+            echo "skip=true" >> $GITHUB_ENV
+          else
+            echo "Changes to PKGBUILD detected, continuing"
+            echo "skip=false" >> $GITHUB_ENV
+          fi
+      - name: setup qemu-img
+        if: ${{ steps.check-changes.outputs.skip }} != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install qemu-utils
+      - name: build-image
+        if: ${{ steps.check-changes.outputs.skip }} != 'true'
+        run: |
+          # generate a build timestamp in the format YYYYMMDDHHMMSS
+          export BUILD_DATE=$(date -u +"%Y%m%d%H%M%S")
+          echo "Building ${{ matrix.image }}"
+          echo "Build dir: ${{ runner.temp }}/"
+          REPO_URL=https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch ./ISOs/${{ matrix.image }}/build.sh "${{ runner.temp }}/" "ovos-arch-$BUILD_DATE"
+      - name: upload-image
+        if: ${{ steps.check-changes.outputs.skip }} != 'true'
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.50.0
+          inlineScript: |
+            az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path ISOs --source "${{ runner.temp }}" --pattern "ovos-arch-*" --content-encoding "gzip" --overwrite 
+        env:
+          AZURE_STORAGE_KEY: "${{ secrets.AZURE_STORAGE_KEY }}"

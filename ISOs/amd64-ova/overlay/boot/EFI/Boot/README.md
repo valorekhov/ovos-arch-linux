@@ -1,0 +1,1 @@
+Using a direct boot method, the EFI firmware will load the EFI/Boot/bootx64.efi file which will contain the kernel image
