@@ -12,7 +12,7 @@ pkgbase = ovos-shell-standalone
 	source = qt5ct.conf
 	source = fonts.conf
 	sha256sums = 2a81616cae6997401c7681e09e2f59e915e5e2464591cde7184b9fbaaf7350f8
-	sha256sums = 212efd5a6ea0590e4baaf272aff330e4a45217f260f7058fb297b59b04343e5b
+	sha256sums = ae16b6762efc6f01a06e9ce4ecebb8b2f4286cefcb4a6ff27f4956b7748c7038
 	sha256sums = dba44104636fe56fcd95d3ae6f001bcc78cfa0953f94afa0e78704453c38765e
 	sha256sums = 87118a0ecb7d4f89a7bdc3b5da45b08c93b8e8ed1e4c816e3640965c74c395c1
 
