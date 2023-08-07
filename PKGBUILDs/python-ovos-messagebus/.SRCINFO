@@ -22,7 +22,7 @@ pkgbase = python-ovos-messagebus
 	source = ovos-systemd_messagebus.py
 	source = python-ovos-messagebus.install
 	sha256sums = 52dfdfb3ec31dce89991afb26ec6dd1fa57a1a3f2061d69cf778baf388115468
-	sha256sums = 8d6ee0d4b5cbd91fa80218f0d6fe4d066024ca89581ca9b213236882073fc26b
+	sha256sums = 423ede875cf62963fbd8ed4103624c6347b00ce185027ebde54e31a6d1fa59bf
 	sha256sums = f1732d6858fd0c74e91304e92db30b0ee4a9c4a3e32d98d97bf3564a8197c685
 	sha256sums = d2208a11d02faee1acf63a0f5b871a41b7005eb26f86a56552c6425b918409fa
 
