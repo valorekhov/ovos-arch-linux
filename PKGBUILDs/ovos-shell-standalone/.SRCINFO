@@ -1,7 +1,7 @@
 pkgbase = ovos-shell-standalone
 	pkgdesc = OpenVoiceOS Shell Standalone Service on EGLFS: Run OVOS-Shell as an unprivileged user in standalone mode without the need for a full Desktop Environment
 	pkgver = 1.0.0
-	pkgrel = 02
+	pkgrel = 03
 	url = https://github.com/OpenVoiceOS/ovos-shell/
 	arch = any
 	license = Apache License 2.0
