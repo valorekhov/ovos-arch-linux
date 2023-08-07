@@ -2,32 +2,18 @@ TARGET_DIR=${1:-/target}
 TARGET_NAME=${2:-ovos-arch}
 SIZE_MB=${3:-8192}
 
+source ../common/img-build.sh
+
 docker build -t archlinux-install-builder -f Containerfile .
 
-# create an 8GB disk image
-mkdir -p $TARGET_DIR/
-dd if=/dev/zero of=$TARGET_DIR/ovos-arch.raw bs=1M count=$SIZE_MB
-sudo losetup -fP $TARGET_DIR/ovos-arch.raw
-sudo parted -s /dev/loop0 mklabel msdos
-# make 2 partitions, 1 for boot (200 MB), 1 for root (rest of disk)
-sudo parted -s /dev/loop0 mkpart primary 2048s 200M
-sudo parted -s /dev/loop0 set 1 boot on
-sudo parted -s /dev/loop0 mkpart primary 200M 100%
-sudo mkfs.fat -F 32 /dev/loop0p1
-sudo mkfs.ext4 /dev/loop0p2
-sudo mount /dev/loop0p2 /tmp/docker-build/
-sudo mkdir -p /tmp/docker-build/efi
-sudo mount /dev/loop0p1 /tmp/docker-build/efi
+prepare_image $TARGET_DIR $SIZE_MB efi
 
 sudo cp -r ./overlay/* /tmp/docker-build/
-docker run --privileged -v $PWD:/scripts -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh 
+docker run --privileged -v $PWD:/scripts -v $PWD/../../common:/scripts-common -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh 
 sudo cp -r ./overlay_overrides/* /tmp/docker-build/
 
 # sudo cp -r /tmp/docker-build-rootfs/rootfs/* /tmp/docker-build/
-sync
-sudo umount /tmp/docker-build/efi 
-sudo umount /tmp/docker-build
-sudo losetup -d /dev/loop0
+unmount_image efi
 
 # convert to vmdk
 qemu-img convert -f raw -O vmdk $TARGET_DIR/ovos-arch.raw $TARGET_DIR/ovos-arch.vmdk && rm $TARGET_DIR/ovos-arch.raw
