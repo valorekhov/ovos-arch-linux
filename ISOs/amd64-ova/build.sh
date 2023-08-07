@@ -16,21 +16,21 @@ sudo parted -s /dev/loop0 mkpart primary 200M 100%
 sudo mkfs.fat -F 32 /dev/loop0p1
 sudo mkfs.ext4 /dev/loop0p2
 sudo mount /dev/loop0p2 /tmp/docker-build/
-sudo mkdir -p /tmp/docker-build/boot
-sudo mount /dev/loop0p1 /tmp/docker-build/boot
+sudo mkdir -p /tmp/docker-build/efi
+sudo mount /dev/loop0p1 /tmp/docker-build/efi
 
 sudo cp -r ./overlay/* /tmp/docker-build/
-
 docker run --privileged -v $PWD:/scripts -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh 
+sudo cp -r ./overlay_overrides/* /tmp/docker-build/
+
 # sudo cp -r /tmp/docker-build-rootfs/rootfs/* /tmp/docker-build/
 sync
-sudo umount /tmp/docker-build/boot 
+sudo umount /tmp/docker-build/efi 
 sudo umount /tmp/docker-build
 sudo losetup -d /dev/loop0
 
 # convert to vmdk
-qemu-img convert -f raw -O vmdk $TARGET_DIR/ovos-arch.raw $TARGET_DIR/ovos-arch.vmdk
-#rm $TARGET_DIR/ovos-arch.raw
+qemu-img convert -f raw -O vmdk $TARGET_DIR/ovos-arch.raw $TARGET_DIR/ovos-arch.vmdk && rm $TARGET_DIR/ovos-arch.raw
 
 # create the ovf
 cp ovos-arch.ovf $TARGET_DIR/ovos-arch.ovf

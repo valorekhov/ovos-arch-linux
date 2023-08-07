@@ -11,12 +11,12 @@ WorkingDirectory=/home/ovos
 EnvironmentFile=-/home/ovos/.config/ovos-shell/.env
 Environment=XDG_RUNTIME_DIR=%t
 PAMName=login
-TTYPath=/dev/tty1
+# TTYPath=/dev/tty1
 ExecStartPre=-/usr/bin/kbuildsycoca5
 ExecStart=/usr/bin/ovos-shell
 # ExecStop=/usr/bin/killall --user ovos --exact --wait ovos.bin
 Restart=on-failure
-StandardInput=tty
+# StandardInput=tty
 StandardOutput=journal
 
 [Install]
