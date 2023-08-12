@@ -3,9 +3,9 @@ _gh_proj=ovos-core
 pkgname=python-ovos-core
 _name=ovos-core
 _unit_name_skills="ovos-skills-messagebus"
-_base_ver='e4cabf257c278e183d5c77aaaa3c920028e4f51f'
+_commit='e4cabf257c278e183d5c77aaaa3c920028e4f51f'
 pkgver=0.0.8a21
-pkgrel=2
+pkgrel=03
 pkgdesc='OVOS-core is a backwards-compatible descendant of
 Mycroft-core, the central component of Mycroft'
 arch=('any')
@@ -41,38 +41,40 @@ conflicts=( 'python-adapt-parser>=2.0.0' \
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name_skills")
 conflicts+=("$_unit_name_skills")
+install="ovos-skills.install"
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
-    "$_unit_name_skills.service" \
-    "ovos-systemd_skills_messagebus.py" \
-    # "python-ovos-skills.install" \
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz"
+    "$_unit_name_skills.service"
+    "ovos-systemd_skills_messagebus.py"
+    "ovos-skills.install" 
 )
 sha256sums=('75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff'
-            '75c9c0a3e6b9aa13a50c20acad46299f010abc7fdb64184d16fbb550959a2406'
-            'bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a')
+            '8a9491bfc586cb801d0b904205f8e4f98a23333d48a717dccc0e62c5949398ad'
+            'bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a'
+            'ae8e3b0dd89e2c7bfff121bb6c6ac75632deafc3cacd776ee9e06cd6ba849270')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -82,7 +84,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
