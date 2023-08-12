@@ -155,3 +155,8 @@ a virtual environment for use of the skills manager and skills message bus. It a
 ```sh
 sudo su - ovos -c "osm install https://github.com/NeonGeckoCom/skill-ip_address"
 ```
+
+Follow the installation using either method, be sure to restart the `ovos-skill-manager` service to pick up the new skills:
+```sh
+sudo systemctl restart ovos-skills-messagebus
+```
