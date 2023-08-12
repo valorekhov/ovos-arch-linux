@@ -166,7 +166,7 @@ python-espeak-phonemizer:  PKGBUILDs-extra/python-espeak-phonemizer/*.pkg.tar.zs
 
 python-filelock:  PKGBUILDs-extra/python-filelock/*.pkg.tar.zst
 
-python-gradio: python-uvicorn PKGBUILDs-extra/python-gradio/*.pkg.tar.zst
+python-gradio: python-pydub python-uvicorn PKGBUILDs-extra/python-gradio/*.pkg.tar.zst
 
 python-gruut: python-dateparser python-gruut-ipa python-gruut-lang-en python-num2words python-crfsuite-git PKGBUILDs-extra/python-gruut/*.pkg.tar.zst
 
@@ -324,7 +324,7 @@ python-ovos-stt-plugin-server: python-ovos-plugin-manager PKGBUILDs/python-ovos-
 
 python-ovos-stt-plugin-vosk: python-ovos-skill-installer python-ovos-plugin-manager python-speechrecognition python-vosk PKGBUILDs/python-ovos-stt-plugin-vosk/*.pkg.tar.zst
 
-python-ovos-stt-plugin-whispercpp: python-ovos-plugin-manager python-speechrecognition PKGBUILDs/python-ovos-stt-plugin-whispercpp/*.pkg.tar.zst
+python-ovos-stt-plugin-whispercpp: python-ovos-plugin-manager python-speechrecognition python-whispercpp PKGBUILDs/python-ovos-stt-plugin-whispercpp/*.pkg.tar.zst
 
 python-ovos-tts-plugin-marytts:  PKGBUILDs/python-ovos-tts-plugin-marytts/*.pkg.tar.zst
 
@@ -382,6 +382,8 @@ python-py-bandcamp: python-requests-cache PKGBUILDs-extra/python-py-bandcamp/*.p
 
 python-pyalsaaudio:  PKGBUILDs-extra/python-pyalsaaudio/*.pkg.tar.zst
 
+python-pydub: aur-repo AUR/python-pydub/*.pkg.tar.zst
+
 python-pytube:  PKGBUILDs-extra/python-pytube/*.pkg.tar.zst
 
 python-pywebio:  PKGBUILDs-extra/python-pywebio/*.pkg.tar.zst
@@ -430,11 +432,15 @@ python-vosk: python-srt PKGBUILDs-extra/python-vosk/*.pkg.tar.zst
 
 python-wallpaper-finder: python-bs4 python-requests-cache PKGBUILDs-extra/python-wallpaper-finder/*.pkg.tar.zst
 
+python-whispercpp: whisper.cpp python-pydub PKGBUILDs-extra/python-whispercpp/*.pkg.tar.zst
+
 python-xdgenvpy: aur-repo AUR/python-xdgenvpy/*.pkg.tar.zst
 
 python-youtube-search:  PKGBUILDs-extra/python-youtube-search/*.pkg.tar.zst
 
 python-yt-dlp:  PKGBUILDs-extra/python-yt-dlp/*.pkg.tar.zst
+
+whisper.cpp: aur-repo AUR/whisper.cpp/*.pkg.tar.zst
 
 mycroft-gui-qt6-git: # Ignored
 

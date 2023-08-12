@@ -12,4 +12,5 @@ python-gruut-lang-en:1d4ef8a54659079a0d108199b2d6f339a1ddddc2
 python-dateparser:451a470a0b7ed316260dce5b65a0d0d7fa34e7e1
 python-convertdate:300653c39e32919c34ba7962f03f7d07975bd733
 python-hijri-converter:691a54c9bf7f4a26bde3b24b575a89a4f82175d0
+python-pydub:23164b8144e80332ef83ee9d662700e8df39e964
 whisper.cpp:c9e95a4855aff7783039ba80bbcf210cac897482
