@@ -19,20 +19,12 @@ conflicts+=("$pkgname")
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-id3parse>=0.1' # id3parse~=0.1
 'python-ovos-ocp-audio-plugin>=0.0' # ovos-plugin-common-play~=0.0
 'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13
 'python-ovos-skill-installer>=0.0.5' # ovos-skill-installer~=0.0.5
 'python-ovos-utils>=0.0.28' # ovos_utils~=0.0.28
 'python-ovos-workshop>=0.0.7' # ovos-workshop~=0.0.7
 )
-conflicts+=(
-
-)
-optdepends+=(
-
-)
-
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=('2364c34d6368d4d117145c3b2fc0a07a183b710134531c70b084712490cd00c1')
