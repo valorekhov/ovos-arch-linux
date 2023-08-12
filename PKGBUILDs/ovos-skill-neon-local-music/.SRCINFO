@@ -17,8 +17,7 @@ pkgbase = ovos-skill-neon-local-music
 	depends = python-ovos-workshop>=0.0.7
 	provides = ovos-skill-neon-local-music
 	conflicts = ovos-skill-neon-local-music
-	source = https://github.com/NeonGeckoCom/skill-local_music/archive/5ae11c8a7bb1cb150dfd2f0cbf634265a1fcaf46.tar.gz
+	source = https://github.com/NeonGeckoCom/skill-local_music/archive/159c220008e5e48d620293b17cd12edcd096963c.tar.gz
 	sha256sums = 2364c34d6368d4d117145c3b2fc0a07a183b710134531c70b084712490cd00c1
 
 pkgname = ovos-skill-neon-local-music
-
