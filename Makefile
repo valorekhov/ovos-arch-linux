@@ -382,7 +382,7 @@ python-py-bandcamp: python-requests-cache PKGBUILDs-extra/python-py-bandcamp/*.p
 
 python-pyalsaaudio:  PKGBUILDs-extra/python-pyalsaaudio/*.pkg.tar.zst
 
-python-pydub: aur-repo AUR/python-pydub/*.pkg.tar.zst
+python-pydub:  PKGBUILDs-extra/python-pydub/*.pkg.tar.zst
 
 python-pytube:  PKGBUILDs-extra/python-pytube/*.pkg.tar.zst
 
