@@ -8,7 +8,7 @@ pkgrel=01
 pkgdesc='OVOS STT plugin for whispercpp'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-plugin-whispercpp/'
-license=('')
+license=('Apache License 2.0')
 depends=(python
 'python-ovos-plugin-manager>=0.0.1'
 'python-requests'
@@ -19,9 +19,7 @@ conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=(
-   #python-ovos-stt-plugin-whispercpp-2eac10f51d6cc80c5d75894babbdc4f902d6273f.tar.gz \
-   375f983e2783f7ff247a813de88333685e76b334bba0d888a5239fe77a63fe9a)
+sha256sums=('945194f19286cf1f48706935d4a24b52e70d8d454e69cc7c2a82300bf6d09688')
 
 prepare() {
     cd "$srcdir"
