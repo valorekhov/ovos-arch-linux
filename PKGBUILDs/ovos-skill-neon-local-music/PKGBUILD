@@ -2,8 +2,8 @@ _gh_org=NeonGeckoCom
 _gh_proj=skill-local_music
 pkgname=ovos-skill-neon-local-music
 _name=skill-local_music
-_commit='5ae11c8a7bb1cb150dfd2f0cbf634265a1fcaf46'
-pkgver='1.0.1'
+_commit='159c220008e5e48d620293b17cd12edcd096963c'
+pkgver='2.0.0'
 pkgrel=00
 pkgdesc='Neon Skill for Local Music Playback'
 arch=('any')
@@ -27,7 +27,7 @@ depends+=(
 )
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('fd772e49e0be4fad7bb2e012d38bf16cabcbaf11cca0e63827b5610fbd876eef')
+sha256sums=('2364c34d6368d4d117145c3b2fc0a07a183b710134531c70b084712490cd00c1')
 
 prepare() {
     cd "$srcdir"

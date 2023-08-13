@@ -1,0 +1,11 @@
+# This script is only meant to be ran on the actual RPi4 device.
+post_install() {
+    # Run venv creation as the ovos user using su.
+    /usr/bin/su - ovos -c "/usr/bin/python3 -m venv --system-site-packages --symlinks --prompt "OVOS" /home/ovos/.local/share/OpenVoiceOS/.venv"
+    # patch /usr/bin/osm to use the venv python
+    sed --regexp-extended -i 's|/usr/s?bin/python|/home/ovos/.local/share/OpenVoiceOS/.venv/bin/python3|g' /usr/bin/osm
+}
+
+post_upgrade() {
+    /usr/bin/su - ovos -c "/usr/bin/python3 -m venv --upgrade /home/ovos/.local/share/OpenVoiceOS/.venv"
+}

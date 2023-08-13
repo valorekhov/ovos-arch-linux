@@ -245,7 +245,17 @@ function Update-Pkgbuild($versionInfo, $releaseInfo, $PackageMap) {
     }
 
     # Limited .SRCINFO updates. To perform a full update, `makepkg --printsrcinfo > .SRCINFO` is needed
-    ((Get-Content $srcInfo -Raw) -replace "pkgver = $($releaseInfo.version)") -replace "pkgrel = 00" | Set-Content $srcInfo
+    Get-Content $srcInfo | ForEach-Object {
+        $line = $_
+        if ($line -match '^\s*pkgver\s*=') {
+            "pkgver = $($releaseInfo.version)"
+        } elseif ($line -match '^\s*pkgrel\s*=') {
+            "pkgrel = 00"
+        } else {
+            $line
+        }
+    } | Set-Content $srcInfo
+   
 
     if (Test-Path "$tmpPath/$($versionInfo.pkgbase).tar.gz" -PathType Leaf){
         tar -xzf "$tmpPath/$($versionInfo.pkgbase).tar.gz" -C $tmpPath --strip-components=1
