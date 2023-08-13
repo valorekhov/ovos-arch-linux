@@ -11,7 +11,7 @@ url="https://${_base}.com"
 license=(MIT)
 arch=('any')
 depends=(python ffmpeg)
-makedepends=(python-setuptools libfdk-aac)
+makedepends=(python-setuptools)
 optdepends=('python-pyaudio: for playback'
   'python-simpleaudio: for playback') # 'python-scipy' 'opus'
 source=(https://github.com/jiaaro/${_base}/archive/v${pkgver}.tar.gz)
@@ -24,9 +24,6 @@ build() {
 
 check() {
   cd "${_base}-${pkgver}"
-  which ffmpeg
-  which avconv
-  ffmpeg -codecs
   python test/test.py
 }
 
