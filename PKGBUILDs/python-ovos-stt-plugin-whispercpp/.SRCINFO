@@ -4,7 +4,7 @@ pkgbase = python-ovos-stt-plugin-whispercpp
 	pkgrel = 01
 	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-whispercpp/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
@@ -15,6 +15,6 @@ pkgbase = python-ovos-stt-plugin-whispercpp
 	depends = python-speechrecognition>=3.8.1
 	depends = python-whispercpp>=0.0.1
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-whispercpp/archive/0a962e748a6dfcb9c5c00d13ecb0c60f9934feea.tar.gz
-	sha256sums = 375f983e2783f7ff247a813de88333685e76b334bba0d888a5239fe77a63fe9a
+	sha256sums = 945194f19286cf1f48706935d4a24b52e70d8d454e69cc7c2a82300bf6d09688
 
 pkgname = python-ovos-stt-plugin-whispercpp
