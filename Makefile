@@ -440,7 +440,7 @@ python-youtube-search:  PKGBUILDs-extra/python-youtube-search/*.pkg.tar.zst
 
 python-yt-dlp:  PKGBUILDs-extra/python-yt-dlp/*.pkg.tar.zst
 
-whisper.cpp: aur-repo AUR/whisper.cpp/*.pkg.tar.zst
+whisper.cpp:  PKGBUILDs-extra/whisper.cpp/*.pkg.tar.zst
 
 mycroft-gui-qt6-git: # Ignored
 
