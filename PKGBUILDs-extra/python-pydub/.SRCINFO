@@ -6,7 +6,6 @@ pkgbase = python-pydub
 	arch = any
 	license = MIT
 	makedepends = python-setuptools
-	makedepends = libfdk-aac
 	depends = python
 	depends = ffmpeg
 	optdepends = python-pyaudio: for playback
