@@ -24,6 +24,9 @@ build() {
 
 check() {
   cd "${_base}-${pkgver}"
+  which ffmpeg
+  which avconv
+  ffmpeg -codecs
   python test/test.py
 }
 
