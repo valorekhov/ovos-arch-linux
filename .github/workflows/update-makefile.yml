@@ -71,7 +71,7 @@ jobs:
           fi
           if git diff --name-only "${base_commit}..HEAD" -- aur.lock | grep -q 'aur.lock'; then
             echo "aur.lock changed."
-            make aur-lock
+            # make aur-lock
             echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
           fi
 
