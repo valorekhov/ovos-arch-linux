@@ -15,6 +15,12 @@ endif()
 
 add_subdirectory(pybind11)
 
+# -------------------------------------------
+# dependencies
+
+find_package(Threads REQUIRED)
+
+
 # -----------------
 pybind11_add_module(_pywhispercpp
 	${CPP_FILES}
@@ -26,3 +32,5 @@ pybind11_add_module(_pywhispercpp
 # define (VERSION_INFO) here.
 target_compile_definitions(_pywhispercpp
                            PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO})
+
+target_link_libraries(_pywhispercpp PRIVATE ${WHISPER_CPP_LIB} Threads::Threads)

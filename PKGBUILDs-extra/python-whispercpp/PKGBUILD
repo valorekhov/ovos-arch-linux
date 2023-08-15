@@ -4,7 +4,7 @@ pkgname=python-whispercpp
 _name=pywhispercpp
 _commit='b19b9d14cd72c3b7d3f8b3c9655b087ff0392b12'
 pkgver=1.1.2
-pkgrel=00
+pkgrel=01
 pkgdesc='Python bindings for whispercpp'
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/abdeladim-s/pywhispercpp/'
@@ -21,14 +21,14 @@ optdepends=(
     'python-webrtcvad>=2.0.10: for extra samples'
 )
 conflicts=()
-makedepends=(python-build python-installer python-wheel python-setuptools cmake)
+makedepends=(python-build python-installer python-wheel python-setuptools cmake ffmpeg)
 
 source=(
     "https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz"
     "CMakeLists.txt"
 )
 sha256sums=('a51e73bb260cbb214957ebbf8f0b0e77be24cb6a4729629230ad649b1ea4f693'
-            'ec18a4a46463b8af34fd5df253ecca2521a079f1eb20c07c27e1b2a2d5305fea')
+            '3b681f89e07a5caf44d2a2677798368b9d6261d546f55bf20ea52eb63bcc36e6')
 
 prepare() {
     cd "$srcdir"
@@ -59,11 +59,18 @@ build() {
 check() {
     cd "$_name-$_commit"
 
-    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
-    local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+    local so_path=$(find "$PWD/build" -name "_pywhispercpp.cpython-*.so" -printf "%h\n" | head -n 1)
+    export PYTHONPATH="$PYTHONPATH:$so_path:$PWD"
+    # echo "$PYTHONPATH"
 
-    # nosetests
-    # pytest
+    mkdir -p "$PWD/whisper.cpp/"{models,samples}
+
+    curl -L https://github.com/ggerganov/whisper.cpp/raw/master/models/for-tests-ggml-tiny.en.bin -o "$PWD/whisper.cpp/models/for-tests-ggml-tiny.en.bin"
+    # curl -L https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav -o "$PWD/whisper.cpp/samples/jfk.wav"
+    
+    python tests/test_c_api.py
+    # cd tests    
+    # python test_model.py
 }
 
 package() {
@@ -80,31 +87,7 @@ package() {
         chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
     fi
     
-    # Optional: Remove unused files or directories
-    # For example, removing unneeded binaries, license files, etc.
-    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
-    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
-
     # Search for license files in the original source directory
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
-    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
-
-
-################################################################################
-# #
-# # python-ovos-stt-plugin-whispercpp
-# #
-# ################################################################################
-# 
-# PYTHON_OVOS_STT_PLUGIN_WHISPERCPP_VERSION = 2eac10f51d6cc80c5d75894babbdc4f902d6273f
-# PYTHON_OVOS_STT_PLUGIN_WHISPERCPP_SITE = $(call github,OpenVoiceOS,ovos-stt-plugin-whispercpp,$(PYTHON_OVOS_STT_PLUGIN_WHISPERCPP_VERSION))
-# PYTHON_OVOS_STT_PLUGIN_WHISPERCPP_SETUP_TYPE = setuptools
-# PYTHON_OVOS_STT_PLUGIN_WHISPERCPP_ENV = MYCROFT_LOOSE_REQUIREMENTS=true
-# 
-# $(eval $(python-package))
-# 
-
-
-
