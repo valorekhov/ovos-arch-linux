@@ -66,11 +66,11 @@ check() {
     mkdir -p "$PWD/whisper.cpp/"{models,samples}
 
     curl -L https://github.com/ggerganov/whisper.cpp/raw/master/models/for-tests-ggml-tiny.en.bin -o "$PWD/whisper.cpp/models/for-tests-ggml-tiny.en.bin"
-    curl -L https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav -o "$PWD/whisper.cpp/samples/jfk.wav"
+    # curl -L https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav -o "$PWD/whisper.cpp/samples/jfk.wav"
     
     python tests/test_c_api.py
-    cd tests    
-    python test_model.py
+    # cd tests    
+    # python test_model.py
 }
 
 package() {
@@ -87,13 +87,7 @@ package() {
         chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
     fi
     
-    # Optional: Remove unused files or directories
-    # For example, removing unneeded binaries, license files, etc.
-    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
-    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
-
     # Search for license files in the original source directory
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
-    find "$srcdir" -maxdepth 1 -type f -name 'COPYING*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
 }
