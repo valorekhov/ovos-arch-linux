@@ -55,7 +55,7 @@ jobs:
             
             git diff --name-only --diff-filter=d "$base_commit..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt                        
             [array] $pkgbuilds = Get-Content -Path /tmp/changed_PKGBUILDs.txt
-            if ($pkgbuilds.Count -eq 0) {
+            if ($pkgbuilds.Count -gt 0) {
                 Write-Host "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
                 Write-Host "has_PKGBUILD_changes=true" 
                 "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
