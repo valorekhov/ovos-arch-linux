@@ -59,7 +59,7 @@ jobs:
                 Write-Host "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
                 Write-Host "has_PKGBUILD_changes=true" 
                 "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-                $json = $pkgbuilds | ConvertTo-Json -Compress
+                $json = ConvertTo-Json $pkgbuilds -Compress
                 Write-Host "pkgbuilds=$json"
                 "pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             }
@@ -72,7 +72,7 @@ jobs:
                 Write-Host "has_PKGBUILD_deletions=true" 
                 "has_PKGBUILD_deletions=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
                 "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-                $json = $deletions | ConvertTo-Json -Compress
+                $json = ConvertTo-Json $deletions -Compress
                 Write-Host "deleted_pkgbuilds=$json"
                 "deleted_pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             }
