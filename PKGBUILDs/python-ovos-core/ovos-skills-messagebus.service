@@ -10,7 +10,7 @@ Group=ovos
 Type=notify
 WorkingDirectory=/home/ovos
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/usr/bin/python /etc/systemd/system/ovos-skills-messagebus.d/ovos-systemd_skills_messagebus.py
+ExecStart=/home/ovos/.local/share/OpenVoiceOS/.venv/bin/python /etc/systemd/system/ovos-skills-messagebus.d/ovos-systemd_skills_messagebus.py
 StandardOutput=journal
 TimeoutStartSec=2m
 TimeoutStopSec=1m

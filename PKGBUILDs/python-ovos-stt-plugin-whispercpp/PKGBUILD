@@ -2,48 +2,47 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-stt-plugin-whispercpp
 pkgname=python-ovos-stt-plugin-whispercpp
 _name=ovos-stt-plugin-whispercpp
-_base_ver='2eac10f51d6cc80c5d75894babbdc4f902d6273f'
-pkgver=0.0.0a6
-pkgrel=1
+_commit='0a962e748a6dfcb9c5c00d13ecb0c60f9934feea'
+pkgver=0.0.0a8
+pkgrel=01
 pkgdesc='OVOS STT plugin for whispercpp'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-plugin-whispercpp/'
-license=('')
-depends=(python \
-'python-ovos-plugin-manager>=0.0.1' \
-'python-requests' \
-'python-speechrecognition>=3.8.1' \
+license=('Apache License 2.0')
+depends=(python
+'python-ovos-plugin-manager>=0.0.1'
+'python-requests'
+'python-speechrecognition>=3.8.1'
+'python-whispercpp>=0.0.1'
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=(
-   #python-ovos-stt-plugin-whispercpp-2eac10f51d6cc80c5d75894babbdc4f902d6273f.tar.gz \
-   375f983e2783f7ff247a813de88333685e76b334bba0d888a5239fe77a63fe9a)
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('945194f19286cf1f48706935d4a24b52e70d8d454e69cc7c2a82300bf6d09688')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -53,7 +52,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
