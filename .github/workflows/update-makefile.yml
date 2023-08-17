@@ -39,41 +39,51 @@ jobs:
       - name: Check for changes in PKGBUILD folders
         id: check_assets
         run: |
-          commit_message=$(git log -1 --pretty=%B)
-          if [[ $commit_message =~ "\#NoRebuild" ]]; then
-            echo "Skipping PKGBUILDs check due to #NoRebuild or [No Rebuild] in commit message"
-            echo "has_PKGBUILD_changes=false" >> $GITHUB_OUTPUT
-            echo "has_AUR_lock_changes=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+            $commit_message = git log -1 --pretty=%B
 
-          github_event_name=$(echo $GITHUB_EVENT_NAME | tr '[:upper:]' '[:lower:]') 
-          # if [ $github_event_name = "pull_request" ] ; then 
-          #   base_commit="main"
-          # else 
-            base_commit="${{ steps.last_successful_commit.outputs.base }}"
-          # fi 
-          echo "base_commit=$base_commit"
+            if ($commit_message -match "#NoRebuild") {
+                Write-Host "Skipping PKGBUILDs check due to #NoRebuild or [No Rebuild] in commit message"
+                Add-Content -Path $env:GITHUB_OUTPUT -Value "has_PKGBUILD_changes=false"
+                Add-Content -Path $env:GITHUB_OUTPUT -Value "has_AUR_lock_changes=false"
+                exit 0
+            }
+            
+            # $github_event_name = $env:GITHUB_EVENT_NAME.ToLower()
+            
+            $base_commit = $env:LAST_SUCCESSFUL_COMMIT_OUTPUTS_BASE
+            
+            Write-Host "base_commit=$base_commit"
+            
+            git diff --name-only --diff-filter=d "$base_commit..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > $env:TEMP\changed_PKGBUILDs.txt            
+            if (Select-String -Path $env:TEMP\changed_PKGBUILDs.txt -Pattern 'PKGBUILDs/|PKGBUILDs-extra/') {
+                Write-Host "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
+                $pkgbuilds = Get-Content -Path $env:TEMP\changed_PKGBUILDs.txt
+                Write-Host "has_PKGBUILD_changes=true" 
+                "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+                $json = $pkgbuilds | ConvertTo-Json -Compress
+                Write-Host "pkgbuilds=$json"
+                "pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            }
 
-          git diff --name-only "${base_commit}..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt
-          if grep -qE 'PKGBUILDs/|PKGBUILDs-extra/' /tmp/changed_PKGBUILDs.txt; then
-            echo "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
-            pkgbuilds=()
-            while IFS= read -r file; do
-              pkgbuilds+=("$file")
-              echo "Changed: $file"
-            done < /tmp/changed_PKGBUILDs.txt
-            echo "has_PKGBUILD_changes=true"
-            echo "has_PKGBUILD_changes=true" >> $GITHUB_OUTPUT
-            json=$(printf '%s\n' "${pkgbuilds[@]}" | jq -R . | jq -s -c .) # encode array as json
-            echo "pkgbuilds=$json"
-            echo "pkgbuilds=$json" >> $GITHUB_OUTPUT
-          fi
-          if git diff --name-only "${base_commit}..HEAD" -- aur.lock | grep -q 'aur.lock'; then
-            echo "aur.lock changed."
-            # make aur-lock
-            echo "has_AUR_lock_changes=true" >> $GITHUB_OUTPUT
-          fi
+            git diff --name-only --diff-filter=D "$base_commit..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > $env:TEMP\deleted_PKGBUILDs.txt
+            if (Select-String -Path $env:TEMP\changed_PKGBUILDs.txt -Pattern 'PKGBUILDs/|PKGBUILDs-extra/') {
+                Write-Host "PKGBUILDs deleted. Makefile will have to be rebuilt ..."
+                $pkgbuilds = Get-Content -Path $env:TEMP\deleted_PKGBUILDs.txt | %{ Split-Path ( Split-Path $_ -Parent ) -Leaf }
+                Write-Host "has_PKGBUILD_deletions=true" 
+                "has_PKGBUILD_deletions=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+                "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+                $json = $pkgbuilds | ConvertTo-Json -Compress
+                Write-Host "deleted_pkgbuilds=$json"
+                "deleted_pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            }
+            
+            if (git diff --name-only "$base_commit..HEAD" -- aur.lock | Select-String -Pattern 'aur.lock') {
+                Write-Host "aur.lock changed."
+                # make aur-lock
+                "has_AUR_lock_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            }
+          shell: pwsh
+        
 
       # A lot of ops in this workflow run on x86_64, so we optimize by caching the image
       - name: Cache makepkg image
@@ -93,12 +103,33 @@ jobs:
       - if: steps.makepkg-cached.outputs.cache-hit == 'true'
         run: docker load -i ~/image-cache/makepkg/amd64/image.tar
 
+      - name: "Process package deletions"
+        if: steps.check_assets.outputs.has_PKGBUILD_deletions == 'true' 
+        run: | 
+          docker run --rm  -v $PWD:/build \
+            -e INPUT_OPERATION=delete-packages \
+            -e INPUT_REPOURL='https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch' \
+            -e INPUT_PACKAGES='${{ steps.check_assets.outputs.deleted_pkgbuilds }}' \
+            ghcr.io/valorekhov/gha-makepkg-amd64:latest
+
+      - name: "Upload package deletions to Azure Blob Storage"
+        if: github.event_name != 'pull_request' && steps.check_assets.outputs.has_PKGBUILD_deletions == 'true' 
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.50.0
+          inlineScript: |
+            archs=("x86_64" "aarch64" "armv7h")
+            for arch in "${archs[@]}"
+            do
+              echo "Uploading DB for $arch..."
+              az storage blob upload-batch --account-name ovosarchlinuxpackages --destination ovos-arch --destination-path "$arch" --source ".repo/$arch" --pattern "ovos-arch.db*" --content-encoding "gzip" --overwrite  
+              echo "Uploaded DB files from .repo/$arch ..."
+            done 
+        env:
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+
       - name: "Check for changes in Makefile"
         if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
-        # uses: ghcr.io/valorekhov/gha-makepkg-amd64:latest
-        # with:
-        #   operation: makefile-update
-        #   packages: ${{ steps.check_assets.outputs.pkgbuilds }}
         run: | 
           docker run --rm  -v $PWD:/build \
             -e INPUT_OPERATION=makefile-update \
@@ -129,6 +160,7 @@ jobs:
 
     outputs:
       has_PKGBUILD_changes: ${{ steps.check_assets.outputs.has_PKGBUILD_changes }}
+      has_PKGBUILD_deletions: ${{ steps.check_assets.outputs.has_PKGBUILD_deletions }}
       has_AUR_lock_changes: ${{ steps.check_assets.outputs.has_AUR_lock_changes }}
       pkgbuilds: ${{ steps.check_assets.outputs.pkgbuilds }}
       commit_hash: ${{ steps.commit_changes.outputs.current_commit }}
@@ -189,20 +221,6 @@ jobs:
           -e INPUT_PACKAGES='${{ needs.check.outputs.pkgbuilds }}' \
           -e INPUT_REPOURL='https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch' \
           ghcr.io/valorekhov/gha-makepkg-amd64:latest
-
-    # - name: "Identifying prepared arch packages"
-    #   id: identify_available_packages
-    #   if: github.event_name != 'pull_request'
-    #   run: |
-    #     archs=("x86_64" "aarch64" "armv7h")
-    #     out_archs=()
-    #     for arch in "${archs[@]}"
-    #     do
-    #       if ls ".repo/$arch/"*.pkg.tar.* 1> /dev/null 2>&1 ; then
-    #         out_archs+=("$arch")
-    #       fi
-    #     done  
-    #     echo "upload_archs=${out_archs[@]}" >> $GITHUB_OUTPUT
 
     - name: "Upload packages to Azure Blob Storage"
       if: github.event_name != 'pull_request'
