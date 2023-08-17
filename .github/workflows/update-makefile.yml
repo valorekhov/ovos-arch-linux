@@ -31,7 +31,6 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v3
         id: last_successful_commit
-        # if: github.event_name != 'pull_request'
         with:
           main-branch-name: 'main'
           workflow-id: 'update-makefile.yml'
@@ -82,8 +81,7 @@ jobs:
                 # make aur-lock
                 "has_AUR_lock_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             }
-          shell: pwsh
-        
+        shell: pwsh        
 
       # A lot of ops in this workflow run on x86_64, so we optimize by caching the image
       - name: Cache makepkg image
