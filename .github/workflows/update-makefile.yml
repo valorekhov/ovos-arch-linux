@@ -53,10 +53,10 @@ jobs:
             
             Write-Host "base_commit=$base_commit"
             
-            git diff --name-only --diff-filter=d "$base_commit..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt            
-            if (Select-String -Path /tmp/changed_PKGBUILDs.txt -Pattern 'PKGBUILDs/|PKGBUILDs-extra/') {
+            git diff --name-only --diff-filter=d "$base_commit..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/changed_PKGBUILDs.txt                        
+            [array] $pkgbuilds = Get-Content -Path /tmp/changed_PKGBUILDs.txt
+            if ($pkgbuilds.Count -eq 0) {
                 Write-Host "PKGBUILDs changed. .SCRINFO will be updated in the matrix task..."
-                $pkgbuilds = Get-Content -Path /tmp/changed_PKGBUILDs.txt
                 Write-Host "has_PKGBUILD_changes=true" 
                 "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
                 $json = $pkgbuilds | ConvertTo-Json -Compress
@@ -65,13 +65,14 @@ jobs:
             }
 
             git diff --name-only --diff-filter=D "$base_commit..HEAD" -- 'PKGBUILDs/*/PKGBUILD' 'PKGBUILDs-extra/*/PKGBUILD' > /tmp/deleted_PKGBUILDs.txt
-            if (Select-String -Path /tmp/changed_PKGBUILDs.txt -Pattern 'PKGBUILDs/|PKGBUILDs-extra/') {
+            [array] $deletions = Get-Content -Path /tmp/deleted_PKGBUILDs.txt
+            if ($deletions.Count -gt 0) {
                 Write-Host "PKGBUILDs deleted. Makefile will have to be rebuilt ..."
-                $pkgbuilds = Get-Content -Path /tmp/deleted_PKGBUILDs.txt | %{ Split-Path ( Split-Path $_ -Parent ) -Leaf }
+                $deletions = $deletions | %{ Split-Path ( Split-Path $_ -Parent ) -Leaf }
                 Write-Host "has_PKGBUILD_deletions=true" 
                 "has_PKGBUILD_deletions=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
                 "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-                $json = $pkgbuilds | ConvertTo-Json -Compress
+                $json = $deletions | ConvertTo-Json -Compress
                 Write-Host "deleted_pkgbuilds=$json"
                 "deleted_pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             }
