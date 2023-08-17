@@ -49,7 +49,7 @@ jobs:
             
             # $github_event_name = $env:GITHUB_EVENT_NAME.ToLower()
             
-            $base_commit = $env:LAST_SUCCESSFUL_COMMIT_OUTPUTS_BASE
+            $base_commit = $env:NX_BASE
             
             Write-Host "base_commit=$base_commit"
             
