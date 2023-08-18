@@ -71,7 +71,6 @@ jobs:
                 $deletions = $deletions | %{ Split-Path ( Split-Path $_ -Parent ) -Leaf }
                 Write-Host "has_PKGBUILD_deletions=true" 
                 "has_PKGBUILD_deletions=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-                "has_PKGBUILD_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
                 $json = ConvertTo-Json $deletions -Compress
                 Write-Host "deleted_pkgbuilds=$json"
                 "deleted_pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
@@ -136,7 +135,7 @@ jobs:
             ghcr.io/valorekhov/gha-makepkg-amd64:latest
 
       - name: Rebuild Makefile
-        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
+        if: steps.check_assets.outputs.has_PKGBUILD_changes == 'true' || steps.check_assets.outputs.has_PKGBUILD_deletions == 'true' || steps.check_assets.outputs.has_AUR_lock_changes == 'true'
         id: rebuild_makefile
         run: ./tools/generate-makefile.ps1 -SkipSrcInfoCheck
         shell: pwsh
