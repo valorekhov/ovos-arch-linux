@@ -143,3 +143,20 @@ Fix this by either running `pacman -U` to the files located in the package folde
 Consider how OVOS will communicate with the sound system. `ovos-enclosure-rpi4-mark2` makes an opinionated choice to use `ovos-enclosure-audio-pulse`, which provides multi-seat Pulse Server functionality appropriate
 for embedded systems. However, `ovos-enclosure-base` installs make no such choice leaving it up to the user to decide how to configure the sound system. 
 
+### Installing Skills
+The official OVOS skills, which are few, may be installed directly using `pacman`, for example:
+```sh
+pacman -S ovos-official-skill-weather
+```
+
+For user-contributed skills, you may use `osm` to install them. The `python-ovos-core` package has been configured to provision
+a virtual environment for use of the skills manager and skills message bus. It also patches the `osm` command to use the same virtual environment: ```/home/ovos/.local/share/OpenVoiceOS/.venv```. Due to a yet-to-be-resolved issue with ovos-core file locking, if you intened to run `osm` as a user other than `ovos`, the best way to execute it is to use `sudo su`, i.e.:
+
+```sh
+sudo su - ovos -c "osm install https://github.com/NeonGeckoCom/skill-ip_address"
+```
+
+Follow the installation using either method, be sure to restart the `ovos-skill-manager` service to pick up the new skills:
+```sh
+sudo systemctl restart ovos-skills-messagebus
+```

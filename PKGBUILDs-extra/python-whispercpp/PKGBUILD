@@ -1,0 +1,93 @@
+_gh_org=abdeladim-s
+_gh_proj=pywhispercpp
+pkgname=python-whispercpp
+_name=pywhispercpp
+_commit='b19b9d14cd72c3b7d3f8b3c9655b087ff0392b12'
+pkgver=1.1.2
+pkgrel=01
+pkgdesc='Python bindings for whispercpp'
+arch=('x86_64' 'aarch64' 'armv7h')
+url='https://github.com/abdeladim-s/pywhispercpp/'
+license=('MIT')
+depends=(python "whisper.cpp"
+'python-numpy'
+'python-pydub>=0.25.1'
+'python-requests>=2.28.2'
+'python-tqdm>=4.65.0'
+'python-platformdirs>=3.1.1'
+)
+optdepends=(
+    'python-sounddevice>=0.4.6: for extra samples'
+    'python-webrtcvad>=2.0.10: for extra samples'
+)
+conflicts=()
+makedepends=(python-build python-installer python-wheel python-setuptools cmake ffmpeg)
+
+source=(
+    "https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz"
+    "CMakeLists.txt"
+)
+sha256sums=('a51e73bb260cbb214957ebbf8f0b0e77be24cb6a4729629230ad649b1ea4f693'
+            '3b681f89e07a5caf44d2a2677798368b9d6261d546f55bf20ea52eb63bcc36e6')
+
+prepare() {
+    cd "$srcdir"
+    for patch in "../"*.patch; do
+        if [ -f "$patch" ]; then
+          echo "Applying patch $patch"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
+        fi
+    done
+
+    # Replace CmakeLists.txt with a custom one which treats whisper.cpp as an external library
+    cp "$srcdir/CMakeLists.txt" "$srcdir/$_name-$_commit/CMakeLists.txt"
+
+    # Replace `#include "../whisper.cpp/whisper.h"` with `#include <whisper.h>` in src/main.cpp
+    sed -i 's/#include "..\/whisper.cpp\/whisper.h"/#include <whisper.h>/g' "$srcdir/$_name-$_commit/src/main.cpp"
+}
+
+pkgver(){
+    cd "$srcdir/$_name-$_commit"
+    echo "$(python setup.py --version)"
+}
+
+build() {
+    cd "$_name-$_commit"
+    python -m build --wheel --no-isolation --skip-dependency-check
+}
+
+check() {
+    cd "$_name-$_commit"
+
+    local so_path=$(find "$PWD/build" -name "_pywhispercpp.cpython-*.so" -printf "%h\n" | head -n 1)
+    export PYTHONPATH="$PYTHONPATH:$so_path:$PWD"
+    # echo "$PYTHONPATH"
+
+    mkdir -p "$PWD/whisper.cpp/"{models,samples}
+
+    curl -L https://github.com/ggerganov/whisper.cpp/raw/master/models/for-tests-ggml-tiny.en.bin -o "$PWD/whisper.cpp/models/for-tests-ggml-tiny.en.bin"
+    # curl -L https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav -o "$PWD/whisper.cpp/samples/jfk.wav"
+    
+    python tests/test_c_api.py
+    # cd tests    
+    # python test_model.py
+}
+
+package() {
+    cd "$_name-$_commit"
+
+    echo "Installing $pkgname to $pkgdir"
+    # some packages produce multiple wheels, install the one specific to the version of the package
+    python -m installer --destdir="$pkgdir" dist/*$pkgver*.whl
+
+    # Optional: Copy documentation files
+    if [ -d "$srcdir/$pkgname/docs" ]; then
+        mkdir -p "$pkgdir/usr/share/doc/$pkgname"  # Create doc directory
+        cp -r "$srcdir/$pkgname/docs" "$pkgdir/usr/share/doc/$pkgname" || true
+        chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
+    fi
+    
+    # Search for license files in the original source directory
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
+}

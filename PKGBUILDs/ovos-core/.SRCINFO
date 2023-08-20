@@ -1,7 +1,7 @@
 pkgbase = ovos-core
 	pkgdesc = OpenVoiceOS Core Configuration Package
 	pkgver = 0.0.1
-	pkgrel = 02
+	pkgrel = 03
 	url = https://github.com/OpenVoiceOS
 	arch = any
 	license = Apache License 2.0

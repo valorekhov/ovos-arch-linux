@@ -60,6 +60,9 @@ create-repo:
 	fi
 	@cp /etc/pacman.conf "$(PACMAN_CONF)"
 	@printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = $(REPO_URI)" >> $(PACMAN_CONF)
+	@if [ -n "$(PACKAGE_CACHE_URI)" ] ; then \
+		sed -i 's|Include\s*=\s*/etc/pacman.d/mirrorlist|Server = $(PACKAGE_CACHE_URI)/\$$repo/os/\$$arch|' "$(PACMAN_CONF)"; \
+	fi
 	@cp "$(WORKSPACE_DIR)/tools/pkg-build/pacman-wrapper.sh" "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 	@sed -i 's|/etc/pacman.conf|$(PACMAN_CONF)|g' "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 	@chmod +x "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"

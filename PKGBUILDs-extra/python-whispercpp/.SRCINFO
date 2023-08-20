@@ -1,0 +1,30 @@
+pkgbase = python-whispercpp
+	pkgdesc = Python bindings for whispercpp
+	pkgver = 1.1.2
+	pkgrel = 01
+	url = https://github.com/abdeladim-s/pywhispercpp/
+	arch = x86_64
+	arch = aarch64
+	arch = armv7h
+	license = MIT
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	makedepends = python-setuptools
+	makedepends = cmake
+	makedepends = ffmpeg
+	depends = python
+	depends = whisper.cpp
+	depends = python-numpy
+	depends = python-pydub>=0.25.1
+	depends = python-requests>=2.28.2
+	depends = python-tqdm>=4.65.0
+	depends = python-platformdirs>=3.1.1
+	optdepends = python-sounddevice>=0.4.6: for extra samples
+	optdepends = python-webrtcvad>=2.0.10: for extra samples
+	source = https://github.com/abdeladim-s/pywhispercpp/archive/b19b9d14cd72c3b7d3f8b3c9655b087ff0392b12.tar.gz
+	source = CMakeLists.txt
+	sha256sums = a51e73bb260cbb214957ebbf8f0b0e77be24cb6a4729629230ad649b1ea4f693
+	sha256sums = 3b681f89e07a5caf44d2a2677798368b9d6261d546f55bf20ea52eb63bcc36e6
+
+pkgname = python-whispercpp

@@ -60,6 +60,9 @@ create-repo:
 	fi
 	@cp /etc/pacman.conf "$(PACMAN_CONF)"
 	@printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = $(REPO_URI)" >> $(PACMAN_CONF)
+	@if [ -n "$(PACKAGE_CACHE_URI)" ] ; then \
+		sed -i 's|Include\s*=\s*/etc/pacman.d/mirrorlist|Server = $(PACKAGE_CACHE_URI)/\$$repo/os/\$$arch|' "$(PACMAN_CONF)"; \
+	fi
 	@cp "$(WORKSPACE_DIR)/tools/pkg-build/pacman-wrapper.sh" "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 	@sed -i 's|/etc/pacman.conf|$(PACMAN_CONF)|g' "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
 	@chmod +x "$(REPO_ROOT)/pacman-wrapper-$(ARCH).sh"
@@ -166,7 +169,7 @@ python-espeak-phonemizer:  PKGBUILDs-extra/python-espeak-phonemizer/*.pkg.tar.zs
 
 python-filelock:  PKGBUILDs-extra/python-filelock/*.pkg.tar.zst
 
-python-gradio: python-uvicorn PKGBUILDs-extra/python-gradio/*.pkg.tar.zst
+python-gradio: python-pydub python-uvicorn PKGBUILDs-extra/python-gradio/*.pkg.tar.zst
 
 python-gruut: python-dateparser python-gruut-ipa python-gruut-lang-en python-num2words python-crfsuite-git PKGBUILDs-extra/python-gruut/*.pkg.tar.zst
 
@@ -324,7 +327,7 @@ python-ovos-stt-plugin-server: python-ovos-plugin-manager PKGBUILDs/python-ovos-
 
 python-ovos-stt-plugin-vosk: python-ovos-skill-installer python-ovos-plugin-manager python-speechrecognition python-vosk PKGBUILDs/python-ovos-stt-plugin-vosk/*.pkg.tar.zst
 
-python-ovos-stt-plugin-whispercpp: python-ovos-plugin-manager python-speechrecognition PKGBUILDs/python-ovos-stt-plugin-whispercpp/*.pkg.tar.zst
+python-ovos-stt-plugin-whispercpp: python-ovos-plugin-manager python-speechrecognition python-whispercpp PKGBUILDs/python-ovos-stt-plugin-whispercpp/*.pkg.tar.zst
 
 python-ovos-tts-plugin-marytts:  PKGBUILDs/python-ovos-tts-plugin-marytts/*.pkg.tar.zst
 
@@ -382,6 +385,8 @@ python-py-bandcamp: python-requests-cache PKGBUILDs-extra/python-py-bandcamp/*.p
 
 python-pyalsaaudio:  PKGBUILDs-extra/python-pyalsaaudio/*.pkg.tar.zst
 
+python-pydub:  PKGBUILDs-extra/python-pydub/*.pkg.tar.zst
+
 python-pytube:  PKGBUILDs-extra/python-pytube/*.pkg.tar.zst
 
 python-pywebio:  PKGBUILDs-extra/python-pywebio/*.pkg.tar.zst
@@ -430,11 +435,15 @@ python-vosk: python-srt PKGBUILDs-extra/python-vosk/*.pkg.tar.zst
 
 python-wallpaper-finder: python-bs4 python-requests-cache PKGBUILDs-extra/python-wallpaper-finder/*.pkg.tar.zst
 
+python-whispercpp: whisper.cpp python-pydub PKGBUILDs-extra/python-whispercpp/*.pkg.tar.zst
+
 python-xdgenvpy: aur-repo AUR/python-xdgenvpy/*.pkg.tar.zst
 
 python-youtube-search:  PKGBUILDs-extra/python-youtube-search/*.pkg.tar.zst
 
 python-yt-dlp:  PKGBUILDs-extra/python-yt-dlp/*.pkg.tar.zst
+
+whisper.cpp:  PKGBUILDs-extra/whisper.cpp/*.pkg.tar.zst
 
 mycroft-gui-qt6-git: # Ignored
 
