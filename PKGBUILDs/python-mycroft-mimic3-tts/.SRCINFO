@@ -1,9 +1,10 @@
 pkgbase = python-mycroft-mimic3-tts
-	pkgdesc = Mycroft mimic3; WIP. not ready. No support for arm64 due to unavailable `onnxruntime` on that arch
+	pkgdesc = Mycroft mimic3 TTS
 	pkgver = 0.2.4
-	pkgrel = 1
+	pkgrel = 02
 	url = https://github.com/MycroftAI/mimic3
 	arch = x86_64
+	arch = aarch64
 	license = AGPL3
 	makedepends = python-build
 	makedepends = python-installer
@@ -20,8 +21,9 @@ pkgbase = python-mycroft-mimic3-tts
 	depends = python-requests
 	depends = python-tqdm
 	depends = python-xdgenvpy
-	provides = python-mycroft-mimic3-tts
-	conflicts = python-mycroft-mimic3-tts
+	provides = mycroft-mimic3-tts
+	conflicts = mimic3
+	conflicts = mycroft-mimic3-tts
 	source = https://github.com/MycroftAI/mimic3/releases/download/release/v0.2.4/mycroft_mimic3_tts-0.2.4.tar.gz
 	sha256sums = 60cd282274c94967e11845b9127ff2eb7ba936341de0e231107297c0c70d2a27
 

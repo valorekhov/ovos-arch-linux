@@ -265,7 +265,7 @@ jobs:
         Write-Host "pkgbuilds=$json"
         "pkgbuilds=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
-        $archsToBuild = $pkgbuildsDict.Keys | Where-Object { $pkgbuildsDict["$_"].Count -gt 0 }
+        [array]$archsToBuild = $pkgbuildsDict.Keys | Where-Object { $pkgbuildsDict["$_"].Count -gt 0 }
 
         $json = ConvertTo-Json $archsToBuild -Compress
         Write-Host "archs=$json"

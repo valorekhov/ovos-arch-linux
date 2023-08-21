@@ -6,9 +6,9 @@ _gh_proj=mimic3
 pkgname=python-mycroft-mimic3-tts
 _name=mycroft_mimic3_tts
 pkgver=0.2.4
-pkgrel=1
-pkgdesc='Mycroft mimic3; WIP. not ready. No support for arm64 due to unavailable `onnxruntime` on that arch'
-arch=(x86_64)
+pkgrel=02
+pkgdesc='Mycroft mimic3 TTS'
+arch=(x86_64 aarch64)
 url='https://github.com/MycroftAI/mimic3'
 license=('AGPL3')
 depends=(python 
@@ -26,9 +26,9 @@ depends=(python
 "python-tqdm"
 "python-xdgenvpy"
 )
-conflicts=($pkgname)
 makedepends=(python-build python-installer python-wheel python-setuptools)
-provides=($pkgname)
+conflicts=('mimic3' 'mycroft-mimic3-tts')
+provides=('mycroft-mimic3-tts')
 
 source=("https://github.com/MycroftAI/mimic3/releases/download/release/v$pkgver/mycroft_mimic3_tts-$pkgver.tar.gz")
 sha256sums=('60cd282274c94967e11845b9127ff2eb7ba936341de0e231107297c0c70d2a27')
@@ -62,11 +62,6 @@ package() {
         chmod 644 "$pkgdir/usr/share/doc/$pkgname"/*.txt  || true # Set read permissions for documentation files
     fi
     
-    # Optional: Remove unused files or directories
-    # For example, removing unneeded binaries, license files, etc.
-    # rm "$pkgdir/usr/bin/unneeded_binary"  # Remove unneeded binary
-    # rm "$pkgdir/usr/share/doc/$pkgname/unneeded_license.txt"  # Remove unneeded license file
-
     # Search for license files in the original source directory
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     find "$srcdir" -maxdepth 2 -type f -name 'LICENSE*' -exec cp -t "$pkgdir/usr/share/licenses/$pkgname" {} +
