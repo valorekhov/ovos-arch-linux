@@ -1,5 +1,6 @@
-FROM library/archlinux:latest AS build
+FROM ghcr.io/valorekhov/archlinux-aarch64:base-devel AS build
 ARG REPO_URL=https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch
+ARG PACKAGE_CACHE_URI
 #ADD "ArchLinuxARM-latest.tar" /
 
 VOLUME /target
@@ -7,11 +8,9 @@ VOLUME /target
 WORKDIR /archlinux
 RUN mkdir -p /archlinux/rootfs
 
-RUN printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = ${REPO_URL}/\$arch" >> /etc/pacman.conf \
-    && tail /etc/pacman.conf && printf "\n\n" \
-    && echo "Server = http://mirror.umd.edu/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist 
+RUN printf "\n\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = ${REPO_URL}/\$arch\n" >> /etc/pacman.conf \
+    && if [ -n "${PACKAGE_CACHE_URI}" ]; then printf "#Modified\n\nServer = ${PACKAGE_CACHE_URI}\n" > /etc/pacman.d/mirrorlist ; fi
 
 RUN pacman-key --init &&  pacman -Sy --noconfirm arch-install-scripts 
-# qemu-img guestfs-tools
 
 CMD ["/usr/bin/bash"]

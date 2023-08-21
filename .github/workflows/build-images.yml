@@ -44,7 +44,8 @@ jobs:
           export BUILD_DATE=$(date -u +"%Y%m%d%H%M%S")
           echo "Building ${{ matrix.image }}"
           echo "Build dir: ${{ runner.temp }}/"
-          REPO_URL=https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch ./ISOs/${{ matrix.image }}/build.sh "${{ runner.temp }}/" "ovos-arch-$BUILD_DATE"
+          cd ISOs
+          REPO_URL=https://ovosarchlinuxpackages.blob.core.windows.net/ovos-arch ./ISOs/build-${{ matrix.image }}.sh "${{ runner.temp }}/" "ovos-arch-$BUILD_DATE"
       - name: upload-image
         if: ${{ steps.check-changes.outputs.skip }} != 'true'
         uses: azure/CLI@v1

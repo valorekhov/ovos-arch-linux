@@ -1,5 +1,4 @@
 base
-linux
 linux-firmware
 sudo
 nano
@@ -13,7 +12,7 @@ python-ovos-messagebus
 ovos-shell-standalone
 python-ovos-dinkum-listener
 python-ovos-microphone-plugin-alsa
-ovos-enclosure-audio-pulse
+ovos-enclosure-audio-pulse 
 python-ovos-tts-plugin-mimic3 
 python-ovos-stt-plugin-server
 python-ovos-ww-plugin-vosk 

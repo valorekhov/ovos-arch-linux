@@ -2,14 +2,19 @@ TARGET_DIR=${1:-/target}
 TARGET_NAME=${2:-ovos-arch}
 SIZE_MB=${3:-8192}
 
-source ../common/img-build.sh
+source ../../common/img-build.sh
 
-docker build -t archlinux-install-builder -f Containerfile .
+if [ -n "$PACKAGE_CACHE_URI" ]; then
+    PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI/\$repo/os/\$arch"
+    echo "Using package cache: $PACKAGE_CACHE_URI"
+fi
+
+docker build --build-arg PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI" -t archlinux-install-builder -f Containerfile .
 
 prepare_image $TARGET_DIR $SIZE_MB efi
 
 sudo cp -r ./overlay/* /tmp/docker-build/
-docker run --privileged -v $PWD:/scripts -v $PWD/../../common:/scripts-common -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh 
+docker run --privileged -e PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI" -v $PWD:/scripts -v $PWD/../../common:/scripts-common -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh 
 sudo cp -r ./overlay_overrides/* /tmp/docker-build/
 
 # sudo cp -r /tmp/docker-build-rootfs/rootfs/* /tmp/docker-build/

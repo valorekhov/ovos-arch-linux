@@ -1,7 +1,7 @@
 function prepare_image(){
     local target_dir=${1:-/target}
     local size_mb=${2:-8192}
-    local boot_mount_point={3:-boot}
+    local boot_mount_point=${3:-boot}
 
     mkdir -p $target_dir/
     dd if=/dev/zero of=$target_dir/ovos-arch.raw bs=1M count=$size_mb
@@ -19,7 +19,7 @@ function prepare_image(){
 }
 
 function unmount_image(){
-    local boot_mount_point={2:-boot}
+    local boot_mount_point=${2:-boot}
     sync
     sudo umount "/tmp/docker-build/$boot_mount_point" 
     sudo umount /tmp/docker-build
