@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-/tmp/customize-common.sh
+/root/customize-common.sh
 
 /usr/bin/systemctl enable pulseaudio.service || echo "pulseaudio.service not found"
 

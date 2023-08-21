@@ -14,7 +14,8 @@ pacstrap -K /archlinux/rootfs \
         "${PACKAGES[@]}" \
         "${PACKAGE_EXTRAS[@]}"
 
-cp /scripts/customize.sh /tmp/customize.sh
-cp /scripts-common/customize.sh /tmp/customize-common.sh
-arch-chroot /archlinux/rootfs /tmp/customize.sh
-# rm /tmp/customize*.sh
+cp /scripts/customize.sh /archlinux/rootfs/root/customize.sh
+cp /scripts-common/customize.sh /archlinux/rootfs/root/customize-common.sh
+ls /archlinux/rootfs/root/*
+arch-chroot /archlinux/rootfs /root/customize.sh
+rm /archlinux/rootfs/root/customize*.sh

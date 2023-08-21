@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 locale-gen  
