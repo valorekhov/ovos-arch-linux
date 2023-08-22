@@ -14,7 +14,7 @@ docker build --build-arg PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI" -t archlinux-ins
 prepare_image $TARGET_DIR $SIZE_MB efi
 
 sudo cp -r ./overlay/* /tmp/docker-build/
-docker run --privileged -e PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI" -v $PWD:/scripts -v $PWD/../../common:/scripts-common -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh 
+docker run --privileged -e PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI" -e REPO_URL="$REPO_URL" -v $PWD:/scripts -v $PWD/../../common:/scripts-common -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh 
 sudo cp -r ./overlay_overrides/* /tmp/docker-build/
 
 # sudo cp -r /tmp/docker-build-rootfs/rootfs/* /tmp/docker-build/

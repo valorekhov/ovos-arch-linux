@@ -1,7 +1,7 @@
 FLAVOR=${1:-generic}
 echo "Building flavor: $FLAVOR"
 
-PACKAGE_EXTRAS="raspberrypi-bootloader linux-rpi python-ovos-stt-plugin-server"
+PACKAGE_EXTRAS="python-ovos-stt-plugin-server"
 
 # for mark2 we need to install the ovos-enclosure-rpi4-mark2 and ovos-shell-standalone package 
 if [ "$FLAVOR" == "mark2" ]; then
@@ -23,8 +23,9 @@ fi
 echo "Packages to install: $ENCLOSURE_BASE ${PACKAGES[@]} ${PACKAGE_EXTRAS[@]}"
 
 pacstrap -K /archlinux/rootfs \
-        "$ENCLOSURE_BASE" \
+        raspberrypi-bootloader linux-rpi \ # bootloader and kernel need to be listed first in order to install /boot/config.txt which later gets customized by enclosure packages
         "${PACKAGES[@]}" \
+        "$ENCLOSURE_BASE" \
         "${PACKAGE_EXTRAS[@]}"
 
 # pacstrap -K /archlinux/rootfs \

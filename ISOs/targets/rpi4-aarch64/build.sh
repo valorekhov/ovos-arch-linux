@@ -15,7 +15,7 @@ docker build  --platform=linux/aarch64 --build-arg PACKAGE_CACHE_URI="$PACKAGE_C
 prepare_image $TARGET_DIR $SIZE_MB boot
 
 sudo cp -r ./overlay/* /tmp/docker-build/
-docker run --privileged -e PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI" -v $PWD:/scripts -v $PWD/../../common:/scripts-common -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh "$FLAVOR"
+docker run --privileged -e PACKAGE_CACHE_URI="$PACKAGE_CACHE_URI" -e REPO_URL="$REPO_URL" -v $PWD:/scripts -v $PWD/../../common:/scripts-common -v /tmp/docker-build/:/archlinux/rootfs archlinux-install-builder bash /scripts/install.sh "$FLAVOR"
 sudo cp -r ./overlay_overrides/* /tmp/docker-build/
 
 unmount_image boot

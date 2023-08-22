@@ -3,7 +3,7 @@
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 locale-gen  
 
-# printf "\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = ${REPO_URL}/\$arch" >> /etc/pacman.conf 
+printf "\n[ovos-arch]\nSigLevel = Optional TrustAll\nServer = ${REPO_URL}/\$arch" >> /etc/pacman.conf 
 printf "\nStorage=Volatile\n" >> /etc/systemd/journald.conf
 
 /usr/bin/systemctl enable sshd.service 
