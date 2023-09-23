@@ -3,38 +3,49 @@ _gh_proj=ovos-listener
 pkgname=python-ovos-listener
 _name=ovos-listener
 _unit_name="ovos-listener-messagebus"
-_base_ver='2d6ba2b6dbfae1c48c1833079d4aa94fa5cf6af5'
-pkgver=0.0.2a12
-pkgrel=1
+_commit='2942faa0daddd219e6dd14a7d356b0ea85a3dd26'
+pkgver='0.0.2'
+pkgrel=00
 pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-listener/'
 license=('')
 depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
-'python-ovos-backend-client>=0.0.7a2' #>=0.0.7a2,~=0.0 \
-'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
-'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
-'python-ovos-plugin-manager>=0.0.23a5' #>=0.0.23a5,~=0.0 \
-'python-ovos-stt-plugin-server>=0.0.2' #>=0.0.2,~=0.0 \
-'python-ovos-stt-plugin-vosk' \
-'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
-'python-ovos-vad-plugin-webrtcvad' \
-'python-ovos-ww-plugin-pocketsphinx>=0.1.3' #>=0.1.3,~=0.1 \
-'python-ovos-ww-plugin-precise-lite>=0.1.2a3' #>=0.1.2a3,~=0.1 \
-'python-ovos-ww-plugin-vosk' \
-'python-pyaudio' \
-'python-speechrecognition>=3.8.1' \
 )
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name")
 conflicts=("$_unit_name")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-backend-client>=0.0.7a2' # ovos_backend_client>=0.0.7a2,~=0.0
+'python-ovos-bus-client>=0.0.3a16' # ovos-bus-client>=0.0.3a16,~=0.0
+'python-ovos-config>=0.0.8a3' # ovos-config>=0.0.8a3,~=0.0
+'python-ovos-plugin-manager>=0.0.23a5' # ovos-plugin-manager>=0.0.23a5,~=0.0
+'python-ovos-stt-plugin-server>=0.0.2' # ovos-stt-plugin-server>=0.0.2,~=0.0
+'python-ovos-stt-plugin-vosk>=0.1' # ovos-stt-plugin-vosk~=0.1
+'python-ovos-utils>=0.0.31a3' # ovos-utils>=0.0.31a3,~=0.0
+'python-ovos-vad-plugin-webrtcvad' # ovos-vad-plugin-webrtcvad
+'python-ovos-ww-plugin-pocketsphinx>=0.1.3' # ovos-ww-plugin-pocketsphinx>=0.1.3,~=0.1
+'python-ovos-ww-plugin-precise-lite>=0.1.2a3' # ovos-ww-plugin-precise-lite>=0.1.2a3,~=0.1
+'python-ovos-ww-plugin-vosk' # ovos-ww-plugin-vosk
+'python-pyaudio>=0.2' # PyAudio~=0.2
+'python-speechrecognition>=3.8.1' # SpeechRecognition>=3.8.1
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "$_unit_name.service" \
     "ovos-systemd_listener_messagebus.py" \
     # "python-ovos-listener.install" \
 )
-sha256sums=('ea4b70b9c932820820d8daf26cc4251b0e8b248b70a0e1c549ecdd375a960449'
+sha256sums=('04df26baac28e9049acc8344bd82cf6890f32ad6ce917bbe43b013aa0c442be4'
             'd6bed399ddbe1dc07b23cd753656a696afb294a3b0cc4983526f3ba5f50f2be3'
             '8dce510650ec2ff5f209c126ad72105a31277069345ce472f7aa710e48840fc8')
 
@@ -43,23 +54,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -69,7 +80,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -114,6 +125,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
