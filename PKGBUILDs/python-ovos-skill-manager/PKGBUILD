@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos_skill_manager
 pkgname=python-ovos-skill-manager
 _name=ovos_skill_manager
-_base_ver='1a749aed214b4274097b8fcea5ca2984f76b000d'
-pkgver=0.0.13a2
-pkgrel=1
+_commit='c6c1264424b942733f5f9888206b09f793e11ac7'
+pkgver='0.0.13'
+pkgrel=00
 pkgdesc='Skill installer for OVOS. Install skills from any appstore!
 
 The mycroft-skills-manager alternative that is not vendor locked,
@@ -16,48 +16,59 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_skill_manager/'
 license=('')
 depends=(python \
-'python-bs4' \
-'python-click' \
-'python-click-default-group>=1.2.2' \
-'python-combo-lock' \
-'python-json-database' \
-'python-ovos-config>=0.0.3' #>=0.0.3,~=0.0 \
-'python-ovos-skill-installer>=0.0.5' \
-'python-ovos-utils' \
-'python-packaging' \
-'python-pako>=0.2.3' \
-'python-yaml' \
-'python-requests' \
-'python-requests-cache' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=('9d90f42a8b70aeeda69ec42b3086a76a3011a8064c0acc6653624f83b4884dac')
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-bs4' # bs4
+'python-click-default-group>=1.2.2' # click-default-group>=1.2.2
+'python-click' # click
+'python-combo-lock>=0.2' # combo-lock~=0.2
+'python-json-database>=0.7' # json_database~=0.7
+'python-ovos-config>=0.0.3' # ovos_config>=0.0.3,~=0.0
+'python-ovos-skill-installer>=0.0.5' # ovos_skill_installer>=0.0.5
+'python-ovos-utils>=0.0.15' # ovos_utils~=0.0.15
+'python-packaging' # packaging
+'python-pako>=0.2.3' # pako>=0.2.3
+'python-requests-cache' # requests-cache
+'python-requests' # requests
+'python-yaml>=5.4.0' # PyYAML<7.0,>=5.4.0
+)
+conflicts+=(
+'python-yaml>=7.0' # PyYAML<7.0,>=5.4.0
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('2fe097344b0c550785bc77871bd96438bf1f0d23b9f79da73f54eeb8b6878457')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -67,7 +78,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -106,6 +117,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
