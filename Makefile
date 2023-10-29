@@ -217,7 +217,7 @@ python-ovos-classifiers: python-ovos-utils PKGBUILDs/python-ovos-classifiers/*.p
 
 python-ovos-cli-client: python-ovos-utils python-ovos-bus-client PKGBUILDs/python-ovos-cli-client/*.pkg.tar.zst
 
-python-ovos-config: python-combo-lock python-ovos-utils python-rich-click PKGBUILDs/python-ovos-config/*.pkg.tar.zst
+python-ovos-config: python-combo-lock python-rich-click PKGBUILDs/python-ovos-config/*.pkg.tar.zst
 
 python-ovos-config-assistant: python-cutecharts python-ovos-backend-client python-ovos-utils python-pywebio PKGBUILDs/python-ovos-config-assistant/*.pkg.tar.zst
 
