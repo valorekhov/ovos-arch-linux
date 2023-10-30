@@ -17,6 +17,7 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
+'python-ovos-utils' # ovos-utils<0.1.0
 'python-combo-lock>=0.2' # combo_lock~=0.2
 'python-dateutil>=2.6' # python-dateutil~=2.6
 'python-rich-click>=1.6' # rich-click~=1.6
