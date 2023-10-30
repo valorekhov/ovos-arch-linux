@@ -14,9 +14,8 @@ Do not install random skills, different appstores have
 different policies!'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_skill_manager/'
-license=('')
-depends=(python \
-)
+license=('Apache License 2.0')
+depends=(python)
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
