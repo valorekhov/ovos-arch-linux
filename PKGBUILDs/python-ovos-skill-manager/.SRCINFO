@@ -1,29 +1,30 @@
 pkgbase = python-ovos-skill-manager
 	pkgdesc = Skill installer for OVOS. Install skills from any appstore! The mycroft-skills-manager alternative that is not vendor locked, this means you must use it responsibly! Do not install random skills, different appstores have different policies!
-pkgver = 0.0.13
-pkgrel = 00
+	pkgver = 0.0.13
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos_skill_manager/
 	arch = any
-	license = 
+	license = Apache License 2.0
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-wheel
 	makedepends = python-setuptools
 	depends = python
 	depends = python-bs4
-	depends = python-click
 	depends = python-click-default-group>=1.2.2
-	depends = python-combo-lock
-	depends = python-json-database
+	depends = python-click
+	depends = python-combo-lock>=0.2
+	depends = python-json-database>=0.7
 	depends = python-ovos-config>=0.0.3
 	depends = python-ovos-skill-installer>=0.0.5
-	depends = python-ovos-utils
+	depends = python-ovos-utils>=0.0.15
 	depends = python-packaging
 	depends = python-pako>=0.2.3
-	depends = python-yaml
-	depends = python-requests
 	depends = python-requests-cache
-	source = https://github.com/OpenVoiceOS/ovos_skill_manager/archive/1a749aed214b4274097b8fcea5ca2984f76b000d.tar.gz
+	depends = python-requests
+	depends = python-yaml>=5.4.0
+	conflicts = python-yaml>=7.0
+	source = https://github.com/OpenVoiceOS/ovos_skill_manager/archive/c6c1264424b942733f5f9888206b09f793e11ac7.tar.gz
 	sha256sums = 2fe097344b0c550785bc77871bd96438bf1f0d23b9f79da73f54eeb8b6878457
 
 pkgname = python-ovos-skill-manager
