@@ -2,50 +2,59 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-config
 pkgname=python-ovos-config
 _name=ovos-config
-_base_ver='e98503435b1c34165362a1881f4c88a41029039a'
-pkgver=0.0.10
-pkgrel=4
+_commit='22627c5a6ef09a3618e371407a7f16a5bc7b83ba'
+pkgver='0.0.11'
+pkgrel=00
 pkgdesc='helper package to interact with mycroft config'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-config/'
 license=('Apache License 2.0')
-depends=(python \
-'python-combo-lock' \
-'python-ovos-utils' \
-'python-dateutil' \
-'python-yaml>=5.4.0' #<7.0.0,>=5.4.0 \
-'python-rich-click' \
-'python-watchdog' \
-)
-conflicts=( 'python-ovos-utils>=0.1.0' \
- 'python-yaml>=7.0.0')
+depends=(python)
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=('9f27c138c18f9bb065741dc18d3290afac3bc2af09b5d0d340b006c0c5909a1e')
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-utils' # ovos-utils<0.1.0
+'python-combo-lock>=0.2' # combo_lock~=0.2
+'python-dateutil>=2.6' # python-dateutil~=2.6
+'python-rich-click>=1.6' # rich-click~=1.6
+'python-yaml>=5.4.0' # PyYAML<7.0.0,>=5.4.0
+)
+conflicts+=(
+'python-ovos-backend-client>=0.1.0' # ovos_backend_client<0.1.0; extra == "extras"
+'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0
+'python-yaml>=7.0.0' # PyYAML<7.0.0,>=5.4.0
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('8ba0ddadc8953dc8a5acf727c9095e8f42f4314373c8f1d3fab29e415031d97c')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -55,7 +64,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -94,6 +103,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
