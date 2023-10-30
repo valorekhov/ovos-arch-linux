@@ -7,6 +7,7 @@ pkgbase = python-ovos-config
 	license = Apache License 2.0
 	depends = python
 	depends = python-watchdog
+	depends = python-ovos-utils
 	depends = python-combo-lock>=0.2
 	depends = python-dateutil>=2.6
 	depends = python-rich-click>=1.6
