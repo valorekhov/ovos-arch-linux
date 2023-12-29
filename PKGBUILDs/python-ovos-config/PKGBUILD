@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-config
 pkgname=python-ovos-config
 _name=ovos-config
-_commit='22627c5a6ef09a3618e371407a7f16a5bc7b83ba'
-pkgver='0.0.11'
+_commit='b8642104954fe45ea11af5d7c5534c68e8b61f45'
+pkgver='0.0.12'
 pkgrel=00
 pkgdesc='helper package to interact with mycroft config'
 arch=('any')
@@ -14,15 +14,14 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-ovos-utils' # ovos-utils<0.1.0
 'python-combo-lock>=0.2' # combo_lock~=0.2
 'python-dateutil>=2.6' # python-dateutil~=2.6
+'python-ovos-utils>=0.0.37' # ovos-utils>=0.0.37
 'python-rich-click>=1.6' # rich-click~=1.6
 'python-yaml>=5.4.0' # PyYAML<7.0.0,>=5.4.0
 )
 conflicts+=(
 'python-ovos-backend-client>=0.1.0' # ovos_backend_client<0.1.0; extra == "extras"
-'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0
 'python-yaml>=7.0.0' # PyYAML<7.0.0,>=5.4.0
 )
 optdepends+=(
@@ -31,7 +30,7 @@ optdepends+=(
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('8ba0ddadc8953dc8a5acf727c9095e8f42f4314373c8f1d3fab29e415031d97c')
+sha256sums=('33bad676c9f155b3f68a84d430ab3be07313bdb2463f8d6242fd9ad32804bd7d')
 
 prepare() {
     cd "$srcdir"
