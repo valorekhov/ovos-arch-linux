@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-bus-client
 pkgname=python-ovos-bus-client
 _name=${pkgname#python-}
-_commit='2a9f83ef91de12f45960d290a03322bdafbaa485'
-pkgver='0.0.5'
-pkgrel=01
+_commit='1db597576d140f0ac2d3698da11c8dec8ec6390d'
+pkgver='0.0.8'
+pkgrel=00
 pkgdesc='This module is a simple interface for the mycroft
 messagebus and can be used to connect to ovos, send
 messages and react to messages sent by the OpenVoiceOS
@@ -21,14 +21,15 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-ovos-config>=0.0.8' # ovos-config<0.1.0,>=0.0.8
-'python-ovos-utils>=0.0.32' # ovos-utils<0.1.0,>=0.0.32
+'python-ovos-config>=0.0.12' # ovos-config<0.2.0,>=0.0.12
+'python-ovos-utils>=0.0.37' # ovos-utils<0.2.0,>=0.0.37
 'python-pyee>=8.1.0' # pyee<9.0.0,>=8.1.0
 'python-websocket-client>=0.54.0' # websocket-client>=0.54.0
 )
 conflicts+=(
-'python-ovos-config>=0.1.0' # ovos-config<0.1.0,>=0.0.8
-'python-ovos-utils>=0.1.0' # ovos-utils<0.1.0,>=0.0.32
+'python-ovos-config>=0.2.0' # ovos-config<0.2.0,>=0.0.12
+'python-ovos-utils>=0.2.0' # ovos-utils<0.2.0,>=0.0.37
+'python-pyee>=9.0.0' # pyee<9.0.0,>=8.1.0
 )
 optdepends+=(
 
@@ -37,7 +38,7 @@ optdepends+=(
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
    0001-Loosen-requirements.patch)
-sha256sums=('43f5d5214d903ab4b4bd479bd7eb12d8762c7bcdf78510d9a9449a012db1a1fb'
+sha256sums=('5418acca9f7ef960cefb9c8a38f83dc74826a370a08d44f808ac5a063b4b68fd'
             'd96be312783bbcb91a90337a409491055a08123ef6749befdebc7c93487550b3')
 
 prepare() {
