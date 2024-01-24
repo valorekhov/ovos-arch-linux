@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ocp-audio-plugin
 	pkgdesc = OVOS GUI mediaplayer plugin
-	pkgver = 0.0.5
-	pkgrel = 1
+pkgver = 0.0.6
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin/
 	arch = any
 	license = 
@@ -32,6 +32,6 @@ pkgbase = python-ovos-ocp-audio-plugin
 	conflicts = python-ovos-plugin-manager>=0.1.0
 	conflicts = python-ovos-utils>=0.1.0
 	source = https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin/archive/1b746a1c04b53405008ea7098d0e2ac515788301.tar.gz
-	sha256sums = 93cca2a79e67a8fecb6487e06d54158484c6727ef3cc8165b4ecca2ba967a4a8
+	sha256sums = 2855bf84a14ec15d8365d775bd3a82c263d0f8cece4dea11a124f11263260e3d
 
 pkgname = python-ovos-ocp-audio-plugin

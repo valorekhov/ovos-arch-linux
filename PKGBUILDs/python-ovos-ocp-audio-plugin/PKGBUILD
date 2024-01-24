@@ -2,33 +2,50 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ocp-audio-plugin
 pkgname=python-ovos-ocp-audio-plugin
 _name=ovos-ocp-audio-plugin
-_base_ver='1b746a1c04b53405008ea7098d0e2ac515788301'
-pkgver=0.0.5
-pkgrel=1
+_commit='c4d9ab64701930557c6aaefef0b4fbf13e27cd07'
+pkgver='0.0.6'
+pkgrel=00
 pkgdesc='OVOS GUI mediaplayer plugin'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-audio-plugin/'
 license=('')
 depends=(python \
 gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly ffmpeg
-'python-dbus-next' \
-'python-ovos-audio-plugin-simple' \
-'python-ovos-workshop>=0.0.11' #<0.1.0,>=0.0.11 \
-'python-ovos-bus-client>=0.0.3' #<0.1.0,>=0.0.3 \
-'python-ovos-ocp-files-plugin' \
-'python-ovos-plugin-manager>=0.0.22' #<0.1.0,>=0.0.22 \
-'python-ovos-utils>=0.0.32' #<0.1.0,>=0.0.32 \
-'python-padacioso>=0.1.1' #>=0.1.1,~=0.1 \
 )
 conflicts=( 'python-ovos-ocp-audio-plugin' \
- 'python-ovos-workshop>=0.1.0' \
- 'python-ovos-bus-client>=0.1.0' \
- 'python-ovos-plugin-manager>=0.1.0' \
- 'python-ovos-utils>=0.1.0')
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=('93cca2a79e67a8fecb6487e06d54158484c6727ef3cc8165b4ecca2ba967a4a8')
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-dbus-next' # dbus-next
+'python-ovos-bus-client>=0.0.7' # ovos-bus-client<0.1.0,>=0.0.7
+'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13
+'python-ovos-plugin-manager>=0.0.25' # ovos-plugin-manager<0.1.0,>=0.0.25
+'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
+'python-ovos-workshop>=0.0.15' # ovos_workshop<0.1.0,>=0.0.15
+'python-padacioso>=0.1.1' # padacioso>=0.1.1,~=0.1
+)
+conflicts+=(
+'python-ovos-audio-plugin-simple>=0.1.0' # ovos_audio_plugin_simple<0.1.0,>=0.0.2a3; extra == "extractors"
+'python-ovos-bus-client>=0.1.0' # ovos-bus-client<0.1.0,>=0.0.7
+'python-ovos-plugin-manager>=0.1.0' # ovos-plugin-manager<0.1.0,>=0.0.25
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
+'python-ovos-workshop>=0.1.0' # ovos_workshop<0.1.0,>=0.0.15
+)
+optdepends+=(
+'python-ovos-audio-plugin-simple>=0.0.2a3' # ovos_audio_plugin_simple<0.1.0,>=0.0.2a3; extra == "extractors"
+'python-ovos-ocp-bandcamp-plugin>=0.0.1' # ovos-ocp-bandcamp-plugin>=0.0.1,~=0.0; extra == "extractors"
+'python-ovos-ocp-deezer-plugin>=0.0.1' # ovos-ocp-deezer-plugin>=0.0.1,~=0.0; extra == "extractors"
+'python-ovos-ocp-m3u-plugin>=0.0.1' # ovos-ocp-m3u-plugin>0.0,>=0.0.1; extra == "extractors"
+'python-ovos-ocp-m3u-plugin>=0.0' # ovos-ocp-m3u-plugin>0.0,>=0.0.1; extra == "extractors"
+'python-ovos-ocp-news-plugin>=0.0.3' # ovos-ocp-news-plugin>=0.0.3,~=0.0; extra == "extractors"
+'python-ovos-ocp-rss-plugin>=0.0.2' # ovos-ocp-rss-plugin>=0.0.2,~=0.0; extra == "extractors"
+'python-ovos-ocp-youtube-plugin>=0.0.1' # ovos-ocp-youtube-plugin>=0.0.1,~=0.0; extra == "extractors"
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('2855bf84a14ec15d8365d775bd3a82c263d0f8cece4dea11a124f11263260e3d')
 
 provides=('python-ovos-plugin-common-play' 'python-ovos-ocp-audio-plugin')
 
@@ -37,23 +54,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -63,7 +80,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -101,6 +118,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
