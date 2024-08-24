@@ -9,7 +9,7 @@ pkgdesc='Unofficial python api for interaction with
 ovos-local-backend'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-backend-client/'
-license=('')
+license=('UNKNOWN')
 depends=(python \
 )
 conflicts=()
