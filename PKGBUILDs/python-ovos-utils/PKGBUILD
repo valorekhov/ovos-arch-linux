@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos_utils
 pkgname=python-ovos-utils
 _name=ovos-utils
-_commit='f92fe7ce18af3411b05615ebf88b487f98ad386c'
-pkgver='0.0.37'
+_commit='184c8cf6fb32fc3b0c4dabc8722eceb0bd5dc2fc'
+pkgver='0.0.38'
 pkgrel=00
 pkgdesc='collection of simple utilities for use
 across the mycroft ecosystem'
@@ -33,7 +33,7 @@ optdepends+=(
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('844d83b065e126010756592ec0456e87cba5171884b43ef0ad7f09d017cc4064')
+sha256sums=('25ef0c4f6ca57a9689727af141e35727367f66f1fdf38d4749f230981bb8cf65')
 
 prepare() {
     cd "$srcdir"
