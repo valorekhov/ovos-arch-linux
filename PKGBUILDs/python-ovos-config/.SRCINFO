@@ -15,7 +15,7 @@ pkgbase = python-ovos-config
 	depends = python-ovos-utils>=0.0.37
 	depends = python-rich-click>=1.6
 	depends = python-yaml>=5.4.0
-	conflicts = python-ovos-backend-client>=0.1.0
+	conflicts = python-ovos-backend-client>0.1.0
 	conflicts = python-yaml>=7.0.0
 	source = https://github.com/OpenVoiceOS/ovos-config/archive/b8642104954fe45ea11af5d7c5534c68e8b61f45.tar.gz
 	sha256sums = 33bad676c9f155b3f68a84d430ab3be07313bdb2463f8d6242fd9ad32804bd7d
