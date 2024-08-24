@@ -1,7 +1,7 @@
 pkgbase = mycroft-gui-qt5
 	pkgdesc = OVOS fork of `mycroft-gui`, the KDE-based visual interface for working with Mycroft. This is the stable version based on Qt5.
 	pkgver = 1.0.1
-	pkgrel = 1
+	pkgrel = 02
 	url = https://github.com/OpenVoiceOS/mycroft-gui-qt5
 	arch = x86_64
 	arch = aarch64
