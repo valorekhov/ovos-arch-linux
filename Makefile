@@ -161,6 +161,8 @@ python-dateparser: aur-repo python-tzlocal python-convertdate python-hijri-conve
 
 python-deezeridu:  PKGBUILDs-extra/python-deezeridu/*.pkg.tar.zst
 
+python-epitran: aur-repo python-marisa-trie python-panphon AUR/python-epitran/*.pkg.tar.zst
+
 python-espeak-phonemizer:  PKGBUILDs-extra/python-espeak-phonemizer/*.pkg.tar.zst
 
 python-filelock:  PKGBUILDs-extra/python-filelock/*.pkg.tar.zst
@@ -191,7 +193,7 @@ python-memory-tempfile:  PKGBUILDs-extra/python-memory-tempfile/*.pkg.tar.zst
 
 python-mycroft-messagebus-client:  PKGBUILDs/python-mycroft-messagebus-client/*.pkg.tar.zst
 
-python-mycroft-mimic3-tts: python-espeak-phonemizer python-gruut python-onnxruntime python-phonemes2ids python-xdgenvpy PKGBUILDs/python-mycroft-mimic3-tts/*.pkg.tar.zst
+python-mycroft-mimic3-tts: python-espeak-phonemizer python-epitran python-gruut python-onnxruntime python-phonemes2ids python-xdgenvpy PKGBUILDs/python-mycroft-mimic3-tts/*.pkg.tar.zst
 
 python-nested-lookup:  PKGBUILDs-extra/python-nested-lookup/*.pkg.tar.zst
 
