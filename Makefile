@@ -207,7 +207,7 @@ python-ovos-audio: ovos-core ovos-service-base python-ovos-messagebus python-sdn
 
 python-ovos-audio-plugin-simple: python-ovos-plugin-manager PKGBUILDs/python-ovos-audio-plugin-simple/*.pkg.tar.zst
 
-python-ovos-backend-client: python-json-database python-ovos-utils PKGBUILDs/python-ovos-backend-client/*.pkg.tar.zst
+python-ovos-backend-client: python-json-database python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-backend-client/*.pkg.tar.zst
 
 python-ovos-backend-manager: python-cutecharts python-ovos-personal-backend python-pywebio PKGBUILDs/python-ovos-backend-manager/*.pkg.tar.zst
 
@@ -217,7 +217,7 @@ python-ovos-classifiers: python-ovos-utils PKGBUILDs/python-ovos-classifiers/*.p
 
 python-ovos-cli-client: python-ovos-utils python-ovos-bus-client PKGBUILDs/python-ovos-cli-client/*.pkg.tar.zst
 
-python-ovos-config: python-ovos-utils python-combo-lock python-rich-click PKGBUILDs/python-ovos-config/*.pkg.tar.zst
+python-ovos-config: python-combo-lock python-ovos-utils python-rich-click PKGBUILDs/python-ovos-config/*.pkg.tar.zst
 
 python-ovos-config-assistant: python-cutecharts python-ovos-backend-client python-ovos-utils python-pywebio PKGBUILDs/python-ovos-config-assistant/*.pkg.tar.zst
 

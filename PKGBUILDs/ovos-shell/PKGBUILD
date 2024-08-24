@@ -13,7 +13,7 @@ arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/OpenVoiceOS/ovos-shell/'
 license=('Apache License 2.0')
 depends=(mycroft-gui 
-kio kio-extras plasma-framework 
+kio kio-extras plasma-framework5 
 qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base qt5-virtualkeyboard qt5-lottie
 breeze-icons
 python-ovos-gui-plugin-shell-companion

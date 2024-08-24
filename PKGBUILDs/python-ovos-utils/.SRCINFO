@@ -1,7 +1,7 @@
 pkgbase = python-ovos-utils
 	pkgdesc = collection of simple utilities for use across the mycroft ecosystem
-pkgver = 0.0.38
-pkgrel = 00
+  pkgver = 0.0.38
+  pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos_utils/
 	arch = any
 	license = Apache License 2.0

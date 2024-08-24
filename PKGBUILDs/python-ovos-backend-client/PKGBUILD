@@ -2,48 +2,62 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-backend-client
 pkgname=python-ovos-backend-client
 _name=ovos-backend-client
-_base_ver='1a746cee2fca3051415b51460a8a8f6897ee61da'
-pkgver=0.0.7a6
-pkgrel=1
+_commit='96c5e33ed520d5af4394373d8170503264ed90e1'
+pkgver='0.1.0'
+pkgrel=00
 pkgdesc='Unofficial python api for interaction with
 ovos-local-backend'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-backend-client/'
-license=('')
+license=('UNKNOWN')
 depends=(python \
-'python-json-database' \
-'python-ovos-utils>=0.0.25a7' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-json-database>=0.7' # json_database~=0.7
+'python-ovos-config>=0.0.12' # ovos_config>=0.0.12,~=0.0
+'python-ovos-utils>=0.0.37' # ovos_utils>=0.0.37,~=0.0
+)
+conflicts+=(
+
+)
+optdepends+=(
+'python-ovos-plugin-manager>=0.0.23' # ovos_plugin_manager>=0.0.23; extra == "offline"
+'python-speechrecognition>=3.8' # SpeechRecognition~=3.8; extra == "offline"
+'python-timezonefinder' # timezonefinder; extra == "offline"
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-backend-client-1a746cee2fca3051415b51460a8a8f6897ee61da.tar.gz \
-   dedf51d425346eb650f070da7416e66f67bae6c4a4048fe56e4e409f87cbc553)
+   0935514c651a7367683b8484c204151b6b85033a289bd943cb3973c411004309)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -53,7 +67,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -92,6 +106,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
