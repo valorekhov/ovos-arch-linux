@@ -19,7 +19,6 @@ conflicts+=("$pkgname")
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-id3parse>=0.1' # id3parse~=0.1
 'python-ovos-ocp-audio-plugin>=0.0' # ovos-plugin-common-play~=0.0
 'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13
 'python-ovos-skill-installer>=0.0.5' # ovos-skill-installer~=0.0.5
