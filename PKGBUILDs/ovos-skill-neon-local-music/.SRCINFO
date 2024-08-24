@@ -10,7 +10,6 @@ pkgbase = ovos-skill-neon-local-music
 	makedepends = python-wheel
 	makedepends = python-setuptools
 	depends = python
-	depends = python-id3parse>=0.1
 	depends = python-ovos-ocp-audio-plugin>=0.0
 	depends = python-ovos-ocp-files-plugin>=0.13
 	depends = python-ovos-skill-installer>=0.0.5
