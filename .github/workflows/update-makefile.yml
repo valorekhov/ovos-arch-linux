@@ -256,7 +256,7 @@ jobs:
         $original_pkgbuilds = '${{ needs.check.outputs.pkgbuilds }}' | ConvertFrom-Json
         Write-Host "original_pkgbuilds='$original_pkgbuilds'"
 
-        $pkgbuildsDict = ./tools/dep-updates/select-native-packages-to-build.ps1 -pkgbuilds $original_pkgbuilds -packageRepoDir ./.repo -nativeArchitectures @("aarch64", "armv7h")
+        $pkgbuildsDict = ./tools/dep-updates/select-native-packages-to-build.ps1 -pkgbuilds $original_pkgbuilds -packageRepoDir ./.repo -nativeArchitectures @("aarch64")
         
         # Convert the hashtable to JSON format
         $json = $pkgbuildsDict | ConvertTo-Json -Compress
