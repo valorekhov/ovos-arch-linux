@@ -157,6 +157,8 @@ python-crfsuite-git:  PKGBUILDs-extra/python-crfsuite-git/*.pkg.tar.zst
 
 python-cutecharts:  PKGBUILDs-extra/python-cutecharts/*.pkg.tar.zst
 
+python-dataclasses-json: aur-repo python-marshmallow-enum AUR/python-dataclasses-json/*.pkg.tar.zst
+
 python-dateparser: aur-repo python-tzlocal python-convertdate python-hijri-converter AUR/python-dateparser/*.pkg.tar.zst
 
 python-deezeridu:  PKGBUILDs-extra/python-deezeridu/*.pkg.tar.zst
@@ -193,7 +195,7 @@ python-memory-tempfile:  PKGBUILDs-extra/python-memory-tempfile/*.pkg.tar.zst
 
 python-mycroft-messagebus-client:  PKGBUILDs/python-mycroft-messagebus-client/*.pkg.tar.zst
 
-python-mycroft-mimic3-tts: python-espeak-phonemizer python-epitran python-gruut python-onnxruntime python-phonemes2ids python-xdgenvpy PKGBUILDs/python-mycroft-mimic3-tts/*.pkg.tar.zst
+python-mycroft-mimic3-tts: python-espeak-phonemizer python-dataclasses-json python-epitran python-gruut python-onnxruntime python-phonemes2ids python-xdgenvpy PKGBUILDs/python-mycroft-mimic3-tts/*.pkg.tar.zst
 
 python-nested-lookup:  PKGBUILDs-extra/python-nested-lookup/*.pkg.tar.zst
 
