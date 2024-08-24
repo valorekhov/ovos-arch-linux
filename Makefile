@@ -233,7 +233,7 @@ python-ovos-lingua-franca: python-quebra-frases PKGBUILDs/python-ovos-lingua-fra
 
 python-ovos-listener: ovos-core ovos-service-base python-ovos-messagebus python-sdnotify python-ovos-backend-client python-ovos-bus-client python-ovos-config python-ovos-plugin-manager python-ovos-stt-plugin-server python-ovos-stt-plugin-vosk python-ovos-utils python-ovos-vad-plugin-webrtcvad python-ovos-ww-plugin-pocketsphinx python-ovos-ww-plugin-precise-lite python-ovos-ww-plugin-vosk python-speechrecognition PKGBUILDs/python-ovos-listener/*.pkg.tar.zst
 
-python-ovos-messagebus: ovos-service-base python-sdnotify python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
+python-ovos-messagebus: ovos-service-base python-sdnotify python-ovos-bus-client python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-messagebus/*.pkg.tar.zst
 
 python-ovos-microphone-plugin-alsa: python-ovos-plugin-manager python-pyalsaaudio PKGBUILDs/python-ovos-microphone-plugin-alsa/*.pkg.tar.zst
 
@@ -243,7 +243,7 @@ python-ovos-microphone-plugin-sounddevice: python-ovos-plugin-manager python-spe
 
 python-ovos-notifications-service: python-mycroft-messagebus-client python-ovos-utils PKGBUILDs/python-ovos-notifications-service/*.pkg.tar.zst
 
-python-ovos-ocp-audio-plugin: python-ovos-audio-plugin-simple python-ovos-workshop python-ovos-bus-client python-ovos-ocp-files-plugin python-ovos-plugin-manager python-ovos-utils python-padacioso PKGBUILDs/python-ovos-ocp-audio-plugin/*.pkg.tar.zst
+python-ovos-ocp-audio-plugin: python-ovos-bus-client python-ovos-ocp-files-plugin python-ovos-plugin-manager python-ovos-utils python-ovos-workshop python-padacioso PKGBUILDs/python-ovos-ocp-audio-plugin/*.pkg.tar.zst
 
 python-ovos-ocp-bandcamp-plugin: python-ovos-ocp-audio-plugin python-py-bandcamp PKGBUILDs/python-ovos-ocp-bandcamp-plugin/*.pkg.tar.zst
 

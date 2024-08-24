@@ -1,7 +1,7 @@
 pkgbase = python-ovos-messagebus
 	pkgdesc = messagebus service, the nervous system of OpenVoiceOS
-pkgver = 0.0.4
-pkgrel = 00
+	pkgver = 0.0.4
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-messagebus/
 	arch = any
 	license = Apache License 2.0
@@ -12,12 +12,13 @@ pkgrel = 00
 	depends = ovos-service-base
 	depends = python
 	depends = python-sdnotify
-	depends = python-ovos-config>=0.0.8
-	depends = python-ovos-utils>=0.0.32
+	depends = python-ovos-bus-client>=0.0.7
+	depends = python-ovos-config>=0.0.12
+	depends = python-ovos-utils>=0.0.37
 	depends = python-tornado>=6.0.3
 	provides = ovos-messagebus-server
 	conflicts = ovos-bus-server
-	source = https://github.com/OpenVoiceOS/ovos-messagebus/archive/6c156753a29fd807ec2323b7f8995a60a29527ce.tar.gz
+	source = https://github.com/OpenVoiceOS/ovos-messagebus/archive/a23beba05639a15d27f9f9527f9606944b9a7d53.tar.gz
 	source = ovos-messagebus.service
 	source = ovos-systemd_messagebus.py
 	source = python-ovos-messagebus.install
