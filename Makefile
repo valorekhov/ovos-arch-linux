@@ -147,8 +147,6 @@ python-bitstruct:  PKGBUILDs-extra/python-bitstruct/*.pkg.tar.zst
 
 python-bs4:  PKGBUILDs-extra/python-bs4/*.pkg.tar.zst
 
-python-cattrs:  PKGBUILDs-extra/python-cattrs/*.pkg.tar.zst
-
 python-combo-lock: python-filelock python-memory-tempfile PKGBUILDs-extra/python-combo-lock/*.pkg.tar.zst
 
 python-convertdate: aur-repo AUR/python-convertdate/*.pkg.tar.zst
