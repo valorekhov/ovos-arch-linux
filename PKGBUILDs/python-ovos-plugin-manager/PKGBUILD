@@ -8,7 +8,7 @@ pkgrel=00
 pkgdesc='OPM can be used to search, install, load and create plugins for the OpenVoiceOS ecosystem!'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-plugin-manager/'
-license=('')
+license=('UNKNOWN')
 depends=(python \
 )
 conflicts=()
