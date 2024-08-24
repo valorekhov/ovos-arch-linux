@@ -1,7 +1,7 @@
 pkgbase = python-ovos-core
 	pkgdesc = OVOS-core is a backwards-compatible descendant of Mycroft-core, the central component of Mycroft
-	pkgver = 0.0.8a21
-	pkgrel = 03
+	pkgver = 0.0.8a129
+	pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-core/
 	install = ovos-skills.install
 	arch = any
@@ -16,7 +16,7 @@ pkgbase = python-ovos-core
 	depends = python-sdnotify
 	depends = python-adapt-parser>=1.0.0
 	depends = python-combo-lock>=0.2.2
-	depends = python-ovos-backend-client>=0.0.6
+	depends = python-ovos-backend-client>=0.1.0
 	depends = python-ovos-bus-client>=0.0.4a3
 	depends = python-ovos-workshop>=0.0.12a17
 	depends = python-ovos-classifiers>=0.0.0a3
@@ -31,7 +31,6 @@ pkgbase = python-ovos-core
 	provides = ovos-skills-messagebus
 	conflicts = python-adapt-parser>=2.0.0
 	conflicts = python-combo-lock>=0.3
-	conflicts = python-ovos-backend-client>=0.1.0
 	conflicts = python-ovos-bus-client>=0.1.0
 	conflicts = python-ovos-workshop>=0.1.0
 	conflicts = python-ovos-classifiers>=0.1.0
@@ -41,7 +40,7 @@ pkgbase = python-ovos-core
 	conflicts = python-requests>=3.0
 	conflicts = python-watchdog>=3.0
 	conflicts = ovos-skills-messagebus
-	source = https://github.com/OpenVoiceOS/ovos-core/archive/e4cabf257c278e183d5c77aaaa3c920028e4f51f.tar.gz
+	source = https://github.com/OpenVoiceOS/ovos-core/archive/9fa0b494ad45bddbd214ffb73349ce7da2dfac71.tar.gz
 	source = ovos-skills-messagebus.service
 	source = ovos-systemd_skills_messagebus.py
 	source = ovos-skills.install
