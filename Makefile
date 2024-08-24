@@ -207,7 +207,7 @@ python-ovos-audio: ovos-core ovos-service-base python-ovos-messagebus python-sdn
 
 python-ovos-audio-plugin-simple: python-ovos-plugin-manager PKGBUILDs/python-ovos-audio-plugin-simple/*.pkg.tar.zst
 
-python-ovos-backend-client: python-json-database python-ovos-utils PKGBUILDs/python-ovos-backend-client/*.pkg.tar.zst
+python-ovos-backend-client: python-json-database python-ovos-config python-ovos-utils PKGBUILDs/python-ovos-backend-client/*.pkg.tar.zst
 
 python-ovos-backend-manager: python-cutecharts python-ovos-personal-backend python-pywebio PKGBUILDs/python-ovos-backend-manager/*.pkg.tar.zst
 
