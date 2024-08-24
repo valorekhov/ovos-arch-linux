@@ -47,7 +47,7 @@ source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz"
     "ovos-systemd_skills_messagebus.py"
     "ovos-skills.install" 
 )
-sha256sums=('75d08ffe718700b3112225c2c1391c1b96d6c772839dd9522f63118033cb15ff'
+sha256sums=('45a999e3156c9a5c900cd3217a4fe6444ddc232200b036e690e368e4f06e8cfa'
             '8a9491bfc586cb801d0b904205f8e4f98a23333d48a717dccc0e62c5949398ad'
             'bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a'
             'ae8e3b0dd89e2c7bfff121bb6c6ac75632deafc3cacd776ee9e06cd6ba849270')
