@@ -1,7 +1,7 @@
 pkgbase = python-ovos-backend-client
 	pkgdesc = Unofficial python api for interaction with ovos-local-backend
 	pkgver = 0.1.0
-	pkgrel = 00
+	pkgrel = 01
 	url = https://github.com/OpenVoiceOS/ovos-backend-client/
 	arch = any
 	license = UNKNOWN
