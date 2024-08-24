@@ -21,7 +21,7 @@ depends+=(
 'python-yaml>=5.4.0' # PyYAML<7.0.0,>=5.4.0
 )
 conflicts+=(
-'python-ovos-backend-client>=0.1.0' # ovos_backend_client<0.1.0; extra == "extras"
+'python-ovos-backend-client>0.1.0' # ovos_backend_client<0.1.0; extra == "extras"
 'python-yaml>=7.0.0' # PyYAML<7.0.0,>=5.4.0
 )
 optdepends+=(
