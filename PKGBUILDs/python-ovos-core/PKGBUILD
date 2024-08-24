@@ -3,9 +3,9 @@ _gh_proj=ovos-core
 pkgname=python-ovos-core
 _name=ovos-core
 _unit_name_skills="ovos-skills-messagebus"
-_commit='e4cabf257c278e183d5c77aaaa3c920028e4f51f'
-pkgver=0.0.8a21
-pkgrel=03
+_commit='9fa0b494ad45bddbd214ffb73349ce7da2dfac71'
+pkgver=0.0.8a129
+pkgrel=00
 pkgdesc='OVOS-core is a backwards-compatible descendant of
 Mycroft-core, the central component of Mycroft'
 arch=('any')
@@ -14,7 +14,7 @@ license=('Apache')
 depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-adapt-parser>=1.0.0' #<2.0.0,>=1.0.0 \
 'python-combo-lock>=0.2.2' #<0.3,>=0.2.2 \
-'python-ovos-backend-client>=0.0.6' #<0.1.0,>=0.0.6 \
+'python-ovos-backend-client>=0.1.0' 
 'python-ovos-bus-client>=0.0.4a3' #<0.1.0,>=0.0.4a3 \
 'python-ovos-workshop>=0.0.12a17' #<0.1.0,>=0.0.12a17 \
 'python-ovos-classifiers>=0.0.0a3' #<0.1.0,>=0.0.0a3 \
@@ -29,7 +29,6 @@ depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify'
 )
 conflicts=( 'python-adapt-parser>=2.0.0' \
  'python-combo-lock>=0.3' \
- 'python-ovos-backend-client>=0.1.0' \
  'python-ovos-bus-client>=0.1.0' \
  'python-ovos-workshop>=0.1.0' \
  'python-ovos-classifiers>=0.1.0' \
