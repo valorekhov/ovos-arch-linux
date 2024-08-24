@@ -3,7 +3,7 @@ _gh_proj=ovos-shell
 pkgname=ovos-shell
 _commit='0f3335b0aa3a806b130a6a79299d79c75bc12c0e'
 pkgver=0.0.1
-pkgrel=01
+pkgrel=02
 pkgdesc='OpenVoiceOS Shell on EGLFS:
 	  This is a minimal shell which is intended 
 	  to run on low power hardware either as "single 
@@ -13,7 +13,7 @@ arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/OpenVoiceOS/ovos-shell/'
 license=('Apache License 2.0')
 depends=(mycroft-gui 
-kio kio-extras plasma-framework5 
+kio kio-extras plasma-framework5 libplasma
 qt5-websockets qt5-webview qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-webengine qt5-base qt5-virtualkeyboard qt5-lottie
 breeze-icons
 python-ovos-gui-plugin-shell-companion

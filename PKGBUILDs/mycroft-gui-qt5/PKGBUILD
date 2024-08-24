@@ -5,12 +5,12 @@ provides=("mycroft-gui")
 conflicts=("mycroft-gui")
 _commit='e3e87b22be62e009ff227a86d6e4731e4ad5a5d8'
 pkgver="1.0.1"
-pkgrel=1
+pkgrel=02
 pkgdesc='OVOS fork of `mycroft-gui`, the KDE-based visual interface for working with Mycroft. This is the stable version based on Qt5.'
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/OpenVoiceOS/mycroft-gui-qt5'
 license=('Apache License 2.0')
-depends=(kirigami2 kirigami-addons qt5-websockets qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-base)
+depends=(kirigami2 kirigami-addons5 qt5-websockets qt5-declarative qt5-multimedia qt5-quickcontrols2 qt5-base)
 optdepends=('qt5-lottie: QT5 animation support' 
 'qt5-webview: webview support')
 makedepends=(pkgconf cmake extra-cmake-modules kio kio-extras plasma-framework qt5-webview)
