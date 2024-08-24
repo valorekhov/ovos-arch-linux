@@ -5,7 +5,7 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-cattrs
 epoch=
-pkgver=22.2.0
+pkgver=23.2.3
 pkgrel=00
 pkgdesc='Composable complex class support for attrs and dataclasses.'
 arch=(any)
@@ -20,9 +20,9 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/43/3b/1d34fc4449174dfd2bc5ad7047a23edb6558b2e4b5a41b25a8ad6655c6c7/cattrs-22.2.0-py3-none-any.whl)
-md5sums+=(1eb78aa3630bd58db0957a15383b9695)
-noextract+=(cattrs-22.2.0-py3-none-any.whl)
+source+=(https://files.pythonhosted.org/packages/b3/0d/cd4a4071c7f38385dc5ba91286723b4d1090b87815db48216212c6c6c30e/cattrs-23.2.3-py3-none-any.whl)
+md5sums+=(a31b49378a0a2e5b17c8bc050ea53ac0)
+noextract+=(cattrs-23.2.3-py3-none-any.whl)
 source+=(LICENSE)
 md5sums+=(12efd5ce6c6c43c4ead370bd15f93560)
 
