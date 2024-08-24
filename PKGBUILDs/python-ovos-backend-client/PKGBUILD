@@ -4,7 +4,7 @@ pkgname=python-ovos-backend-client
 _name=ovos-backend-client
 _commit='96c5e33ed520d5af4394373d8170503264ed90e1'
 pkgver='0.1.0'
-pkgrel=00
+pkgrel=01
 pkgdesc='Unofficial python api for interaction with
 ovos-local-backend'
 arch=('any')
