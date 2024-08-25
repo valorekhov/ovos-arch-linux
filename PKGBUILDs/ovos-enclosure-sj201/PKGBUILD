@@ -1,6 +1,6 @@
 pkgname=ovos-enclosure-sj201
 pkgver='1.0.0'
-pkgrel=1
+pkgrel=02
 pkgdesc='Supporting assets for the Raspberry PI4 -based Mycroft Mark2 production Revisions 6 and 10 HAT'
 arch=(aarch64)
 url='https://github.com/OpenVoiceOS/'

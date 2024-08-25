@@ -40,9 +40,8 @@
                                 #cooling-cells = <2>;
                                 // Polarity of the fan signal is inverted. 255, i.e. Logic 1 means FAN is Off, Logic 0 FAN is 100% on
                                 cooling-levels = <255 192 129 66 0>;
-                                pwms = <&pwm 1 1000000>;
+                                pwms = <&pwm 1 1000000 1>; // Added polarity flag (1 for inverted)
                                 pwm-names = "fan";
-                                // reset-gpios = <&gpio 13 0>;
                                 status = "okay";
                         };
                 };
