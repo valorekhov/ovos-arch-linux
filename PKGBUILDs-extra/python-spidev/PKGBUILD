@@ -1,7 +1,7 @@
 pkgname=python-spidev
 _name=spidev
 pkgver=3.6
-pkgrel=1
+pkgrel=02
 pkgdesc="Python bindings for Linux SPI access through spidev"
 arch=('x86_64' 'aarch64' 'armv6h' 'armv7h')
 url="https://github.com/doceme/py-spidev"
