@@ -1,7 +1,7 @@
 pkgbase = python-smbus2
 	pkgdesc = smbus2 is a drop-in replacement for smbus-cffi/smbus-python in pure Python
 	pkgver = 0.4.2
-	pkgrel = 00
+	pkgrel = 01
 	url = https://github.com/kplindegaard/smbus2
 	arch = any
 	license = MIT
