@@ -405,7 +405,7 @@ python-sonopy:  PKGBUILDs-extra/python-sonopy/*.pkg.tar.zst
 
 python-speechrecognition:  PKGBUILDs-extra/python-speechrecognition/*.pkg.tar.zst
 
-python-spidev:  PKGBUILDs-extra/python-spidev/*.pkg.tar.zst
+python-spidev: python-rpi.gpio PKGBUILDs-extra/python-spidev/*.pkg.tar.zst
 
 python-sqlalchemy-json:  PKGBUILDs-extra/python-sqlalchemy-json/*.pkg.tar.zst
 

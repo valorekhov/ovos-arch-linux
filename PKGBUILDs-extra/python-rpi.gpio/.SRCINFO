@@ -1,7 +1,7 @@
 pkgbase = python-rpi.gpio
 	pkgdesc = A module to control Raspberry Pi GPIO channels
 	pkgver = 0.7.1
-	pkgrel = 00
+	pkgrel = 01
 	url = http://sourceforge.net/projects/raspberry-gpio-python/
 	arch = x86_64
 	arch = aarch64
