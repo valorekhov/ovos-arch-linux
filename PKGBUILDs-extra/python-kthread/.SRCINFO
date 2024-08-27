@@ -1,7 +1,7 @@
 pkgbase = python-kthread
 	pkgdesc = Killable threads in Python!
 	pkgver = 0.2.3
-	pkgrel = 00
+	pkgrel = 01
 	url = https://github.com/munshigroup/kthread
 	arch = any
 	license = MIT
