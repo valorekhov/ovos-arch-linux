@@ -1,0 +1,10 @@
+[Unit]
+Description=SJ201 PulseAudio Volume Control Service
+
+[Service]
+User=ovos
+ExecStart=/bin/bash /opt/ovos/bin/sj201-pa-volume-control.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

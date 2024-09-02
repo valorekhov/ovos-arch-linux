@@ -1,0 +1,9 @@
+[Unit]
+Description=SJ201 Wake Up key Handler Service
+
+[Service]
+ExecStart=/bin/bash /opt/ovos/bin/sj201-wake-up-key-handler.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

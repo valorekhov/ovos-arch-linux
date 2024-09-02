@@ -26,13 +26,16 @@ detect_sj201_revision() {
         ti_is_present=false
     fi
 
-    if [[ $ti_is_present && $xmos_is_present ]]; then
-        if $tiny_is_present; then
+    if [[ "$ti_is_present" == "true" && "$xmos_is_present" == "true" ]]; then
+        if [[ "$tiny_is_present" == true ]]; then
             revision="r6"
         else
             revision="r10"
         fi
+    else 
+        revision="<UNKNOWN>";
     fi
+
 
     echo -n "$revision"
 }

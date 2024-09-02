@@ -1,25 +1,31 @@
 pkgname=ovos-enclosure-sj201
 pkgver='1.0.0'
-pkgrel=02
+pkgrel=03
 pkgdesc='Supporting assets for the Raspberry PI4 -based Mycroft Mark2 production Revisions 6 and 10 HAT'
 arch=(aarch64)
 url='https://github.com/OpenVoiceOS/'
 license=('Apache License 2.0')
-depends=(ovos-enclosure-audio-vocalfusion-dkms i2c-tools python-spidev python-rpi.gpio python-smbus2)
+depends=(ovos-enclosure-audio-vocalfusion-dkms i2c-tools python-spidev python-rpi.gpio python-smbus2 evtest)
 optdepends=()
 makedepends=(dtc)
 
 source=("sj201-rev10-pwm-fan-overlay.dts" "ovos-enclosure-sj201.install" \
     "sj201-buttons-overlay.dts" "sj201-init.service" "sj201-init.sh" \
-    "sj201-revisions.sh" sj201-rev6-fan.sh "sj201-tas5806")
+    "sj201-revisions.sh" sj201-rev6-fan.sh "sj201-tas5806"
+    "sj201-pa-volume-control.service" "sj201-pa-volume-control.sh"
+    "sj201-wake-up-key-handler.service" "sj201-wake-up-key-handler.sh")
 sha256sums=('bd4b4c8c3064fbe7360ac34cb2c9feb734ebf9d90e8ef43a82ab23bafe5c5dfe'
             'a09ec911f598bf947cb18a7a806748813753d77a364f25f5ebd919c5d1706b1c'
             'b7cf09d6d7c0e719dc96f1ae6832ce22c060d2ccb69530111ca390bd39976d71'
             'ccb5fd98398687b899ad591cc74db4c9d835adb41f49dd1a55e05461b2a52e46'
-            '26e1486d3fd1de3670b4993875f887658e19c96d54d580b83d4068e926c26b5e'
-            '2638c082c668e6beaefd8b45d413451acf00e21a836368beae63cf1c3a85c656'
+            '0782d69f2ee518a8601188d4a33409f2e8a003bca4bf35114615ecfd176d60b4'
+            'e5b38fafb297a70d0dde371f8710b8aadb59df790631f0653f3472cd311e8181'
             '26e070898d07ee43f08e21f830feb7754ea5270e5f1d2e47c0ac7dcd844a22fd'
-            '18c7b70735d44ed22f9dd4d1903df28d20d41059b6f21bd82246989d958e240b')
+            '18c7b70735d44ed22f9dd4d1903df28d20d41059b6f21bd82246989d958e240b'
+            '72ab8d166dd3085ce50f759170cdb43d8c7e5dc21c09b38ba8c1c21853416cc0'
+            'e0e405a8510bb254041747a51aa2eb7eb500ecb70904d27931f0178e5458c968'
+            '1526a8c281c454731d34f313da3119568608686c8ceb0bcb9cd7aae3d9262037'
+            '36d17a24c7a1594b5dd5cee958bd4408b2ab3fac1313d5cded8fc0275935ad63')
 
 build() {
     cd "$srcdir"
@@ -37,12 +43,16 @@ package() {
 
     mkdir -p "$pkgdir/usr/lib/systemd/system"
     install -Dm644 "./sj201-init.service" "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "./sj201-pa-volume-control.service" "$pkgdir/usr/lib/systemd/system"
+    install -Dm644 "./sj201-wake-up-key-handler.service" "$pkgdir/usr/lib/systemd/system"
 
     mkdir -p "$pkgdir/opt/ovos/bin"
     install -Dm755 "./sj201-init.sh" "$pkgdir/opt/ovos/bin"
     install -Dm755 "./sj201-revisions.sh" "$pkgdir/opt/ovos/bin"
     install -Dm755 "./sj201-tas5806" "$pkgdir/opt/ovos/bin"
     install -Dm755 "./sj201-rev6-fan.sh" "$pkgdir/opt/ovos/bin"
+    install -Dm755 "./sj201-pa-volume-control.sh" "$pkgdir/opt/ovos/bin"
+    install -Dm755 "./sj201-wake-up-key-handler.sh" "$pkgdir/opt/ovos/bin"
 
     mkdir -p "$pkgdir/etc/modules-load.d/"
     echo "i2c-dev" > "$pkgdir/etc/modules-load.d/i2c-dev.conf"

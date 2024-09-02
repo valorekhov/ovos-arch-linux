@@ -49,6 +49,7 @@ else
                 echo "" >> /boot/config.txt
                 echo "# Installed by Package 'ovos-enclosure-rpi4-mark2-sj201-r10'" >> /boot/config.txt
                 echo "dtoverlay=sj201-rev10-pwm-fan" >> /boot/config.txt
+                echo "gpio=13=pu" >> /boot/config.txt
                 echo "Added dtoverlay=sj201-rev10-pwm-fan to /boot/config.txt"
                 echo
                 echo "You are going to need to reboot your Mark II for the new PWM Fan logic to take effect..."
