@@ -1,7 +1,7 @@
 pkgbase = python-ovos-vlc-plugin
 	pkgdesc = OVOS VLC mediaplayer plugin
-	pkgver = 0.0.2a2
-	pkgrel = 1
+pkgver = 0.0.2
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-vlc-plugin/
 	arch = any
 	license = 
@@ -14,6 +14,6 @@ pkgbase = python-ovos-vlc-plugin
 	depends = python-ovos-plugin-manager
 	depends = python-vlc>=1.1.2
 	source = https://github.com/OpenVoiceOS/ovos-vlc-plugin/archive/1f6a2915d728baba925ecf5f53547ee7c7a766c1.tar.gz
-	sha256sums = 6afe83e6576dc26cac6a5eff284feaf80ac9650bfa456a4e75c7236bada9759f
+	sha256sums = 76d0d5aa1b7f471470260a910a6bc5bd1693c759a22bad7a31e46c174f5dddd5
 
 pkgname = python-ovos-vlc-plugin
