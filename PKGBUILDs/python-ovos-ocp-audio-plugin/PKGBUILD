@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ocp-audio-plugin
 pkgname=python-ovos-ocp-audio-plugin
 _name=ovos-ocp-audio-plugin
-_commit='c4d9ab64701930557c6aaefef0b4fbf13e27cd07'
-pkgver='0.0.6'
+_commit='49bde43d0751d22f99282adf8bc9d44aafe3c6ff'
+pkgver='0.0.7'
 pkgrel=00
 pkgdesc='OVOS GUI mediaplayer plugin'
 arch=('any')
@@ -19,23 +19,23 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 depends+=(
 'python-dbus-next' # dbus-next
 'python-ovos-bus-client>=0.0.7' # ovos-bus-client<0.1.0,>=0.0.7
-'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13
-'python-ovos-plugin-manager>=0.0.25' # ovos-plugin-manager<0.1.0,>=0.0.25
+'python-ovos-plugin-manager>=0.0.26a5' # ovos-plugin-manager<0.1.0,>=0.0.26a5
 'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
-'python-ovos-workshop>=0.0.15' # ovos_workshop<0.1.0,>=0.0.15
+'python-ovos-workshop>=0.0.16a48' # ovos-workshop<0.1.0,>=0.0.16a48
 'python-padacioso>=0.1.1' # padacioso>=0.1.1,~=0.1
 )
 conflicts+=(
 'python-ovos-audio-plugin-simple>=0.1.0' # ovos_audio_plugin_simple<0.1.0,>=0.0.2a3; extra == "extractors"
 'python-ovos-bus-client>=0.1.0' # ovos-bus-client<0.1.0,>=0.0.7
-'python-ovos-plugin-manager>=0.1.0' # ovos-plugin-manager<0.1.0,>=0.0.25
+'python-ovos-plugin-manager>=0.1.0' # ovos-plugin-manager<0.1.0,>=0.0.26a5
 'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
-'python-ovos-workshop>=0.1.0' # ovos_workshop<0.1.0,>=0.0.15
+'python-ovos-workshop>=0.1.0' # ovos-workshop<0.1.0,>=0.0.16a48
 )
 optdepends+=(
 'python-ovos-audio-plugin-simple>=0.0.2a3' # ovos_audio_plugin_simple<0.1.0,>=0.0.2a3; extra == "extractors"
 'python-ovos-ocp-bandcamp-plugin>=0.0.1' # ovos-ocp-bandcamp-plugin>=0.0.1,~=0.0; extra == "extractors"
 'python-ovos-ocp-deezer-plugin>=0.0.1' # ovos-ocp-deezer-plugin>=0.0.1,~=0.0; extra == "extractors"
+'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13; extra == "extractors"
 'python-ovos-ocp-m3u-plugin>=0.0.1' # ovos-ocp-m3u-plugin>0.0,>=0.0.1; extra == "extractors"
 'python-ovos-ocp-m3u-plugin>=0.0' # ovos-ocp-m3u-plugin>0.0,>=0.0.1; extra == "extractors"
 'python-ovos-ocp-news-plugin>=0.0.3' # ovos-ocp-news-plugin>=0.0.3,~=0.0; extra == "extractors"
@@ -45,7 +45,7 @@ optdepends+=(
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('2855bf84a14ec15d8365d775bd3a82c263d0f8cece4dea11a124f11263260e3d')
+sha256sums=('7765d0557f895189c8dcef80d902099a0a5dfc2d357ccdb279ab7d7c30a2c21e')
 
 provides=('python-ovos-plugin-common-play' 'python-ovos-ocp-audio-plugin')
 
