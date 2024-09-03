@@ -3,8 +3,8 @@ _gh_proj=ovos-listener
 pkgname=python-ovos-listener
 _name=ovos-listener
 _unit_name="ovos-listener-messagebus"
-_commit='2942faa0daddd219e6dd14a7d356b0ea85a3dd26'
-pkgver='0.0.2'
+_commit='2f8171eda1a1f95304ee1e900533fd5d9b84e907'
+pkgver='0.0.3'
 pkgrel=00
 pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core'
 arch=('any')
@@ -18,16 +18,16 @@ conflicts=("$_unit_name")
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-ovos-backend-client>=0.0.7a2' # ovos_backend_client>=0.0.7a2,~=0.0
+'python-ovos-backend-client>=0.0.6' # ovos_backend_client>=0.0.6,~=0.0
 'python-ovos-bus-client>=0.0.3a16' # ovos-bus-client>=0.0.3a16,~=0.0
-'python-ovos-config>=0.0.8a3' # ovos-config>=0.0.8a3,~=0.0
-'python-ovos-plugin-manager>=0.0.23a5' # ovos-plugin-manager>=0.0.23a5,~=0.0
+'python-ovos-config>=0.0.8' # ovos-config>=0.0.8,~=0.0
+'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager>=0.0.23,~=0.0
 'python-ovos-stt-plugin-server>=0.0.2' # ovos-stt-plugin-server>=0.0.2,~=0.0
 'python-ovos-stt-plugin-vosk>=0.1' # ovos-stt-plugin-vosk~=0.1
-'python-ovos-utils>=0.0.31a3' # ovos-utils>=0.0.31a3,~=0.0
+'python-ovos-utils>=0.0.31' # ovos-utils>=0.0.31,~=0.0
 'python-ovos-vad-plugin-webrtcvad' # ovos-vad-plugin-webrtcvad
 'python-ovos-ww-plugin-pocketsphinx>=0.1.3' # ovos-ww-plugin-pocketsphinx>=0.1.3,~=0.1
-'python-ovos-ww-plugin-precise-lite>=0.1.2a3' # ovos-ww-plugin-precise-lite>=0.1.2a3,~=0.1
+'python-ovos-ww-plugin-precise-lite>=0.1.2' # ovos-ww-plugin-precise-lite>=0.1.2,~=0.1
 'python-ovos-ww-plugin-vosk' # ovos-ww-plugin-vosk
 'python-pyaudio>=0.2' # PyAudio~=0.2
 'python-speechrecognition>=3.8.1' # SpeechRecognition>=3.8.1
@@ -45,7 +45,7 @@ source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "ovos-systemd_listener_messagebus.py" \
     # "python-ovos-listener.install" \
 )
-sha256sums=('04df26baac28e9049acc8344bd82cf6890f32ad6ce917bbe43b013aa0c442be4'
+sha256sums=('665427ca74548499a74ccba772330e3e30d40faeebdcc428e8522d4f03bba1d6'
             'd6bed399ddbe1dc07b23cd753656a696afb294a3b0cc4983526f3ba5f50f2be3'
             '8dce510650ec2ff5f209c126ad72105a31277069345ce472f7aa710e48840fc8')
 

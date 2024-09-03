@@ -1,7 +1,7 @@
 pkgbase = python-ovos-listener
 	pkgdesc = The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core
-	pkgver = 0.0.2
-	pkgrel = 00
+pkgver = 0.0.3
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-listener/
 	arch = any
 	license = Apache License 2.0
@@ -32,7 +32,7 @@ pkgbase = python-ovos-listener
 	source = https://github.com/OpenVoiceOS/ovos-listener/archive/2942faa0daddd219e6dd14a7d356b0ea85a3dd26.tar.gz
 	source = ovos-listener-messagebus.service
 	source = ovos-systemd_listener_messagebus.py
-	sha256sums = 04df26baac28e9049acc8344bd82cf6890f32ad6ce917bbe43b013aa0c442be4
+	sha256sums = 665427ca74548499a74ccba772330e3e30d40faeebdcc428e8522d4f03bba1d6
 	sha256sums = d6bed399ddbe1dc07b23cd753656a696afb294a3b0cc4983526f3ba5f50f2be3
 	sha256sums = 8dce510650ec2ff5f209c126ad72105a31277069345ce472f7aa710e48840fc8
 
