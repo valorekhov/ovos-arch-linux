@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-backend-client
 pkgname=python-ovos-backend-client
 _name=ovos-backend-client
-_commit='96c5e33ed520d5af4394373d8170503264ed90e1'
-pkgver='0.1.0'
-pkgrel=01
+_commit='4893b3ff4b168b2263e1609b5bdd93b57b513ba8'
+pkgver='0.1.2'
+pkgrel=00
 pkgdesc='Unofficial python api for interaction with
 ovos-local-backend'
 arch=('any')
@@ -18,6 +18,7 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-json-database>=0.7' # json_database~=0.7
+'python-oauthlib>=3.0' # oauthlib~=3.0
 'python-ovos-config>=0.0.12' # ovos_config>=0.0.12,~=0.0
 'python-ovos-utils>=0.0.37' # ovos_utils>=0.0.37,~=0.0
 )
@@ -34,7 +35,7 @@ optdepends+=(
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-backend-client-1a746cee2fca3051415b51460a8a8f6897ee61da.tar.gz \
-   0935514c651a7367683b8484c204151b6b85033a289bd943cb3973c411004309)
+   c4401d3a6af2d3d2d845ce5792348c48791089eaf47d834d6b920d5665259465)
 
 prepare() {
     cd "$srcdir"
