@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-youtube-music
 pkgname=ovos-skill-official-youtube-music
 _name=skill-ovos-youtube-music
-_commit='3a4f52d2bcbd1c3074df4d2d29853f5ed743a442'
-pkgver=0.0.1
-pkgrel=2
+_commit='14346a37970aad1f35d83f7f8bd31a1d90aee684'
+pkgver='0.1.1'
+pkgrel=00
 pkgdesc='play music from youtube in mycroft'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-youtube-music/'
@@ -12,16 +12,28 @@ license=('Apache License 2.0')
 depends=(python
 'python-ovos-ocp-youtube-plugin'
 'python-ovos-utils>=0.0.28'
-'python-ovos-workshop>=0.0.5a1'
-'python-tutubo'
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-plugin-manager>=0.0.1a3' # ovos-plugin-manager>=0.0.1a3
+'python-ovos-workshop>=0.0.5' # ovos_workshop>=0.0.5,~=0.0
+'python-tutubo' # tutubo
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('da4c17fe4a6d28a18145d4b66ea3d4c243256e2f18675460c95cef5c52ef8e92')
+sha256sums=('6142b52d584ff01dee031fbe6751250f154cded99b3605c5670a7695ce170672')
 
 prepare() {
     cd "$srcdir"
