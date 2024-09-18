@@ -2,46 +2,59 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-gui-network-client
 pkgname=python-ovos-phal-plugin-gui-network-client
 _name=ovos-PHAL-plugin-gui-network-client
-_base_ver='847ab586387503b044e497f544a843f0d02110cb'
-pkgver=0.0.3a2
-pkgrel=1
+_commit='04378b94d7536992c497278a7b4063d6cd4f9f43'
+pkgver='0.0.4'
+pkgrel=00
 pkgdesc='A GUI Network Client For PHAL'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-gui-network-client/'
 license=('')
 depends=(python \
-'python-ovos-plugin-manager' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=0.0.8' # ovos-bus-client<1.0.0,>=0.0.8
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager<1.0.0,>=0.0.1
+)
+conflicts+=(
+'python-ovos-bus-client>=1.0.0' # ovos-bus-client<1.0.0,>=0.0.8
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.1
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-phal-plugin-gui-network-client-847ab586387503b044e497f544a843f0d02110cb.tar.gz \
-   9194188d6fc4844567f37d77a27eddd8dca5e9e566b6f97df20dbe63faa71739)
+   b29f4173ba930bd90551a3ee0edb087f0a72474bb1fdf4bf865c922966e8fc08)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -51,7 +64,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -90,6 +103,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
