@@ -5,7 +5,7 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-padacioso
 epoch=
-pkgver='0.2.1'
+pkgver='1.0.0'
 pkgrel=00
 pkgdesc='dead simple intent parser'
 arch=(any)
