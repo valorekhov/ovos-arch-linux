@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-naptime
 pkgname=ovos-skill-official-naptime
 _name=skill-ovos-naptime
-_commit='92ab0cbef48273148c706a1b6f52d1574adb476f'
-pkgver=0.2.3
-pkgrel=1
+_commit='5dd923f1a9d5ab6fa406c345947bb8b780ee386e'
+pkgver='0.3.1'
+pkgrel=00
 pkgdesc='Tell me to sleep when you don'\''t want
 to be disturbed in any way. This stops all
 calls to Speech to Text system, guaranteeing
@@ -14,17 +14,28 @@ arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-naptime/'
 license=('Apache License 2.0')
 depends=(python
-'python-ovos-workshop>=0.0.12a27' #>=0.0.12a27,~=0.0
-'python-ovos-bus-client'
-'python-ovos-utils>=0.0.28' #>=0.0.28,~=0.0 \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=0.0.8' # ovos-bus-client>=0.0.8
+'python-ovos-utils>=0.0.38' # ovos-utils>=0.0.38
+'python-ovos-workshop>=0.0.15' # ovos-workshop<2.0.0,>=0.0.15
+)
+conflicts+=(
+'python-ovos-workshop>=2.0.0' # ovos-workshop<2.0.0,>=0.0.15
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('d4293b1fea766e2d31cdcc7a3c03275f0ab05c9090c7d6979370095f7f8dae71')
+sha256sums=('728a1404cd42943ce113fab088106fae116c42d87fc3aa2f1474ed1c23030497')
 
 prepare() {
     cd "$srcdir"
