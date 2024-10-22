@@ -3,40 +3,74 @@ _gh_proj=ovos-dinkum-listener
 pkgname=python-ovos-dinkum-listener
 _name=ovos-dinkum-listener
 _unit_name="ovos-listener-messagebus"
-_commit='b4c473f8ab6ea80195647307c31fd3c81b8fd82c'
-pkgver=0.0.2
-pkgrel=3
+_commit='beda994e2c52162a986a32eeb4cdd01b0e4d98b3'
+pkgver='0.2.4'
+pkgrel=00
 pkgdesc='The "ears" of the OVOS assistant! Listens for wakewords, performs VAD and STT, the final transcribed speech is then sent to ovos-core. Dinkum flavor'
 arch=('any')
 url="https://github.com/$_gh_org/$_gh_proj/"
 license=('Apache License 2.0')
 depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'ovos-microphone-plugin' \
-'python-ovos-backend-client>=0.0.6' \
-'python-ovos-bus-client>=0.0.3a16' \
-'python-ovos-config>=0.0.10'  \
-'python-ovos-plugin-manager>=0.0.23a5' \
-'python-ovos-stt-plugin-server>=0.0.2' #>=0.0.2,~=0.0 \
 #'python-ovos-stt-plugin-vosk' \
-'python-ovos-utils>=0.0.33a8' \
 'python-ovos-vad-plugin-webrtcvad' \
 #python-ovos-ww-plugin-pocketsphinx>=0.1.3' #>=0.1.3,~=0.1 \
 #python-ovos-ww-plugin-precise-lite>=0.1.2a3' #>=0.1.2a3,~=0.1 \
 #python-ovos-ww-plugin-vosk' \
 #python-pyaudio' \
-'python-speechrecognition>=3.9' \
 )
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name")
 conflicts=("$_unit_name" "python-ovos-listener")
 replaces=("python-ovos-listener")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=0.0.10' # ovos_bus_client<1.0.0,>=0.0.10
+'python-ovos-config>=0.4.3' # ovos-config<1.0.0,>=0.4.3
+'python-ovos-plugin-manager>=0.3.1' # ovos-plugin-manager<1.0.0,>=0.3.1
+'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
+'python-speechrecognition>=3.9' # SpeechRecognition~=3.9
+)
+conflicts+=(
+'python-ovos-backend-client>=2.0.0' # ovos-backend-client<2.0.0,>=0.1.0; extra == "extras"
+'python-ovos-bus-client>=1.0.0' # ovos_bus_client<1.0.0,>=0.0.10
+'python-ovos-config>=1.0.0' # ovos-config<1.0.0,>=0.4.3
+'python-ovos-microphone-plugin-alsa>=1.0.0' # ovos-microphone-plugin-alsa<1.0.0,>=0.0.0; extra == "linux"
+'python-ovos-microphone-plugin-sounddevice>=1.0.0' # ovos-microphone-plugin-sounddevice<1.0.0,>=0.0.0; extra == "extras"
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.3.1
+'python-ovos-stt-plugin-chromium>=1.0.0' # ovos-stt-plugin-chromium<1.0.0,>=0.0.1; extra == "extras"
+'python-ovos-stt-plugin-server>=1.0.0' # ovos-stt-plugin-server<1.0.0,>=0.0.3; extra == "extras"
+'python-ovos-stt-plugin-vosk>=1.0.0' # ovos-stt-plugin-vosk<1.0.0,>=0.0.1; extra == "extras"
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
+'python-ovos-vad-plugin-noise>=1.0.0' # ovos-vad-plugin-noise<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-vad-plugin-silero>=1.0.0' # ovos-vad-plugin-silero<1.0.0,>=0.0.1; extra == "onnx"
+'python-ovos-ww-plugin-openwakeword>=1.0.0' # ovos-ww-plugin-openwakeword<1.0.0,>=0.0.1; extra == "onnx"
+'python-ovos-ww-plugin-precise-lite>=1.0.0' # ovos-ww-plugin-precise-lite<1.0.0,>=0.1; extra == "extras"
+'python-ovos-ww-plugin-vosk>=1.0.0' # ovos-ww-plugin-vosk<1.0.0,>=0.1; extra == "extras"
+)
+optdepends+=(
+'python-onnxruntime' # onnxruntime; extra == "onnx"
+'python-ovos-backend-client>=0.1.0' # ovos-backend-client<2.0.0,>=0.1.0; extra == "extras"
+'python-ovos-microphone-plugin-alsa>=0.0.0' # ovos-microphone-plugin-alsa<1.0.0,>=0.0.0; extra == "linux"
+'python-ovos-microphone-plugin-sounddevice>=0.0.0' # ovos-microphone-plugin-sounddevice<1.0.0,>=0.0.0; extra == "extras"
+'python-ovos-stt-plugin-chromium>=0.0.1' # ovos-stt-plugin-chromium<1.0.0,>=0.0.1; extra == "extras"
+'python-ovos-stt-plugin-server>=0.0.3' # ovos-stt-plugin-server<1.0.0,>=0.0.3; extra == "extras"
+'python-ovos-stt-plugin-vosk>=0.0.1' # ovos-stt-plugin-vosk<1.0.0,>=0.0.1; extra == "extras"
+'python-ovos-vad-plugin-noise>=0.1.0' # ovos-vad-plugin-noise<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-vad-plugin-silero>=0.0.1' # ovos-vad-plugin-silero<1.0.0,>=0.0.1; extra == "onnx"
+'python-ovos-ww-plugin-openwakeword>=0.0.1' # ovos-ww-plugin-openwakeword<1.0.0,>=0.0.1; extra == "onnx"
+'python-ovos-ww-plugin-precise-lite>=0.1' # ovos-ww-plugin-precise-lite<1.0.0,>=0.1; extra == "extras"
+'python-ovos-ww-plugin-vosk>=0.1' # ovos-ww-plugin-vosk<1.0.0,>=0.1; extra == "extras"
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "$_unit_name.service" \
     "ovos-systemd_dinkum_listener_messagebus.py" \
     # "python-ovos-listener.install" \
 )
-sha256sums=('35ea2e88b6a6fe49d41e96fdfe933d31a178495098f17ad2a8fc6231848ab756'
+sha256sums=('775878fee8b23074a9ff561d51ffeadb4499125d1faf8d313562469dcc8c2344'
             '6d852114cd72b873a90690191c9db678ae7d06180fd61bd0a63315155bab093d'
             'f6b682fbc4020f6573a9a9407b32ba59d369feba579dec8dd34816ceb01376cb')
 
