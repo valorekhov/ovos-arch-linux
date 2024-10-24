@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-mk1
 pkgname=python-ovos-phal-plugin-mk1
 _name=ovos-PHAL-plugin-mk1
-_base_ver='e8aa4f20f2a10792ad5c1cfa47719ab46a0117c4'
-pkgver=0.0.1a2
-pkgrel=1
+_commit='d11acdaf64c6fe8af7999497ebbb9d7b16b5f432'
+pkgver='0.1.3'
+pkgrel=00
 pkgdesc='OVOS-PHAL Mark-1'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk1/'
@@ -14,33 +14,48 @@ depends=(python \
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-mark1-utils>=0.0.1' # ovos-mark1-utils>=0.0.1
+'python-ovos-plugin-manager>=0.0.24' # ovos-plugin-manager>=0.0.24
+'python-ovos-utils>=0.0.38' # ovos-utils>=0.0.38
+'python-pyserial>=3.0' # pyserial~=3.0
+)
+conflicts+=(
+
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-phal-plugin-mk1-e8aa4f20f2a10792ad5c1cfa47719ab46a0117c4.tar.gz \
-   7e2147ccaeab487cf65dbc3470ede0c4cbbcb12136ef940652c72131caa9cd55)
+   59fa89e395c6d2bc63b2637e86363f69d8b6d1f33afceee6b4b636d279a9ef57)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -50,7 +65,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -88,6 +103,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
