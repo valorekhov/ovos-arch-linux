@@ -11,8 +11,8 @@ python-ovos-phal-plugin-color-scheme-manager
 conflicts=(python-ovos-phal-plugin-configuration-provider)
 _name=ovos-gui-plugin-shell-companion
 _unit_name="ovos-gui-messagebus"
-_commit='f703fbad650d314a9fb1457a3548cd6b715d7491'
-pkgver='0.0.0'
+_commit='5cab20abaef39ed97e4ef03920c222f53e3a4d26'
+pkgver='1.0.4'
 pkgrel=00
 pkgdesc='Provides various bus APIs that integrate with ovos-shell:
 - color scheme manager
@@ -30,8 +30,25 @@ depends=('python'
 )
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-astral>=3.0' # astral~=3.0
+'python-ovos-bus-client>=0.0.8' # ovos-bus-client<2.0.0,>=0.0.8
+'python-ovos-plugin-manager>=0.5.5' # ovos-plugin-manager<1.0.0,>=0.5.5
+'python-ovos-utils>=0.0.34' # ovos-utils<1.0.0,>=0.0.34
+)
+conflicts+=(
+'python-ovos-bus-client>=2.0.0' # ovos-bus-client<2.0.0,>=0.0.8
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.5.5
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.34
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('767495e5d7fc02a19b60eb9285616496c2dafdba380137afb79c19d388653e92')
+sha256sums=('912b80fc3df6a9f133bc99c4576af0940a61a43dcd92248542913ef3ea0193ad')
 
 prepare() {
     cd "$srcdir"
