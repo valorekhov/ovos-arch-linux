@@ -1,7 +1,7 @@
 pkgbase = python-ovos-audio
 	pkgdesc = The "mouth" of the OVOS assistant! Handles TTS generation and audio playback
-	pkgver = 0.0.2a13
-	pkgrel = 1
+pkgver = 0.3.1
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-audio/
 	arch = any
 	license = 
@@ -28,7 +28,7 @@ pkgbase = python-ovos-audio
 	source = https://github.com/OpenVoiceOS/ovos-audio/archive/3903c8cbb0072fc03a260020b5ef4e6e6b823377.tar.gz
 	source = ovos-audio-messagebus.service
 	source = ovos-systemd_audio_messagebus.py
-	sha256sums = 7a1ce7e28771833aac072cc2037f689e49074768b11ffc99a9a50169ce1becc2
+	sha256sums = 6d14e4473bc69a40afc4fa7d8be0281c32cf4b3c82a7f894cdf3751e39775dd8
 	sha256sums = 4ba09ae7f8387473d4da2220bba02dcd1288b988d96949cb916e847ea8d55ea8
 	sha256sums = fd853f6345506ecb1ea81408ea34f8fec3f7701e0b576993ba23db85377859ee
 
