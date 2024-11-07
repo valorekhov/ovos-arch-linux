@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-oauth
 	pkgdesc = PHAL OAuth Plugin
-	pkgver = 0.0.2
-	pkgrel = 1
+pkgver = 0.1.2
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-oauth/
 	arch = any
 	license = 
@@ -17,6 +17,6 @@ pkgbase = python-ovos-phal-plugin-oauth
 	depends = python-pillow
 	depends = python-qrcode
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-oauth/archive/5cdc431cf1d4001a0c02176708d014fa627cbc04.tar.gz
-	sha256sums = d338341d9f87998e71addb8f4da6b6a537e91406c1daa7b39b2196751b172b1a
+	sha256sums = 0b96e6da5ef2caa016ea27c2f36f7fa5d10777ccbee6c2b3b66e6ea29ab3e445
 
 pkgname = python-ovos-phal-plugin-oauth
