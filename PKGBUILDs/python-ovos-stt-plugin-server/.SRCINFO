@@ -1,7 +1,7 @@
 pkgbase = python-ovos-stt-plugin-server
 	pkgdesc = OpenVoiceOS companion plugin for OpenVoiceOS STT Server
-	pkgver = 0.0.4
-	pkgrel = 1
+pkgver = 0.0.6
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-server/
 	arch = any
 	license = 
@@ -12,6 +12,6 @@ pkgbase = python-ovos-stt-plugin-server
 	depends = python
 	depends = python-ovos-plugin-manager>=0.0.5
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-server/archive/8f440da949ced2f823383b87acb7c7e502cdb7ff.tar.gz
-	sha256sums = e722f87a3e1b5c7ae89d690f9e924122fdaedb6aa4bf1e7470ce64b756ed33d0
+	sha256sums = 9991cc40e7449170e1c539d872ca9d60c0c2d582bd5dd165b4ac31f7cdefdea6
 
 pkgname = python-ovos-stt-plugin-server
