@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-alsa
 pkgname=python-ovos-phal-plugin-alsa
 _name=ovos-PHAL-plugin-alsa
-_commit='7683146ebd4e1b405e01d3fb47a9b165a42499c9'
-pkgver='0.0.3'
-pkgrel=01
+_commit='96726b49dab311db3f695a4ccbb69dd66880926c'
+pkgver='0.1.1'
+pkgrel=00
 pkgdesc='OVOS-PHAL Alsa volume control'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-alsa/'
@@ -16,12 +16,13 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-json-database>=0.7' # json_database~=0.7
-'python-ovos-bus-client>=0.0.4' # ovos-bus-client~=0.0.4
-'python-ovos-plugin-manager>=0.0' # ovos-plugin-manager~=0.0
+'python-ovos-bus-client>=0.0.4' # ovos-bus-client<2.0.0,>=0.0.4
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager<1.0.0,>=0.0.1
 'python-pyalsaaudio>=0.9' # pyalsaaudio~=0.9
 )
 conflicts+=(
-
+'python-ovos-bus-client>=2.0.0' # ovos-bus-client<2.0.0,>=0.0.4
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.1
 )
 optdepends+=(
 
@@ -30,7 +31,7 @@ optdepends+=(
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
-   "0f8a412c5052cc398fdc62afbd6accd8192e6e01236701358131c84ef3b24852"
+   "3b4d54c8a972744f0ee998c89b97baa875de61d2b26e6faeb87465d595c3b391"
 )
 
 prepare() {
