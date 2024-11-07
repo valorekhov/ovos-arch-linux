@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-connectivity-events
 	pkgdesc = OVOS-PHAL Connectivity Events
-	pkgver = 0.0.3
-	pkgrel = 1
+pkgver = 0.1.1
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-connectivity-events/
 	arch = any
 	license = 
@@ -12,6 +12,6 @@ pkgbase = python-ovos-phal-plugin-connectivity-events
 	depends = python
 	depends = python-ovos-plugin-manager
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-connectivity-events/archive/286bf5d2a8bb326edcca4353353a92f540c5b93b.tar.gz
-	sha256sums = 5cc2f5b2a1c6996e9d50106a1d1fd76c372d1b96d37ec9fb58fad6a4ddeed31c
+	sha256sums = af309d08a76d751ad2f89906210bf3c27153a1fc0ae84b65bb741a1c728edfdb
 
 pkgname = python-ovos-phal-plugin-connectivity-events
