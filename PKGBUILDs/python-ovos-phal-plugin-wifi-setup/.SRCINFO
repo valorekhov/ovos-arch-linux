@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-wifi-setup
 	pkgdesc = Central Wifi Setup Plugin for PHAL
-	pkgver = 1.1.1
-	pkgrel = 1
+pkgver = 1.1.6
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-wifi-setup/
 	arch = any
 	license = 
@@ -14,6 +14,6 @@ pkgbase = python-ovos-phal-plugin-wifi-setup
 	depends = python-ovos-utils
 	depends = python-ovos-plugin-manager>=0.0.1
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-wifi-setup/archive/1ef9c2b01e25690c6d6f515830e5c45b038ab3fe.tar.gz
-	sha256sums = 3869dfb36c9a76118f6824b7c28a667d0ef4672aba046bf4b1e928bd88200b42
+	sha256sums = c7bcdd646438942a57158a3fdc61dd4de4fd9cd82e4bc77ff4bece7d92da9411
 
 pkgname = python-ovos-phal-plugin-wifi-setup
