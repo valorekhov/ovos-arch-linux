@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ocp-audio-plugin
 pkgname=python-ovos-ocp-audio-plugin
 _name=ovos-ocp-audio-plugin
-_commit='c4d9ab64701930557c6aaefef0b4fbf13e27cd07'
-pkgver='0.0.6'
+_commit='41687b1c5454b9da67f0f6d6d0cbd78588b0f5ff'
+pkgver='1.1.5'
 pkgrel=00
 pkgdesc='OVOS GUI mediaplayer plugin'
 arch=('any')
@@ -18,34 +18,36 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-dbus-next' # dbus-next
-'python-ovos-bus-client>=0.0.7' # ovos-bus-client<0.1.0,>=0.0.7
-'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13
-'python-ovos-plugin-manager>=0.0.25' # ovos-plugin-manager<0.1.0,>=0.0.25
-'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
-'python-ovos-workshop>=0.0.15' # ovos_workshop<0.1.0,>=0.0.15
-'python-padacioso>=0.1.1' # padacioso>=0.1.1,~=0.1
+'python-ovos-bus-client>=0.0.7' # ovos_bus_client<2.0.0,>=0.0.7
+'python-ovos-plugin-manager>=0.0.26' # ovos-plugin-manager<1.0.0,>=0.0.26
+'python-ovos-utils>=0.1.0' # ovos-utils<1.0.0,>=0.1.0
+'python-ovos-workshop>=0.0.16' # ovos-workshop<3.0.0,>=0.0.16
+'python-padacioso>=0.1.1' # padacioso<2.0.0,>=0.1.1
 )
 conflicts+=(
-'python-ovos-audio-plugin-simple>=0.1.0' # ovos_audio_plugin_simple<0.1.0,>=0.0.2a3; extra == "extractors"
-'python-ovos-bus-client>=0.1.0' # ovos-bus-client<0.1.0,>=0.0.7
-'python-ovos-plugin-manager>=0.1.0' # ovos-plugin-manager<0.1.0,>=0.0.25
-'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
-'python-ovos-workshop>=0.1.0' # ovos_workshop<0.1.0,>=0.0.15
+'python-ovos-audio-plugin-simple>=1.0.0' # ovos_audio_plugin_simple<1.0.0,>=0.0.1; extra == "extractors"
+'python-ovos-bus-client>=2.0.0' # ovos_bus_client<2.0.0,>=0.0.7
+'python-ovos-ocp-m3u-plugin>=1.0.0' # ovos-ocp-m3u-plugin<1.0.0,>=0.0.1; extra == "extractors"
+'python-ovos-ocp-news-plugin>=1.0.0' # ovos-ocp-news-plugin<1.0.0,>=0.0.3; extra == "extractors"
+'python-ovos-ocp-rss-plugin>=1.0.0' # ovos-ocp-rss-plugin<1.0.0,>=0.0.2; extra == "extractors"
+'python-ovos-ocp-youtube-plugin>=1.0.0' # ovos-ocp-youtube-plugin<1.0.0,>=0.0.1; extra == "extractors"
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.26
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.1.0
+'python-ovos-workshop>=3.0.0' # ovos-workshop<3.0.0,>=0.0.16
+'python-padacioso>=2.0.0' # padacioso<2.0.0,>=0.1.1
 )
 optdepends+=(
-'python-ovos-audio-plugin-simple>=0.0.2a3' # ovos_audio_plugin_simple<0.1.0,>=0.0.2a3; extra == "extractors"
-'python-ovos-ocp-bandcamp-plugin>=0.0.1' # ovos-ocp-bandcamp-plugin>=0.0.1,~=0.0; extra == "extractors"
-'python-ovos-ocp-deezer-plugin>=0.0.1' # ovos-ocp-deezer-plugin>=0.0.1,~=0.0; extra == "extractors"
-'python-ovos-ocp-m3u-plugin>=0.0.1' # ovos-ocp-m3u-plugin>0.0,>=0.0.1; extra == "extractors"
-'python-ovos-ocp-m3u-plugin>=0.0' # ovos-ocp-m3u-plugin>0.0,>=0.0.1; extra == "extractors"
-'python-ovos-ocp-news-plugin>=0.0.3' # ovos-ocp-news-plugin>=0.0.3,~=0.0; extra == "extractors"
-'python-ovos-ocp-rss-plugin>=0.0.2' # ovos-ocp-rss-plugin>=0.0.2,~=0.0; extra == "extractors"
-'python-ovos-ocp-youtube-plugin>=0.0.1' # ovos-ocp-youtube-plugin>=0.0.1,~=0.0; extra == "extractors"
+'python-ovos-audio-plugin-simple>=0.0.1' # ovos_audio_plugin_simple<1.0.0,>=0.0.1; extra == "extractors"
+'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13; extra == "extractors"
+'python-ovos-ocp-m3u-plugin>=0.0.1' # ovos-ocp-m3u-plugin<1.0.0,>=0.0.1; extra == "extractors"
+'python-ovos-ocp-news-plugin>=0.0.3' # ovos-ocp-news-plugin<1.0.0,>=0.0.3; extra == "extractors"
+'python-ovos-ocp-rss-plugin>=0.0.2' # ovos-ocp-rss-plugin<1.0.0,>=0.0.2; extra == "extractors"
+'python-ovos-ocp-youtube-plugin>=0.0.1' # ovos-ocp-youtube-plugin<1.0.0,>=0.0.1; extra == "extractors"
 )
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('2855bf84a14ec15d8365d775bd3a82c263d0f8cece4dea11a124f11263260e3d')
+sha256sums=('cdbe9c9987db27324ff6b8b2a6ea6de14e3016bf249aced100add0530a8a76c6')
 
 provides=('python-ovos-plugin-common-play' 'python-ovos-ocp-audio-plugin')
 
