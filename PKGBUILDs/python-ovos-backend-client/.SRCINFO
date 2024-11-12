@@ -1,7 +1,7 @@
 pkgbase = python-ovos-backend-client
 	pkgdesc = Unofficial python api for interaction with ovos-local-backend
-	pkgver = 0.1.0
-	pkgrel = 01
+pkgver = 1.0.1
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-backend-client/
 	arch = any
 	license = UNKNOWN
@@ -17,6 +17,6 @@ pkgbase = python-ovos-backend-client
 	optdepends = python-speechrecognition>=3.8
 	optdepends = python-timezonefinder
 	source = https://github.com/OpenVoiceOS/ovos-backend-client/archive/96c5e33ed520d5af4394373d8170503264ed90e1.tar.gz
-	sha256sums = 0935514c651a7367683b8484c204151b6b85033a289bd943cb3973c411004309
+	sha256sums = 46b60fe394074bd28b03647f8109556865980648b02ff9a1ffa5881a8a26ab61
 
 pkgname = python-ovos-backend-client

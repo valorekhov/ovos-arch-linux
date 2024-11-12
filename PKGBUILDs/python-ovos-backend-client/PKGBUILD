@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-backend-client
 pkgname=python-ovos-backend-client
 _name=ovos-backend-client
-_commit='96c5e33ed520d5af4394373d8170503264ed90e1'
-pkgver='0.1.0'
-pkgrel=01
+_commit='b5e8f49d3e4c7573916aa351c1f5edee15e244a9'
+pkgver='1.0.1'
+pkgrel=00
 pkgdesc='Unofficial python api for interaction with
 ovos-local-backend'
 arch=('any')
@@ -18,14 +18,17 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-json-database>=0.7' # json_database~=0.7
-'python-ovos-config>=0.0.12' # ovos_config>=0.0.12,~=0.0
-'python-ovos-utils>=0.0.37' # ovos_utils>=0.0.37,~=0.0
+'python-oauthlib>=3.2' # oauthlib~=3.2
+'python-ovos-config>=0.0.12' # ovos-config<1.0.0,>=0.0.12
+'python-ovos-utils>=0.0.37' # ovos-utils<1.0.0,>=0.0.37
 )
 conflicts+=(
-
+'python-ovos-config>=1.0.0' # ovos-config<1.0.0,>=0.0.12
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.23; extra == "offline"
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.37
 )
 optdepends+=(
-'python-ovos-plugin-manager>=0.0.23' # ovos_plugin_manager>=0.0.23; extra == "offline"
+'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager<1.0.0,>=0.0.23; extra == "offline"
 'python-speechrecognition>=3.8' # SpeechRecognition~=3.8; extra == "offline"
 'python-timezonefinder' # timezonefinder; extra == "offline"
 )
@@ -34,7 +37,7 @@ optdepends+=(
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-backend-client-1a746cee2fca3051415b51460a8a8f6897ee61da.tar.gz \
-   0935514c651a7367683b8484c204151b6b85033a289bd943cb3973c411004309)
+   46b60fe394074bd28b03647f8109556865980648b02ff9a1ffa5881a8a26ab61)
 
 prepare() {
     cd "$srcdir"
