@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-official-homescreen
 	pkgdesc = OVOS Homescreen Skill Provides custom resting face for OVOS
-	pkgver = 0.0.2
-	pkgrel = 1
+pkgver = 1.0.5
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/skill-ovos-homescreen/
 	arch = any
 	license = Apache License 2.0
@@ -19,7 +19,7 @@ pkgbase = ovos-skill-official-homescreen
 	conflicts = ovos-skill-official-homescreen
 	source = https://github.com/OpenVoiceOS/skill-ovos-homescreen/archive/44119a39407cd3b14abf890d2e6244b422b862df.tar.gz
 	source = 0001-homescreen-update.patch
-	sha256sums = d33b717d465cb5acce8e67887d37944897276740f27eca7d3ca54e444362b183
+	sha256sums = 417cd692d8052e19baf9e587123da123f5f4157cfe7fa1b9d618d8e45dfb4d14
 	sha256sums = 6667e2dd8de8d16f9a5b3d1bf626983678bff663aed5df84a48c4b2d1e672302
 
 pkgname = ovos-skill-official-homescreen
