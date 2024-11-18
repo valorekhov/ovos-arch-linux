@@ -2,17 +2,15 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-homescreen
 pkgname=ovos-skill-official-homescreen
 _name=skill-ovos-homescreen
-_commit='44119a39407cd3b14abf890d2e6244b422b862df'
-pkgver=0.0.2
-pkgrel=1
+_commit='c169aac9d02520d2cbd3e7c8c49689506bc4d799'
+pkgver='3.0.1'
+pkgrel=00
 pkgdesc='OVOS Homescreen Skill
 Provides custom resting face for OVOS'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-homescreen/'
 license=('Apache License 2.0')
 depends=(python
-'python-ovos-utils>=0.0.28'
-'python-ovos-workshop>=0.0.11'
 'python-ovos-lingua-franca>=0.4.7'
 'python-ovos-phal-plugin-wallpaper-manager'
 'python-ovos-skill-manager'
@@ -22,9 +20,27 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=1.0.0' # ovos-bus-client<2.0.0,>=1.0.0
+'python-ovos-date-parser>=0.0.3' # ovos-date-parser<1.0.0,>=0.0.3
+'python-ovos-utils>=0.0.38' # ovos-utils<2.0.0,>=0.0.38
+'python-ovos-workshop>=2.4.0' # ovos-workshop<3.0.0,>=2.4.0
+)
+conflicts+=(
+'python-ovos-bus-client>=2.0.0' # ovos-bus-client<2.0.0,>=1.0.0
+'python-ovos-date-parser>=1.0.0' # ovos-date-parser<1.0.0,>=0.0.3
+'python-ovos-utils>=2.0.0' # ovos-utils<2.0.0,>=0.0.38
+'python-ovos-workshop>=3.0.0' # ovos-workshop<3.0.0,>=2.4.0
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
    0001-homescreen-update.patch)
-sha256sums=('d33b717d465cb5acce8e67887d37944897276740f27eca7d3ca54e444362b183'
+sha256sums=('32737acd715da3a907cad68be72d41935e4808a3e2c595d529811c77fa0b5a14'
             '6667e2dd8de8d16f9a5b3d1bf626983678bff663aed5df84a48c4b2d1e672302')
 
 prepare() {
