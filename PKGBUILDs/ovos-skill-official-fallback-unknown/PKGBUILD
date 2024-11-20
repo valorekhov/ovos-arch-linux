@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-skill-fallback-unknown
 pkgname=ovos-skill-official-fallback-unknown
 _name=skill-ovos-fallback-unknown
-_commit='9e0634e87e74ef7e674ae95753bd34601ee42d98'
-pkgver='0.0.3'
+_commit='bf532e37f616963ddbcc137c030d8e53d89bd7b5'
+pkgver='0.1.5'
 pkgrel=00
 pkgdesc='Mycroft AI official Unknown Fallback Skill -
 used if no Intent is matched to an Utterance'
@@ -19,8 +19,21 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-utils>=0.0.38' # ovos-utils>=0.0.38
+'python-ovos-workshop>=0.0.15' # ovos-workshop<4.0.0,>=0.0.15
+)
+conflicts+=(
+'python-ovos-workshop>=4.0.0' # ovos-workshop<4.0.0,>=0.0.15
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('ba91749856fbd1fbe22b90bafb8823869287a7436ae2bd8e0de685346bacc861')
+sha256sums=('11f0686461a075b5dafb740d1a06f69deb461848242d6c05f4afeac4c3c5ee24')
 
 prepare() {
     cd "$srcdir"
