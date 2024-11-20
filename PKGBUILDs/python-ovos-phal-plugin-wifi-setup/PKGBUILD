@@ -2,46 +2,62 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-wifi-setup
 pkgname=python-ovos-phal-plugin-wifi-setup
 _name=ovos-PHAL-plugin-wifi-setup
-_base_ver='1ef9c2b01e25690c6d6f515830e5c45b038ab3fe'
-pkgver=1.1.1
-pkgrel=1
+_commit='e0f82acaa73523c068b57b0cdb6019161621cc89'
+pkgver='1.1.7'
+pkgrel=00
 pkgdesc='Central Wifi Setup Plugin for PHAL'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-PHAL-plugin-wifi-setup/'
 license=('')
 depends=(python \
 'python-mycroft-messagebus-client' \
-'python-ovos-utils' \
-'python-ovos-plugin-manager>=0.0.1' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=('3869dfb36c9a76118f6824b7c28a667d0ef4672aba046bf4b1e928bd88200b42')
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=0.0.8' # ovos-bus-client<2.0.0,>=0.0.8
+'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager<1.0.0,>=0.0.23
+'python-ovos-utils>=0.0.33' # ovos_utils<1.0.0,>=0.0.33
+'python-ovos-workshop>=0.0.15' # ovos-workshop<4.0.0,>=0.0.15
+)
+conflicts+=(
+'python-ovos-bus-client>=2.0.0' # ovos-bus-client<2.0.0,>=0.0.8
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.23
+'python-ovos-utils>=1.0.0' # ovos_utils<1.0.0,>=0.0.33
+'python-ovos-workshop>=4.0.0' # ovos-workshop<4.0.0,>=0.0.15
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('54e761bc0c10d6691ab961460edbb377321a8bc68eff438e488b0d1ea8945022')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -51,7 +67,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -90,6 +106,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
