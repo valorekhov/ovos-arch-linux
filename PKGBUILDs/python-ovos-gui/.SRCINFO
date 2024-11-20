@@ -1,7 +1,7 @@
 pkgbase = python-ovos-gui
 	pkgdesc = GUI messagebus service, manages GUI state and implements the gui protocol
-	pkgver = 0.0.3
-	pkgrel = 00
+pkgver = 1.0.1
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-gui/
 	arch = any
 	license = Apache License 2.0
@@ -24,7 +24,7 @@ pkgbase = python-ovos-gui
 	source = https://github.com/OpenVoiceOS/ovos-gui/archive/3340c6e1de2a9f1a6fcfff4d7a3cc742da3e911b.tar.gz
 	source = ovos-gui-messagebus.service
 	source = ovos-systemd_gui_messagebus.py
-	sha256sums = 295732ec5d1dbfe9dfa01c1440a9cbcf1f7d283dae6062d63b34c54c87d995d3
+	sha256sums = 3481ff474a9082e3c37d7ba85d4166919dd6422474aa32e9c67664c41babc188
 	sha256sums = b8418c1ba00a7ee9fb28a0a188a0ea7e39cbc5dfbfd21e3715797dfef23e78a9
 	sha256sums = 91183c0c107817a3e95a17dc3a68dbc2b84341373c645d762b1e2bc2f10dbbc9
 
