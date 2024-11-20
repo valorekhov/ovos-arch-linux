@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-ipgeo
 	pkgdesc = OVOS-PHAL IP geolocation
-	pkgver = 0.0.2
-	pkgrel = 1
+pkgver = 0.1.2
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-ipgeo/
 	arch = any
 	license = 
@@ -13,6 +13,6 @@ pkgbase = python-ovos-phal-plugin-ipgeo
 	depends = python-ovos-plugin-manager
 	depends = python-requests
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-ipgeo/archive/731dd02dda4e89134fab5f11352a77150cc74476.tar.gz
-	sha256sums = e137601541972e47915a9bd27a6de75faf1825797c5f6e928a00934c2cd93c82
+	sha256sums = ff4b8e7200a2ce6be6b5ea38fa137ca268a2240e50c1eee1d5c29c60cfe23019
 
 pkgname = python-ovos-phal-plugin-ipgeo
