@@ -2,49 +2,60 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-stt-plugin-vosk
 pkgname=python-ovos-stt-plugin-vosk
 _name=ovos-stt-plugin-vosk
-_base_ver='3bde4c117bf76ceb5645eff8cf534157f0e4e00d'
-pkgver=0.2.0a1
-pkgrel=1
+_commit='ea7f9448211b3a7cee2dd5cc0784d19c5b9aeada'
+pkgver='0.2.3'
+pkgrel=00
 pkgdesc='OVOS STT plugin for Vosk'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-plugin-vosk/'
 license=('')
 depends=(python \
 'python-ovos-skill-installer' \
-'python-ovos-plugin-manager>=0.0.1' \
-'python-speechrecognition>=3.8.1' \
-'python-vosk' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager<1.0.0,>=0.0.1
+'python-speechrecognition>=3.8.1' # SpeechRecognition>=3.8.1
+'python-vosk' # vosk
+)
+conflicts+=(
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.1
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-stt-plugin-vosk-3bde4c117bf76ceb5645eff8cf534157f0e4e00d.tar.gz \
-   08352ad93dd6840d96f21e7b13c51321812d5d40989695a87c44272313e2066b)
+   109c34f713bffc04cc23b6e5a5c6112ae7919fe60aa456d6ab6657f5e259c48c)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -54,7 +65,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -92,6 +103,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
