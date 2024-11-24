@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-news
 pkgname=ovos-skill-official-news
 _name=skill-ovos-news
-_commit='90718d2b337df81c5312bb0c657db7888d45edf7'
-pkgver='0.0.3'
-pkgrel=01
+_commit='8c71a2e8c8b66bc2b05d51e95f040b6f59b23a53'
+pkgver='0.1.10'
+pkgrel=00
 pkgdesc='News Streams from around the globe'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-news/'
@@ -18,12 +18,15 @@ conflicts+=("$pkgname")
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-beautifulsoup4' # beautifulsoup4
-'python-ovos-ocp-audio-plugin>=0.0.3' # ovos_plugin_common_play>=0.0.3,~=0.0
-'python-ovos-workshop>=0.0.10' # ovos_workshop>=0.0.10,~=0.0
+'python-feedparser>=6.0' # feedparser~=6.0
+'python-ovos-bus-client>=0.0.9' # ovos-bus-client<2.0.0,>=0.0.9
+'python-ovos-utils>=0.1.0' # ovos-utils>=0.1.0
+'python-ovos-workshop>=0.0.16' # ovos-workshop<4.0.0,>=0.0.16
 'python-pytz' # pytz
 )
 conflicts+=(
-
+'python-ovos-bus-client>=2.0.0' # ovos-bus-client<2.0.0,>=0.0.9
+'python-ovos-workshop>=4.0.0' # ovos-workshop<4.0.0,>=0.0.16
 )
 optdepends+=(
 
@@ -31,7 +34,7 @@ optdepends+=(
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('d762a1f7b44683621b8c13ea09e20c561a8c5856da24bc72ae9e26e712a0643c')
+sha256sums=('d6614d6754f933d1f9427be1f87829f42f69e1b760321bfd686a6d01fb2ba535')
 
 prepare() {
     cd "$srcdir"
