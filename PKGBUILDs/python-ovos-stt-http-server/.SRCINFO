@@ -1,7 +1,7 @@
 pkgbase = python-ovos-stt-http-server
 	pkgdesc = Turn any OVOS STT plugin into a micro service.
-	pkgver = 0.0.2
-	pkgrel = 00
+pkgver = 0.1.1
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-stt-http-server/
 	arch = any
 	license = Apache License 2.0
@@ -17,6 +17,6 @@ pkgbase = python-ovos-stt-http-server
 	depends = python-uvicorn>=0.22
 	optdepends = python-gradio: for Gradio-compatible GUI
 	source = https://github.com/OpenVoiceOS/ovos-stt-http-server/archive/add03f12957290b6394d71b19d70f3fb21d59e4e.tar.gz
-	sha256sums = 88b47f3806d5b40478d75efe8a3708b4a25899c0d7f7d6800bbd45153c5e98cf
+	sha256sums = 584f7f3c3710c14c5312a05857d451e58395d5fb11331a38cced7c75591a961f
 
 pkgname = python-ovos-stt-http-server
