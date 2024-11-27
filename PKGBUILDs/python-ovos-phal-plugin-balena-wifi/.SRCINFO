@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-balena-wifi
 	pkgdesc = OVOS-PHAL Balena WIFI setup
-	pkgver = 1.0.1a2
-	pkgrel = 1
+pkgver = 1.2.0
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-balena-wifi/
 	arch = any
 	license = 
@@ -14,6 +14,6 @@ pkgbase = python-ovos-phal-plugin-balena-wifi
 	depends = python-ovos-utils
 	depends = python-ovos-plugin-manager>=0.0.1
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-balena-wifi/archive/099b47530ba5413170ba30e9fea397c22a8edea0.tar.gz
-	sha256sums = 38761c38d40a43224cec98a9aa5be506ffa2352f9ec06bb95b0b79e37bb5c3ca
+	sha256sums = c4982b48086e668796964558ccf3ec567f3e6800eb8c172685b5bedfc04018d2
 
 pkgname = python-ovos-phal-plugin-balena-wifi
