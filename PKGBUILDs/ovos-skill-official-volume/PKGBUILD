@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-volume
 pkgname=ovos-skill-official-volume
 _name=skill-ovos-volume
-_commit='0feb9cfa55593ee011fdaf1141c6e5db864da104'
-pkgver=0.0.1
-pkgrel=1
+_commit='4209b46bacf9a921a82d67602b823876f4c37674'
+pkgver='0.1.10'
+pkgrel=00
 pkgdesc='OVOS Volume Skill
 Control the volume of your Device'
 arch=('any')
@@ -18,8 +18,26 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-number-parser>=0.0.1' # ovos-number-parser<1.0.0,>=0.0.1
+'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
+'python-ovos-utterance-normalizer>=0.0.1' # ovos-utterance-normalizer<1.0.0,>=0.0.1
+'python-ovos-workshop>=0.0.15' # ovos_workshop<4.0.0,>=0.0.15
+)
+conflicts+=(
+'python-ovos-number-parser>=1.0.0' # ovos-number-parser<1.0.0,>=0.0.1
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
+'python-ovos-utterance-normalizer>=1.0.0' # ovos-utterance-normalizer<1.0.0,>=0.0.1
+'python-ovos-workshop>=4.0.0' # ovos_workshop<4.0.0,>=0.0.15
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('169474a8d1f9f53a2954b2510e4e704cc37dff25eaf40686bc55494f8bada035')
+sha256sums=('551cd731238045c14203ada8e28090ea9e69679e7e377a167f030bf6cc2e462b')
 
 prepare() {
     cd "$srcdir"
