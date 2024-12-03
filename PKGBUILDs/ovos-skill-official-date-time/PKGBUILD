@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-date-time
 pkgname=ovos-skill-official-date-time
 _name=skill-ovos-date-time
-_commit='4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e'
-pkgver=0.2.3a1
-pkgrel=1
+_commit='ce98ab9a06c45e6da8314c8f837b610421e48951'
+pkgver='0.4.6'
+pkgrel=00
 pkgdesc='OVOS official Date and Time Skill, providing
 the current time, date and day of week for cities
 around the world.'
@@ -13,20 +13,35 @@ url='https://github.com/OpenVoiceOS/skill-ovos-date-time/'
 license=('Apache License 2.0')
 
 depends=(python
-'python-geocoder'
-'python-ovos-workshop>=0.0.12a27' #>=0.0.12a27,~=0.0
-'python-ovos-utils>=0.0.28' #>=0.0.28,~=0.0
-'python-pytz>=2022.1'
-'python-timezonefinder'
-'python-tzlocal>=1.3' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-geocoder>=1.38' # geocoder~=1.38
+'python-ovos-date-parser>=0.0.1' # ovos-date-parser<1.0.0,>=0.0.1
+'python-ovos-utils>=0.0.38' # ovos-utils>=0.0.38
+'python-ovos-utterance-normalizer>=0.0.1' # ovos-utterance-normalizer<1.0.0,>=0.0.1
+'python-ovos-workshop>=0.0.16' # ovos-workshop<4.0.0,>=0.0.16
+'python-pytz>=2022.1' # pytz>=2022.1
+'python-timezonefinder>=5.2' # timezonefinder~=5.2
+'python-tzlocal>=1.3' # tzlocal>=1.3
+)
+conflicts+=(
+'python-ovos-date-parser>=1.0.0' # ovos-date-parser<1.0.0,>=0.0.1
+'python-ovos-utterance-normalizer>=1.0.0' # ovos-utterance-normalizer<1.0.0,>=0.0.1
+'python-ovos-workshop>=4.0.0' # ovos-workshop<4.0.0,>=0.0.16
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('cedd24ccb4b1b6476d1eaaf83e5396fca6f5706fb936f421f2c65c813d557a30')
+sha256sums=('72f028c539701c5031b97a0ab308ed917217ea1e5eb7f5b0391450408c3f63a5')
 
 prepare() {
     cd "$srcdir"
