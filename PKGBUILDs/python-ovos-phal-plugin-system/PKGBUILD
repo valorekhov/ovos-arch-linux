@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-system
 pkgname=python-ovos-phal-plugin-system
 _name=ovos-PHAL-plugin-system
-_commit='73688a289c0c7b34feb1254d15c267f94f451221'
-pkgver='0.0.4'
+_commit='867f1cce0f876274dd4be0d519f8283caab37b16'
+pkgver='1.2.0'
 pkgrel=00
 pkgdesc='OVOS-PHAL System events'
 arch=('any')
@@ -15,13 +15,16 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-ovos-bus-client>=0.0.3' # ovos-bus-client~=0.0.3
-'python-ovos-config>=0.0.5' # ovos_config>=0.0.5,~=0.0
-'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager~=0.0.1
-'python-ovos-utils>=0.0.30' # ovos-utils>=0.0.30,~=0.0
+'python-ovos-bus-client>=0.0.8' # ovos-bus-client<2.0.0,>=0.0.8
+'python-ovos-config>=0.0.5' # ovos_config<1.0.0,>=0.0.5
+'python-ovos-plugin-manager>=0.0.26' # ovos-plugin-manager<1.0.0,>=0.0.26
+'python-ovos-utils>=0.1.0' # ovos-utils<1.0.0,>=0.1.0
 )
 conflicts+=(
-
+'python-ovos-bus-client>=2.0.0' # ovos-bus-client<2.0.0,>=0.0.8
+'python-ovos-config>=1.0.0' # ovos_config<1.0.0,>=0.0.5
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.26
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.1.0
 )
 optdepends+=(
 
@@ -31,7 +34,7 @@ optdepends+=(
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-phal-plugin-system-6bd785611cd2e266d1cbec395c29a51525dd6d13.tar.gz \
-   18d0d794f343384e46bc8ef9004b906276839b9043e9f36647ba6d8db2272f84)
+   3635cc6eb7a97c8df02ead6e8db03a03d8a3d6123748c2ea2f718bf00be7a066)
 
 prepare() {
     cd "$srcdir"
