@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos_utils
 pkgname=python-ovos-utils
 _name=ovos-utils
-_commit='184c8cf6fb32fc3b0c4dabc8722eceb0bd5dc2fc'
-pkgver='0.0.38'
+_commit='bffe4115a6555bc64d80e1811ae0952b048ac225'
+pkgver='0.5.6'
 pkgrel=00
 pkgdesc='collection of simple utilities for use
 across the mycroft ecosystem'
@@ -16,24 +16,34 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
+'python-combo-lock>=0.2' # combo-lock~=0.2
 'python-json-database>=0.7' # json_database~=0.7
 'python-kthread>=0.2' # kthread~=0.2
-'python-pexpect>=4.6' # pexpect~=4.6
-'python-pyee' # pyee
+'python-orjson' # orjson
+'python-pexpect>=4.9' # pexpect~=4.9
+'python-pyee>=8.0.0' # pyee>=8.0.0
 'python-requests>=2.26' # requests~=2.26
+'python-rich-click>=1.7' # rich-click~=1.7
+'python-rich>=13.7' # rich~=13.7
 'python-watchdog' # watchdog
 )
 conflicts+=(
-'python-ovos-bus-client>=0.1.0' # ovos-bus-client<0.1.0; extra == "extras"
-'python-ovos-config>=0.1.0' # ovos-config<0.1.0; extra == "extras"
+'python-rapidfuzz>=4.0' # rapidfuzz<4.0,>=3.6; extra == "extras"
 )
 optdepends+=(
-'python-rapidfuzz>=2.0' # rapidfuzz~=2.0; extra == "extras"
+'python-langcodes' # langcodes; extra == "extras"
+'python-oauthlib>=3.2' # oauthlib~=3.2; extra == "extras"
+'python-ovos-bus-client>=0.0.8' # ovos_bus_client>=0.0.8; extra == "extras"
+'python-ovos-config>=0.0.12' # ovos-config>=0.0.12; extra == "extras"
+'python-ovos-plugin-manager>=0.0.25' # ovos-plugin-manager>=0.0.25; extra == "extras"
+'python-ovos-workshop>=0.0.13' # ovos-workshop>=0.0.13; extra == "extras"
+'python-rapidfuzz>=3.6' # rapidfuzz<4.0,>=3.6; extra == "extras"
+'python-timezonefinder' # timezonefinder; extra == "extras"
 )
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('25ef0c4f6ca57a9689727af141e35727367f66f1fdf38d4749f230981bb8cf65')
+sha256sums=('aa5e4c55d7f913306d4cedd134ddd5ac65ba2f12aff4a7e8bc345da693fcb2c1')
 
 prepare() {
     cd "$srcdir"
