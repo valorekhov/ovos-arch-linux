@@ -1,7 +1,7 @@
 pkgbase = python-ovos-utils
 	pkgdesc = collection of simple utilities for use across the mycroft ecosystem
-	pkgver = 0.0.38
-	pkgrel = 00
+pkgver = 0.6.0
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos_utils/
 	arch = any
 	license = Apache License 2.0
@@ -20,6 +20,6 @@ pkgbase = python-ovos-utils
 	conflicts = python-ovos-bus-client>=0.1.0
 	conflicts = python-ovos-config>=0.1.0
 	source = https://github.com/OpenVoiceOS/ovos_utils/archive/184c8cf6fb32fc3b0c4dabc8722eceb0bd5dc2fc.tar.gz
-	sha256sums = 25ef0c4f6ca57a9689727af141e35727367f66f1fdf38d4749f230981bb8cf65
+	sha256sums = 6fb0fe9fbf5defdfb33b410e1e4173d404c45967ae38486aec45388fe5dad3c7
 
 pkgname = python-ovos-utils
