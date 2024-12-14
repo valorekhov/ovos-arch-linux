@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-official-naptime
 	pkgdesc = Tell me to sleep when you don't want to be disturbed in any way. This stops all calls to Speech to Text system, guaranteeing your voice won't be sent anywhere on an accidental activation.
-	pkgver = 0.2.3
-	pkgrel = 1
+pkgver = 0.3.11
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/skill-ovos-naptime/
 	arch = any
 	license = Apache License 2.0
@@ -16,6 +16,6 @@ pkgbase = ovos-skill-official-naptime
 	provides = ovos-skill-official-naptime
 	conflicts = ovos-skill-official-naptime
 	source = https://github.com/OpenVoiceOS/skill-ovos-naptime/archive/92ab0cbef48273148c706a1b6f52d1574adb476f.tar.gz
-	sha256sums = d4293b1fea766e2d31cdcc7a3c03275f0ab05c9090c7d6979370095f7f8dae71
+	sha256sums = 14d546f451c097021bcbe64f712d6d77045939620ee0a73b425209f5cb22df4d
 
 pkgname = ovos-skill-official-naptime
