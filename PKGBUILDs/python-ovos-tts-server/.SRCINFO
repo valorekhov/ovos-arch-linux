@@ -1,7 +1,7 @@
 pkgbase = python-ovos-tts-server
 	pkgdesc = Turn any OVOS TTS plugin into a micro service
-	pkgver = 0.0.3a5
-	pkgrel = 1
+pkgver = 0.1.0
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-tts-server/
 	arch = any
 	license = 
@@ -16,6 +16,6 @@ pkgbase = python-ovos-tts-server
 	depends = python-uvicorn
 	optdepends = python-gradio: for Gradio-compatible GUI
 	source = https://github.com/OpenVoiceOS/ovos-tts-server/archive/86369a266bac906bc4c82de267e0ec6c089c1772.tar.gz
-	sha256sums = 2ccee434604ac0e431ef2db08e9d5e9465c2f516a691e6466b4a3c02968aa1a0
+	sha256sums = e96b839e992de3280cae5bc50e7818df3639bb0325a56e79294e7d334ed581b3
 
 pkgname = python-ovos-tts-server
