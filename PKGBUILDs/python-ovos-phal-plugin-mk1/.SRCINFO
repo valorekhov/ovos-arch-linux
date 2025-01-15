@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-mk1
 	pkgdesc = OVOS-PHAL Mark-1
-	pkgver = 0.0.1a2
-	pkgrel = 1
+pkgver = 0.1.4
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk1/
 	arch = any
 	license = 
@@ -11,6 +11,6 @@ pkgbase = python-ovos-phal-plugin-mk1
 	makedepends = python-setuptools
 	depends = python
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-mk1/archive/e8aa4f20f2a10792ad5c1cfa47719ab46a0117c4.tar.gz
-	sha256sums = 7e2147ccaeab487cf65dbc3470ede0c4cbbcb12136ef940652c72131caa9cd55
+	sha256sums = 9c09ed93cf85d3be335b6f7aaa3d67dccbbc790873e3504383b3346ba872f996
 
 pkgname = python-ovos-phal-plugin-mk1
