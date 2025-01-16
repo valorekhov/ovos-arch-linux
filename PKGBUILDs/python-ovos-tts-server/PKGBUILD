@@ -2,50 +2,63 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-tts-server
 pkgname=python-ovos-tts-server
 _name=ovos-tts-server
-_base_ver='86369a266bac906bc4c82de267e0ec6c089c1772'
-pkgver=0.0.3a5
-pkgrel=1
+_commit='b460f4000ff0c4681d8e43f2ab9a12ab098f2131'
+pkgver='0.1.2'
+pkgrel=00
 pkgdesc='Turn any OVOS TTS plugin into a micro service'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-tts-server/'
 license=('')
 depends=(python \
-'python-fastapi' \
-'python-ovos-plugin-manager' \
-'python-ovos-utils' \
-'python-uvicorn' \
 )
 optdepends=('python-gradio: for Gradio-compatible GUI')
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-fastapi>=0.115' # fastapi~=0.115
+'python-gradio>=3.28' # gradio~=3.28
+'python-ovos-plugin-manager>=0.0.25' # ovos-plugin-manager<1.0.0,>=0.0.25
+'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
+'python-uvicorn>=0.34' # uvicorn~=0.34
+)
+conflicts+=(
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.25
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-tts-server-86369a266bac906bc4c82de267e0ec6c089c1772.tar.gz \
-   2ccee434604ac0e431ef2db08e9d5e9465c2f516a691e6466b4a3c02968aa1a0)
+   a2650a2fa6c7aebbab6b08c7b427a547c706a57998683e39c4127d707d8b3da2)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -55,7 +68,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -93,6 +106,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
