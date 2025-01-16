@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-stt-http-server
 pkgname=python-ovos-stt-http-server
 _name=ovos-stt-http-server
-_commit='add03f12957290b6394d71b19d70f3fb21d59e4e'
-pkgver='0.0.2'
+_commit='a6b9c931f1e54fb5df3d9a52f986b200009cb1b3'
+pkgver='0.1.2'
 pkgrel=00
 pkgdesc='Turn any OVOS STT plugin into a micro service.'
 arch=('any')
@@ -18,12 +18,14 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 depends+=(
 'python-fastapi>=0.95' # fastapi~=0.95
 'python-flask' # flask
-'python-ovos-plugin-manager>=0.0.18' # ovos-plugin-manager~=0.0.18
-'python-ovos-utils>=0.0.32' # ovos-utils~=0.0.32
+'python-gradio>=3.28' # gradio~=3.28
+'python-ovos-plugin-manager>=0.7.0' # ovos-plugin-manager<1.0.0,>=0.7.0
+'python-ovos-utils>=0.0.32' # ovos-utils<1.0.0,>=0.0.32
 'python-uvicorn>=0.22' # uvicorn~=0.22
 )
 conflicts+=(
-
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.7.0
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.32
 )
 optdepends+=(
 
@@ -33,7 +35,7 @@ optdepends+=(
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-stt-http-server-57c656242e44f8d1d4b60574775dc29167cf314f.tar.gz \
-   88b47f3806d5b40478d75efe8a3708b4a25899c0d7f7d6800bbd45153c5e98cf)
+   c099ef2a15d804ca4ada23befa0da68b59d785c76c293577f8cbc270431a1691)
 
 prepare() {
     cd "$srcdir"
