@@ -3,8 +3,8 @@ _gh_proj=ovos-gui
 pkgname=python-ovos-gui
 _name=ovos-gui
 _unit_name="ovos-gui-messagebus"
-_commit='3340c6e1de2a9f1a6fcfff4d7a3cc742da3e911b'
-pkgver='0.0.3'
+_commit='b52c4626ff20e38813ffc14f5fa0a0f44e6e91ae'
+pkgver='1.3.2'
 pkgrel=00
 pkgdesc='GUI messagebus service, manages GUI state and implements the gui protocol'
 arch=('any')
@@ -17,17 +17,21 @@ conflicts=("$_unit_name")
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-ovos-bus-client>=0.0.5' # ovos-bus-client>=0.0.5,~=0.0
-'python-ovos-config>=0.0.10' # ovos-config>=0.0.10,~=0.0
-'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager>=0.0.23
-'python-ovos-utils>=0.0.34' # ovos-utils>=0.0.34,~=0.0
+'python-ovos-bus-client>=1.0.0' # ovos_bus_client<2.0.0,>=1.0.0
+'python-ovos-config>=0.0.12' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-plugin-manager>=0.5.5' # ovos-plugin-manager<1.0.0,>=0.5.5
+'python-ovos-utils>=0.0.37' # ovos-utils<1.0.0,>=0.0.37
 'python-tornado>=6.0.3' # tornado>=6.0.3,~=6.0
 )
 conflicts+=(
-
+'python-ovos-bus-client>=2.0.0' # ovos_bus_client<2.0.0,>=1.0.0
+'python-ovos-config>=2.0.0' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-gui-plugin-shell-companion>=2.0.0' # ovos-gui-plugin-shell-companion<2.0.0,>=1.0.1; extra == "extras"
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.5.5
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.37
 )
 optdepends+=(
-
+'python-ovos-gui-plugin-shell-companion>=1.0.1' # ovos-gui-plugin-shell-companion<2.0.0,>=1.0.1; extra == "extras"
 )
 
 #### End of automatically generated dependencies.
@@ -36,7 +40,7 @@ source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "ovos-systemd_gui_messagebus.py" \
     # "python-ovos-gui.install" \
     )
-sha256sums=('295732ec5d1dbfe9dfa01c1440a9cbcf1f7d283dae6062d63b34c54c87d995d3'
+sha256sums=('9a572b739f959457e11c107ed4b4413e0a64f4bc12472de6370b25fc7b56143e'
             'b8418c1ba00a7ee9fb28a0a188a0ea7e39cbc5dfbfd21e3715797dfef23e78a9'
             '91183c0c107817a3e95a17dc3a68dbc2b84341373c645d762b1e2bc2f10dbbc9')
 
