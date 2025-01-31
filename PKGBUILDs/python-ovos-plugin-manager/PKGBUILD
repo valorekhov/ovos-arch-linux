@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-plugin-manager
 pkgname=python-ovos-plugin-manager
 _name=ovos-plugin-manager
-_commit='e1aa516bc2adde40fa5a75fb72cb993865ae2e5c'
-pkgver='0.0.25'
+_commit='1ef90662972f3609e36d8b93920b0e78b1ad84fa'
+pkgver='0.8.2'
 pkgrel=00
 pkgdesc='OPM can be used to search, install, load and create plugins for the OpenVoiceOS ecosystem!'
 arch=('any')
@@ -19,16 +19,17 @@ depends+=(
 'python-combo-lock>=0.2' # combo_lock~=0.2
 'python-importlib-metadata' # importlib_metadata
 'python-langcodes>=3.3.0' # langcodes~=3.3.0
-'python-ovos-bus-client>=0.0.8' # ovos-bus-client<0.2.0,>=0.0.8
-'python-ovos-config>=0.0.12' # ovos-config<0.2.0,>=0.0.12
-'python-ovos-utils>=0.0.37' # ovos-utils<0.2.0,>=0.0.37
+'python-ovos-bus-client>=0.0.8' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=0.0.12' # ovos-config<1.0.0,>=0.0.12
+'python-ovos-utils>=0.2.1' # ovos-utils<1.0.0,>=0.2.1
 'python-quebra-frases' # quebra_frases
 'python-requests>=2.26' # requests~=2.26
+'python-setuptools' # setuptools
 )
 conflicts+=(
-'python-ovos-bus-client>=0.2.0' # ovos-bus-client<0.2.0,>=0.0.8
-'python-ovos-config>=0.2.0' # ovos-config<0.2.0,>=0.0.12
-'python-ovos-utils>=0.2.0' # ovos-utils<0.2.0,>=0.0.37
+'python-ovos-bus-client>=2.0.0' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=1.0.0' # ovos-config<1.0.0,>=0.0.12
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.2.1
 )
 optdepends+=(
 
@@ -36,7 +37,7 @@ optdepends+=(
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('2bb21376a9be1bb7c41b8f7e45e73b1e80db8fdfb891c0b5e261b9201edc9e04')
+sha256sums=('79aee031657c68e629bae96cd7dd384bbaa628685d0c7f2d34a148e9cb26d7cd')
 
 prepare() {
     cd "$srcdir"
