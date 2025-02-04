@@ -2,51 +2,65 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ocp-news-plugin
 pkgname=python-ovos-ocp-news-plugin
 _name=ovos-ocp-news-plugin
-_base_ver='2927b18638429249f80f320c56493d43899009f1'
-pkgver=0.0.4
-pkgrel=1
+_commit='ee76cba617ee0abdd8b9ca5593f4eb41c610a885'
+pkgver='0.0.5'
+pkgrel=00
 pkgdesc='
 '
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-ocp-news-plugin/'
 license=('')
 depends=(python \
-'python-beautifulsoup4' \
 'python-ovos-ocp-audio-plugin' \
-'python-ovos-ocp-m3u-plugin>=0.0.1' \
-'python-ovos-ocp-rss-plugin>=0.0.2' \
-'python-pytz' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-beautifulsoup4' # beautifulsoup4
+'python-ovos-ocp-m3u-plugin>=0.0.1' # ovos-ocp-m3u-plugin<1.0.0,>=0.0.1
+'python-ovos-ocp-rss-plugin>=0.0.2' # ovos-ocp-rss-plugin<1.0.0,>=0.0.2
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager<1.0.0,>=0.0.1
+'python-pytz' # pytz
+)
+conflicts+=(
+'python-ovos-ocp-m3u-plugin>=1.0.0' # ovos-ocp-m3u-plugin<1.0.0,>=0.0.1
+'python-ovos-ocp-rss-plugin>=1.0.0' # ovos-ocp-rss-plugin<1.0.0,>=0.0.2
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.0.1
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-ocp-news-plugin-2927b18638429249f80f320c56493d43899009f1.tar.gz \
-   a45400306bec24f0fbf548ae85f38048e3eca072b652ea464f4d7718f1eb7a0c)
+   29bef527acea78e1834c38acce2e40ac64dd95b1c13ccce45583bbebf164c1a9)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -56,7 +70,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -95,6 +109,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 

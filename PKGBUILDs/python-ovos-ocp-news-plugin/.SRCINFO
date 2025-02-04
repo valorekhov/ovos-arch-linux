@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ocp-news-plugin
 	pkgdesc = 
-	pkgver = 0.0.4
-	pkgrel = 1
+pkgver = 0.0.5
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-ocp-news-plugin/
 	arch = any
 	license = 
@@ -16,6 +16,6 @@ pkgbase = python-ovos-ocp-news-plugin
 	depends = python-ovos-ocp-rss-plugin>=0.0.2
 	depends = python-pytz
 	source = https://github.com/OpenVoiceOS/ovos-ocp-news-plugin/archive/2927b18638429249f80f320c56493d43899009f1.tar.gz
-	sha256sums = a45400306bec24f0fbf548ae85f38048e3eca072b652ea464f4d7718f1eb7a0c
+	sha256sums = 29bef527acea78e1834c38acce2e40ac64dd95b1c13ccce45583bbebf164c1a9
 
 pkgname = python-ovos-ocp-news-plugin
