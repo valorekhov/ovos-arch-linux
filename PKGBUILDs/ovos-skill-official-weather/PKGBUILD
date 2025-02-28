@@ -2,27 +2,50 @@ _gh_org=OpenVoiceOS
 _gh_proj=skill-ovos-weather
 pkgname=ovos-skill-official-weather
 _name=skill-ovos-weather
-_commit='9731dd4163eec6f40abdb7f9eacbd61b6b865d3c'
-pkgver=0.0.1a10
-pkgrel=1
+_commit='05a24c1ef907ed14beef8d76d83db2a924e39ccc'
+pkgver='0.1.15'
+pkgrel=00
 pkgdesc='OpenVoiceOS version of Weather Skill, providing
 weather conditions and forecasts.'
 arch=('any')
 url='https://github.com/OpenVoiceOS/skill-ovos-weather/'
 license=('Apache License 2.0')
 depends=(python
-'python-ovos-workshop>=0.0.12a27' #>=0.0.12a27,~=0.0
-'python-ovos-utils>=0.0.28a4' #>=0.0.28a4,~=0.0
-'python-pytz'
-'python-requests'
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$pkgname")
 conflicts+=("$pkgname")
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-date-parser>=0.0.2' # ovos-date-parser<1.0.0,>=0.0.2
+'python-ovos-number-parser>=0.0.1' # ovos-number-parser<1.0.0,>=0.0.1
+'python-ovos-utils>=0.4.0' # ovos-utils<1.0.0,>=0.4.0
+'python-ovos-utterance-normalizer>=0.0.1' # ovos-utterance-normalizer<1.0.0,>=0.0.1
+'python-ovos-workshop>=2.2.0' # ovos-workshop<4.0.0,>=2.2.0
+'python-pytz' # pytz
+'python-requests>=2.31.0' # requests>=2.31.0
+)
+conflicts+=(
+'python-ovos-date-parser>=1.0.0' # ovos-date-parser<1.0.0,>=0.0.2
+'python-ovos-number-parser>=1.0.0' # ovos-number-parser<1.0.0,>=0.0.1
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.4.0
+'python-ovos-utterance-normalizer>=1.0.0' # ovos-utterance-normalizer<1.0.0,>=0.0.1
+'python-ovos-workshop>=4.0.0' # ovos-workshop<4.0.0,>=2.2.0
+)
+optdepends+=(
+'python-ovos-core>=0.0.5a28' # ovos-core[skills_lgpl]>=0.0.5a28; extra == "test"
+'python-ovos-plugin-manager' # ovos-plugin-manager; extra == "test"
+'python-ovos-skills-manager' # ovos-skills-manager; extra == "test"
+'python-pytest-cov' # pytest-cov; extra == "test"
+'python-pytest-timeout' # pytest-timeout; extra == "test"
+'python-pytest' # pytest; extra == "test"
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('dadcf9f5d3eef14b198d6be959149e7d4e51376f6f648eeee8d08a0535b131b6')
+sha256sums=('7bc8b9e2ef410ab74e4d389a92e4c77e32bff6ee5c01a354a37f9d58d928c633')
 
 prepare() {
     cd "$srcdir"
