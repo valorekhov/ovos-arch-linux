@@ -2,8 +2,8 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-PHAL-plugin-homeassistant
 pkgname=python-ovos-phal-plugin-homeassistant
 _name=ovos-PHAL-plugin-homeassistant
-_commit='02f034168f35da8a4bac678b757072b52f60110c'
-pkgver='0.0.3'
+_commit='a8c5a520fc8fcc361c308f439bb9b616619baf46'
+pkgver='0.1.0'
 pkgrel=00
 pkgdesc='HomeAssistant PHAL Plugin for OpenVoiceOS'
 arch=('any')
@@ -16,19 +16,28 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 #### Automatically generated dependencies. Do not edit.
 depends+=(
 'python-nested-lookup>=0.2' # nested-lookup~=0.2
-'python-ovos-bus-client>=0.0.3' # ovos-bus-client~=0.0.3
-'python-ovos-config>=0.0.5' # ovos-config~=0.0.5
-'python-ovos-phal-plugin-oauth>=0.0.1' # ovos-PHAL-plugin-oauth~=0.0.1
-'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager~=0.0.23
-'python-ovos-utils>=0.0.27' # ovos-utils~=0.0.27
+'python-ovos-bus-client>=0.0.8' # ovos-bus-client>=0.0.8
+'python-ovos-config>=0.0.5' # ovos-config>=0.0.5
+'python-ovos-phal-plugin-oauth>=0.0.3' # ovos-PHAL-plugin-oauth>=0.0.3
+'python-ovos-plugin-manager>=0.0.23' # ovos-plugin-manager>=0.0.23
+'python-ovos-utils>=0.0.27' # ovos-utils>=0.0.27
 'python-pytube>=12.1' # pytube~=12.1
 'python-webcolors>=1.13' # webcolors~=1.13
-'python-websockets>=10.4' # websockets~=10.4
+'python-websocket-client>=0.54.0' # websocket-client<2.0.0,>=0.54.0
+'python-websockets>=0.54.0' # websockets<14.0,>=0.54.0
 'python-youtube-search>=2.1' # youtube-search~=2.1
 )
+conflicts+=(
+'python-websocket-client>=2.0.0' # websocket-client<2.0.0,>=0.54.0
+'python-websockets>=14.0' # websockets<14.0,>=0.54.0
+)
+optdepends+=(
+
+)
+
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('c3d0aa941470f0090ddcff2af07bc42349c62ad47747199532ab9eaf4b575ed1')
+sha256sums=('19524e351442467c0ef5cc2b8b2b81a5c8d21a7285492ee7fa6f5f024dcb8852')
 
 prepare() {
     cd "$srcdir"
