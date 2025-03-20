@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-wallpaper-manager
 	pkgdesc = A plugin for OpenVoiceOS hardware abstraction layer
-	pkgver = 0.1.0
-	pkgrel = 00
+pkgver = 0.2.4
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-wallpaper-manager
 	arch = any
 	license = Apache
