@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-neon-local-music
 	pkgdesc = Neon Skill for Local Music Playback
-	pkgver = 3.1.0
-	pkgrel = 00
+pkgver = 3.2.0
+pkgrel = 00
 	url = https://github.com/NeonGeckoCom/skill-local_music/
 	arch = any
 	license = BSD3
@@ -19,6 +19,6 @@ pkgbase = ovos-skill-neon-local-music
 	provides = ovos-skill-neon-local-music
 	conflicts = ovos-skill-neon-local-music
 	source = https://github.com/NeonGeckoCom/skill-local_music/archive/997b1bae845f4fef267ce764c3882091a108a742.tar.gz
-	sha256sums = f75a42a8724d843a8d2bde8c2eef911ad2f4f4de6b6b620e72c00245dd8842c1
+	sha256sums = ccddd0cadf946b23eb9e3b571948dff7d9722945d80a9fca35b565069194344c
 
 pkgname = ovos-skill-neon-local-music

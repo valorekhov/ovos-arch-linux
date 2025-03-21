@@ -2,8 +2,8 @@ _gh_org=NeonGeckoCom
 _gh_proj=skill-local_music
 pkgname=ovos-skill-neon-local-music
 _name=skill-local_music
-_commit='997b1bae845f4fef267ce764c3882091a108a742'
-pkgver='3.1.0'
+_commit='597d9bc11f5fcffa7714f8804af9a77665903241'
+pkgver='3.2.0'
 pkgrel=00
 pkgdesc='Neon Skill for Local Music Playback'
 arch=('any')
@@ -19,22 +19,23 @@ conflicts+=("$pkgname")
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
+'python-id3parse>=0.1' # id3parse~=0.1
 'python-ovos-ocp-audio-plugin>=0.0' # ovos-plugin-common-play~=0.0
 'python-ovos-ocp-files-plugin>=0.13' # ovos-ocp-files-plugin~=0.13
 'python-ovos-skill-installer>=0.0.5' # ovos-skill-installer~=0.0.5
 'python-ovos-utils>=0.0.28' # ovos_utils>=0.0.28,~=0.0
-'python-ovos-workshop>=0.0.7' # ovos-workshop~=0.0.7
+'python-ovos-workshop>=0.0.7' # ovos-workshop>=0.0.7,~=0.0
 )
 conflicts+=(
 
 )
 optdepends+=(
-'python-neon-minerva>=0.2' # neon-minerva[padatious]~=0.2; extra == "test"
+'python-neon-minerva>=0.3' # neon-minerva[padatious]~=0.3; extra == "test"
 )
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('f75a42a8724d843a8d2bde8c2eef911ad2f4f4de6b6b620e72c00245dd8842c1')
+sha256sums=('ccddd0cadf946b23eb9e3b571948dff7d9722945d80a9fca35b565069194344c')
 
 prepare() {
     cd "$srcdir"
