@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-official-weather
 	pkgdesc = OpenVoiceOS version of Weather Skill, providing weather conditions and forecasts.
-	pkgver = 0.0.1a10
-	pkgrel = 1
+pkgver = 0.1.17
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/skill-ovos-weather/
 	arch = any
 	license = Apache License 2.0
@@ -17,6 +17,6 @@ pkgbase = ovos-skill-official-weather
 	provides = ovos-skill-official-weather
 	conflicts = ovos-skill-official-weather
 	source = https://github.com/OpenVoiceOS/skill-ovos-weather/archive/9731dd4163eec6f40abdb7f9eacbd61b6b865d3c.tar.gz
-	sha256sums = dadcf9f5d3eef14b198d6be959149e7d4e51376f6f648eeee8d08a0535b131b6
+	sha256sums = 5bb142d565afc6af2b5e1da3490edb606745f015d20fc2712735b1591892b804
 
 pkgname = ovos-skill-official-weather
