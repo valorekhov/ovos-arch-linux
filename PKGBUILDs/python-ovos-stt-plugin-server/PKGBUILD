@@ -2,46 +2,57 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-stt-plugin-server
 pkgname=python-ovos-stt-plugin-server
 _name=ovos-stt-plugin-server
-_base_ver='8f440da949ced2f823383b87acb7c7e502cdb7ff'
-pkgver=0.0.4
-pkgrel=1
+_commit='8c5d9d5184240e14ce180a96fdeb4cfedfe08c65'
+pkgver='0.1.1'
+pkgrel=00
 pkgdesc='OpenVoiceOS companion plugin for OpenVoiceOS STT Server'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-stt-plugin-server/'
 license=('')
 depends=(python \
-'python-ovos-plugin-manager>=0.0.5' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-plugin-manager>=0.7.0' # ovos-plugin-manager<1.0.0,>=0.7.0
+)
+conflicts+=(
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.7.0
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-stt-plugin-server-8f440da949ced2f823383b87acb7c7e502cdb7ff.tar.gz \
-   e722f87a3e1b5c7ae89d690f9e924122fdaedb6aa4bf1e7470ce64b756ed33d0)
+   b67e2621d71a0540cff76b95cd1b247bb89ba86752860a22f223ec1387185548)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -51,7 +62,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -89,6 +100,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
