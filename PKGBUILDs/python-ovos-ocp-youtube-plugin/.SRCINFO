@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ocp-youtube-plugin
 	pkgdesc = 
-	pkgver = 0.0.2a1
-	pkgrel = 1
+pkgver = 0.0.4
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-ocp-youtube-plugin/
 	arch = any
 	license = 
@@ -14,6 +14,6 @@ pkgbase = python-ovos-ocp-youtube-plugin
 	depends = python-tutubo
 	depends = python-yt-dlp
 	source = https://github.com/OpenVoiceOS/ovos-ocp-youtube-plugin/archive/df6bfd8ccc3e178cfc5284c92932196883581dac.tar.gz
-	sha256sums = 0d94ac0b26820a9793808ba33c561a4ec0d17f911377689365bed7515579cdab
+	sha256sums = 6355c52e09e6e56bf98624ed94618dd1c26884ede47001bd9ab0a5af8dae2f46
 
 pkgname = python-ovos-ocp-youtube-plugin
