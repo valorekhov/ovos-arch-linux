@@ -3,8 +3,8 @@ _gh_proj=ovos-core
 pkgname=python-ovos-core
 _name=ovos-core
 _unit_name_skills="ovos-skills-messagebus"
-_commit='9fa0b494ad45bddbd214ffb73349ce7da2dfac71'
-pkgver=0.0.8a129
+_commit='7cee31bb47dac1e92ba3e931cb5060b027a89446'
+pkgver='1.3.1'
 pkgrel=00
 pkgdesc='OVOS-core is a backwards-compatible descendant of
 Mycroft-core, the central component of Mycroft'
@@ -13,41 +13,175 @@ url='https://github.com/OpenVoiceOS/ovos-core/'
 license=('Apache')
 depends=('ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-adapt-parser>=1.0.0' #<2.0.0,>=1.0.0 \
-'python-combo-lock>=0.2.2' #<0.3,>=0.2.2 \
 'python-ovos-backend-client>=0.1.0' 
-'python-ovos-bus-client>=0.0.4a3' #<0.1.0,>=0.0.4a3 \
-'python-ovos-workshop>=0.0.12a17' #<0.1.0,>=0.0.12a17 \
 'python-ovos-classifiers>=0.0.0a3' #<0.1.0,>=0.0.0a3 \
-'python-ovos-config>=0.0.8' #>=0.0.8,~=0.0 \
 'python-ovos-lingua-franca>=0.4.7' \
-'python-ovos-plugin-manager>=0.0.23a9' #<0.1.0,>=0.0.23a9 \
-'python-ovos-utils>=0.0.33a5' #<0.1.0,>=0.0.33a5 \
-'python-padacioso' \
-'python-dateutil>=2.6' #<3.0,>=2.6 \
-'python-requests>=2.26' #<3.0,>=2.26 \
-'python-watchdog>=2.1' #<3.0,>=2.1 \
 )
 conflicts=( 'python-adapt-parser>=2.0.0' \
- 'python-combo-lock>=0.3' \
- 'python-ovos-bus-client>=0.1.0' \
- 'python-ovos-workshop>=0.1.0' \
  'python-ovos-classifiers>=0.1.0' \
- 'python-ovos-plugin-manager>=0.1.0' \
- 'python-ovos-utils>=0.1.0' \
- 'python-dateutil>=3.0' \
- 'python-requests>=3.0' \
- 'python-watchdog>=3.0')
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name_skills")
 conflicts+=("$_unit_name_skills")
 install="ovos-skills.install"
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-combo-lock>=0.2.2' # combo-lock<0.4,>=0.2.2
+'python-dateutil>=2.6' # python-dateutil<3.0,>=2.6
+'python-ovos-adapt-parser>=1.0.5' # ovos-adapt-parser<2.0.0,>=1.0.5
+'python-ovos-bus-client>=0.1.4' # ovos_bus_client<2.0.0,>=0.1.4
+'python-ovos-common-query-pipeline-plugin>=1.0.5' # ovos-common-query-pipeline-plugin<2.0.0,>=1.0.5
+'python-ovos-config>=0.0.13' # ovos-config<2.0.0,>=0.0.13
+'python-ovos-ocp-pipeline-plugin>=1.0.10' # ovos_ocp_pipeline_plugin<2.0.0,>=1.0.10
+'python-ovos-persona>=0.4.4' # ovos-persona<1.0.0,>=0.4.4
+'python-ovos-plugin-manager>=0.8.0' # ovos-plugin-manager<1.0.0,>=0.8.0
+'python-ovos-utils>=0.6.0' # ovos-utils[extras]<1.0.0,>=0.6.0
+'python-ovos-workshop>=3.3.4' # ovos-workshop<4.0.0,>=3.3.4
+'python-padacioso>=1.0.0' # padacioso<2.0.0,>=1.0.0
+'python-requests>=2.26' # requests<3.0,>=2.26
+'python-watchdog>=2.1' # watchdog<3.0,>=2.1
+)
+conflicts+=(
+'python-combo-lock>=0.4' # combo-lock<0.4,>=0.2.2
+'python-dateutil>=3.0' # python-dateutil<3.0,>=2.6
+'python-fann2>=1.1.0' # fann2<1.1.0,>=1.0.7; extra == "lgpl"
+'python-ovos-adapt-parser>=2.0.0' # ovos-adapt-parser<2.0.0,>=1.0.5
+'python-ovos-audio>=1.0.0' # ovos-audio[extras]<1.0.0,>=0.3.1; extra == "mycroft"
+'python-ovos-bidirectional-translation-plugin>=1.0.0' # ovos-bidirectional-translation-plugin<1.0.0,>=0.1.0; extra == "plugins"
+'python-ovos-bus-client>=2.0.0' # ovos_bus_client<2.0.0,>=0.1.4
+'python-ovos-common-query-pipeline-plugin>=2.0.0' # ovos-common-query-pipeline-plugin<2.0.0,>=1.0.5
+'python-ovos-config>=2.0.0' # ovos-config<2.0.0,>=0.0.13
+'python-ovos-date-parser>=1.0.0' # ovos-date-parser<1.0.0,>=0.0.3; extra == "plugins"
+'python-ovos-dinkum-listener>=1.0.0' # ovos-dinkum-listener[extras]<1.0.0,>=0.3.2; extra == "mycroft"
+'python-ovos-gui>=2.0.0' # ovos-gui[extras]<2.0.0,>=0.2.2; extra == "mycroft"
+'python-ovos-messagebus>=1.0.0' # ovos-messagebus<1.0.0,>=0.0.7; extra == "mycroft"
+'python-ovos-number-parser>=1.0.0' # ovos-number-parser<1.0.0,>=0.0.1; extra == "plugins"
+'python-ovos-ocp-pipeline-plugin>=2.0.0' # ovos_ocp_pipeline_plugin<2.0.0,>=1.0.10
+'python-ovos-padatious>=2.0.0' # ovos_padatious<2.0.0,>=1.1.0; extra == "lgpl"
+'python-ovos-persona>=1.0.0' # ovos-persona<1.0.0,>=0.4.4
+'python-ovos-phal>=1.0.0' # ovos_PHAL[extras]<1.0.0,>=0.2.7; extra == "mycroft"
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<1.0.0,>=0.8.0
+'python-ovos-skill-alerts>=1.0.0' # ovos-skill-alerts<1.0.0,>=0.1.10; extra == "skills-essential"
+'python-ovos-skill-application-launcher>=1.0.0' # ovos-skill-application-launcher<1.0.0,>=0.5.6; extra == "skills-desktop"
+'python-ovos-skill-audio-recording>=1.0.0' # ovos-skill-audio-recording<1.0.0,>=0.2.4; extra == "skills-audio"
+'python-ovos-skill-boot-finished>=1.0.0' # ovos-skill-boot-finished<1.0.0,>=0.4.8; extra == "skills-audio"
+'python-ovos-skill-cmd>=1.0.0' # ovos-skill-cmd<1.0.0,>=0.2.5; extra == "skills-extra"
+'python-ovos-skill-color-picker>=1.0.0' # ovos-skill-color-picker<1.0.0,>=0.0.2; extra == "skills-gui"
+'python-ovos-skill-confucius-quotes>=1.0.0' # ovos-skill-confucius-quotes<1.0.0,>=0.1.7; extra == "skills-extra"
+'python-ovos-skill-date-time>=1.0.0' # ovos-skill-date-time<1.0.0,>=0.4.2; extra == "skills-essential"
+'python-ovos-skill-days-in-history>=1.0.0' # ovos-skill-days-in-history<1.0.0,>=0.3.6; extra == "skills-extra"
+'python-ovos-skill-ddg>=1.0.0' # ovos-skill-ddg<1.0.0,>=0.1.9; extra == "skills-internet"
+'python-ovos-skill-diagnostics>=1.0.0' # ovos-skill-diagnostics<1.0.0,>=0.0.2; extra == "skills-essential"
+'python-ovos-skill-dictation>=1.0.0' # ovos-skill-dictation<1.0.0,>=0.2.5; extra == "skills-audio"
+'python-ovos-skill-fallback-unknown>=1.0.0' # ovos-skill-fallback-unknown<1.0.0,>=0.1.5; extra == "skills-essential"
+'python-ovos-skill-hello-world>=1.0.0' # ovos-skill-hello-world<1.0.0,>=0.1.10; extra == "skills-essential"
+'python-ovos-skill-homescreen>=4.0.0' # ovos-skill-homescreen<4.0.0,>=3.0.2; extra == "skills-gui"
+'python-ovos-skill-icanhazdadjokes>=1.0.0' # ovos-skill-icanhazdadjokes<1.0.0,>=0.3.1; extra == "skills-extra"
+'python-ovos-skill-ip>=1.0.0' # ovos-skill-ip<1.0.0,>=0.2.5; extra == "skills-internet"
+'python-ovos-skill-iss-location>=1.0.0' # ovos-skill-iss-location<1.0.0,>=0.2.2; extra == "skills-extra"
+'python-ovos-skill-laugh>=1.0.0' # ovos-skill-laugh<1.0.0,>=0.1.1; extra == "skills-extra"
+'python-ovos-skill-local-media>=1.0.0' # ovos-skill-local-media<1.0.0,>=0.2.4; extra == "skills-media"
+'python-ovos-skill-moviemaster>=1.0.0' # ovos-skill-moviemaster<1.0.0,>=0.0.7; extra == "skills-extra"
+'python-ovos-skill-naptime>=1.0.0' # ovos-skill-naptime<1.0.0,>=0.3.8; extra == "skills-audio"
+'python-ovos-skill-news>=1.0.0' # ovos-skill-news<1.0.0,>=0.1.8; extra == "skills-media"
+'python-ovos-skill-number-facts>=1.0.0' # ovos-skill-number-facts<1.0.0,>=0.1.4; extra == "skills-extra"
+'python-ovos-skill-parrot>=1.0.0' # ovos-skill-parrot<1.0.0,>=0.1.9; extra == "skills-audio"
+'python-ovos-skill-personal>=1.0.0' # ovos-skill-personal<1.0.0,>=0.1.7; extra == "skills-essential"
+'python-ovos-skill-pyradios>=1.0.0' # ovos-skill-pyradios<1.0.0,>=0.1.4; extra == "skills-media"
+'python-ovos-skill-randomness>=1.0.0' # ovos-skill-randomness<1.0.0,>=0.1.1; (python_version >= "3.10") and extra == "skills-extra"
+'python-ovos-skill-screenshot>=1.0.0' # ovos-skill-screenshot<1.0.0,>=0.0.2; extra == "skills-desktop"
+'python-ovos-skill-screenshot>=1.0.0' # ovos-skill-screenshot<1.0.0,>=0.0.2; extra == "skills-gui"
+'python-ovos-skill-somafm>=1.0.0' # ovos-skill-somafm<1.0.0,>=0.1.3; extra == "skills-media"
+'python-ovos-skill-speedtest>=1.0.0' # ovos-skill-speedtest<1.0.0,>=0.3.2; extra == "skills-internet"
+'python-ovos-skill-spelling>=1.0.0' # ovos-skill-spelling<1.0.0,>=0.2.5; extra == "skills-essential"
+'python-ovos-skill-volume>=1.0.0' # ovos-skill-volume<1.0.0,>=0.1.7; extra == "skills-audio"
+'python-ovos-skill-wallpapers>=3.0.0' # ovos-skill-wallpapers<3.0.0,>=1.0.2; extra == "skills-desktop"
+'python-ovos-skill-weather>=1.0.0' # ovos-skill-weather<1.0.0,>=0.1.11; extra == "skills-internet"
+'python-ovos-skill-wikihow>=1.0.0' # ovos-skill-wikihow<1.0.0,>=0.2.5; extra == "skills-internet"
+'python-ovos-skill-wikipedia>=1.0.0' # ovos-skill-wikipedia<1.0.0,>=0.5.3; extra == "skills-internet"
+'python-ovos-skill-wolfie>=1.0.0' # ovos-skill-wolfie<1.0.0,>=0.2.9; extra == "skills-internet"
+'python-ovos-skill-wordnet>=1.0.0' # ovos-skill-wordnet<1.0.0,>=0.0.10; extra == "skills-extra"
+'python-ovos-skill-youtube-music>=1.0.0' # ovos-skill-youtube-music<1.0.0,>=0.1.6; extra == "skills-media"
+'python-ovos-translate-server-plugin>=1.0.0' # ovos-translate-server-plugin<1.0.0,>=0.0.2; extra == "plugins"
+'python-ovos-utils>=1.0.0' # ovos-utils[extras]<1.0.0,>=0.6.0
+'python-ovos-utterance-corrections-plugin>=1.0.0' # ovos-utterance-corrections-plugin<1.0.0,>=0.0.2; extra == "plugins"
+'python-ovos-utterance-normalizer>=1.0.0' # ovos-utterance-normalizer<1.0.0,>=0.2.1; extra == "plugins"
+'python-ovos-utterance-plugin-cancel>=1.0.0' # ovos-utterance-plugin-cancel<1.0.0,>=0.2.3; extra == "plugins"
+'python-ovos-workshop>=4.0.0' # ovos-workshop<4.0.0,>=3.3.4
+'python-padacioso>=2.0.0' # padacioso<2.0.0,>=1.0.0
+'python-requests>=3.0' # requests<3.0,>=2.26
+'python-watchdog>=3.0' # watchdog<3.0,>=2.1
+)
+optdepends+=(
+'python-fann2>=1.0.7' # fann2<1.1.0,>=1.0.7; extra == "lgpl"
+'python-ovos-audio>=0.3.1' # ovos-audio[extras]<1.0.0,>=0.3.1; extra == "mycroft"
+'python-ovos-bidirectional-translation-plugin>=0.1.0' # ovos-bidirectional-translation-plugin<1.0.0,>=0.1.0; extra == "plugins"
+'python-ovos-date-parser>=0.0.3' # ovos-date-parser<1.0.0,>=0.0.3; extra == "plugins"
+'python-ovos-dinkum-listener>=0.3.2' # ovos-dinkum-listener[extras]<1.0.0,>=0.3.2; extra == "mycroft"
+'python-ovos-gui>=0.2.2' # ovos-gui[extras]<2.0.0,>=0.2.2; extra == "mycroft"
+'python-ovos-messagebus>=0.0.7' # ovos-messagebus<1.0.0,>=0.0.7; extra == "mycroft"
+'python-ovos-number-parser>=0.0.1' # ovos-number-parser<1.0.0,>=0.0.1; extra == "plugins"
+'python-ovos-padatious>=1.1.0' # ovos_padatious<2.0.0,>=1.1.0; extra == "lgpl"
+'python-ovos-phal>=0.2.7' # ovos_PHAL[extras]<1.0.0,>=0.2.7; extra == "mycroft"
+'python-ovos-skill-alerts>=0.1.10' # ovos-skill-alerts<1.0.0,>=0.1.10; extra == "skills-essential"
+'python-ovos-skill-application-launcher>=0.5.6' # ovos-skill-application-launcher<1.0.0,>=0.5.6; extra == "skills-desktop"
+'python-ovos-skill-audio-recording>=0.2.4' # ovos-skill-audio-recording<1.0.0,>=0.2.4; extra == "skills-audio"
+'python-ovos-skill-boot-finished>=0.4.8' # ovos-skill-boot-finished<1.0.0,>=0.4.8; extra == "skills-audio"
+'python-ovos-skill-camera' # ovos-skill-camera; extra == "skills-extra"
+'python-ovos-skill-cmd>=0.2.5' # ovos-skill-cmd<1.0.0,>=0.2.5; extra == "skills-extra"
+'python-ovos-skill-color-picker>=0.0.2' # ovos-skill-color-picker<1.0.0,>=0.0.2; extra == "skills-gui"
+'python-ovos-skill-confucius-quotes>=0.1.7' # ovos-skill-confucius-quotes<1.0.0,>=0.1.7; extra == "skills-extra"
+'python-ovos-skill-date-time>=0.4.2' # ovos-skill-date-time<1.0.0,>=0.4.2; extra == "skills-essential"
+'python-ovos-skill-days-in-history>=0.3.6' # ovos-skill-days-in-history<1.0.0,>=0.3.6; extra == "skills-extra"
+'python-ovos-skill-ddg>=0.1.9' # ovos-skill-ddg<1.0.0,>=0.1.9; extra == "skills-internet"
+'python-ovos-skill-diagnostics>=0.0.2' # ovos-skill-diagnostics<1.0.0,>=0.0.2; extra == "skills-essential"
+'python-ovos-skill-dictation>=0.2.5' # ovos-skill-dictation<1.0.0,>=0.2.5; extra == "skills-audio"
+'python-ovos-skill-fallback-unknown>=0.1.5' # ovos-skill-fallback-unknown<1.0.0,>=0.1.5; extra == "skills-essential"
+'python-ovos-skill-fuster-quotes' # ovos-skill-fuster-quotes; extra == "skills-ca"
+'python-ovos-skill-hello-world>=0.1.10' # ovos-skill-hello-world<1.0.0,>=0.1.10; extra == "skills-essential"
+'python-ovos-skill-homescreen>=3.0.2' # ovos-skill-homescreen<4.0.0,>=3.0.2; extra == "skills-gui"
+'python-ovos-skill-icanhazdadjokes>=0.3.1' # ovos-skill-icanhazdadjokes<1.0.0,>=0.3.1; extra == "skills-extra"
+'python-ovos-skill-ip>=0.2.5' # ovos-skill-ip<1.0.0,>=0.2.5; extra == "skills-internet"
+'python-ovos-skill-iss-location>=0.2.2' # ovos-skill-iss-location<1.0.0,>=0.2.2; extra == "skills-extra"
+'python-ovos-skill-laugh>=0.1.1' # ovos-skill-laugh<1.0.0,>=0.1.1; extra == "skills-extra"
+'python-ovos-skill-local-media>=0.2.4' # ovos-skill-local-media<1.0.0,>=0.2.4; extra == "skills-media"
+'python-ovos-skill-moviemaster>=0.0.7' # ovos-skill-moviemaster<1.0.0,>=0.0.7; extra == "skills-extra"
+'python-ovos-skill-naptime>=0.3.8' # ovos-skill-naptime<1.0.0,>=0.3.8; extra == "skills-audio"
+'python-ovos-skill-news>=0.1.8' # ovos-skill-news<1.0.0,>=0.1.8; extra == "skills-media"
+'python-ovos-skill-number-facts>=0.1.4' # ovos-skill-number-facts<1.0.0,>=0.1.4; extra == "skills-extra"
+'python-ovos-skill-parrot>=0.1.9' # ovos-skill-parrot<1.0.0,>=0.1.9; extra == "skills-audio"
+'python-ovos-skill-personal>=0.1.7' # ovos-skill-personal<1.0.0,>=0.1.7; extra == "skills-essential"
+'python-ovos-skill-pyradios>=0.1.4' # ovos-skill-pyradios<1.0.0,>=0.1.4; extra == "skills-media"
+'python-ovos-skill-randomness>=0.1.1' # ovos-skill-randomness<1.0.0,>=0.1.1; (python_version >= "3.10") and extra == "skills-extra"
+'python-ovos-skill-screenshot>=0.0.2' # ovos-skill-screenshot<1.0.0,>=0.0.2; extra == "skills-desktop"
+'python-ovos-skill-screenshot>=0.0.2' # ovos-skill-screenshot<1.0.0,>=0.0.2; extra == "skills-gui"
+'python-ovos-skill-somafm>=0.1.3' # ovos-skill-somafm<1.0.0,>=0.1.3; extra == "skills-media"
+'python-ovos-skill-speedtest>=0.3.2' # ovos-skill-speedtest<1.0.0,>=0.3.2; extra == "skills-internet"
+'python-ovos-skill-spelling>=0.2.5' # ovos-skill-spelling<1.0.0,>=0.2.5; extra == "skills-essential"
+'python-ovos-skill-volume>=0.1.7' # ovos-skill-volume<1.0.0,>=0.1.7; extra == "skills-audio"
+'python-ovos-skill-wallpapers>=1.0.2' # ovos-skill-wallpapers<3.0.0,>=1.0.2; extra == "skills-desktop"
+'python-ovos-skill-weather>=0.1.11' # ovos-skill-weather<1.0.0,>=0.1.11; extra == "skills-internet"
+'python-ovos-skill-wikihow>=0.2.5' # ovos-skill-wikihow<1.0.0,>=0.2.5; extra == "skills-internet"
+'python-ovos-skill-wikipedia>=0.5.3' # ovos-skill-wikipedia<1.0.0,>=0.5.3; extra == "skills-internet"
+'python-ovos-skill-wolfie>=0.2.9' # ovos-skill-wolfie<1.0.0,>=0.2.9; extra == "skills-internet"
+'python-ovos-skill-word-of-the-day' # ovos-skill-word-of-the-day; extra == "skills-ca"
+'python-ovos-skill-word-of-the-day' # ovos-skill-word-of-the-day; extra == "skills-en"
+'python-ovos-skill-word-of-the-day' # ovos-skill-word-of-the-day; extra == "skills-pt"
+'python-ovos-skill-wordnet>=0.0.10' # ovos-skill-wordnet<1.0.0,>=0.0.10; extra == "skills-extra"
+'python-ovos-skill-youtube-music>=0.1.6' # ovos-skill-youtube-music<1.0.0,>=0.1.6; extra == "skills-media"
+'python-ovos-translate-server-plugin>=0.0.2' # ovos-translate-server-plugin<1.0.0,>=0.0.2; extra == "plugins"
+'python-ovos-utterance-corrections-plugin>=0.0.2' # ovos-utterance-corrections-plugin<1.0.0,>=0.0.2; extra == "plugins"
+'python-ovos-utterance-normalizer>=0.2.1' # ovos-utterance-normalizer<1.0.0,>=0.2.1; extra == "plugins"
+'python-ovos-utterance-plugin-cancel>=0.2.3' # ovos-utterance-plugin-cancel<1.0.0,>=0.2.3; extra == "plugins"
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz"
     "$_unit_name_skills.service"
     "ovos-systemd_skills_messagebus.py"
     "ovos-skills.install" 
 )
-sha256sums=('45a999e3156c9a5c900cd3217a4fe6444ddc232200b036e690e368e4f06e8cfa'
+sha256sums=('932d29d652b25d6ca3d0842e4ec79d73eb7e8ff1e369c844647f6ac93583113c'
             '8a9491bfc586cb801d0b904205f8e4f98a23333d48a717dccc0e62c5949398ad'
             'bd403865bdadd82502beb861589da1e050d6885702b6b1a5f6911cdf2de4742a'
             'ae8e3b0dd89e2c7bfff121bb6c6ac75632deafc3cacd776ee9e06cd6ba849270')
