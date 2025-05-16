@@ -2,8 +2,8 @@ pkgname=python-ovos-workshop
 _gh_org=OpenVoiceOS
 _gh_proj=OVOS-workshop
 _name=OVOS-workshop
-_commit='2e667955539792222b1609c1edb9ff4767d2f35c'
-pkgver='0.0.15'
+_commit='9cfb89f7a9bd69fcd12296be1c577e9d49442f74'
+pkgver='3.4.0'
 pkgrel=00
 pkgdesc='frameworks, templates and patches for the mycroft universe'
 arch=('any')
@@ -14,26 +14,30 @@ makedepends=(python-build python-installer python-wheel python-setuptools)
 
 #### Automatically generated dependencies. Do not edit.
 depends+=(
-'python-ovos-backend-client>=0.1.0' # ovos_backend_client<0.2.0,>=0.1.0
-'python-ovos-bus-client>=0.0.8' # ovos_bus_client<0.2.0,>=0.0.8
-'python-ovos-config>=0.0.12' # ovos_config<0.2.0,>=0.0.12
-'python-ovos-lingua-franca>=0.4.6' # ovos-lingua-franca>=0.4.6,~=0.4
-'python-ovos-utils>=0.0.37' # ovos-utils<0.2.0,>=0.0.37
+'python-langcodes' # langcodes
+'python-ovos-bus-client>=0.0.8' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=0.0.12' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-number-parser>=0.0.1' # ovos-number-parser<1.0.0,>=0.0.1
+'python-ovos-solver-yes-no-plugin>=0.0.1' # ovos-solver-yes-no-plugin<1.0.0,>=0.0.1
+'python-ovos-utils>=0.7.0' # ovos-utils<1.0.0,>=0.7.0
+'python-padacioso' # padacioso
 'python-rapidfuzz' # rapidfuzz
 )
 conflicts+=(
-'python-ovos-backend-client>=0.2.0' # ovos_backend_client<0.2.0,>=0.1.0
-'python-ovos-bus-client>=0.2.0' # ovos_bus_client<0.2.0,>=0.0.8
-'python-ovos-config>=0.2.0' # ovos_config<0.2.0,>=0.0.12
-'python-ovos-utils>=0.2.0' # ovos-utils<0.2.0,>=0.0.37
+'python-ovos-bus-client>=2.0.0' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=2.0.0' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-number-parser>=1.0.0' # ovos-number-parser<1.0.0,>=0.0.1
+'python-ovos-solver-yes-no-plugin>=1.0.0' # ovos-solver-yes-no-plugin<1.0.0,>=0.0.1
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.7.0
 )
 optdepends+=(
+'python-ovos-classifiers>=0.0.0a46' # ovos_classifiers>=0.0.0a46; extra == "ocp"
 'python-ovos-ocp-audio-plugin' # ovos_plugin_common_play; extra == "ocp"
 )
 
 #### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('e5a0991c13d0e3f92e2fc6316350ab2d9857a54a4fc108316f9c807323c58255')
+sha256sums=('4408434bd1d1f17dae0a5d6f0052ba74b446e594908ffd8dbb1a2afe39b574a7')
 
 prepare() {
     cd "$srcdir"
