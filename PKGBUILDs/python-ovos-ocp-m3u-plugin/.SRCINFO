@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ocp-m3u-plugin
 	pkgdesc = 
-	pkgver = 0.0.2a1
-	pkgrel = 1
+pkgver = 0.0.3
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-ocp-m3u-plugin/
 	arch = any
 	license = 
@@ -12,6 +12,6 @@ pkgbase = python-ovos-ocp-m3u-plugin
 	depends = python
 	depends = python-ovos-ocp-audio-plugin
 	source = https://github.com/OpenVoiceOS/ovos-ocp-m3u-plugin/archive/d2571ac1c2870501f0940dc3dcdb35b402300e9e.tar.gz
-	sha256sums = 23d75ffd2c71c3480bd0653822b1d33f234fcda6e540e769d9cbcacb7c0ac264
+	sha256sums = 01c832f3f4ebf3fc962b5332770a91131740091071087184c5c983814ce9c49d
 
 pkgname = python-ovos-ocp-m3u-plugin
