@@ -5,7 +5,7 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-ovos-microphone-plugin-sounddevice
 epoch=
-pkgver=0.0.0a2
+pkgver='0.0.1'
 pkgrel=00
 pkgdesc='A sounddevice microphone implementation for OVOS'
 arch=(any)

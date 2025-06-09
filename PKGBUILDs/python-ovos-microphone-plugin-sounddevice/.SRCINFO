@@ -1,7 +1,7 @@
 pkgbase = python-ovos-microphone-plugin-sounddevice
 	pkgdesc = A sounddevice microphone implementation for OVOS
-	pkgver = 0.0.0a2
-	pkgrel = 00
+pkgver = 0.0.1
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-microphone-plugin-sounddevice
 	arch = any
 	license = Apache
