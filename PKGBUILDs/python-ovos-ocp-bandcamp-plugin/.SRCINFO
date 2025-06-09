@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ocp-bandcamp-plugin
 	pkgdesc = 
-	pkgver = 0.0.2
-	pkgrel = 1
+pkgver = 0.0.3
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-ocp-bandcamp-plugin/
 	arch = any
 	license = 
@@ -13,6 +13,6 @@ pkgbase = python-ovos-ocp-bandcamp-plugin
 	depends = python-ovos-ocp-audio-plugin
 	depends = python-py-bandcamp
 	source = https://github.com/OpenVoiceOS/ovos-ocp-bandcamp-plugin/archive/d619878659a87fc6a383444164aa8dcfe384d0c4.tar.gz
-	sha256sums = a88380c93c26b3e756bd6cfcc8c19a0266f2c4021cbd86d00636f83abaca6149
+	sha256sums = f690b773f62bb1b6b047b784e1d2da7037cecf730152d3a24ccc925d477eeb12
 
 pkgname = python-ovos-ocp-bandcamp-plugin

@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ocp-bandcamp-plugin
 pkgname=python-ovos-ocp-bandcamp-plugin
 _name=ovos-ocp-bandcamp-plugin
-_base_ver='d619878659a87fc6a383444164aa8dcfe384d0c4'
-pkgver=0.0.2
-pkgrel=1
+_commit='8af268cc3807bd8cf4f94a37ea1f363e7fa3d059'
+pkgver='0.0.3'
+pkgrel=00
 pkgdesc='
 '
 arch=('any')
@@ -12,38 +12,50 @@ url='https://github.com/OpenVoiceOS/ovos-ocp-bandcamp-plugin/'
 license=('')
 depends=(python \
 'python-ovos-ocp-audio-plugin' \
-'python-py-bandcamp' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager<2.0.0,>=0.0.1
+'python-py-bandcamp' # py_bandcamp
+)
+conflicts+=(
+'python-ovos-plugin-manager>=2.0.0' # ovos-plugin-manager<2.0.0,>=0.0.1
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-ocp-bandcamp-plugin-d619878659a87fc6a383444164aa8dcfe384d0c4.tar.gz \
-   a88380c93c26b3e756bd6cfcc8c19a0266f2c4021cbd86d00636f83abaca6149)
+   f690b773f62bb1b6b047b784e1d2da7037cecf730152d3a24ccc925d477eeb12)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -53,7 +65,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -92,6 +104,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
