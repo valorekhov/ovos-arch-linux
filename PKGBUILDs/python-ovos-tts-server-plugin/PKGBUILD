@@ -2,46 +2,58 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-tts-server-plugin
 pkgname=python-ovos-tts-server-plugin
 _name=ovos-tts-server-plugin
-_base_ver='17e8664cfad5c236bb1f6dd2a07c0604fe41d4a0'
-pkgver=0.0.2a1
-pkgrel=1
+_commit='fe41dc352ca0dd921111196ef95fde505272ba15'
+pkgver='0.0.4'
+pkgrel=00
 pkgdesc='OpenVoiceOS companion plugin for OpenVoiceOS TTS Server'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-tts-server-plugin/'
 license=('')
 depends=(python \
-'python-ovos-plugin-manager>=0.0.5' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<2.0.0,>=1.0.0
+'python-requests' # requests
+)
+conflicts+=(
+'python-ovos-plugin-manager>=2.0.0' # ovos-plugin-manager<2.0.0,>=1.0.0
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
 sha256sums=(
    #python-ovos-tts-server-plugin-17e8664cfad5c236bb1f6dd2a07c0604fe41d4a0.tar.gz \
-   fbd4db779e3b1ee713fbb2d1897fc0c9bfcd9ec6b1cf5eff634d0e07e052c797)
+   7fe002f190d64c193c381404e8a4b0b17821564f365ffa291549512a28501779)
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -51,7 +63,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -89,6 +101,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
