@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-tts-plugin-mimic
 pkgname=python-ovos-tts-plugin-mimic
 _name=ovos-tts-plugin-mimic
-_commit='0a76403dff9d1acf1f09b1cd84bef50b0cf38f0f'
-pkgver=0.2.9
-pkgrel=1
+_commit='c058570bd9a3de7674586d365e19d542d9bc32b2'
+pkgver='0.3.1'
+pkgrel=00
 pkgdesc='OVOS TTS plugin for Mimic'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic/'
@@ -13,8 +13,20 @@ depends=(python mycroft-mimic1 'python-ovos-plugin-manager>=0.0.5')
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-plugin-manager>=1.0.0' # ovos-plugin-manager<2.0.0,>=1.0.0
+)
+conflicts+=(
+'python-ovos-plugin-manager>=2.0.0' # ovos-plugin-manager<2.0.0,>=1.0.0
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
-sha256sums=('83103d290616e67d0f02016e5f1eeca01fed2bed2a62783e3f0665dfadf4901d')
+sha256sums=('6af5ae9b0f476f9def02c70955f3b67ae64e3fc4dc2600ca52b34b6537c141b7')
 
 prepare() {
     cd "$srcdir"
