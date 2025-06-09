@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ww-plugin-vosk
 	pkgdesc = wake word plugin for Vosk
-	pkgver = 0.1.2
-	pkgrel = 1
+pkgver = 0.1.5
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-ww-plugin-vosk/
 	arch = any
 	license = 
@@ -15,6 +15,6 @@ pkgbase = python-ovos-ww-plugin-vosk
 	depends = python-ovos-skill-installer
 	depends = python-vosk
 	source = https://github.com/OpenVoiceOS/ovos-ww-plugin-vosk/archive/b106d28230443e31ce4d7dc4d3e579a69d3720cc.tar.gz
-	sha256sums = 0ed25eab2a39b69457e9dc0f83cb5a036376df97c7fdc2bbd706464019fce38d
+	sha256sums = ed93f90a437a496b9db8283865f9ac9502e541c4b2dc4a0a8bc7b29038b63196
 
 pkgname = python-ovos-ww-plugin-vosk
