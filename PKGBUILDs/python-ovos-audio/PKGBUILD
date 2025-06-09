@@ -3,35 +3,61 @@ _gh_proj=ovos-audio
 pkgname=python-ovos-audio
 _name=${pkgname#python-}
 _unit_name="ovos-audio-messagebus"
-_base_ver='3903c8cbb0072fc03a260020b5ef4e6e6b823377'
-pkgver=0.0.2a13
-pkgrel=1
+_commit='8f18eb64606e8ebc17c8c0583d7e5e2d626c626f'
+pkgver='1.0.1'
+pkgrel=00
 pkgdesc='The "mouth" of the OVOS assistant! Handles TTS generation and audio playback'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos-audio/'
 license=('')
 depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
-'python-ovos-ocp-audio-plugin>=0.0.5a3' #>=0.0.5a3,~=0.0 \
-'python-ovos-bus-client>=0.0.3a4' #>=0.0.3a4,~=0.0 \
-'python-ovos-config>=0.0.8a2' #>=0.0.8a2,~=0.0 \
 'python-ovos-ocp-files-plugin' \
 'python-ovos-ocp-m3u-plugin' \
 'python-ovos-ocp-news-plugin' \
 'python-ovos-ocp-rss-plugin' \
-'python-ovos-plugin-manager>=0.0.23a4' #>=0.0.23a4,~=0.0 \
 #'python-ovos-tts-plugin-mimic3-server' \
-'python-ovos-utils>=0.0.31a3' #>=0.0.31a3,~=0.0 \
 )
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name")
 conflicts=("$_unit_name")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=0.0.8' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=0.0.12' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-plugin-manager>=0.0.26' # ovos-plugin-manager<2.0.0,>=0.0.26
+'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
+)
+conflicts+=(
+'python-ovos-audio-plugin-mpv>=1.0.0' # ovos-audio-plugin-mpv<1.0.0,>=0.2.0; extra == "extras"
+'python-ovos-audio-plugin-simple>=1.0.0' # ovos_audio_plugin_simple<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-bus-client>=2.0.0' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=2.0.0' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-dialog-normalizer-plugin>=1.0.0' # ovos-dialog-normalizer-plugin<1.0.0,>=0.0.1; extra == "extras"
+'python-ovos-media-plugin-chromecast>=1.0.0' # ovos-media-plugin-chromecast<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-media-plugin-spotify>=1.0.0' # ovos-media-plugin-spotify<1.0.0,>=0.2.3; extra == "extras"
+'python-ovos-ocp-audio-plugin>=2.0.0' # ovos_plugin_common_play[extractors]<2.0.0,>=1.1.4; extra == "extras"
+'python-ovos-plugin-manager>=2.0.0' # ovos-plugin-manager<2.0.0,>=0.0.26
+'python-ovos-tts-plugin-server>=1.0.0' # ovos-tts-plugin-server<1.0.0,>=0.0.2; extra == "extras"
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
+)
+optdepends+=(
+'python-ovos-audio-plugin-mpv>=0.2.0' # ovos-audio-plugin-mpv<1.0.0,>=0.2.0; extra == "extras"
+'python-ovos-audio-plugin-simple>=0.1.0' # ovos_audio_plugin_simple<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-dialog-normalizer-plugin>=0.0.1' # ovos-dialog-normalizer-plugin<1.0.0,>=0.0.1; extra == "extras"
+'python-ovos-media-plugin-chromecast>=0.1.0' # ovos-media-plugin-chromecast<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-media-plugin-spotify>=0.2.3' # ovos-media-plugin-spotify<1.0.0,>=0.2.3; extra == "extras"
+'python-ovos-ocp-audio-plugin>=1.1.4' # ovos_plugin_common_play[extractors]<2.0.0,>=1.1.4; extra == "extras"
+'python-ovos-tts-plugin-server>=0.0.2' # ovos-tts-plugin-server<1.0.0,>=0.0.2; extra == "extras"
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "$_unit_name.service" \
     "ovos-systemd_audio_messagebus.py" \
     # "python-ovos-audio.install" \
 )
-sha256sums=('7a1ce7e28771833aac072cc2037f689e49074768b11ffc99a9a50169ce1becc2'
+sha256sums=('06bf3f289e39e143149e3a6ad76cf072c9e7f7aa682ea650d9bf0bf52a9529c3'
             '4ba09ae7f8387473d4da2220bba02dcd1288b988d96949cb916e847ea8d55ea8'
             'fd853f6345506ecb1ea81408ea34f8fec3f7701e0b576993ba23db85377859ee')
 
@@ -40,23 +66,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -66,7 +92,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -111,6 +137,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
