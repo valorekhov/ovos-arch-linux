@@ -2,9 +2,9 @@ _gh_org=OpenVoiceOS
 _gh_proj=ovos-ocp-youtube-plugin
 pkgname=python-ovos-ocp-youtube-plugin
 _name=ovos-ocp-youtube-plugin
-_base_ver='df6bfd8ccc3e178cfc5284c92932196883581dac'
-pkgver=0.0.2a1
-pkgrel=1
+_commit='eec8814c18c6af184fbb0a005191167cce421421'
+pkgver='0.0.5'
+pkgrel=00
 pkgdesc='
 '
 arch=('any')
@@ -12,37 +12,50 @@ url='https://github.com/OpenVoiceOS/ovos-ocp-youtube-plugin/'
 license=('')
 depends=(python \
 'python-ovos-ocp-audio-plugin' \
-'python-tutubo' \
-'python-yt-dlp' \
 )
 conflicts=()
 makedepends=(python-build python-installer python-wheel python-setuptools)
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz")
-sha256sums=('0d94ac0b26820a9793808ba33c561a4ec0d17f911377689365bed7515579cdab')
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-plugin-manager>=0.0.1' # ovos-plugin-manager<2.0.0,>=0.0.1
+'python-tutubo>=2.0.2' # tutubo<3.0.0,>=2.0.2
+'python-yt-dlp' # yt-dlp
+)
+conflicts+=(
+'python-ovos-plugin-manager>=2.0.0' # ovos-plugin-manager<2.0.0,>=0.0.1
+'python-tutubo>=3.0.0' # tutubo<3.0.0,>=2.0.2
+)
+optdepends+=(
+
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz")
+sha256sums=('15213dae474f50098445f29c45ec86f8cda45378c5c8c52f2a117da78a278579')
 
 prepare() {
     cd "$srcdir"
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -52,7 +65,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -91,6 +104,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
