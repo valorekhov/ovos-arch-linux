@@ -3,37 +3,75 @@ _gh_proj=ovos_PHAL
 pkgname=python-ovos-phal
 _name=ovos-PHAL
 _unit_name="ovos-phal-messagebus"
-_base_ver='b03fa1e3ba1202a34a755bb8979e0380419a02b3'
-pkgver=0.0.5a6
-pkgrel=1
+_commit='7088e65c4b829fad133d6db840b207fa5e9c6b47'
+pkgver='0.2.9'
+pkgrel=00
 pkgdesc='OVOS-PHAL'
 arch=('any')
 url='https://github.com/OpenVoiceOS/ovos_PHAL/'
 license=('')
 depends=('ovos-core' 'ovos-service-base' 'ovos-messagebus-server' 'python' 'python-sdnotify' \
 'python-ovos-workshop>=0.0.12a3' #>=0.0.12a3,~=0.0 \
-'python-ovos-bus-client>=0.0.3a16' #>=0.0.3a16,~=0.0 \
-'python-ovos-config>=0.0.8a3' #>=0.0.8a3,~=0.0 \
-'python-ovos-phal-plugin-connectivity-events>=0.0.1' #>=0.0.1,~=0.0 \
-'python-ovos-phal-plugin-ipgeo>=0.0.1' #>=0.0.1,~=0.0 \
-'python-ovos-phal-plugin-network-manager>=1.0.0' #>=1.0.0,~=1.0 \
-'python-ovos-phal-plugin-oauth>=0.0.1' #>=0.0.1,~=0.0 \
-'python-ovos-phal-plugin-system>=0.0.1' #>=0.0.1,~=0.0 \
-'python-ovos-plugin-manager>=0.0.23a5' #>=0.0.23a5,~=0.0 \
-'python-ovos-utils>=0.0.31a6' #>=0.0.31a6,~=0.0 \
 )
 makedepends=(python-build python-installer python-wheel python-setuptools)
 provides=("$_unit_name" "ovos-admin-phal-messagebus")
 conflicts=("$_unit_name" "ovos-admin-phal-messagebus")
 
-source=("https://github.com/$_gh_org/$_gh_proj/archive/$_base_ver.tar.gz" \
+#### Automatically generated dependencies. Do not edit.
+depends+=(
+'python-ovos-bus-client>=0.0.8' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=0.0.12' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-plugin-manager>=0.0.25' # ovos-plugin-manager<2.0.0,>=0.0.25
+'python-ovos-utils>=0.0.38' # ovos-utils<1.0.0,>=0.0.38
+)
+conflicts+=(
+'python-ovos-bus-client>=2.0.0' # ovos_bus_client<2.0.0,>=0.0.8
+'python-ovos-config>=2.0.0' # ovos-config<2.0.0,>=0.0.12
+'python-ovos-phal-plugin-alsa>=1.0.0' # ovos-phal-plugin-alsa<1.0.0,>=0.1.0; extra == "linux"
+'python-ovos-phal-plugin-balena-wifi>=2.0.0' # ovos-PHAL-plugin-balena-wifi<2.0.0,>=1.0.1; extra == "mk1"
+'python-ovos-phal-plugin-connectivity-events>=1.0.0' # ovos-PHAL-plugin-connectivity-events<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-phal-plugin-hotkeys>=1.0.0' # ovos-PHAL-plugin-hotkeys<1.0.0,>=0.1.1; extra == "mk2"
+'python-ovos-phal-plugin-ipgeo>=1.0.0' # ovos-phal-plugin-ipgeo<1.0.0,>=0.1.1; extra == "extras"
+'python-ovos-phal-plugin-mac>=1.0.0' # ovos-phal-plugin-mac<1.0.0,>=0.0.1; extra == "mac"
+'python-ovos-phal-plugin-mk1>=1.0.0' # ovos-PHAL-plugin-mk1<1.0.0,>=0.1.2; extra == "mk1"
+'python-ovos-phal-plugin-mk2-fan-control>=1.0.0' # ovos-PHAL-plugin-mk2-fan-control<1.0.0,>=0.0.1; extra == "mk2dev"
+'python-ovos-phal-plugin-network-manager>=2.0.0' # ovos-PHAL-plugin-network-manager<2.0.0,>=0.3.1; extra == "linux"
+'python-ovos-phal-plugin-oauth>=1.0.0' # ovos-PHAL-plugin-oauth<1.0.0,>=0.1.1; extra == "extras"
+'python-ovos-phal-plugin-system>=2.0.0' # ovos-phal-plugin-system<2.0.0,>=1.0.0; extra == "linux"
+'python-ovos-phal-plugin-wallpaper-manager>=1.0.0' # ovos-PHAL-plugin-wallpaper-manager<1.0.0,>=0.1.2; extra == "linux"
+'python-ovos-phal-plugin-wifi-setup>=2.0.0' # ovos-PHAL-plugin-wifi-setup<2.0.0,>=1.0.0; extra == "mk1"
+'python-ovos-phal-plugin-wifi-setup>=2.0.0' # ovos-PHAL-plugin-wifi-setup<2.0.0,>=1.0.0; extra == "mk2"
+'python-ovos-phal-plugin-wifi-setup>=2.0.0' # ovos-PHAL-plugin-wifi-setup<2.0.0,>=1.0.0; extra == "mk2dev"
+'python-ovos-plugin-manager>=2.0.0' # ovos-plugin-manager<2.0.0,>=0.0.25
+'python-ovos-utils>=1.0.0' # ovos-utils<1.0.0,>=0.0.38
+)
+optdepends+=(
+'python-ovos-phal-plugin-alsa>=0.1.0' # ovos-phal-plugin-alsa<1.0.0,>=0.1.0; extra == "linux"
+'python-ovos-phal-plugin-balena-wifi>=1.0.1' # ovos-PHAL-plugin-balena-wifi<2.0.0,>=1.0.1; extra == "mk1"
+'python-ovos-phal-plugin-connectivity-events>=0.1.0' # ovos-PHAL-plugin-connectivity-events<1.0.0,>=0.1.0; extra == "extras"
+'python-ovos-phal-plugin-hotkeys>=0.1.1' # ovos-PHAL-plugin-hotkeys<1.0.0,>=0.1.1; extra == "mk2"
+'python-ovos-phal-plugin-ipgeo>=0.1.1' # ovos-phal-plugin-ipgeo<1.0.0,>=0.1.1; extra == "extras"
+'python-ovos-phal-plugin-mac>=0.0.1' # ovos-phal-plugin-mac<1.0.0,>=0.0.1; extra == "mac"
+'python-ovos-phal-plugin-mk1>=0.1.2' # ovos-PHAL-plugin-mk1<1.0.0,>=0.1.2; extra == "mk1"
+'python-ovos-phal-plugin-mk2-fan-control>=0.0.1' # ovos-PHAL-plugin-mk2-fan-control<1.0.0,>=0.0.1; extra == "mk2dev"
+'python-ovos-phal-plugin-network-manager>=0.3.1' # ovos-PHAL-plugin-network-manager<2.0.0,>=0.3.1; extra == "linux"
+'python-ovos-phal-plugin-oauth>=0.1.1' # ovos-PHAL-plugin-oauth<1.0.0,>=0.1.1; extra == "extras"
+'python-ovos-phal-plugin-system>=1.0.0' # ovos-phal-plugin-system<2.0.0,>=1.0.0; extra == "linux"
+'python-ovos-phal-plugin-wallpaper-manager>=0.1.2' # ovos-PHAL-plugin-wallpaper-manager<1.0.0,>=0.1.2; extra == "linux"
+'python-ovos-phal-plugin-wifi-setup>=1.0.0' # ovos-PHAL-plugin-wifi-setup<2.0.0,>=1.0.0; extra == "mk1"
+'python-ovos-phal-plugin-wifi-setup>=1.0.0' # ovos-PHAL-plugin-wifi-setup<2.0.0,>=1.0.0; extra == "mk2"
+'python-ovos-phal-plugin-wifi-setup>=1.0.0' # ovos-PHAL-plugin-wifi-setup<2.0.0,>=1.0.0; extra == "mk2dev"
+)
+
+#### End of automatically generated dependencies.
+source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
     "$_unit_name.service" \
     "ovos-admin-phal-messagebus.service" \
     "ovos-systemd_phal_messagebus.py" \
     "ovos-systemd_admin_phal_messagebus.py" \
     # "python-ovos-gui.install" \
     )
-sha256sums=('09b273cde6729342da7f2a03dd2430691de73a7c62600bf9faf95da95c88b2a1'
+sha256sums=('720fd01796dbad3f115dfe1ccfb1d9c67482c482c71a1cb3e39c7cab6e433829'
             '134283f2448d53d9d7b8d977044525b56ff5571e655aaaa3aea3e3e2d2c1ec2f'
             '4337ab11d89f70bdb2d428e03505d19d42e35652c8c21dfb55d7bb2d3764bbb6'
             '2c920defb96d86406d30890da1262520d575b54ad9c830e3b5ad00c88456c4bf'
@@ -44,23 +82,23 @@ prepare() {
     for patch in "../"*.patch; do
         if [ -f "$patch" ]; then
           echo "Applying patch $patch"
-          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_base_ver}"
+          patch --forward --strip=1 --input="${PWD}/${patch}" --directory="${srcdir}/${_name}-${_commit}"
         fi
     done
 }
 
 pkgver(){
-    cd "$srcdir/$_name-$_base_ver"
+    cd "$srcdir/$_name-$_commit"
     echo "$(python setup.py --version)"
 }
 
 build() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
     python -m build --wheel --no-isolation
 }
 
 check() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
     local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
@@ -70,7 +108,7 @@ check() {
 }
 
 package() {
-    cd "$_name-$_base_ver"
+    cd "$_name-$_commit"
 
     echo "Installing $pkgname to $pkgdir"
     # some packages produce multiple wheels, install the one specific to the version of the package
@@ -117,6 +155,7 @@ package() {
 # 
 # $(eval $(python-package))
 # 
+
 
 
 
