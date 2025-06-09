@@ -5,7 +5,7 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-ovos-microphone-plugin-alsa
 epoch=
-pkgver=0.0.0
+pkgver='0.1.2'
 pkgrel=00
 pkgdesc='A alsa microphone implementation for OVOS'
 arch=(any)
