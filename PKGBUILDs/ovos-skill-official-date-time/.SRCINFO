@@ -1,7 +1,7 @@
 pkgbase = ovos-skill-official-date-time
 	pkgdesc = OVOS official Date and Time Skill, providing the current time, date and day of week for cities around the world.
-	pkgver = 0.2.3a1
-	pkgrel = 1
+pkgver = 1.1.3
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/skill-ovos-date-time/
 	arch = any
 	license = Apache License 2.0
@@ -19,6 +19,6 @@ pkgbase = ovos-skill-official-date-time
 	provides = ovos-skill-official-date-time
 	conflicts = ovos-skill-official-date-time
 	source = https://github.com/OpenVoiceOS/skill-ovos-date-time/archive/4624ed04fd7b547d4da03dbe2dbffb7f63b0e72e.tar.gz
-	sha256sums = cedd24ccb4b1b6476d1eaaf83e5396fca6f5706fb936f421f2c65c813d557a30
+	sha256sums = ceab4eec1dec67d3334625244d938563530f70192eaa34de6267157c52bd25fe
 
 pkgname = ovos-skill-official-date-time
