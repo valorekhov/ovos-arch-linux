@@ -1,7 +1,7 @@
 pkgbase = python-ovos-ww-plugin-precise-lite
 	pkgdesc = This adds a plugin for precise-lite
-	pkgver = 0.1.3
-	pkgrel = 02
+pkgver = 0.1.5
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/
 	arch = any
 	license = Apache License 2.0
@@ -17,6 +17,6 @@ pkgbase = python-ovos-ww-plugin-precise-lite
 	optdepends = python-tensorflow
 	optdepends = python-tflite-runtime
 	source = https://github.com/OpenVoiceOS/ovos-ww-plugin-precise-lite/archive/d765138ecefc2004204d6a3fd817d30f8ccca1d8.tar.gz
-	sha256sums = d5b5552140d70c1f4346e0b2e727ef1172231be3545738d87f6dfe524481740d
+	sha256sums = a863f8b4bd66004e5a7221a6170e200677fa914decaf058c24596d36f367120c
 
 pkgname = python-ovos-ww-plugin-precise-lite
