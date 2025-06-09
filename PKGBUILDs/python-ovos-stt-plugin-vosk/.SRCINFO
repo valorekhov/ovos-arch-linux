@@ -1,7 +1,7 @@
 pkgbase = python-ovos-stt-plugin-vosk
 	pkgdesc = OVOS STT plugin for Vosk
-	pkgver = 0.2.0a1
-	pkgrel = 1
+pkgver = 0.2.4
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-stt-plugin-vosk/
 	arch = any
 	license = 
@@ -15,6 +15,6 @@ pkgbase = python-ovos-stt-plugin-vosk
 	depends = python-speechrecognition>=3.8.1
 	depends = python-vosk
 	source = https://github.com/OpenVoiceOS/ovos-stt-plugin-vosk/archive/3bde4c117bf76ceb5645eff8cf534157f0e4e00d.tar.gz
-	sha256sums = 08352ad93dd6840d96f21e7b13c51321812d5d40989695a87c44272313e2066b
+	sha256sums = 56d11f8d71a84c493271129774985aa28f7d0f2719ee7021006e8a7926b765b7
 
 pkgname = python-ovos-stt-plugin-vosk
