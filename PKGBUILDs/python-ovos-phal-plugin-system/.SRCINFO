@@ -1,7 +1,7 @@
 pkgbase = python-ovos-phal-plugin-system
 	pkgdesc = OVOS-PHAL System events
-	pkgver = 0.0.4
-	pkgrel = 00
+pkgver = 1.3.3
+pkgrel = 00
 	url = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-system/
 	arch = any
 	license = Apache License 2.0
@@ -15,6 +15,6 @@ pkgbase = python-ovos-phal-plugin-system
 	depends = python-ovos-plugin-manager>=0.0.1
 	depends = python-ovos-utils>=0.0.30
 	source = https://github.com/OpenVoiceOS/ovos-PHAL-plugin-system/archive/73688a289c0c7b34feb1254d15c267f94f451221.tar.gz
-	sha256sums = 18d0d794f343384e46bc8ef9004b906276839b9043e9f36647ba6d8db2272f84
+	sha256sums = 7301cf4fe363b805f2cc14ac703e570bc79fd295c9ff6fa24da3457015657253
 
 pkgname = python-ovos-phal-plugin-system
