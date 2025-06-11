@@ -5,7 +5,7 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-ovos-phal-plugin-wallpaper-manager
 epoch=
-pkgver='0.1.0'
+pkgver='0.2.5'
 pkgrel=00
 pkgdesc='A plugin for OpenVoiceOS hardware abstraction layer'
 arch=(any)
