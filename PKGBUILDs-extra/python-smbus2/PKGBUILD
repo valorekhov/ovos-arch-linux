@@ -5,7 +5,7 @@ export PIP_DISABLE_PIP_VERSION_CHECK=true
 
 pkgname=python-smbus2
 epoch=
-pkgver=0.4.2
+pkgver=0.6.1
 pkgrel=01
 pkgdesc='smbus2 is a drop-in replacement for smbus-cffi/smbus-python in pure Python'
 arch=(any)
@@ -20,9 +20,9 @@ conflicts=(${provides%=*})  # No quotes, to avoid an empty entry.
 source=(PKGBUILD_EXTRAS)
 md5sums=(SKIP)
 noextract=()
-source+=(https://files.pythonhosted.org/packages/71/2f/73aad66cdee8d4b94068bbc80164aa6a24b3f83541de7b04974438fd70e6/smbus2-0.4.2-py2.py3-none-any.whl)
-md5sums+=(9a5d9f71fbbcd30cbfc5b9ac8a22949e)
-noextract+=(smbus2-0.4.2-py2.py3-none-any.whl)
+source+=(https://files.pythonhosted.org/packages/96/f2/c78a68bd739ac8fc608747cff73a4db3b19f3135658ed4e64374f6425cbf/smbus2-0.6.1-py2.py3-none-any.whl)
+md5sums+=(f6974ef0d94fa727683d1be6dd2cc236)
+noextract+=(smbus2-0.6.1-py2.py3-none-any.whl)
 source+=(LICENSE)
 md5sums+=(2a3eca2de44816126b3c6f33811a9fba)
 
