@@ -1,8 +1,0 @@
-post_install() {
-    # chown -R ovos:ovos /home/ovos/.local/
-    # TODO: Perform an update of the config file to register this messagebus instance
-}
-post_upgrade() {
-    # chown -R ovos:ovos /home/ovos/.local/
-    # TODO: Perform an update of the config file to register this messagebus instance
-}
