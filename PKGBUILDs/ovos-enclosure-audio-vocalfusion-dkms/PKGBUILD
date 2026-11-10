@@ -9,7 +9,7 @@ pkgdesc='Raspberry Pi VocalFusion linux driver'
 arch=('aarch64' 'armv7h')
 url="https://github.com/$_gh_org/$_gh_proj/"
 license=('Apache License 2.0')
-depends=(dkms python-adafruit-blinka)
+depends=(dkms)
 makedepends=(pkgconf dtc)
 conflicts=("${_pkgbase}")
 install=sj201.install
@@ -23,7 +23,7 @@ sha256sums=('b4892826ce0223f7928513249b07f91154baa584b7069a486a66059abaea06fb'
             '291e3286112bc295087663a83843e5245908951e560441e938a315c5fe8211c6'
             '6090980002ce787e3f73f01e8d2b856430eeb2627493cc966d517c2f730110a3'
             'e16b0dbf552424374db890f4630291b6c173b5ad1be17c08bba63fe22a76c539'
-            'ca42c326ea96345477138333f23a20ffb03fdccc13948bf50c23053c673f5395'
+            'c62883ad43ba8243f2c10449c3f664a0ecd12ac3bb1a7903570b6db51397110e'
             'cc24f4be8619b5834687ff8e050de565b833e5e224f61ddf24b12da51b9ae684'
             '59906e3379cffc5463e95b470b8b84e10fb02a57463e274c6f844e3bd385d8dd'
             '18d8752353a57590fa79eac5456ec7d6d558686f55614170eeed8ebf4b8d8434')
