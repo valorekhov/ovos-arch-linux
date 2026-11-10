@@ -1,13 +1,13 @@
 # This script is only meant to be ran on the actual RPi4 device.
 post_install() {
     if [ -f "/boot/config.txt" ]; then
-        if grep -Fxq "dtoverlay=xvf3510" /boot/config.txt; then
-            echo "dtoverlay=xvf3510 is already present in /boot/config.txt"
+        if grep -Fxq "dtoverlay=sj201" /boot/config.txt; then
+            echo "dtoverlay=sj201 is already present in /boot/config.txt"
         else
             echo "" >> /boot/config.txt
             echo "# Installed by Package 'ovos-enclosure-audio-vocalfusion'" >> /boot/config.txt
-            echo "dtoverlay=xvf3510" >> /boot/config.txt
-            echo "Added dtoverlay=xvf3510 to /boot/config.txt"
+            echo "dtoverlay=sj201" >> /boot/config.txt
+            echo "Added dtoverlay=sj201 to /boot/config.txt"
         fi
         if grep -Fxq "dtparam=spi=on" /boot/config.txt; then
             echo "dtparam=spi=on is already present in /boot/config.txt"
@@ -21,7 +21,7 @@ post_install() {
             echo "Not running on an RPi / ARM device? Unable to find /boot/config.txt"
     fi
 
-    systemctl enable xvf3510-init.service
+    # systemctl enable xvf3510-init.service
 
   cat<<EOF
 ############################################################################################
@@ -34,5 +34,9 @@ EOF
 }
 
 post_upgrade() {
+    if [ -f "/boot/config.txt" ]; then
+      # removes previous version of this package
+      sed -zi "s/# Installed by Package 'ovos-enclosure-audio-vocalfusion'\ndtoverlay=xvf3510\n\n//" /boot/config.txt
+    fi
     post_install
 }
