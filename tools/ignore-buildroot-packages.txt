@@ -1,1 +1,1 @@
-python-ovos-phal-plugin-ipc2bus
+# Intentionally empty: OVOS application stack pruned; hardware/infra packages only.

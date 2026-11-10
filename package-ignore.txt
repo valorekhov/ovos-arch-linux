@@ -1,2 +1,1 @@
-mycroft-gui-qt6-git
-onnxruntime-bin
+# Intentionally empty: OVOS application stack pruned; hardware/infra packages only.
