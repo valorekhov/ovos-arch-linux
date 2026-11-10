@@ -1,0 +1,33 @@
+[Unit]
+Description=Nabu Rust Wyoming Satellite (%i)
+After=network-online.target sound.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+# Instantiate with the user that owns the audio session, e.g.
+#   systemctl enable --now nabu-satellite@hass.service
+User=%i
+SupplementaryGroups=audio
+Nice=-10
+Environment=RUST_LOG=info
+# Pin the performance governor: the steady sub-threshold wake-detection load sits
+# where ondemand idles at 600 MHz, roughly doubling per-chunk inference time. The
+# `+` prefix runs this as root despite User=%i; `|| true` keeps a governor-less
+# kernel from failing the unit.
+ExecStartPre=+/bin/sh -c 'for g in /sys/devices/system/cpu/cpufreq/policy*/scaling_governor; do echo performance > "$g" || true; done'
+# Mark II / SJ201: the simple-audio-card declared by the sj201 overlay. Capture is
+# 16 kHz mono native; plughw resamples only the 22050 Hz playback. -F tightens the
+# capture period (20 ms) and --start-delay brings playback up quickly.
+ExecStart=/usr/bin/nabu-satellite \
+  --listen 0.0.0.0:10700 \
+  --mic-command "arecord -D plughw:CARD=sj201,DEV=0 -r 16000 -c 1 -f S16_LE -t raw -F 20000" \
+  --snd-command "aplay -D plughw:CARD=sj201,DEV=0 -r 22050 -c 1 -f S16_LE -t raw --start-delay=100000 -F 50000" \
+  --no-led \
+  --preroll-ms 1000 \
+  --wake-preroll-ms 240
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

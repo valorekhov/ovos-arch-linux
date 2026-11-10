@@ -1,0 +1,18 @@
+pkgbase = nabu-satellite
+	pkgdesc = Rust Wyoming satellite for Home Assistant voice (Mycroft Mark II)
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://github.com/Dethon/Ziggurat
+	install = nabu-satellite.install
+	arch = aarch64
+	license = MIT
+	makedepends = rust
+	depends = alsa-utils
+	source = nabu-satellite-0.1.0.tar.gz::https://github.com/Dethon/Ziggurat/archive/35c5b471e6715adcb3c3dddc1e30af78d0d15d7c.tar.gz
+	source = nabu-satellite@.service
+	source = nabu-satellite.install
+	sha256sums = ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b
+	sha256sums = SKIP
+	sha256sums = SKIP
+
+pkgname = nabu-satellite

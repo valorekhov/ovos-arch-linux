@@ -1,0 +1,16 @@
+post_install() {
+    echo ":: nabu-satellite is a template unit. Enable an instance for the user"
+    echo ":: that owns the audio session, e.g.:"
+    echo "::   systemctl enable --now nabu-satellite@<user>.service"
+    echo ":: On the Mark II the capture/playback card is 'sj201' (provided by the"
+    echo ":: ovos-enclosure-audio-vocalfusion-dkms + sj201 overlay)."
+}
+
+post_upgrade() {
+    post_install
+}
+
+pre_remove() {
+    echo ":: nabu-satellite removed. Disable any instances first if still enabled:"
+    echo "::   systemctl disable --now nabu-satellite@<user>.service"
+}
