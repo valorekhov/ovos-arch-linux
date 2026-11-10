@@ -3,29 +3,30 @@ _gh_proj=VocalFusionDriver
 _pkgbase=ovos-enclosure-audio-vocalfusion
 pkgname=$_pkgbase-dkms
 pkgver='0.0.1'
-_commit='4675bb2634812429db64dd135222cd74dc097e79'
-pkgrel=2
+_commit='924326c9ddefce240800a5b9d69345b99f1c358f'
+pkgrel=4
 pkgdesc='Raspberry Pi VocalFusion linux driver'
 arch=('aarch64' 'armv7h')
 url="https://github.com/$_gh_org/$_gh_proj/"
 license=('Apache License 2.0')
-depends=(dkms)
+depends=(dkms python-adafruit-blinka)
 makedepends=(pkgconf dtc)
 conflicts=("${_pkgbase}")
-install=xvf3510.install
+install=sj201.install
 
 source=("https://github.com/$_gh_org/$_gh_proj/archive/$_commit.tar.gz" \
-   Makefile app_xvf3510_int_spi_boot_v4_1_0.bin system.xvf3510.pa
-   xvf3510-init.service xvf3510-init.sh xvf3510-flash dkms.conf xvf3510.install)
-sha256sums=('596fb5109a72e3dc8e0af4aa585378039663dfd2802a4446d604f7f41e323ae3'
+   Makefile app_xvf3510_int_spi_boot_v4_2_0.bin system.xvf3510.pa
+   xvf3510-init.service xvf3510-init.sh xvf3510-flash dkms.conf sj201.install init_tas5806.py)
+sha256sums=('b4892826ce0223f7928513249b07f91154baa584b7069a486a66059abaea06fb'
             'abff22f2091498baaa2f918eb777494878798c90ff6d792f30eabc440ff40d4c'
-            'c00fef78c4601d039eb1561bc5befb7edd7cfd1172c4e9f3a31737930f722ed9'
+            'cfde2ac5174c7682414fa91f918346a3c57d495e7f6ddbfcbec5c222629bbf5a'
             '291e3286112bc295087663a83843e5245908951e560441e938a315c5fe8211c6'
             '6090980002ce787e3f73f01e8d2b856430eeb2627493cc966d517c2f730110a3'
-            '17d1a33b55c71c4884b426601e11b64599fd156920a11c0365266d4f13b3266d'
-            'c62883ad43ba8243f2c10449c3f664a0ecd12ac3bb1a7903570b6db51397110e'
+            'e16b0dbf552424374db890f4630291b6c173b5ad1be17c08bba63fe22a76c539'
+            'ca42c326ea96345477138333f23a20ffb03fdccc13948bf50c23053c673f5395'
             'cc24f4be8619b5834687ff8e050de565b833e5e224f61ddf24b12da51b9ae684'
-            'b55ea6e04d5365f4650653c504ec73f85d20b5dec2d2a3b2c6749ab49f3e1215')
+            '59906e3379cffc5463e95b470b8b84e10fb02a57463e274c6f844e3bd385d8dd'
+            '18d8752353a57590fa79eac5456ec7d6d558686f55614170eeed8ebf4b8d8434')
 
 prepare() {
     cd "$srcdir"
@@ -41,7 +42,7 @@ build() {
     cd "$srcdir/$_gh_proj-$_commit"
 
     mkdir -p "$srcdir/build"
-    dtc -@ -Hepapr -I dts -O dtb -o "$srcdir"/build/xvf3510.dtbo xvf3510.dts
+    dtc -@ -Hepapr -I dts -O dtb -o "$srcdir"/build/sj201.dtbo sj201.dts
 }
 
 package() {
@@ -59,10 +60,10 @@ package() {
     install -Dm644 system.xvf3510.pa "$pkgdir/etc/pulse/system.pa.d/"
 
     mkdir -p "$pkgdir/boot/overlays"
-    install -Dm644 "./build/xvf3510.dtbo" "$pkgdir/boot/overlays"
+    install -Dm644 "./build/sj201.dtbo" "$pkgdir/boot/overlays"
     
     mkdir -p "$pkgdir/usr/lib/firmware/xvf3510"
-    install -Dm644 "./app_xvf3510_int_spi_boot_v4_1_0.bin" "$pkgdir/usr/lib/firmware/xvf3510"
+    install -Dm644 "./app_xvf3510_int_spi_boot_v4_2_0.bin" "$pkgdir/usr/lib/firmware/xvf3510"
 
     mkdir -p "$pkgdir/usr/lib/systemd/system"
     install -Dm644 "$srcdir/xvf3510-init.service" "$pkgdir/usr/lib/systemd/system"
@@ -70,6 +71,7 @@ package() {
     mkdir -p "$pkgdir/opt/ovos/bin"
     install -Dm744 "./xvf3510-flash" "$pkgdir/opt/ovos/bin"
     install -Dm744 "./xvf3510-init.sh" "$pkgdir/opt/ovos/bin"
+    install -Dm744 "./init_tas5806.py" "$pkgdir/opt/ovos/bin"
 
     cp Makefile "${pkgdir}"/usr/src/${_pkgbase}-${pkgver}/
     cp "$_gh_proj-$_commit"/driver/vocalfusion-soundcard.c "${pkgdir}"/usr/src/${_pkgbase}-${pkgver}/
