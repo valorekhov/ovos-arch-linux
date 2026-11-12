@@ -11,19 +11,24 @@ User=%i
 SupplementaryGroups=audio
 Nice=-10
 Environment=RUST_LOG=info
+# System-wide PulseAudio owns the sj201 playback PCM (the enclosure audio package
+# keeps the sink open permanently), so playback must go through Pulse. Point
+# clients at the system socket explicitly.
+Environment=PULSE_SERVER=unix:/run/pulse/native
 # Pin the performance governor: the steady sub-threshold wake-detection load sits
 # where ondemand idles at 600 MHz, roughly doubling per-chunk inference time. The
 # `+` prefix runs this as root despite User=%i; `|| true` keeps a governor-less
 # kernel from failing the unit.
 ExecStartPre=+/bin/sh -c 'for g in /sys/devices/system/cpu/cpufreq/policy*/scaling_governor; do echo performance > "$g" || true; done'
-# Mark II / SJ201: the simple-audio-card declared by the sj201 overlay. It exposes
-# playback as DEV=0 (bcm2835-i2s-dit-hifi) and capture as DEV=1 (bcm2835-i2s-dir-hifi).
-# Capture is 16 kHz mono native; plughw resamples only the 22050 Hz playback. -F tightens
-# the capture period (20 ms) and --start-delay brings playback up quickly.
+# Mark II / SJ201: the simple-audio-card declared by the sj201 overlay. Capture
+# is DEV=1 (bcm2835-i2s-dir-hifi), 16 kHz mono native, opened directly via ALSA
+# (Pulse ignores this card, so the microphone stays free). Playback goes through
+# Pulse (-D pulse -> the sj201 sink) because Pulse holds DEV=0; -F tightens the
+# capture period (20 ms) and --start-delay brings playback up quickly.
 ExecStart=/usr/bin/nabu-satellite \
   --listen 0.0.0.0:10700 \
   --mic-command "arecord -D plughw:CARD=sj201,DEV=1 -r 16000 -c 1 -f S16_LE -t raw -F 20000" \
-  --snd-command "aplay -D plughw:CARD=sj201,DEV=0 -r 22050 -c 1 -f S16_LE -t raw --start-delay=100000 -F 50000" \
+  --snd-command "aplay -D pulse -r 22050 -c 1 -f S16_LE -t raw --start-delay=100000 -F 50000" \
   --no-led \
   --preroll-ms 1000 \
   --wake-preroll-ms 240

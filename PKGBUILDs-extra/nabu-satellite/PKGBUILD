@@ -1,6 +1,6 @@
 pkgname=nabu-satellite
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Rust Wyoming satellite for Home Assistant voice (Mycroft Mark II)'
 arch=('aarch64')
 url='https://github.com/Dethon/Ziggurat'
@@ -16,18 +16,39 @@ sha256sums=('ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b'
             'SKIP'
             'SKIP')
 
+# The committed Cargo.lock is pinned by necessity (archived rppal, an unreleased
+# tract fp16 build.rs fix), so --locked must fail loudly rather than silently
+# rewrite what ships. Models and cue WAVs are include_bytes!-embedded, so the
+# resulting binary is self-contained.
+#
+# Two build paths, chosen by the host:
+#   * on the Pi (aarch64): a native glibc build, as a clean deployment does;
+#   * on any other host (e.g. x86_64): a cross build to a static musl binary,
+#     using zig as the linker (the path upstream's .cargo/config.toml documents).
+#     The Mark II is too small (1.7 GiB RAM) to compile tract/ONNX reliably, so
+#     the package is normally produced cross and the static artifact stays
+#     independent of the target's glibc. Cross builds need `zig` and
+#     `cargo-zigbuild` on the build host.
 build() {
     cd "Ziggurat-$_commit/satellite"
-    # Native aarch64 (glibc) release build. The committed Cargo.lock is pinned by
-    # necessity (archived rppal, an unreleased tract fp16 build.rs fix), so --locked
-    # must fail loudly rather than silently rewrite what ships. Models and cue WAVs
-    # are include_bytes!-embedded, so the resulting binary is self-contained.
-    cargo build --release --locked
+    if [[ $(uname -m) == aarch64 ]]; then
+        cargo build --release --locked
+    else
+        # The host CFLAGS/LDFLAGS/RUSTFLAGS are tailored to the build machine
+        # (x86_64) and would be handed to zig's cc by tract's cc-rs build
+        # scripts; clear them so the cross target's own flags — including the
+        # crate's .cargo/config.toml musl rustflags — apply.
+        env -u CFLAGS -u CXXFLAGS -u LDFLAGS -u CPPFLAGS -u RUSTFLAGS \
+            cargo zigbuild --release --locked --target aarch64-unknown-linux-musl
+    fi
 }
 
 package() {
     cd "Ziggurat-$_commit/satellite"
-    install -Dm755 target/release/nabu-satellite "$pkgdir/usr/bin/nabu-satellite"
+    local _bin=target/release/nabu-satellite
+    [[ $(uname -m) == aarch64 ]] ||
+        _bin=target/aarch64-unknown-linux-musl/release/nabu-satellite
+    install -Dm755 "$_bin" "$pkgdir/usr/bin/nabu-satellite"
     install -Dm644 "$srcdir/nabu-satellite@.service" \
         "$pkgdir/usr/lib/systemd/system/nabu-satellite@.service"
 }
