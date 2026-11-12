@@ -1,7 +1,7 @@
 pkgbase = ovos-enclosure-rpi4-mark2
 	pkgdesc = Supporting assets for the Raspberry PI4 -based Mycroft Mark2 Revisions 6 and 10 HATs
 	pkgver = 0.0.1
-	pkgrel = 2
+	pkgrel = 3
 	url = https://github.com/OpenVoiceOS/
 	install = rpi4-mark2.install
 	arch = aarch64
@@ -9,6 +9,7 @@ pkgbase = ovos-enclosure-rpi4-mark2
 	makedepends = dtc
 	depends = ovos-enclosure-sj201
 	depends = ovos-enclosure-audio-pulse
+	depends = ovos-enclosure-audio-mpd
 	provides = ovos-enclosure
 	conflicts = ovos-enclosure
 	source = rpi4-mark2.install

@@ -80,11 +80,13 @@ aur-repo:
 	@cd $(DIR) && $(RUN_MAKEPKG)
 	
 
+ovos-enclosure-audio-mpd: PKGBUILDs/ovos-enclosure-audio-mpd/*.pkg.tar.zst
+
 ovos-enclosure-audio-pulse: PKGBUILDs/ovos-enclosure-audio-pulse/*.pkg.tar.zst
 
 ovos-enclosure-audio-vocalfusion-dkms: PKGBUILDs/ovos-enclosure-audio-vocalfusion-dkms/*.pkg.tar.zst
 
-ovos-enclosure-rpi4-mark2: ovos-enclosure-sj201 ovos-enclosure-audio-pulse PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
+ovos-enclosure-rpi4-mark2: ovos-enclosure-sj201 ovos-enclosure-audio-pulse ovos-enclosure-audio-mpd PKGBUILDs/ovos-enclosure-rpi4-mark2/*.pkg.tar.zst
 
 ovos-enclosure-sj201: ovos-enclosure-audio-vocalfusion-dkms python-spidev python-rpi.gpio python-smbus2 PKGBUILDs/ovos-enclosure-sj201/*.pkg.tar.zst
 
