@@ -1,0 +1,12 @@
+# Installed by ovos-enclosure-audio-vocalfusion-dkms
+#
+# Keep PulseAudio's module-udev-detect from auto-creating an alsa-card for the
+# sj201 card. When it does, the card module grabs the playback PCM (hw:0,0) and
+# the explicit `module-alsa-sink device=hw:CARD=sj201,DEV=0 sink_name=sj201`
+# loaded from system.pa.d/system.xvf3510.pa then fails at boot with
+# "Device or resource busy" (the udev card module is not torn down when
+# module-udev-detect is unloaded, so the fallback sink becomes the default).
+# Marking the card PULSE_IGNORE makes the explicit sj201 sink deterministic.
+#
+# Capture (hw:0,1) is unaffected; nabu-satellite opens it directly via ALSA.
+SUBSYSTEM=="sound", KERNEL=="card*", ATTR{id}=="sj201", ENV{PULSE_IGNORE}="1"
