@@ -80,7 +80,7 @@ aur-repo:
 	@cd $(DIR) && $(RUN_MAKEPKG)
 	
 
-nabu-satellite: PKGBUILDs/nabu-satellite/*.pkg.tar.zst
+nabu-satellite: PKGBUILDs-extra/nabu-satellite/*.pkg.tar.zst
 
 ovos-enclosure-audio-pulse: PKGBUILDs/ovos-enclosure-audio-pulse/*.pkg.tar.zst
 
