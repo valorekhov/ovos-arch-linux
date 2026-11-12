@@ -1,0 +1,16 @@
+[Unit]
+Description=Squeezelite (Lyrion / Music Assistant Squeezebox client)
+Documentation=https://ralph-irving.github.io/squeezelite.html
+After=network-online.target sound.target pulseaudio.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/conf.d/squeezelite
+ExecStart=/usr/bin/squeezelite $SQUEEZELITE_ARGS
+Nice=-5
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

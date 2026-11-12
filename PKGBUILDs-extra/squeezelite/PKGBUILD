@@ -1,0 +1,41 @@
+pkgname=squeezelite
+pkgver=2.0.0.1612
+pkgrel=1
+pkgdesc='Lightweight headless Squeezebox emulator (Lyrion / Music Assistant client)'
+arch=('aarch64')
+url='https://github.com/ralph-irving/squeezelite'
+license=('GPL3')
+depends=('alsa-lib' 'pulseaudio-alsa' 'flac' 'libvorbis' 'libogg' 'faad2' 'libmad' 'mpg123' 'ffmpeg' 'opus' 'opusfile' 'openssl')
+makedepends=('git' 'pkgconf')
+backup=('etc/conf.d/squeezelite')
+install=squeezelite.install
+# Upstream has no tagged releases; pin a commit for reproducibility (v2.0.0-1612).
+_commit='cc7ee7c0d00bd2aa691a574a7d429d5cd13c858b'
+source=("$pkgname-$_commit.tar.gz::https://github.com/ralph-irving/squeezelite/archive/$_commit.tar.gz"
+        squeezelite.service
+        squeezelite.conf
+        squeezelite.install)
+sha256sums=('67358a5e672344a16e40ea9cfe8add548867f5ff00a69a0f239fd8fe78f8417b'
+            'cbce6dd9ce8d6896e0a5deaede9e20eef74a504205c7af610912a2656fe7bb90'
+            '40723c0ee7cc9781076f7089b0e552977f957e0eff4965654e7ac646a560e4ab'
+            '0c3e9cfead3707b4ba752e8e046175d35a5c66b5fe7e658c2f5a478acc597a29')
+
+build() {
+    cd "squeezelite-$_commit"
+    # Output goes through ALSA's "default" -> PulseAudio (see conf.d), so no
+    # libsoxr resampling is needed (Pulse resamples to the sink rate). Codecs are
+    # linked in (LINKALL) from the runtime depends above. opusfile installs its
+    # header under /usr/include/opus, so pull the include path from pkg-config.
+    make OPTS="-DFFMPEG -DOPUS -DSSL -DLINKALL" \
+        CPPFLAGS="$(pkg-config --cflags opusfile)"
+}
+
+package() {
+    cd "squeezelite-$_commit"
+    install -Dm755 squeezelite "$pkgdir/usr/bin/squeezelite"
+
+    install -Dm644 "$srcdir/squeezelite.service" \
+        "$pkgdir/usr/lib/systemd/system/squeezelite.service"
+
+    install -Dm644 "$srcdir/squeezelite.conf" "$pkgdir/etc/conf.d/squeezelite"
+}

@@ -94,3 +94,5 @@ python-smbus2: PKGBUILDs-extra/python-smbus2/*.pkg.tar.zst
 
 python-spidev: python-rpi.gpio PKGBUILDs-extra/python-spidev/*.pkg.tar.zst
 
+squeezelite: PKGBUILDs-extra/squeezelite/*.pkg.tar.zst
+
