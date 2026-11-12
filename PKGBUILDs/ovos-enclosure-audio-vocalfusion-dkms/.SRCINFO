@@ -1,7 +1,7 @@
 pkgbase = ovos-enclosure-audio-vocalfusion-dkms
 	pkgdesc = Raspberry Pi VocalFusion linux driver
 	pkgver = 0.0.1
-	pkgrel = 2
+	pkgrel = 3
 	url = https://github.com/OpenVoiceOS/VocalFusionDriver/
 	install = xvf3510.install
 	arch = aarch64
@@ -23,7 +23,7 @@ pkgbase = ovos-enclosure-audio-vocalfusion-dkms
 	sha256sums = 596fb5109a72e3dc8e0af4aa585378039663dfd2802a4446d604f7f41e323ae3
 	sha256sums = abff22f2091498baaa2f918eb777494878798c90ff6d792f30eabc440ff40d4c
 	sha256sums = c00fef78c4601d039eb1561bc5befb7edd7cfd1172c4e9f3a31737930f722ed9
-	sha256sums = 291e3286112bc295087663a83843e5245908951e560441e938a315c5fe8211c6
+	sha256sums = ee96417ec4c4a96d6b35e42894b081b9ba1ba54d15ce01c3739372c062cfb85d
 	sha256sums = 6090980002ce787e3f73f01e8d2b856430eeb2627493cc966d517c2f730110a3
 	sha256sums = 17d1a33b55c71c4884b426601e11b64599fd156920a11c0365266d4f13b3266d
 	sha256sums = c62883ad43ba8243f2c10449c3f664a0ecd12ac3bb1a7903570b6db51397110e
