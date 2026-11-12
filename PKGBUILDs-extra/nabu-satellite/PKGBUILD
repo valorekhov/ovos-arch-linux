@@ -1,0 +1,33 @@
+pkgname=nabu-satellite
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Rust Wyoming satellite for Home Assistant voice (Mycroft Mark II)'
+arch=('aarch64')
+url='https://github.com/Dethon/Ziggurat'
+license=('MIT')
+depends=('alsa-utils')
+makedepends=('rust')
+install=nabu-satellite.install
+_commit=35c5b471e6715adcb3c3dddc1e30af78d0d15d7c
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Dethon/Ziggurat/archive/$_commit.tar.gz"
+        nabu-satellite@.service
+        nabu-satellite.install)
+sha256sums=('ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b'
+            'SKIP'
+            'SKIP')
+
+build() {
+    cd "Ziggurat-$_commit/satellite"
+    # Native aarch64 (glibc) release build. The committed Cargo.lock is pinned by
+    # necessity (archived rppal, an unreleased tract fp16 build.rs fix), so --locked
+    # must fail loudly rather than silently rewrite what ships. Models and cue WAVs
+    # are include_bytes!-embedded, so the resulting binary is self-contained.
+    cargo build --release --locked
+}
+
+package() {
+    cd "Ziggurat-$_commit/satellite"
+    install -Dm755 target/release/nabu-satellite "$pkgdir/usr/bin/nabu-satellite"
+    install -Dm644 "$srcdir/nabu-satellite@.service" \
+        "$pkgdir/usr/lib/systemd/system/nabu-satellite@.service"
+}
