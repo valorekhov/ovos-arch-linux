@@ -1,0 +1,22 @@
+pkgname=ovos-enclosure-audio-mpd
+pkgver='0.0.1'
+pkgrel=1
+pkgdesc='Routes MPD through the system-wide PulseAudio daemon (Mycroft Mark II audio)'
+arch=('any')
+url='https://github.com/OpenVoiceOS/'
+license=('Apache License 2.0')
+depends=('mpd' 'ovos-enclosure-audio-pulse')
+optdepends=()
+makedepends=()
+install=ovos-enclosure-audio-mpd.install
+backup=('etc/mpd.d/10-ovos-audio.conf')
+
+source=('10-ovos-audio.conf' 'ovos-enclosure-audio-mpd.install')
+sha256sums=('07577e7d7297ab13281e9bb6273a206b88c987d89dc1c5e141ab2fa31ead1bd7'
+            'ea2cd2c6ed5a4e42551d83dc585815ef82c91d27171c68f87b8ed26d877f642f')
+
+package() {
+    # Drop-in audio_output; pulled in by /etc/mpd.conf via an 'include' line
+    # appended by the install script (and the stock ALSA block commented out).
+    install -Dm644 10-ovos-audio.conf "$pkgdir/etc/mpd.d/10-ovos-audio.conf"
+}

@@ -2,7 +2,9 @@
 post_install() {
     systemctl enable systemd-timesyncd 
     systemctl enable pulseaudio.service
-    systemctl disable getty@tty1
+    # NOTE: upstream OVOS disabled getty@tty1 here. We keep the HASS kiosk on
+    # tty1 (autologin as `hass` -> startx -> chromium --kiosk), so leave the
+    # getty enabled rather than disabling it.
 }
 
 post_upgrade() {

@@ -1,5 +1,10 @@
-### Network access (may be configured with paprefs, so leave this commented
-### here if you plan to use paprefs)
-#load-module module-esound-protocol-tcp
+### Network access
 load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/16;172.16.0.0/12;10.0.0.0/8 auth-anonymous=1
 load-module module-zeroconf-publish
+
+### Local access
+# A system-mode daemon authenticates UNIX clients with a cookie by default and
+# this box has none, so allow anonymous local connections (the socket is already
+# world-accessible at /run/pulse/native).
+unload-module module-native-protocol-unix
+load-module module-native-protocol-unix auth-anonymous=1

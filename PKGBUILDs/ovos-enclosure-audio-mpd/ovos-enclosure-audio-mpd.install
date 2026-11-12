@@ -1,0 +1,36 @@
+post_install() {
+    local conf=/etc/mpd.conf
+    local dropin=/etc/mpd.d/10-ovos-audio.conf
+
+    # 1. Comment out any active top-level 'audio_output { ... }' block so MPD
+    #    does not also open the stock ALSA device directly (which would grab the
+    #    raw PCM exclusively and defeat mixing). Idempotent: once commented the
+    #    opening line no longer matches, so a re-run is a no-op.
+    if grep -qE '^[[:space:]]*audio_output[[:space:]]*\{' "$conf" 2>/dev/null; then
+        awk '
+            /^[[:space:]]*audio_output[[:space:]]*\{/ { s=1 }
+            s { print "# " $0; if ($0 ~ /^[[:space:]]*\}/) s=0; next }
+            { print }
+        ' "$conf" > "$conf.ovos-tmp" && cat "$conf.ovos-tmp" > "$conf" && rm -f "$conf.ovos-tmp"
+        echo ":: MPD: disabled the inline audio_output block (now via $dropin)"
+    fi
+
+    # 2. Include the drop-in, once.
+    if ! grep -qF "include \"$dropin\"" "$conf" 2>/dev/null; then
+        printf '\ninclude "%s"\n' "$dropin" >> "$conf"
+        echo ":: MPD: added include for $dropin"
+    fi
+
+    # 3. Pick up the change if MPD is running.
+    systemctl try-restart mpd.service 2>/dev/null || true
+}
+
+post_upgrade() {
+    post_install
+}
+
+pre_remove() {
+    # Drop the include line so MPD still starts after this package is removed.
+    sed -i "\|include \"/etc/mpd.d/10-ovos-audio.conf\"|d" /etc/mpd.conf 2>/dev/null || true
+    systemctl try-restart mpd.service 2>/dev/null || true
+}

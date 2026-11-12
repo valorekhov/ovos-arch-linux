@@ -1,0 +1,17 @@
+pkgbase = ovos-enclosure-audio-mpd
+	pkgdesc = Routes MPD through the system-wide PulseAudio daemon (Mycroft Mark II audio)
+	pkgver = 0.0.1
+	pkgrel = 1
+	url = https://github.com/OpenVoiceOS/
+	install = ovos-enclosure-audio-mpd.install
+	arch = any
+	license = Apache License 2.0
+	depends = mpd
+	depends = ovos-enclosure-audio-pulse
+	backup = etc/mpd.d/10-ovos-audio.conf
+	source = 10-ovos-audio.conf
+	source = ovos-enclosure-audio-mpd.install
+	sha256sums = 07577e7d7297ab13281e9bb6273a206b88c987d89dc1c5e141ab2fa31ead1bd7
+	sha256sums = ea2cd2c6ed5a4e42551d83dc585815ef82c91d27171c68f87b8ed26d877f642f
+
+pkgname = ovos-enclosure-audio-mpd

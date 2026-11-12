@@ -1,17 +1,17 @@
 pkgname=ovos-enclosure-rpi4-mark2
 pkgver='0.0.1'
-pkgrel=1
+pkgrel=3
 pkgdesc='Supporting assets for the Raspberry PI4 -based Mycroft Mark2 Revisions 6 and 10 HATs'
 arch=(aarch64)
 url='https://github.com/OpenVoiceOS/'
 license=('Apache License 2.0')
-depends=(ovos-enclosure-sj201 ovos-enclosure-audio-pulse)
+depends=(ovos-enclosure-sj201 ovos-enclosure-audio-pulse ovos-enclosure-audio-mpd)
 optdepends=()
 makedepends=(dtc)
 provides=(ovos-enclosure)
 conflicts=(ovos-enclosure)
 
 source=("rpi4-mark2.install")
-sha256sums=('2de1240b77dd16ef5795151babb0c1060fd2dcf0892f74c5c7dbd7ef6e6886a8')
+sha256sums=('4f3b3395b4ea312136d61f2776129a1b8841049ab172b5e51fcf43cc54952bc6')
 
 install=rpi4-mark2.install
