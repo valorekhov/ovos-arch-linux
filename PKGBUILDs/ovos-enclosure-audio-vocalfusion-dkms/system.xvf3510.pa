@@ -10,6 +10,14 @@
 # also expose the HDMI card. Load the playback sink explicitly instead.
 unload-module module-udev-detect
 
+# Keep the sink open permanently. module-suspend-on-idle closes the device when
+# idle; when a stream then arrives while the sink is suspended, the reopen fails
+# on this card ("Resume failed, couldn't restore original sample settings") and
+# leaves the sink wedged, silencing every player until Pulse is restarted.
+# Holding the PCM open keeps the sink at its fixed 16000 Hz rate and lets Pulse
+# resample all streams; capture (DEV=1) is unaffected.
+unload-module module-suspend-on-idle
+
 load-module module-alsa-sink device=hw:CARD=sj201,DEV=0 rate=16000 channels=2 format=s16le sink_name=sj201
 set-default-sink sj201
 
