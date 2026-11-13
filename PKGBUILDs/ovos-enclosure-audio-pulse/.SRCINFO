@@ -1,7 +1,7 @@
 pkgbase = ovos-enclosure-audio-pulse
 	pkgdesc = Provides a system-wide daemonized PulseAudio instance. Use with embedded setups only
 	pkgver = 0.0.1
-	pkgrel = 3
+	pkgrel = 4
 	url = https://github.com/OpenVoiceOS/
 	install = pulseaudio.install
 	arch = any
@@ -15,7 +15,7 @@ pkgbase = ovos-enclosure-audio-pulse
 	source = sysusers.conf
 	source = pulseaudio.install
 	sha256sums = 2beb0902aab3b045cf53fb3b30229bca4989299853cee9b0075a17ba4657c35f
-	sha256sums = f8c7c60a10a94e5128b827bb963905f1704350147fa6049c31ad32048f153f2c
+	sha256sums = d02161f1684e01368204522bcae878c6720c056cc9445fedb798ea6826337fc9
 	sha256sums = 4c71b0b701ee18ecd844246c6b96d91d874b150ee94db598e0685f55a0d58a09
 	sha256sums = 9a8973dec327be1036f9dd4c3c63b7c2cef3ef2d13b1ff036dc159b1c14c3be3
 	sha256sums = 03c262cd0c6b561ce855904c84963fc8dd6d98dc5edecb8202cb60ecc17233c5

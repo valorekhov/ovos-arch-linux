@@ -1,8 +1,10 @@
 ### SJ201 / Mark II audio settings
-# The mainline simple-audio-card exposes playback as hw:CARD=sj201,DEV=0 at a
-# fixed S16_LE / 2ch / 16000 Hz, and capture as DEV=1, which the nabu-satellite
-# arecord process owns. Pulse must therefore open only the playback side and run
-# the sink at the card's native rate.
+# The mainline simple-audio-card exposes playback as hw:CARD=sj201,DEV=0 and
+# capture as DEV=1 (owned by the nabu-satellite arecord process). The XMOS mic
+# runs at 48 kHz and the two directions share one I2S clock, so the whole card
+# runs at 48 kHz. The ALSA plug PCMs "sj201_play"/"sj201_mic" (see
+# /etc/alsa/conf.d/99-sj201-fixed48.conf) keep the hardware pinned at 48 kHz even
+# if a client asks for another rate.
 .nofail
 
 # Auto-detection (module-udev-detect) would create a full alsa-card for the sj201
@@ -10,15 +12,14 @@
 # also expose the HDMI card. Load the playback sink explicitly instead.
 unload-module module-udev-detect
 
-# Keep the sink open permanently. module-suspend-on-idle closes the device when
-# idle; when a stream then arrives while the sink is suspended, the reopen fails
-# on this card ("Resume failed, couldn't restore original sample settings") and
-# leaves the sink wedged, silencing every player until Pulse is restarted.
-# Holding the PCM open keeps the sink at its fixed 16000 Hz rate and lets Pulse
-# resample all streams; capture (DEV=1) is unaffected.
+# Keep the sink open permanently at 48 kHz. module-suspend-on-idle closes the
+# device when idle; combined with PulseAudio's on-the-fly rate reconfiguration
+# that leaves the sink wedged ("Resume failed, couldn't restore original sample
+# settings"), silencing every player until Pulse is restarted. Holding the PCM
+# open keeps the sink at a fixed 48 kHz and lets Pulse resample all streams.
 unload-module module-suspend-on-idle
 
-load-module module-alsa-sink device=hw:CARD=sj201,DEV=0 rate=16000 channels=2 format=s16le sink_name=sj201
+load-module module-alsa-sink device=sj201_play rate=48000 channels=2 format=s16le sink_name=sj201
 set-default-sink sj201
 
 # Duck music when an announcement plays (role=notification/phone).
