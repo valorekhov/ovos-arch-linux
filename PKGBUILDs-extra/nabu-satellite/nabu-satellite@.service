@@ -30,6 +30,7 @@ ExecStartPre=+/bin/sh -c 'for g in /sys/devices/system/cpu/cpufreq/policy*/scali
 # quickly.
 ExecStart=/usr/bin/nabu-satellite \
   --listen 0.0.0.0:10700 \
+  --name "ovos0" \
   --mic-command "arecord -D sj201_mic -r 16000 -c 1 -f S16_LE -t raw -F 20000" \
   --snd-command "aplay -D pulse -r 22050 -c 1 -f S16_LE -t raw --start-delay=100000 -F 50000" \
   --no-led \

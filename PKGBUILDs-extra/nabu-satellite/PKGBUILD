@@ -1,6 +1,6 @@
 pkgname=nabu-satellite
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc='Rust Wyoming satellite for Home Assistant voice (Mycroft Mark II)'
 arch=('aarch64')
 url='https://github.com/Dethon/Ziggurat'
@@ -11,10 +11,23 @@ install=nabu-satellite.install
 _commit=35c5b471e6715adcb3c3dddc1e30af78d0d15d7c
 source=("$pkgname-$pkgver.tar.gz::https://github.com/Dethon/Ziggurat/archive/$_commit.tar.gz"
         nabu-satellite@.service
-        nabu-satellite.install)
+        nabu-satellite.install
+        nabu-ha-compat.patch)
 sha256sums=('ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b'
             'SKIP'
-            'SKIP')
+            'SKIP'
+            '4c61c915bf95dd5ab1f1699fb95e3781f4ce0d3cfbb975b951f438f4df1d03c8')
+
+# Wyoming/HA compatibility, on top of the pinned upstream commit:
+#   * answer the handshake HA's client requires — `describe` -> `info` and `ping` -> `pong`;
+#   * add the standard run-pipeline `start_stage`/`end_stage` HA indexes unconditionally;
+#   * claim the single audio session on `run-satellite` (arm time) instead of on TCP accept, so
+#     HA's info coordinator — a describe-only dial-in every 30 s — can read `info` without
+#     superseding the live assist connection.
+prepare() {
+    cd "Ziggurat-$_commit"
+    patch --forward --strip=1 --input="$srcdir/nabu-ha-compat.patch"
+}
 
 # The committed Cargo.lock is pinned by necessity (archived rppal, an unreleased
 # tract fp16 build.rs fix), so --locked must fail loudly rather than silently

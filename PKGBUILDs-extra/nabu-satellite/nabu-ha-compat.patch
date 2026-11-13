@@ -1,0 +1,629 @@
+--- a/satellite/src/config.rs
++++ b/satellite/src/config.rs
+@@ -31,6 +31,9 @@
+ #[derive(Clone)]
+ pub struct Config {
+     pub listen: String,         // matches Satellites:<id>:Address port (default 10700)
++    // Name advertised in the `info` reply to `describe`; Home Assistant uses it as the satellite
++    // device name. Ziggurat's own hub ignores it.
++    pub name: String,
+     pub mic_command: String,
+     pub snd_command: String,
+     // Sink for hub-marked ALERT streams (timers/alarms). Defaults to snd_command, so a unit
+@@ -77,6 +80,7 @@
+     fn default() -> Self {
+         Self {
+             listen: "0.0.0.0:10700".into(),
++            name: "nabu-satellite".into(),
+             // Defaults target the deployed unit: a reSpeaker XVF3800 USB mic array (card `Array`)
+             // with a HiFiBerry MiniAmp I2S speaker (card `sndrpihifiberry`). Both device strings
+             // are rewritten by provisioning, which auto-detects the capture card by NAME and the
+@@ -115,7 +119,7 @@
+ }
+ 
+ impl Config {
+-    /// Flags: --listen --mic-command --snd-command --alert-snd-command --threshold --no-wake
++    /// Flags: --listen --name --mic-command --snd-command --alert-snd-command --threshold --no-wake
+     ///        --wake-window <n> (alias: --trigger-level) --wake-min-rms <i16 rms, 0 = off>
+     ///        --wake-quiet-rms <i16 rms, 0 = off> --wake-quiet-threshold <f> --wake-quiet-window <n>
+     ///        --button-gpio <pin> | --button-evdev <device>:<keycode> | --no-button
+@@ -131,6 +135,7 @@
+     fn parse(mut pa: pico_args::Arguments) -> anyhow::Result<Self> {
+         let mut c = Config::default();
+         if let Some(v) = pa.opt_value_from_str::<_, String>("--listen")? { c.listen = v; }
++        if let Some(v) = pa.opt_value_from_str::<_, String>("--name")? { c.name = v; }
+         if let Some(v) = pa.opt_value_from_str::<_, String>("--mic-command")? { c.mic_command = v; }
+         if let Some(v) = pa.opt_value_from_str::<_, String>("--snd-command")? { c.snd_command = v; }
+         // Read AFTER --snd-command so the fallback sees the final value: a unit that overrides
+@@ -437,6 +442,7 @@
+     fn defaults_are_sane() {
+         let c = Config::default();
+         assert_eq!(c.listen, "0.0.0.0:10700");
++        assert_eq!(c.name, "nabu-satellite");
+         assert!(c.mic_command.contains("arecord"));
+         assert!(c.mic_command.contains("plughw:CARD=Array,DEV=0"));
+         assert!(c.mic_command.contains("-F 20000"), "mic must pin a 20 ms period (default 125 ms delays every sample)");
+@@ -453,4 +459,10 @@
+         assert_eq!(c.wake_preroll_ms, 240);
+         assert_eq!(c.wake_preroll_chunks(), 3);
+     }
++
++    #[test]
++    fn name_flag_overrides_the_advertised_name() {
++        let c = Config::parse(args(&["--name", "ovos0"])).unwrap();
++        assert_eq!(c.name, "ovos0");
++    }
+ }
+--- a/satellite/src/main.rs
++++ b/satellite/src/main.rs
+@@ -10,7 +10,11 @@
+ 
+ use anyhow::Context;
+ use config::Config;
++use satellite::state_machine::SessionSlot;
++use std::sync::Arc;
+ use tokio::net::TcpListener;
++use tokio::sync::{oneshot, Mutex};
++use tokio::task::JoinHandle;
+ use tracing::{error, info};
+ 
+ #[tokio::main(flavor = "multi_thread", worker_threads = 2)]
+@@ -48,12 +52,16 @@
+     // speaker. Seeded from the master so the mixer's restored state and ours agree at boot.
+     volume.seed().await;
+ 
+-    // Single-hub policy: a new accept supersedes any previous connection. This guards the
+-    // dead-peer wedge — a black-holed hub TCP connection would otherwise park its writer for
+-    // the TCP retransmission timeout (~15 min) while holding the EXCLUSIVE mic device
+-    // (plughw:), starving the hub's reconnect. Aborting the stale task drops MicCapture /
+-    // PlaybackSink (kill_on_drop) and the button guard, so the new connection gets the devices.
+-    let mut active: Option<tokio::task::JoinHandle<()>> = None;
++    // Single-session policy, enforced at ARM time rather than at accept. Connections are
++    // independent — a describe/ping-only probe (HA's info coordinator dials in every 30 s) must be
++    // able to read `info` without disturbing, or being disturbed by, the live session. Only a
++    // connection that receives `run-satellite` claims the audio devices, and it supersedes the
++    // previous armed connection from inside run_connection (arm_session), awaiting its teardown so
++    // the exclusive mic is free. That still guards the dead-peer wedge: a black-holed session is
++    // aborted and awaited when the hub's reconnect arms the next one.
++    let session: SessionSlot = Arc::new(Mutex::new(None));
++    // Handles exist only to cancel everything at shutdown; finished ones are pruned on accept.
++    let mut handles: Vec<tokio::task::AbortHandle> = Vec::new();
+     let mut sigterm = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
+     let mut sigint = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::interrupt())?;
+     loop {
+@@ -65,28 +73,31 @@
+         let Some((sock, peer)) = accepted else { break };
+         sock.set_nodelay(true).ok();
+         info!("hub connected from {peer}");
+-        if let Some(prev) = active.take() {
+-            info!("superseding previous hub connection");
+-            prev.abort();
+-            let _ = prev.await; // ensure devices are released before the new connection claims them
+-        }
++        handles.retain(|h| !h.is_finished());
+         let (r, w) = sock.into_split();
+         let cfg = cfg.clone();
+         let models = models.clone();
+         let volume = volume.clone();
+-        active = Some(tokio::spawn(async move {
+-            if let Err(e) = satellite::state_machine::run_connection(r, w, cfg, models, volume).await {
+-                error!("connection ended with error: {e:#}");
++        let session = session.clone();
++        // A task cannot fetch its own JoinHandle, so spawn first and hand it in on a oneshot: the
++        // connection parks it in `session` so a later arming connection can abort and await it.
++        let (tx, rx) = oneshot::channel::<JoinHandle<()>>();
++        let handle = tokio::spawn(async move {
++            if let Ok(my_handle) = rx.await {
++                if let Err(e) =
++                    satellite::state_machine::run_connection(r, w, cfg, models, volume, session, my_handle).await
++                {
++                    error!("connection ended with error: {e:#}");
++                }
+             }
+-        }));
++        });
++        handles.push(handle.abort_handle());
++        let _ = tx.send(handle);
+     }
+ 
+-    // Graceful shutdown: drop the live connection so its audio devices and LED guard release,
+-    // then blank the ring — a stopped service must not leave it lit.
+-    if let Some(prev) = active.take() {
+-        prev.abort();
+-        let _ = prev.await;
+-    }
++    // Graceful shutdown: cancel every connection so audio devices and LED guards release, then
++    // blank the ring — a stopped service must not leave it lit.
++    for h in &handles { h.abort(); }
+     led::blank_once(&cfg.led);
+     info!("nabu-satellite stopped");
+     Ok(())
+--- a/satellite/src/satellite/state_machine.rs
++++ b/satellite/src/satellite/state_machine.rs
+@@ -10,9 +10,11 @@
+ use crate::wyoming::WyomingEvent;
+ use serde_json::json;
+ use std::collections::VecDeque;
++use std::sync::Arc;
+ use tokio::io::{AsyncWrite, BufReader};
+ use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
+-use tokio::sync::{mpsc, watch};
++use tokio::sync::{mpsc, watch, Mutex};
++use tokio::task::JoinHandle;
+ use tracing::{info, warn};
+ 
+ /// Room-measurement windows. The smoothing span matches the hub's floor smoothing (bursty TV
+@@ -33,6 +35,12 @@
+     fn drop(&mut self) { self.0.abort(); }
+ }
+ 
++/// The process-wide audio session slot: the one connection currently armed by `run-satellite` and
++/// therefore owning the mic and speaker. A later arming connection supersedes whatever it holds;
++/// describe/ping-only connections (Home Assistant's info coordinator dials in every 30 s) never
++/// arm and so never contend for the audio devices.
++pub type SessionSlot = Arc<Mutex<Option<JoinHandle<()>>>>;
++
+ /// Immutable per-connection context threaded through the event handlers (bundled to keep
+ /// the signatures within clippy's argument limit).
+ struct Ctx<'a> {
+@@ -65,23 +73,13 @@
+ pub async fn run_connection(
+     reader: OwnedReadHalf, writer: OwnedWriteHalf, cfg: Config, models: Option<WakeModels>,
+     volume: std::sync::Arc<crate::volume::VolumeControl>,
++    session: SessionSlot, my_handle: JoinHandle<()>,
+ ) -> anyhow::Result<()> {
+     let mut wr = writer;
+-    let mic = MicCapture::spawn(&cfg.mic_command)?;
+-    let mut detector =
+-        models.as_ref().map(|m| WakeDetector::new(m, cfg.detector.clone())).transpose()?;
+-    let cues = Cues::new(&cfg)?;
+ 
+-    // CANCELLATION SAFETY: tokio::select! DROPS the futures of losing arms. Both
+-    // read_event_buffered and MicCapture::next_chunk are multi-await compound reads, so
+-    // dropping them mid-read loses partial progress: a hub event spanning TCP segments is
+-    // half-consumed and the next read parses PCM payload as a header line ("stream did not
+-    // contain valid UTF-8"); a half-read mic chunk drops bytes and misaligns the i16 stream.
+-    // The compound reads therefore live in dedicated pump tasks, and the select! below races
+-    // only mpsc::Receiver::recv() futures, which ARE cancellation-safe. Bounded channels
+-    // preserve flow control: when the main loop blocks, the pumps block on send() and the
+-    // socket / arecord pipe back up exactly as before. Playback writes/drains are compound
+-    // I/O too — they live in the playback pump (spawned below), not in this loop.
++    // The hub's read side is a pump from the very first byte: a connection may spend its whole life
++    // answering `describe`/`ping` — Home Assistant's info coordinator dials in every 30 s just to
++    // re-read `info` — and must never touch the mic/speaker for that.
+     let (hub_tx, mut hub_rx) = mpsc::channel::<anyhow::Result<WyomingEvent>>(16);
+     let _hub_pump = AbortOnDrop(tokio::spawn(async move {
+         // 32 KiB (vs the 8 KiB default): TTS receive bursts at 100+ frames/s; a bigger read
+@@ -97,6 +95,45 @@
+             }
+         }
+     }));
++
++    // Control phase: answer `describe`/`ping` (ignore everything else) until the hub arms us with
++    // `run-satellite`. Both Home Assistant's assist entity and the Ziggurat hub send that first;
++    // only then do we claim the audio devices, so a describe-only probe can neither disturb nor be
++    // disturbed by the live session.
++    loop {
++        match hub_rx.recv().await {
++            None => { info!("hub disconnected before arming"); return Ok(()); }
++            Some(Err(e)) => return Err(e),
++            Some(Ok(e)) => match e.event_type.as_str() {
++                "run-satellite" => { info!("run-satellite: arming"); break; }
++                _ => match control_reply(&e, &cfg) {
++                    Some(reply) => write_event(&mut wr, &reply).await?,
++                    None => tracing::debug!(event = %e.event_type, "ignoring pre-arm event"),
++                },
++            },
++        }
++    }
++
++    // Claim the single audio session. Any previous armed connection (HA's assist socket, or the
++    // Ziggurat hub) is superseded here — abort + await releases its mic/arecord before we open
++    // ours, the same release guarantee main.rs used to give by aborting on accept.
++    arm_session(&session, my_handle).await;
++
++    let mic = MicCapture::spawn(&cfg.mic_command)?;
++    let mut detector =
++        models.as_ref().map(|m| WakeDetector::new(m, cfg.detector.clone())).transpose()?;
++    let cues = Cues::new(&cfg)?;
++
++    // CANCELLATION SAFETY: tokio::select! DROPS the futures of losing arms. Both
++    // read_event_buffered and MicCapture::next_chunk are multi-await compound reads, so
++    // dropping them mid-read loses partial progress: a hub event spanning TCP segments is
++    // half-consumed and the next read parses PCM payload as a header line ("stream did not
++    // contain valid UTF-8"); a half-read mic chunk drops bytes and misaligns the i16 stream.
++    // The compound reads therefore live in dedicated pump tasks, and the select! below races
++    // only mpsc::Receiver::recv() futures, which ARE cancellation-safe. Bounded channels
++    // preserve flow control: when the main loop blocks, the pumps block on send() and the
++    // socket / arecord pipe back up exactly as before. Playback writes/drains are compound
++    // I/O too — they live in the playback pump (spawned below), not in this loop.
+     let (mic_tx, mut mic_rx) = mpsc::channel::<anyhow::Result<Vec<u8>>>(8);
+     let _mic_pump = AbortOnDrop(tokio::spawn(async move {
+         let mut mic = mic;
+@@ -168,7 +205,7 @@
+             ev = hub_rx.recv() => match ev {
+                 None => { info!("hub disconnected"); break; }
+                 Some(Err(e)) => return Err(e),
+-                Some(Ok(e)) => handle_hub_event(e, &mut mode, &mut phase, detector.as_mut(), &mut wr, &ctx).await?,
++                Some(Ok(e)) => handle_hub_event(e, &mut mode, &mut phase, detector.as_mut(), &mut wr, &ctx, &cfg).await?,
+             },
+             done = playback_done.recv() => match done {
+                 None => anyhow::bail!("playback pump terminated"),
+@@ -317,6 +354,15 @@
+         Some(w) => json!({ "source": "wake", "wake_rms": w.rms, "wake_score": w.score }),
+         None => json!({ "source": "button" }),
+     };
++    // Standard Wyoming pipeline fields. Home Assistant's `RunPipeline.from_event` indexes
++    // start_stage/end_stage and raises if they are absent, so a HA hub needs them even though the
++    // Ziggurat hub reads only its own keys (source/wake_rms/...). The wake word is detected here,
++    // so the pipeline starts at ASR and finishes after TTS.
++    if let Some(obj) = data.as_object_mut() {
++        obj.insert("start_stage".into(), json!("asr"));
++        obj.insert("end_stage".into(), json!("tts"));
++        obj.insert("restart_on_end".into(), json!(false));
++    }
+     // Protocol 1.7: what the room sounded like while this satellite was idle. The hub's
+     // end-of-utterance gate cannot measure that itself — its first frame is already the turn —
+     // and without it a command spoken straight after the wake word leaves the gate estimating
+@@ -337,6 +383,61 @@
+     Ok(())
+ }
+ 
++/// The reply to a Wyoming `describe`: Home Assistant's client uses it to register the satellite.
++/// Only the `satellite` block is populated — this binary is a satellite, not a standalone
++/// ASR/TTS/wake service — but the empty service lists are required keys in the wyoming `Info`
++/// dataclass, and `Artifact`'s name/attribution/installed/description/version are all required.
++fn info_event(cfg: &Config) -> WyomingEvent {
++    WyomingEvent::with_data("info", json!({
++        "asr": [], "tts": [], "handle": [], "intent": [], "wake": [], "mic": [], "snd": [],
++        "satellite": {
++            "name": cfg.name,
++            "attribution": {
++                "name": "Ziggurat",
++                "url": "https://github.com/Dethon/Ziggurat",
++            },
++            "installed": true,
++            "description": "Nabu Rust Wyoming satellite",
++            "version": env!("CARGO_PKG_VERSION"),
++            "area": null,
++            "has_vad": false,
++            "active_wake_words": null,
++            "max_active_wake_words": null,
++            "supports_trigger": false,
++        },
++    }))
++}
++
++/// The reply to a `describe` or `ping`, or `None` if `e` is neither. Shared by the pre-arm control
++/// loop and the armed event handler so liveness is answered identically on both sides of arming.
++fn control_reply(e: &WyomingEvent, cfg: &Config) -> Option<WyomingEvent> {
++    match e.event_type.as_str() {
++        "describe" => Some(info_event(cfg)),
++        // Copy the request's opaque text through, as the protocol requires (`Pong.text`).
++        "ping" => {
++            let text = e.data_obj().get("text").cloned();
++            Some(WyomingEvent::with_data("pong", json!({ "text": text })))
++        }
++        _ => None,
++    }
++}
++
++/// Claim the single audio session: supersede any previous armed connection, then record ours so a
++/// later session can supersede us. Awaiting the previous task's teardown is what leaves the
++/// exclusive ALSA devices free (its `AbortOnDrop` pumps kill arecord) before we open them.
++async fn arm_session(session: &SessionSlot, my_handle: JoinHandle<()>) {
++    let mut slot = session.lock().await;
++    if let Some(prev) = slot.take() {
++        // A re-arm on the same connection (`run-satellite` sent twice) must not abort ourselves.
++        if prev.id() != my_handle.id() {
++            info!("superseding previous session");
++            prev.abort();
++            let _ = prev.await;
++        }
++    }
++    *slot = Some(my_handle);
++}
++
+ async fn handle_hub_event<W: AsyncWrite + Unpin>(
+     e: WyomingEvent,
+     mode: &mut Mode,
+@@ -344,6 +445,7 @@
+     detector: Option<&mut WakeDetector>,
+     wr: &mut W,
+     ctx: &Ctx<'_>,
++    cfg: &Config,
+ ) -> anyhow::Result<()> {
+     // Skip the per-frame audio-chunk flood (100+/s during a reply); the control events
+     // (audio-start/stop, transcript, run-satellite) with the current mode are the useful trace.
+@@ -352,6 +454,14 @@
+     }
+     match e.event_type.as_str() {
+         "run-satellite" => info!("run-satellite: armed"),
++        // Wyoming handshake / liveness. Home Assistant's assist connection sends `describe`
++        // right after `run-satellite` and a `ping` every couple of seconds; without a reply it
++        // declares the satellite dead and reconnects. Same replies as the pre-arm control loop.
++        "describe" | "ping" => {
++            if let Some(reply) = control_reply(&e, cfg) {
++                write_event(wr, &reply).await?;
++            }
++        }
+         "transcript" => {
+             if *mode == Mode::Streaming {
+                 end_capture(wr, mode, detector).await?;
+@@ -526,11 +636,11 @@
+             "audio-start",
+             json!({"rate":22050,"width":2,"channels":1,"timestamp":0,"alert":true}),
+         );
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let chunk = WyomingEvent { event_type: "audio-chunk".into(), data: None, payload: vec![9u8; 48] };
+-        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         done_rx.recv().await.unwrap();
+ 
+         assert_eq!(std::fs::metadata(&alert).map(|m| m.len()).unwrap_or(0), 48);
+@@ -557,11 +667,11 @@
+             "audio-start",
+             json!({"rate":22050,"width":2,"channels":1,"timestamp":0}),
+         );
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let chunk = WyomingEvent { event_type: "audio-chunk".into(), data: None, payload: vec![9u8; 48] };
+-        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         done_rx.recv().await.unwrap();
+ 
+         assert_eq!(std::fs::metadata(&normal).map(|m| m.len()).unwrap_or(0), 48);
+@@ -588,11 +698,11 @@
+             "audio-start",
+             json!({"rate":22050,"width":2,"channels":1,"timestamp":0,"alert":"yes"}),
+         );
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let chunk = WyomingEvent { event_type: "audio-chunk".into(), data: None, payload: vec![9u8; 48] };
+-        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         done_rx.recv().await.unwrap();
+ 
+         assert_eq!(std::fs::metadata(&normal).map(|m| m.len()).unwrap_or(0), 48);
+@@ -789,7 +899,7 @@
+         let mut mode = Mode::Streaming;
+         let mut phase = LedState::Listening;
+         let e = WyomingEvent::with_data("transcript", json!({"text":"hi"}));
+-        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(mode, Mode::Idle);
+         assert_eq!(read_event(&mut b).await.unwrap().unwrap().event_type, "audio-stop");
+     }
+@@ -813,10 +923,17 @@
+             led: crate::config::LedConfig::None, // no XVF3800 on USB in CI; keep the log clean
+             ..Config::default()
+         };
++        let session: SessionSlot = Arc::new(Mutex::new(None));
+         let sat = tokio::spawn(async move {
+             let (sock, _) = listener.accept().await.unwrap();
+             let (r, w) = sock.into_split();
+-            run_connection(r, w, cfg, None, crate::volume::VolumeControl::new(None, None, None, 10)).await
++            // A throwaway handle: this test only ever has the one connection, so nothing will
++            // supersede it, but arm_session still records whatever it is handed.
++            let my_handle = tokio::spawn(async {});
++            run_connection(
++                r, w, cfg, None, crate::volume::VolumeControl::new(None, None, None, 10),
++                session, my_handle,
++            ).await
+         });
+ 
+         // hub side: dial in, then stream fragmented audio-chunk frames
+@@ -881,13 +998,13 @@
+         let mut phase = LedState::Listening;
+ 
+         let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let chunk = WyomingEvent::audio_chunk(22050, 2, 1, vec![0u8; 4410]);
+-        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(chunk, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+ 
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+         let t0 = std::time::Instant::now();
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert!(
+             t0.elapsed() < std::time::Duration::from_millis(500),
+             "audio-stop must not block on the player drain (took {:?})",
+@@ -912,7 +1029,7 @@
+         let mut mode = Mode::Idle;
+         let mut phase = LedState::Listening;
+         let e = WyomingEvent::with_data("transcript", json!({"text":"stale"}));
+-        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(mode, Mode::Idle);
+         // nothing must have been written to the hub
+         drop(a);
+@@ -934,7 +1051,7 @@
+         let mut phase = LedState::Listening;
+ 
+         let e = WyomingEvent::new("pause-satellite");
+-        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+ 
+         assert_eq!(mode, Mode::Idle);
+         assert_eq!(read_event(&mut b).await.unwrap().unwrap().event_type, "audio-stop");
+@@ -953,7 +1070,7 @@
+         let mut phase = LedState::Listening;
+ 
+         let e = WyomingEvent::new("pause-satellite");
+-        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+ 
+         assert_eq!(mode, Mode::Idle);
+         assert!(!led_rx.has_changed().unwrap());
+@@ -979,19 +1096,19 @@
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Listening);
+ 
+         let voice_stopped = WyomingEvent::new("voice-stopped");
+-        handle_hub_event(voice_stopped, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(voice_stopped, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Thinking);
+ 
+         let transcript = WyomingEvent::with_data("transcript", json!({"text":"hi"}));
+-        handle_hub_event(transcript, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(transcript, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Idle, "transcript ends the turn -> ring goes dark");
+ 
+         let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Speaking);
+ 
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         // the LED goes Idle when the pump reports the drain complete, not at audio-stop
+         let d = done_rx.recv().await.unwrap();
+         apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
+@@ -1012,11 +1129,11 @@
+         let mut phase = LedState::Listening;
+ 
+         let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Speaking);
+ 
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let d = done_rx.recv().await.unwrap();
+         apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Idle);
+@@ -1038,14 +1155,14 @@
+ 
+         // announcement starts, then a button turn begins while it plays
+         let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let mut preroll: VecDeque<Vec<u8>> = VecDeque::new();
+         start_turn(&mut a, &mut mode, &mut phase, &ctx, &mut preroll, None, None).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Listening);
+ 
+         // the announcement's audio-stop drains while we are mid-turn
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let d = done_rx.recv().await.unwrap();
+         apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Listening, "LED must stay lit mid-turn");
+@@ -1066,11 +1183,11 @@
+         let mut phase = LedState::Listening;
+ 
+         let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
+-        handle_hub_event(start.clone(), &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start.clone(), &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         // a second stream starts before the first stream's completion is processed
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Speaking);
+ 
+         let d = done_rx.recv().await.unwrap();
+@@ -1092,7 +1209,7 @@
+         let mut phase = LedState::Listening; // not Streaming -> transcript is stale
+ 
+         let stale = WyomingEvent::with_data("transcript", json!({"text":"stale"}));
+-        handle_hub_event(stale, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stale, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert!(!led_rx.has_changed().unwrap(), "stale transcript must not touch the LED");
+     }
+ 
+@@ -1112,7 +1229,7 @@
+         let mut phase = LedState::Listening;
+ 
+         let e = WyomingEvent::new("voice-stopped");
+-        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+ 
+         assert_eq!(mode, Mode::Streaming, "voice-stopped must not close the capture");
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Thinking);
+@@ -1135,17 +1252,17 @@
+         let mut phase = LedState::Listening;
+ 
+         let voice_stopped = WyomingEvent::new("voice-stopped");
+-        handle_hub_event(voice_stopped, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(voice_stopped, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Thinking);
+ 
+         let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Speaking);
+ 
+         // The segment drains, but no transcript has arrived: the turn is still open and the
+         // agent is still working on the rest of the answer.
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let d = done_rx.recv().await.unwrap();
+         apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
+         assert_eq!(
+@@ -1170,19 +1287,19 @@
+         let mut phase = LedState::Listening;
+ 
+         let voice_stopped = WyomingEvent::new("voice-stopped");
+-        handle_hub_event(voice_stopped, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(voice_stopped, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Thinking);
+ 
+         let listening = WyomingEvent::new("listening-started");
+-        handle_hub_event(listening, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(listening, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         assert_eq!(mode, Mode::Streaming, "the follow-up window must not touch the capture");
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Listening);
+ 
+         // A stream draining after it (the chime, or a late announcement) must leave it Listening.
+         let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
+-        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(start, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let stop = WyomingEvent::with_data("audio-stop", json!({"timestamp":0}));
+-        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(stop, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+         let d = done_rx.recv().await.unwrap();
+         apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
+         assert_eq!(*led_rx.borrow_and_update(), LedState::Listening);
+@@ -1201,7 +1318,7 @@
+         let mut phase = LedState::Listening; // no turn open -> stale, must not light the ring
+ 
+         let e = WyomingEvent::new("listening-started");
+-        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+ 
+         assert_eq!(mode, Mode::Idle);
+         assert!(!led_rx.has_changed().unwrap(), "stale listening-started must not touch the LED");
+@@ -1220,7 +1337,7 @@
+         let mut phase = LedState::Listening; // not Streaming -> stale, must not touch the LED
+ 
+         let e = WyomingEvent::new("voice-stopped");
+-        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx).await.unwrap();
++        handle_hub_event(e, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default()).await.unwrap();
+ 
+         assert_eq!(mode, Mode::Idle);
+         assert!(!led_rx.has_changed().unwrap(), "stale voice-stopped must not touch the LED");
+@@ -1256,7 +1373,7 @@
+         let mut mode = Mode::Idle;
+         let mut phase = LedState::Idle;
+         let event = WyomingEvent::with_data("speaker-volume", data);
+-        handle_hub_event(event, &mut mode, &mut phase, None, &mut a, &ctx)
++        handle_hub_event(event, &mut mode, &mut phase, None, &mut a, &ctx, &Config::default())
+             .await
+             .unwrap();
+     }
