@@ -1,7 +1,7 @@
 pkgbase = nabu-satellite
 	pkgdesc = Rust Wyoming satellite for Home Assistant voice (Mycroft Mark II)
 	pkgver = 0.1.0
-	pkgrel = 6
+	pkgrel = 7
 	url = https://github.com/Dethon/Ziggurat
 	install = nabu-satellite.install
 	arch = aarch64
@@ -14,11 +14,13 @@ pkgbase = nabu-satellite
 	source = nabu-ha-compat.patch
 	source = nabu-wake-word.patch
 	source = hey_mycroft_v0.1.onnx::https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/hey_mycroft_v0.1.onnx
+	source = awake-chime.wav
 	sha256sums = ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b
 	sha256sums = SKIP
 	sha256sums = SKIP
 	sha256sums = a372f937138031988ad939903399b9c673d49e8dc47983ac4c7ec31414411bc6
 	sha256sums = 3a5a5392fefa5e37c10ef682a6194fbdecdf87a5df844f4c9f82e7c21ba72db6
 	sha256sums = c2a311e8fa1338de89c31b3b46dc4dffd4af2f9a8d6ddead48893c2d301b1f18
+	sha256sums = a05b8f5cfa690143fda4212cc3b817b5741595dd3aff7e44980c6b0b25992579
 
 pkgname = nabu-satellite
