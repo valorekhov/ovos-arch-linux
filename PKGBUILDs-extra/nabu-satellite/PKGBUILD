@@ -1,6 +1,6 @@
 pkgname=nabu-satellite
 pkgver=0.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc='Rust Wyoming satellite for Home Assistant voice (Mycroft Mark II)'
 arch=('aarch64')
 url='https://github.com/Dethon/Ziggurat'
@@ -16,7 +16,7 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/Dethon/Ziggurat/archive/$_c
 sha256sums=('ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b'
             'SKIP'
             'SKIP'
-            '4c61c915bf95dd5ab1f1699fb95e3781f4ce0d3cfbb975b951f438f4df1d03c8')
+            'a372f937138031988ad939903399b9c673d49e8dc47983ac4c7ec31414411bc6')
 
 # Wyoming/HA compatibility, on top of the pinned upstream commit:
 #   * answer the handshake HA's client requires — `describe` -> `info` and `ping` -> `pong`;
@@ -24,6 +24,11 @@ sha256sums=('ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b'
 #   * claim the single audio session on `run-satellite` (arm time) instead of on TCP accept, so
 #     HA's info coordinator — a describe-only dial-in every 30 s — can read `info` without
 #     superseding the live assist connection.
+#
+# Local end-of-speech VAD (earshot): HA's assist socket only ends an utterance when it receives
+# `audio-stop` (or its own server-side VAD fires), and the Ziggurat hub endpointed server-side,
+# so this binary never sent one. The same mic chunks we already forward are now scored locally
+# too, and `audio-stop` goes out once the user has plainly stopped talking.
 prepare() {
     cd "Ziggurat-$_commit"
     patch --forward --strip=1 --input="$srcdir/nabu-ha-compat.patch"

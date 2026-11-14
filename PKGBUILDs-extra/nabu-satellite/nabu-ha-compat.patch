@@ -1,3 +1,36 @@
+--- a/satellite/Cargo.lock
++++ b/satellite/Cargo.lock
+@@ -198,6 +198,12 @@
+ checksum = "5fdab65db9274e0168143841eb8f864a0a21f8b1b8d2ba6812bbe6024346e99e"
+ 
+ [[package]]
++name = "earshot"
++version = "1.2.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "afea66474c4036a7e5fa4b072a3b0a09cd0b01f00134da3115d76b7cc5899f03"
++
++[[package]]
+ name = "either"
+ version = "1.16.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -553,6 +559,7 @@
+ version = "0.1.0"
+ dependencies = [
+  "anyhow",
++ "earshot",
+  "evdev",
+  "hound",
+  "nusb",
+--- a/satellite/Cargo.toml
++++ b/satellite/Cargo.toml
+@@ -14,6 +14,7 @@
+ serde = { version = "1", features = ["derive"] }
+ serde_json = "1"
+ tract-onnx = "0.23"
++earshot = "1.2"        # local end-of-speech VAD: pure Rust, static-musl-clean, 16 kHz/256-sample frames
+ pico-args = "0.5"
+ tracing = "0.1"
+ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 --- a/satellite/src/config.rs
 +++ b/satellite/src/config.rs
 @@ -31,6 +31,9 @@
@@ -10,7 +43,22 @@
      pub mic_command: String,
      pub snd_command: String,
      // Sink for hub-marked ALERT streams (timers/alarms). Defaults to snd_command, so a unit
-@@ -77,6 +80,7 @@
+@@ -52,6 +55,14 @@
+     pub wake_preroll_ms: u32,   // wake-path flush: detection-latency gap only, NOT the wake word
+     pub awake_cue: bool,
+     pub done_cue: bool,
++    // Local end-of-speech detection. Home Assistant's assist socket only ends an utterance when it
++    // receives `audio-stop` (or its own server-side VAD fires); the Ziggurat hub endpointed
++    // server-side, so this binary never sent one. earshot (pure Rust, 16 kHz, 256-sample frames)
++    // scores the same mic chunks we already forward, so the turn closes even when the hub's VAD
++    // does not. `--no-vad` turns it off.
++    pub vad: bool,
++    pub vad_threshold: f32, // speech probability at/above which a 16 ms frame counts as voice
++    pub vad_silence_ms: u32, // sub-threshold audio after speech before the turn ends
+     pub music_mixer: Option<String>,   // ALSA softvol control name; None => duck feature off
+     pub music_card: Option<String>,    // amixer -c target where the softvol control lives
+     pub duck_percent: u8,              // softvol level while the satellite is active
+@@ -77,6 +88,7 @@
      fn default() -> Self {
          Self {
              listen: "0.0.0.0:10700".into(),
@@ -18,7 +66,17 @@
              // Defaults target the deployed unit: a reSpeaker XVF3800 USB mic array (card `Array`)
              // with a HiFiBerry MiniAmp I2S speaker (card `sndrpihifiberry`). Both device strings
              // are rewritten by provisioning, which auto-detects the capture card by NAME and the
-@@ -115,7 +119,7 @@
+@@ -102,6 +114,9 @@
+             wake_preroll_ms: 240, // covers the ~181 ms measured detection latency with margin
+             awake_cue: true,
+             done_cue: true,
++            vad: true,
++            vad_threshold: 0.5,
++            vad_silence_ms: 700,
+             music_mixer: None,
+             music_card: None,
+             duck_percent: 20,
+@@ -115,12 +130,13 @@
  }
  
  impl Config {
@@ -27,7 +85,13 @@
      ///        --wake-window <n> (alias: --trigger-level) --wake-min-rms <i16 rms, 0 = off>
      ///        --wake-quiet-rms <i16 rms, 0 = off> --wake-quiet-threshold <f> --wake-quiet-window <n>
      ///        --button-gpio <pin> | --button-evdev <device>:<keycode> | --no-button
-@@ -131,6 +135,7 @@
+     ///        --no-led
+     ///        --preroll-ms <ms> --wake-preroll-ms <ms> --no-awake-cue --no-done-cue
++    ///        --no-vad --vad-threshold <0..1> --vad-silence-ms <ms>
+     ///        --music-mixer <control> --music-card <card> --duck-percent <pct> --music-restore-grace-ms <ms>
+     ///        --volume-sink <name> | --volume-mixer <control> [--volume-card <card>]
+     ///        --volume-step <pct>
+@@ -131,6 +147,7 @@
      fn parse(mut pa: pico_args::Arguments) -> anyhow::Result<Self> {
          let mut c = Config::default();
          if let Some(v) = pa.opt_value_from_str::<_, String>("--listen")? { c.listen = v; }
@@ -35,7 +99,65 @@
          if let Some(v) = pa.opt_value_from_str::<_, String>("--mic-command")? { c.mic_command = v; }
          if let Some(v) = pa.opt_value_from_str::<_, String>("--snd-command")? { c.snd_command = v; }
          // Read AFTER --snd-command so the fallback sees the final value: a unit that overrides
-@@ -437,6 +442,7 @@
+@@ -173,6 +190,17 @@
+         if pa.contains("--no-wake") { c.wake_enabled = false; }
+         if pa.contains("--no-awake-cue") { c.awake_cue = false; }
+         if pa.contains("--no-done-cue") { c.done_cue = false; }
++        if pa.contains("--no-vad") { c.vad = false; }
++        if let Some(v) = pa.opt_value_from_str::<_, f32>("--vad-threshold")? {
++            anyhow::ensure!(v.is_finite() && v > 0.0 && v <= 1.0, "--vad-threshold must be in (0, 1] (got {v})");
++            c.vad_threshold = v;
++        }
++        if let Some(v) = pa.opt_value_from_str::<_, u32>("--vad-silence-ms")? {
++            // A zero window would end the turn the instant the first speech frame ends — every
++            // natural pause between words would cut the user off. Require at least one chunk.
++            anyhow::ensure!(v >= 80, "--vad-silence-ms must be at least 80 (one 80 ms chunk) (got {v})");
++            c.vad_silence_ms = v;
++        }
+         if pa.contains("--no-button") {
+             c.button = ButtonConfig::None;
+         } else if let Some(pin) = pa.opt_value_from_str::<_, u8>("--button-gpio")? {
+@@ -326,6 +354,39 @@
+         }
+     }
+ 
++    /// Local end-of-speech is on by default (the deployed HA hub needs `audio-stop` to endpoint),
++    /// with a 0.5 probability threshold and the same 0.7 s silence HA's own default uses.
++    #[test]
++    fn vad_defaults_on_and_flags_parse() {
++        let c = Config::default();
++        assert!(c.vad);
++        assert_eq!((c.vad_threshold, c.vad_silence_ms), (0.5, 700));
++
++        let on = Config::parse(args(&[
++            "--vad-threshold", "0.65", "--vad-silence-ms", "900",
++        ]))
++        .unwrap();
++        assert_eq!((on.vad_threshold, on.vad_silence_ms), (0.65, 900));
++
++        let off = Config::parse(args(&["--no-vad"])).unwrap();
++        assert!(!off.vad, "--no-vad must disable local end-of-speech detection");
++    }
++
++    /// A threshold outside (0, 1] can never or always trigger, and NaN makes every comparison
++    /// false; a sub-chunk silence window would cut the user off on the first word gap.
++    #[test]
++    fn nonsense_vad_flags_are_rejected() {
++        for bad in [
++            ["--vad-threshold", "0"],
++            ["--vad-threshold", "1.5"],
++            ["--vad-threshold", "NaN"],
++            ["--vad-silence-ms", "0"],
++            ["--vad-silence-ms", "79"],
++        ] {
++            assert!(Config::parse(args(&bad)).is_err(), "{bad:?} must be rejected");
++        }
++    }
++
+     /// A zero window would average nothing and fire on every frame; provisioning's own regex
+     /// rejects it, but the flag is reachable directly.
+     #[test]
+@@ -437,6 +498,7 @@
      fn defaults_are_sane() {
          let c = Config::default();
          assert_eq!(c.listen, "0.0.0.0:10700");
@@ -43,7 +165,7 @@
          assert!(c.mic_command.contains("arecord"));
          assert!(c.mic_command.contains("plughw:CARD=Array,DEV=0"));
          assert!(c.mic_command.contains("-F 20000"), "mic must pin a 20 ms period (default 125 ms delays every sample)");
-@@ -453,4 +459,10 @@
+@@ -453,4 +515,10 @@
          assert_eq!(c.wake_preroll_ms, 240);
          assert_eq!(c.wake_preroll_chunks(), 3);
      }
@@ -240,7 +362,17 @@
      let (mic_tx, mut mic_rx) = mpsc::channel::<anyhow::Result<Vec<u8>>>(8);
      let _mic_pump = AbortOnDrop(tokio::spawn(async move {
          let mut mic = mic;
-@@ -168,7 +205,7 @@
+@@ -156,6 +193,9 @@
+     let mut room = RoomLevel::new(ROOM_SMOOTHING_MS, ROOM_WINDOW_MS);
+ 
+     let mut mode = Mode::Idle;
++    // Local end-of-speech detector (see EndOfSpeech): scored on the same chunks we forward, it
++    // closes the turn with `audio-stop` once the user has plainly stopped talking.
++    let mut eos = EndOfSpeech::new(cfg.vad_silence_ms);
+     // The LED phase the open turn sits in between playback streams: Listening while the mic is
+     // genuinely capturing the user, Thinking once the hub has endpointed the utterance and the
+     // agent is working. A stream draining mid-turn returns the ring here, which is what makes the
+@@ -168,7 +208,7 @@
              ev = hub_rx.recv() => match ev {
                  None => { info!("hub disconnected"); break; }
                  Some(Err(e)) => return Err(e),
@@ -249,7 +381,116 @@
              },
              done = playback_done.recv() => match done {
                  None => anyhow::bail!("playback pump terminated"),
-@@ -317,6 +354,15 @@
+@@ -199,6 +239,7 @@
+                                     trim_preroll(&mut preroll, cfg.wake_preroll_chunks());
+                                     let measured = room.rms();
+                                     room.reset();
++                                    eos.reset();
+                                     start_turn(&mut wr, &mut mode, &mut phase, &ctx, &mut preroll,
+                                         Some(wake), measured).await?;
+                                 } else {
+@@ -213,7 +254,19 @@
+                         }
+                     }
+                     Mode::Streaming => {
++                        // Score the chunk we are about to forward (same audio, no second capture):
++                        // once the user has spoken and then gone quiet, close the turn locally so a
++                        // hub whose own server-side VAD does not fire can still endpoint it.
++                        let ended = cfg.vad && {
++                            let samples = bytes_to_samples(&bytes);
++                            eos.observe(&samples, cfg.vad_threshold)
++                        };
+                         write_event(&mut wr, &WyomingEvent::audio_chunk(16000, 2, 1, bytes)).await?;
++                        if ended {
++                            info!("end of speech -> audio-stop");
++                            end_capture(&mut wr, &mut mode, detector.as_mut()).await?;
++                            let _ = ctx.led.send(LedState::Idle);
++                        }
+                     }
+                 },
+             },
+@@ -223,6 +276,7 @@
+                     if let Some(d) = detector.as_mut() { d.reset(); }
+                     let measured = room.rms();
+                     room.reset();
++                    eos.reset();
+                     start_turn(&mut wr, &mut mode, &mut phase, &ctx, &mut preroll, None, measured).await?;
+                 }
+             }
+@@ -290,6 +344,72 @@
+     fn audible(&self, min_rms: f32) -> bool { self.rms >= min_rms }
+ }
+ 
++/// 16 ms at 16 kHz — earshot's one frame size.
++const VAD_FRAME_SAMPLES: usize = 256;
++/// The mic chunk cadence (see Config::preroll_chunks).
++const CHUNK_MS: u32 = 80;
++/// Safety net: close the turn after this much streamed audio even if no speech was ever seen, so a
++/// wake that opens the mic onto silence can never wedge the socket the way the pre-VAD binary did.
++/// Well above any spoken command.
++const MAX_UTTERANCE_MS: u32 = 20_000;
++
++/// Local end-of-speech detection over the live command audio. The streaming path already forwards
++/// each 80 ms mic chunk to the hub; the same audio is scored here so the turn can close on its own.
++/// Home Assistant's assist socket only ends an utterance when it receives `audio-stop` (or its own
++/// server-side VAD fires), and this binary previously sent neither — the Ziggurat hub endpointed
++/// server-side, so nothing local was ever needed. earshot is a pure-Rust VAD (16 kHz, exactly
++/// 256-sample / 16 ms frames), so one 80 ms chunk is exactly 5 frames.
++struct EndOfSpeech {
++    detector: earshot::Detector,
++    /// Sub-threshold chunks required after speech before the turn ends.
++    silence_chunks: u32,
++    speech_seen: bool,
++    quiet_chunks: u32,
++    /// Chunks observed since the turn began, for the max-utterance safety net.
++    total_chunks: u32,
++}
++
++impl EndOfSpeech {
++    fn new(silence_ms: u32) -> Self {
++        Self {
++            detector: earshot::Detector::default(),
++            silence_chunks: silence_ms.div_ceil(CHUNK_MS).max(1),
++            speech_seen: false,
++            quiet_chunks: 0,
++            total_chunks: 0,
++        }
++    }
++
++    /// Begin a new turn. The detector carries context between frames, so it must never see the
++    /// previous turn's audio.
++    fn reset(&mut self) {
++        self.detector.reset();
++        self.speech_seen = false;
++        self.quiet_chunks = 0;
++        self.total_chunks = 0;
++    }
++
++    /// Score one forwarded 80 ms chunk. Returns true once the turn's speech has ended: either
++    /// `silence_ms` of sub-threshold audio after speech, or the max-utterance safety net.
++    fn observe(&mut self, samples: &[i16], threshold: f32) -> bool {
++        self.total_chunks += 1;
++        let mut spoke = false;
++        for frame in samples.chunks_exact(VAD_FRAME_SAMPLES) {
++            if self.detector.predict_i16(frame) >= threshold {
++                spoke = true;
++            }
++        }
++        if spoke {
++            self.speech_seen = true;
++            self.quiet_chunks = 0;
++        } else if self.speech_seen {
++            self.quiet_chunks += 1;
++        }
++        (self.speech_seen && self.quiet_chunks >= self.silence_chunks)
++            || self.total_chunks.saturating_mul(CHUNK_MS) >= MAX_UTTERANCE_MS
++    }
++}
++
+ /// End an active capture: send audio-stop to the hub, transition to Idle, reset the wake detector.
+ /// Both transcript (normal end-of-turn) and pause-satellite (arbitration loss) use this common path.
+ async fn end_capture<W: AsyncWrite + Unpin>(
+@@ -317,6 +437,15 @@
          Some(w) => json!({ "source": "wake", "wake_rms": w.rms, "wake_score": w.score }),
          None => json!({ "source": "button" }),
      };
@@ -265,7 +506,17 @@
      // Protocol 1.7: what the room sounded like while this satellite was idle. The hub's
      // end-of-utterance gate cannot measure that itself — its first frame is already the turn —
      // and without it a command spoken straight after the wake word leaves the gate estimating
-@@ -337,6 +383,61 @@
+@@ -327,6 +456,9 @@
+         obj.insert("room_rms".into(), json!(rms));
+     }
+     write_event(wr, &WyomingEvent::with_data("run-pipeline", data)).await?;
++    // Protocol completeness: bracket the mic stream we are about to send. Home Assistant ignores
++    // audio-start (it begins reading chunks as they arrive) but a strict hub expects the pair.
++    write_event(wr, &WyomingEvent::audio_start(16000, 2, 1)).await?;
+     if let Some(pcm) = ctx.cues.awake() { ctx.playback.cue(pcm); }
+     *phase = LedState::Listening;
+     let _ = ctx.led.send(*phase);
+@@ -337,6 +469,61 @@
      Ok(())
  }
  
@@ -286,7 +537,7 @@
 +            "description": "Nabu Rust Wyoming satellite",
 +            "version": env!("CARGO_PKG_VERSION"),
 +            "area": null,
-+            "has_vad": false,
++            "has_vad": cfg.vad,
 +            "active_wake_words": null,
 +            "max_active_wake_words": null,
 +            "supports_trigger": false,
@@ -327,7 +578,7 @@
  async fn handle_hub_event<W: AsyncWrite + Unpin>(
      e: WyomingEvent,
      mode: &mut Mode,
-@@ -344,6 +445,7 @@
+@@ -344,6 +531,7 @@
      detector: Option<&mut WakeDetector>,
      wr: &mut W,
      ctx: &Ctx<'_>,
@@ -335,7 +586,7 @@
  ) -> anyhow::Result<()> {
      // Skip the per-frame audio-chunk flood (100+/s during a reply); the control events
      // (audio-start/stop, transcript, run-satellite) with the current mode are the useful trace.
-@@ -352,6 +454,14 @@
+@@ -352,6 +540,14 @@
      }
      match e.event_type.as_str() {
          "run-satellite" => info!("run-satellite: armed"),
@@ -350,7 +601,7 @@
          "transcript" => {
              if *mode == Mode::Streaming {
                  end_capture(wr, mode, detector).await?;
-@@ -526,11 +636,11 @@
+@@ -526,11 +722,11 @@
              "audio-start",
              json!({"rate":22050,"width":2,"channels":1,"timestamp":0,"alert":true}),
          );
@@ -365,7 +616,7 @@
          done_rx.recv().await.unwrap();
  
          assert_eq!(std::fs::metadata(&alert).map(|m| m.len()).unwrap_or(0), 48);
-@@ -557,11 +667,11 @@
+@@ -557,11 +753,11 @@
              "audio-start",
              json!({"rate":22050,"width":2,"channels":1,"timestamp":0}),
          );
@@ -380,7 +631,7 @@
          done_rx.recv().await.unwrap();
  
          assert_eq!(std::fs::metadata(&normal).map(|m| m.len()).unwrap_or(0), 48);
-@@ -588,11 +698,11 @@
+@@ -588,11 +784,11 @@
              "audio-start",
              json!({"rate":22050,"width":2,"channels":1,"timestamp":0,"alert":"yes"}),
          );
@@ -395,7 +646,95 @@
          done_rx.recv().await.unwrap();
  
          assert_eq!(std::fs::metadata(&normal).map(|m| m.len()).unwrap_or(0), 48);
-@@ -789,7 +899,7 @@
+@@ -756,11 +952,87 @@
+         // bytes between sequential reads (see codec.rs note) — use the buffered reader here.
+         let mut buf = BufReader::new(b);
+         assert_eq!(read_event_buffered(&mut buf).await.unwrap().unwrap().event_type, "run-pipeline");
++        // The mic stream is bracketed the protocol way: audio-start, then the flushed chunks.
++        let start = read_event_buffered(&mut buf).await.unwrap().unwrap();
++        assert_eq!(start.event_type, "audio-start");
++        assert_eq!(start.data_obj()["rate"], serde_json::json!(16000));
++        assert_eq!(start.data_obj()["width"], serde_json::json!(2));
++        assert_eq!(start.data_obj()["channels"], serde_json::json!(1));
+         for _ in 0..5 {
+             assert_eq!(read_event_buffered(&mut buf).await.unwrap().unwrap().event_type, "audio-chunk");
+         }
+     }
+ 
++    /// The end-of-speech detector's contract: nothing until speech is heard, then a run of
++    /// sub-threshold chunks, then a stop. Silence with no speech before it must NOT end the turn.
++    #[test]
++    fn end_of_speech_requires_speech_then_silence() {
++        // 80 ms chunk (5 frames) at the tone the earshot sanity test scored >0.5, after warm-up.
++        let speech: Vec<i16> =
++            (0..1280).map(|i| ((i as f32 * 0.08).sin() * 5000.0) as i16).collect();
++        let silence = vec![0i16; 1280];
++
++        // Threshold 0.4 (not the 0.5 default): the synthetic tone earshot scores as voice sits
++        // near 0.5, so this proves the mechanism, not the model's accuracy on a pure tone.
++        // Silence alone never arms the detector (the backstop test covers the far edge).
++        let mut quiet_only = EndOfSpeech::new(240);
++        for _ in 0..20 {
++            assert!(!quiet_only.observe(&silence, 0.4), "silence alone must not end the turn");
++        }
++
++        // Speech arms it; none of the spoken chunks ends the turn on its own.
++        let mut eos = EndOfSpeech::new(240);
++        for _ in 0..5 {
++            assert!(!eos.observe(&speech, 0.4), "speech must not end the turn");
++        }
++        // A run of silence then closes it (the exact chunk depends on earshot's frame context,
++        // so only the fact that it ends — within a sane bound — is asserted).
++        let mut ended = false;
++        for _ in 0..20 {
++            if eos.observe(&silence, 0.4) { ended = true; break; }
++        }
++        assert!(ended, "speech followed by sustained silence must end the turn");
++    }
++
++    /// A wake that opens the mic onto silence can never wedge the socket: the max-utterance safety
++    /// net closes the turn even though no speech was ever seen.
++    #[test]
++    fn end_of_speech_has_a_max_utterance_backstop() {
++        let mut eos = EndOfSpeech::new(700);
++        let silence = vec![0i16; 1280];
++        let chunks = MAX_UTTERANCE_MS / CHUNK_MS;
++        for i in 0..chunks - 1 {
++            assert!(!eos.observe(&silence, 0.5), "ended early at chunk {i}");
++        }
++        assert!(eos.observe(&silence, 0.5), "the backstop must fire at the max utterance");
++    }
++
++    /// A detector reused across turns must not carry the previous turn's context: after `reset`
++    /// the silence that ended turn one must not end turn two before any speech.
++    #[test]
++    fn end_of_speech_reset_forgets_the_previous_turn() {
++        let speech: Vec<i16> =
++            (0..1280).map(|i| ((i as f32 * 0.08).sin() * 5000.0) as i16).collect();
++        let silence = vec![0i16; 1280];
++        let mut eos = EndOfSpeech::new(240);
++        for _ in 0..5 {
++            assert!(!eos.observe(&speech, 0.4));
++        }
++        let mut ended = false;
++        for _ in 0..20 {
++            if eos.observe(&silence, 0.4) { ended = true; break; }
++        }
++        assert!(ended, "turn one must end on silence before the reset case can be proven");
++
++        eos.reset();
++        for i in 0..40 {
++            assert!(
++                !eos.observe(&silence, 0.4),
++                "reset must forget `speech_seen` (ended at chunk {i})"
++            );
++        }
++    }
++
+     // Wake-path regression: the flushed pre-roll must NOT include the wake word itself —
+     // only the detection-latency gap (wake fires ~181 ms after the word ends). Saying
+     // "ok nabu" then nothing must not transcribe-and-dispatch "ok nabu".
+@@ -789,7 +1061,7 @@
          let mut mode = Mode::Streaming;
          let mut phase = LedState::Listening;
          let e = WyomingEvent::with_data("transcript", json!({"text":"hi"}));
@@ -404,7 +743,7 @@
          assert_eq!(mode, Mode::Idle);
          assert_eq!(read_event(&mut b).await.unwrap().unwrap().event_type, "audio-stop");
      }
-@@ -813,10 +923,17 @@
+@@ -813,10 +1085,17 @@
              led: crate::config::LedConfig::None, // no XVF3800 on USB in CI; keep the log clean
              ..Config::default()
          };
@@ -423,7 +762,7 @@
          });
  
          // hub side: dial in, then stream fragmented audio-chunk frames
-@@ -881,13 +998,13 @@
+@@ -881,13 +1160,13 @@
          let mut phase = LedState::Listening;
  
          let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
@@ -440,7 +779,7 @@
          assert!(
              t0.elapsed() < std::time::Duration::from_millis(500),
              "audio-stop must not block on the player drain (took {:?})",
-@@ -912,7 +1029,7 @@
+@@ -912,7 +1191,7 @@
          let mut mode = Mode::Idle;
          let mut phase = LedState::Listening;
          let e = WyomingEvent::with_data("transcript", json!({"text":"stale"}));
@@ -449,7 +788,7 @@
          assert_eq!(mode, Mode::Idle);
          // nothing must have been written to the hub
          drop(a);
-@@ -934,7 +1051,7 @@
+@@ -934,7 +1213,7 @@
          let mut phase = LedState::Listening;
  
          let e = WyomingEvent::new("pause-satellite");
@@ -458,7 +797,7 @@
  
          assert_eq!(mode, Mode::Idle);
          assert_eq!(read_event(&mut b).await.unwrap().unwrap().event_type, "audio-stop");
-@@ -953,7 +1070,7 @@
+@@ -953,7 +1232,7 @@
          let mut phase = LedState::Listening;
  
          let e = WyomingEvent::new("pause-satellite");
@@ -467,7 +806,7 @@
  
          assert_eq!(mode, Mode::Idle);
          assert!(!led_rx.has_changed().unwrap());
-@@ -979,19 +1096,19 @@
+@@ -979,19 +1258,19 @@
          assert_eq!(*led_rx.borrow_and_update(), LedState::Listening);
  
          let voice_stopped = WyomingEvent::new("voice-stopped");
@@ -491,7 +830,7 @@
          // the LED goes Idle when the pump reports the drain complete, not at audio-stop
          let d = done_rx.recv().await.unwrap();
          apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
-@@ -1012,11 +1129,11 @@
+@@ -1012,11 +1291,11 @@
          let mut phase = LedState::Listening;
  
          let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
@@ -505,7 +844,7 @@
          let d = done_rx.recv().await.unwrap();
          apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
          assert_eq!(*led_rx.borrow_and_update(), LedState::Idle);
-@@ -1038,14 +1155,14 @@
+@@ -1038,14 +1317,14 @@
  
          // announcement starts, then a button turn begins while it plays
          let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
@@ -522,7 +861,7 @@
          let d = done_rx.recv().await.unwrap();
          apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
          assert_eq!(*led_rx.borrow_and_update(), LedState::Listening, "LED must stay lit mid-turn");
-@@ -1066,11 +1183,11 @@
+@@ -1066,11 +1345,11 @@
          let mut phase = LedState::Listening;
  
          let start = WyomingEvent::with_data("audio-start", json!({"rate":22050,"width":2,"channels":1}));
@@ -537,7 +876,7 @@
          assert_eq!(*led_rx.borrow_and_update(), LedState::Speaking);
  
          let d = done_rx.recv().await.unwrap();
-@@ -1092,7 +1209,7 @@
+@@ -1092,7 +1371,7 @@
          let mut phase = LedState::Listening; // not Streaming -> transcript is stale
  
          let stale = WyomingEvent::with_data("transcript", json!({"text":"stale"}));
@@ -546,7 +885,7 @@
          assert!(!led_rx.has_changed().unwrap(), "stale transcript must not touch the LED");
      }
  
-@@ -1112,7 +1229,7 @@
+@@ -1112,7 +1391,7 @@
          let mut phase = LedState::Listening;
  
          let e = WyomingEvent::new("voice-stopped");
@@ -555,7 +894,7 @@
  
          assert_eq!(mode, Mode::Streaming, "voice-stopped must not close the capture");
          assert_eq!(*led_rx.borrow_and_update(), LedState::Thinking);
-@@ -1135,17 +1252,17 @@
+@@ -1135,17 +1414,17 @@
          let mut phase = LedState::Listening;
  
          let voice_stopped = WyomingEvent::new("voice-stopped");
@@ -576,7 +915,7 @@
          let d = done_rx.recv().await.unwrap();
          apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
          assert_eq!(
-@@ -1170,19 +1287,19 @@
+@@ -1170,19 +1449,19 @@
          let mut phase = LedState::Listening;
  
          let voice_stopped = WyomingEvent::new("voice-stopped");
@@ -600,7 +939,7 @@
          let d = done_rx.recv().await.unwrap();
          apply_drain_done(d, playback.latest_generation(), mode, phase, &led_tx).unwrap();
          assert_eq!(*led_rx.borrow_and_update(), LedState::Listening);
-@@ -1201,7 +1318,7 @@
+@@ -1201,7 +1480,7 @@
          let mut phase = LedState::Listening; // no turn open -> stale, must not light the ring
  
          let e = WyomingEvent::new("listening-started");
@@ -609,7 +948,7 @@
  
          assert_eq!(mode, Mode::Idle);
          assert!(!led_rx.has_changed().unwrap(), "stale listening-started must not touch the LED");
-@@ -1220,7 +1337,7 @@
+@@ -1220,7 +1499,7 @@
          let mut phase = LedState::Listening; // not Streaming -> stale, must not touch the LED
  
          let e = WyomingEvent::new("voice-stopped");
@@ -618,7 +957,7 @@
  
          assert_eq!(mode, Mode::Idle);
          assert!(!led_rx.has_changed().unwrap(), "stale voice-stopped must not touch the LED");
-@@ -1256,7 +1373,7 @@
+@@ -1256,7 +1535,7 @@
          let mut mode = Mode::Idle;
          let mut phase = LedState::Idle;
          let event = WyomingEvent::with_data("speaker-volume", data);
@@ -627,3 +966,21 @@
              .await
              .unwrap();
      }
+--- a/satellite/src/wyoming/event.rs
++++ b/satellite/src/wyoming/event.rs
+@@ -26,6 +26,15 @@
+             payload,
+         }
+     }
++    /// Opens the mic stream we are about to send (the `AudioStart` half of the audio-start/
++    /// audio-chunk/audio-stop triple). No payload: it describes the chunks that follow.
++    pub fn audio_start(rate: i64, width: i64, channels: i64) -> Self {
++        Self {
++            event_type: "audio-start".to_string(),
++            data: Some(json!({ "rate": rate, "width": width, "channels": channels })),
++            payload: Vec::new(),
++        }
++    }
+     /// The event's `data` as a JSON object map (cloned).
+     /// Returns an empty map when `data` is `None` or not a JSON object.
+     pub fn data_obj(&self) -> Map<String, Value> {
