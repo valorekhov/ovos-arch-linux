@@ -1,6 +1,6 @@
 pkgname=nabu-satellite
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc='Rust Wyoming satellite for Home Assistant voice (Mycroft Mark II)'
 arch=('aarch64')
 url='https://github.com/Dethon/Ziggurat'
@@ -9,14 +9,19 @@ depends=('alsa-utils')
 makedepends=('rust')
 install=nabu-satellite.install
 _commit=35c5b471e6715adcb3c3dddc1e30af78d0d15d7c
+_wake_onnx=hey_mycroft_v0.1.onnx
 source=("$pkgname-$pkgver.tar.gz::https://github.com/Dethon/Ziggurat/archive/$_commit.tar.gz"
         nabu-satellite@.service
         nabu-satellite.install
-        nabu-ha-compat.patch)
+        nabu-ha-compat.patch
+        nabu-wake-word.patch
+        "$_wake_onnx::https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/$_wake_onnx")
 sha256sums=('ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b'
             'SKIP'
             'SKIP'
-            'a372f937138031988ad939903399b9c673d49e8dc47983ac4c7ec31414411bc6')
+            'a372f937138031988ad939903399b9c673d49e8dc47983ac4c7ec31414411bc6'
+            '3a5a5392fefa5e37c10ef682a6194fbdecdf87a5df844f4c9f82e7c21ba72db6'
+            'c2a311e8fa1338de89c31b3b46dc4dffd4af2f9a8d6ddead48893c2d301b1f18')
 
 # Wyoming/HA compatibility, on top of the pinned upstream commit:
 #   * answer the handshake HA's client requires — `describe` -> `info` and `ping` -> `pong`;
@@ -29,9 +34,15 @@ sha256sums=('ebfcfe734ceca08acc694c23b677cdef88a0d397cdbfaed9f46909742d6db64b'
 # `audio-stop` (or its own server-side VAD fires), and the Ziggurat hub endpointed server-side,
 # so this binary never sent one. The same mic chunks we already forward are now scored locally
 # too, and `audio-stop` goes out once the user has plainly stopped talking.
+#
+# Wake word: the on-device openWakeWord classifier is swapped from the custom "ok nabu" head to
+# the stock "hey mycroft" head. Because the classifier is include_bytes!-embedded, the swap is a
+# patch (it repoints CLF_MODEL) plus the downloaded ONNX dropped into satellite/models/.
 prepare() {
     cd "Ziggurat-$_commit"
     patch --forward --strip=1 --input="$srcdir/nabu-ha-compat.patch"
+    patch --forward --strip=1 --input="$srcdir/nabu-wake-word.patch"
+    install -Dm644 "$srcdir/$_wake_onnx" "satellite/models/hey_mycroft.onnx"
 }
 
 # The committed Cargo.lock is pinned by necessity (archived rppal, an unreleased

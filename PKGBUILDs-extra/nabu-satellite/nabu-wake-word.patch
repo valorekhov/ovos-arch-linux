@@ -1,0 +1,71 @@
+--- a/satellite/src/wake/detector.rs
++++ b/satellite/src/wake/detector.rs
+@@ -8,7 +8,7 @@
+ 
+ const MEL_MODEL: &[u8] = include_bytes!("../../models/melspectrogram.onnx");
+ const EMB_MODEL: &[u8] = include_bytes!("../../models/embedding_model.onnx");
+-const CLF_MODEL: &[u8] = include_bytes!("../../models/ok_nabu.onnx");
++const CLF_MODEL: &[u8] = include_bytes!("../../models/hey_mycroft.onnx");
+ 
+ const CHUNK: usize = 1280;    // 80 ms @ 16 kHz
+ const LOOKBACK: usize = 480;  // 160*3 samples of mel context carried across chunks (openwakeword)
+@@ -326,10 +326,11 @@
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+-    // The shipped models/ok_nabu.onnx is a custom-trained classifier; tests/fixtures/ok_nabu.wav
+-    // is the stock recording validated against the stock classifier (77db1daa). Detector
+-    // plumbing — refractory, shared bundle, score surfacing — is what these tests cover, so
+-    // they pair the stock model with the stock wav.
++    // The shipped classifier is the stock openWakeWord "hey mycroft" head
++    // (models/hey_mycroft.onnx). These tests deliberately pair the stock ok_nabu fixture
++    // (tests/fixtures/ok_nabu.wav + ok_nabu_stock.onnx) instead, so the detector plumbing —
++    // refractory, shared bundle, score surfacing — is exercised without depending on the
++    // shipped head.
+     const STOCK_CLF_MODEL: &[u8] = include_bytes!("../../tests/fixtures/ok_nabu_stock.onnx");
+     fn wav(path: &str) -> Vec<i16> {
+         let mut r = hound::WavReader::open(path).unwrap();
+--- a/satellite/models/LICENSE-models.md
++++ b/satellite/models/LICENSE-models.md
+@@ -8,8 +8,10 @@
+ |---|---|---|
+ | `melspectrogram.onnx` | [dscripka/openWakeWord v0.5.1](https://github.com/dscripka/openWakeWord/releases/tag/v0.5.1) | CC-BY-NC-SA 4.0 |
+ | `embedding_model.onnx` | [dscripka/openWakeWord v0.5.1](https://github.com/dscripka/openWakeWord/releases/tag/v0.5.1) | CC-BY-NC-SA 4.0 |
+-| `ok_nabu.onnx` | [fwartner/home-assistant-wakewords-collection](https://github.com/fwartner/home-assistant-wakewords-collection/blob/main/en/ok_nabu/ok_nabu.onnx) (`en/ok_nabu`, 205,647 bytes) | CC-BY-NC-SA 4.0 |
++| `hey_mycroft.onnx` | [dscripka/openWakeWord v0.5.1](https://github.com/dscripka/openWakeWord/releases/tag/v0.5.1) (`hey_mycroft_v0.1.onnx`, 857,691 bytes) | CC-BY-NC-SA 4.0 |
+ 
+ The melspectrogram/embedding models derive from Google's
+-[speech_embedding](https://tfhub.dev/google/speech_embedding/1); the `ok_nabu` classifier is a
+-community-trained openWakeWord head for the "ok nabu" wake phrase.
++[speech_embedding](https://tfhub.dev/google/speech_embedding/1); the `hey_mycroft` classifier is
++the official openWakeWord head for the "hey mycroft" wake phrase. (The `ok_nabu*` ONNX files
++kept alongside are earlier custom heads for the "ok nabu" phrase, retained for reference; they
++are not compiled into the binary.)
+--- a/satellite/README.md
++++ b/satellite/README.md
+@@ -2,7 +2,7 @@
+ 
+ A single static Rust binary that acts as a drop-in [Wyoming protocol](https://github.com/rhasspy/wyoming)
+ satellite **server**, replacing the EOL Python [wyoming-satellite](https://github.com/rhasspy/wyoming-satellite)
+-on Raspberry Pi voice satellites. Wake-word detection ("ok nabu", openWakeWord ONNX models) runs embedded
++on Raspberry Pi voice satellites. Wake-word detection ("hey mycroft", openWakeWord ONNX models) runs embedded
+ in-process via [tract](https://github.com/sonos/tract) — no Python, no ONNX Runtime, no shared-library
+ dependencies on the target device.
+ 
+@@ -122,11 +122,11 @@
+ 
+ - Without `MUSIC_HUB` / `MUSIC_ROOM` the unit is torn down to voice-only (no snapclient, no PipeWire).
+ - The wake tuning is the script's defaults, which are this unit's: `THRESHOLD=0.5 WAKE_WINDOW=2`
+-  for the shipped classifier (`models/ok_nabu.onnx` = `ok_nabu_custom_v10.onnx`, retrained on
+-  this unit's own microphone audio), the loudness floor at `WAKE_MIN_RMS=350` and the quiet-room
+-  rule at `WAKE_QUIET_RMS=200` (0.9 / 2), both measured on the XVF3800. Swapping the classifier
+-  means re-tuning `THRESHOLD` / `WAKE_WINDOW` with it: v7 ran at 0.5 / 3, and v10 at 0.5 / 3
+-  loses real wakes it catches at 0.5 / 2.
++  for the shipped classifier (`models/hey_mycroft.onnx`, the stock openWakeWord head), the
++  loudness floor at `WAKE_MIN_RMS=350` and the quiet-room rule at `WAKE_QUIET_RMS=200` (0.9 / 2),
++  both measured on the XVF3800. Swapping the classifier means re-tuning `THRESHOLD` /
++  `WAKE_WINDOW` with it: the earlier custom "ok nabu" heads ran at 0.5 / 3 (v7) and needed
++  0.5 / 2 to stop losing real wakes (v10).
+ - `MASTER_VOLUME` is omitted, so the master returns to 50%; pass the current level to keep it
+   (`ssh dethon@192.168.5.11 XDG_RUNTIME_DIR=/run/user/1000 wpctl get-volume @DEFAULT_AUDIO_SINK@`).
+ - `TTS_VOLUME` / `ALERT_VOLUME` are at their 100% defaults on this unit.
